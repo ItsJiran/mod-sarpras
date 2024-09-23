@@ -221,19 +221,19 @@ class InfrastructureAsset extends Model
         return array_merge([
 
             'type' => [
-                'Kendaraan' => InfrastructureAssetsVehicle::class,
-                'Perabotan' => InfrastructureAssetsFurniture::class,
-                'Elektronik' => InfrastructureAssetsElectronic::class,
-                'Dokumen' => InfrastructureAssetsDocuments::class,
-                'Tanah' => InfrastructureAssetsLand::class,
+                'Vehicle' => InfrastructureAssetsVehicle::class,
+                'Furniture' => InfrastructureAssetsFurniture::class,
+                'Electronic' => InfrastructureAssetsElectronic::class,
+                'Document' => InfrastructureAssetsDocuments::class,
+                'Land' => InfrastructureAssetsLand::class,
             ],
 
             'type_key' => [
-                'Kendaraan',
-                'Perabotan',
-                'Elektronik',
-                'Dokumen',
-                'Tanah',                
+                'Vehicle',
+                'Furniture',
+                'Electronic',
+                'Document',
+                'Land',                
             ]
             
         ]);
