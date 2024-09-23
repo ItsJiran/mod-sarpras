@@ -57,6 +57,17 @@ class InfrastructureAssetReservation extends Model
     protected $defaultOrder = 'name';
 
     /**
+     * The attributes that are mass assignable.
+     *
+     * @var array<int, string>
+     */
+    protected $fillable = [
+        'asset_id',
+        'asset_book_id',
+    ];
+
+
+    /**
      * The model store method
      *
      * @param Request $request

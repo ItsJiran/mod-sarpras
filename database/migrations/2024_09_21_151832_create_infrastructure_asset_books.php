@@ -17,7 +17,7 @@ return new class extends Migration
             $table->foreignId('asset_book_reservation_id');
             $table->foreignId('asset_book_info_id')->nullable();
             $table->timestamp('start_timestamp');
-            $table->timestamp('end_timestamp');
+            $table->timestamp('expired_timestamp');
             $table->timestamp('returned_timestamp');
             $table->string('returned_proof_image_path');
             $table->softDeletes();

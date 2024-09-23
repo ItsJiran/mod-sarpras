@@ -16,12 +16,10 @@ return new class extends Migration
             $table->foreignId('asset_id');
             $table->timestamp('receive_date')->nullable();
             $table->double('receive_price')->default(0);            
-            $table->enum('status_assets', [
-                'hilang',
-                'rusak',
-                'dijual',
-                'tersedia',
-            ])->default('tersedia');
+            $table->enum('status', [
+                'selled',
+                'exist',
+            ])->default('exist');
             $table->softDeletes();
             $table->timestamps();
         });

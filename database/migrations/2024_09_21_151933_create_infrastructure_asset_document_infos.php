@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('infrastructure_asset_document_infos', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('asset_id');
+            $table->foreignId('asset_document_id');
             $table->text('description');
             $table->enum('status', [
                 'settled',

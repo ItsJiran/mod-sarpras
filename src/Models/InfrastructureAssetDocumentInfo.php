@@ -57,6 +57,17 @@ class InfrastructureAssetDocumentInfo extends Model
     protected $defaultOrder = 'name';
 
     /**
+     * The attributes that are mass assignable.
+     *
+     * @var array<int, string>
+     */
+    protected $fillable = [
+        'asset_book_id',
+        'description',
+        'status',
+    ];
+
+    /**
      * The model store method
      *
      * @param Request $request
