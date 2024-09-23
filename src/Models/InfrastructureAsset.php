@@ -11,6 +11,13 @@ use Module\System\Traits\HasPageSetup;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
+// relatedm models morph
+use Module\Infrastructure\Models\InfrastructureAssetsVehicle;
+use Module\Infrastructure\Models\InfrastructureAssetsFurniture;
+use Module\Infrastructure\Models\InfrastructureAssetsElectronic;
+use Module\Infrastructure\Models\InfrastructureAssetsDocuments;
+use Module\Infrastructure\Models\InfrastructureAssetsLand;
+
 class InfrastructureAsset extends Model
 {
     use Filterable;
@@ -202,4 +209,34 @@ class InfrastructureAsset extends Model
             ], 500);
         }
     }
+
+    /**
+     * The model map combos method
+     *
+     * @param [type] $model
+     * @return void
+     */
+    public static function mapCombos(Request $request, $model = null): array
+    {
+        return array_merge([
+
+            'type' => [
+                'Kendaraan' => InfrastructureAssetsVehicle::class,
+                'Perabotan' => InfrastructureAssetsFurniture::class,
+                'Elektronik' => InfrastructureAssetsElectronic::class,
+                'Dokumen' => InfrastructureAssetsDocuments::class,
+                'Tanah' => InfrastructureAssetsLand::class,
+            ],
+
+            'type_key' => [
+                'Kendaraan',
+                'Perabotan',
+                'Elektronik',
+                'Dokumen',
+                'Tanah',                
+            ]
+            
+        ]);
+    }
+
 }
