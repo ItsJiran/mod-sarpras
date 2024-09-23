@@ -57,6 +57,22 @@ class InfrastructureAssetVehicle extends Model
     protected $defaultOrder = 'name';
 
     /**
+     * The attributes that are mass assignable.
+     *
+     * @var array<int, string>
+     */
+    protected $fillable = [
+        'asset_id',
+        'brand',
+        'slug',
+        'receive_date',
+        'receive_price',
+        'last_location',
+        'status',
+    ];
+
+
+    /**
      * The model store method
      *
      * @param Request $request
