@@ -24,33 +24,8 @@
 						v-model="record.assets_type_key"
 						:return-object="false"
 						></v-combobox>
-					</v-col>
+					</v-col>			
 				</v-row>
-
-				<!-- Tanah  -->
-				<v-template v-if=" record.assets_type_key == 'Tanah' ">
-					Tanah
-				</v-template>
-
-				<!-- KENDARAAN  -->
-				<v-template v-if=" record.assets_type_key == 'Kendaraan' ">
-					Kendaraan
-				</v-template>
-
-				<!-- PERABOTAN  -->
-				<v-template v-if=" record.assets_type_key == 'Perabotan' ">
-					Perabotan
-				</v-template>
-				
-				<!-- ELEKTRONIk  -->
-				<v-template v-if=" record.assets_type_key == 'Elektronik' ">
-					Elektronik
-				</v-template>
-		
-				<!-- ELEKTRONIk  -->
-				<v-template v-if=" record.assets_type_key == 'Dokumen' ">
-					Dokumen
-				</v-template>				
 
 			</v-card-text>
 		</template>
@@ -59,33 +34,18 @@
 
 <script>
 
-import CreateLand from "./create-land";
-import CreateDocuments from "./create-documents";
-import CreateElectronic from "./create-electronic";
-import CreateFurniture from "./create-furniture";
-import CreateVehicle from "./create-vehicle";
+// assets type form
+import CreateLand from "./create-part/create-land";
+import CreateDocuments from "./create-part/create-documents";
+import CreateElectronic from "./create-part/create-electronic";
+import CreateFurniture from "./create-part/create-furniture";
+import CreateVehicle from "./create-part/create-vehicle";
 
 export default {
-	name: "sarpras-assets-create",
-	
-	
+	name: "infrastructure-assets-create",
+
 	methods : {
 		getAssetsType : function (record,store) {
-			// if(store.combos == undefined) {
-			// 	store.combos = {};
-			// }
-
-			// if(store.combos.type_key == undefined) {
-			// 	store.combos.type_key = [];
-			// }
-	
-			// this.$http(`sarpras/api/combos/type`).then(
-			// 	(response) => {
-			// 		store.combos.type = response.setups.combos.type_key;					
-			// 	}
-			// );
-
-			// return store.combos.type;
 		},
 	},
 

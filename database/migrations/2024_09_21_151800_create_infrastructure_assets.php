@@ -18,6 +18,7 @@ return new class extends Migration
             $table->foreignId('unit_id');
             $table->jsonb('meta')->nullable();
             $table->morphs('assetable');
+            $table->softDeletes();
             $table->timestamps();
         });
     }
