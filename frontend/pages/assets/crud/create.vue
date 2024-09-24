@@ -27,12 +27,20 @@
 					</v-col>			
 				</v-row>
 
+				<component :is="CreateLand">
+					<template v-slot:appname>
+						<slot name="appname"></slot>
+					</template>
+				</component>
+
 			</v-card-text>
 		</template>
 	</form-create>
 </template>
 
 <script>
+
+import { reactive } from "vue";
 
 // assets type form
 import CreateLand from "./create-part/create-land";
@@ -44,13 +52,24 @@ import CreateVehicle from "./create-part/create-vehicle";
 export default {
 	name: "infrastructure-assets-create",
 
-	methods : {
-		getAssetsType : function (record,store) {
-		},
+	data: () => ({
+		ComponentType: null,
+	}),
+
+	data(props){
+		return {
+			components: {
+				CreateLand,
+				CreateDocuments,
+				CreateElectronic,
+				CreateFurniture,
+				CreateVehicle,
+			},
+		}
 	},
 
-	setup( props, {methods} ) {
-		console.log(methods)
+	setup(props){
+		console.log(props.components);
 	}
 };
 </script>
