@@ -13,6 +13,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 class InfrastructureAssetBook extends Model
 {
+    use Auditable;
     use Filterable;
     use HasMeta;
     use HasPageSetup;

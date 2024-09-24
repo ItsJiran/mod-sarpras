@@ -22,6 +22,7 @@ return new class extends Migration
                 'borrowing',
                 'mutasi',
             ])->default('settled');
+            $table->jsonb('meta')->nullable();
             $table->softDeletes();
             $table->timestamps();
         });

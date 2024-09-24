@@ -16,6 +16,7 @@ return new class extends Migration
             $table->foreignId('asset_id');
             $table->foreignId('for_asset_id')->nullable();
             $table->morphs('documentable');
+            $table->jsonb('meta')->nullable();
             $table->softDeletes();
             $table->timestamps();
         });

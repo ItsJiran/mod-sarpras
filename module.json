@@ -5,7 +5,7 @@
     "connection": "platform",
     "name": "Infrastructure",
     "namespace": "Module",
-    "priority": 0,
+    "priority": 6,
     "disabled": false,
     "providers": "Module\\Infrastructure\\Providers\\InfrastructureServiceProvider"   
 }

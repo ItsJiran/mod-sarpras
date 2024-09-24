@@ -14,12 +14,16 @@ return new class extends Migration
         Schema::create('infrastructure_asset_books', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id');
-            $table->foreignId('asset_book_reservation_id');
+            $table->foreignId('asset_id');
             $table->foreignId('asset_book_info_id')->nullable();
+            
+            $table->string('status')->default('pending')->index();
+
             $table->timestamp('start_timestamp');
             $table->timestamp('expired_timestamp');
             $table->timestamp('returned_timestamp');
             $table->string('returned_proof_image_path');
+            $table->jsonb('meta')->nullable();
             $table->softDeletes();
             $table->timestamps();
         });

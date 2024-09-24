@@ -19,12 +19,8 @@ return new class extends Migration
             $table->timestamp('receive_date')->nullable();
             $table->double('receive_price')->default(0);
             $table->string('last_location')->nullable();
-            $table->enum('status', [
-                'gone',
-                'damaged',
-                'selled',
-                'exist',
-            ])->default('exist');
+            $table->string('status')->default('exist');
+            $table->jsonb('meta')->nullable();
             $table->softDeletes();
             $table->timestamps();
         });
