@@ -73,9 +73,47 @@ class InfrastructureAsset extends Model
     protected $fillable = [
         'name',
         'slug',
+        'slug_unit',
+        'slug_type',
         'unit_id',
         'assetable',
     ];
+
+    /**
+     * countOfSlugType function
+     *
+     * @return int
+     */
+    public static function countOfSlug($unit_slug, $type_slug) : int 
+    {
+        if ($lastRecord = (static::where([
+            ['slug_unit', '=', $unit_slug],
+            ['slug_type', '=', $type_slug],
+        ]))
+        ->withTrashed()
+        ->orderBy('id', 'DESC')
+        ->first()
+        ) {
+            return intval(substr($lastRecord->slug, 11, 3));
+        }
+
+        return 0;
+    }
+
+    /**
+     * generateSlug function
+     *
+     * @param [type] $type
+     * @param [type] $date
+     * @return string
+     */
+    public static function generateSlug($unit_slug, $type_slug): string
+    {
+        $count = (new self())->countOfSlug($unit_slug, $type_slug);
+
+        // 
+        return $unit_slug . '-' . 'SP'. '-' . $type_slug . str_pad($count + 1, 3, '0', STR_PAD_LEFT);
+    }
 
     /**
      * The model store method
@@ -90,9 +128,17 @@ class InfrastructureAsset extends Model
 
         DB::connection($model->connection)->beginTransaction();
 
+        $slug_unit = $request->unit_slug;
+        $slug_type = self::mapTypeSlug()[$request->assets_type_key];
+        $slug = self::generateSlug($slug_unit, $slug_type);      
+
         try {
-            // ...
-            $model->save();
+            
+            $model->slug = $slug;
+            $model->slug_unit = $slug_unit;
+            $model->slug_type = $slug_type;
+
+            //$model->save();
 
             $type_asset_model->storeRecord( $request, $model );
 
@@ -276,6 +322,23 @@ class InfrastructureAsset extends Model
             'Electronic',
             'Document',
             'Land',                
+        ];
+    }
+
+    /**
+     * The model map combos method
+     *
+     * @param [type] $model
+     * @return array
+     */
+    public static function mapTypeSlug() : array
+    {
+        return [
+            'Vehicle' => 'VHC',
+            'Furniture' => 'FNT',
+            'Electronic' => 'ELC',
+            'Document' => 'DMT',
+            'Land' => 'LND',                
         ];
     }
 

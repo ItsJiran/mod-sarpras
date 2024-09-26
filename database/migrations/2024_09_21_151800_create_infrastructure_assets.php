@@ -15,6 +15,8 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->string('slug')->unique();
+            $table->string('slug_unit');
+            $table->string('slug_type');
             $table->foreignId('unit_id');
             $table->jsonb('meta')->nullable();
             $table->morphs('assetable');
