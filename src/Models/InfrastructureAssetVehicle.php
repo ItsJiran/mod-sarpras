@@ -206,4 +206,21 @@ class InfrastructureAssetVehicle extends Model
             ], 500);
         }
     }
+
+    /**
+     * The model destroy method
+     *
+     * @param [type] $model
+     * @return void
+     */
+    public static function mapStatus()
+    {
+        return [
+            'dijual',     // dijual
+            'dipinjam', // dipinjam
+            'rusak',  // rusak
+            'tersedia',  // tersedia
+        ];
+    }
+
 }

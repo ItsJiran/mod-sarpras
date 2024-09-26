@@ -18,7 +18,7 @@ return new class extends Migration
             $table->double('receive_price')->default(0);
             $table->string('last_location')->nullable();
             $table->string('slug')->unique();
-            $table->string('status')->default('exist');
+            $table->string('status')->default('tersedia');                        
             $table->jsonb('meta')->nullable();
             $table->softDeletes();
             $table->timestamps();

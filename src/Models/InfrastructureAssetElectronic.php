@@ -204,4 +204,23 @@ class InfrastructureAssetElectronic extends Model
             ], 500);
         }
     }
+
+
+    /**
+     * The model destroy method
+     *
+     * @param [type] $model
+     * @return void
+     */
+    public static function mapStatus()
+    {
+        return [
+            'dijual', // dijual
+            'rusak',  // rusak
+            'dipinjam', // dipinjam
+            'tersedia',    // tersedia
+        ];
+    }
+
+
 }

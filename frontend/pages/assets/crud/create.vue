@@ -1,7 +1,7 @@
 <template>
 	<form-create with-helpdesk>
 		<template v-slot:default="{ 
-			combos: { type_key },
+			combos: { type_key, units, units_slug },
 			record,
 			store,
 		 }">
@@ -23,16 +23,32 @@
 						label="Tipe Assets"
 						v-model="record.assets_type_key"
 						:return-object="false"
+						@update:model-value="currentFormType = record.assets_type_key"
 						></v-combobox>
 					</v-col>			
 				</v-row>
 
-				<component :is="CreateLand">
-					<template v-slot:appname>
-						<slot name="appname"></slot>
-					</template>
-				</component>
+				<v-row dense>
+					<v-col cols="6">
+						<v-text-field
+							label="Nama Unit"
+							v-model="unit.name"
+							:readonly="true"
+						
+						></v-text-field>
+					</v-col>	
+					<v-col cols="6">
+						<v-combobox
+						:items="units_slug" 
+						label="Pilih Unit"
+						v-model="record.unit_slug"
+						@update:model-value="unit = units[record.unit_slug]"
+						></v-combobox>
+					</v-col>			
+				</v-row>
 
+				<component :record="record" :is="currentFormType"></component>
+				
 			</v-card-text>
 		</template>
 	</form-create>
@@ -40,31 +56,37 @@
 
 <script>
 
-import { reactive } from "vue";
-
 // assets type form
-import CreateLand from "./create-part/create-land";
-import CreateDocuments from "./create-part/create-documents";
-import CreateElectronic from "./create-part/create-electronic";
-import CreateFurniture from "./create-part/create-furniture";
-import CreateVehicle from "./create-part/create-vehicle";
+import Land from "./create-part/create-land";
+import Document from "./create-part/create-documents";
+import Electronic from "./create-part/create-electronic";
+import Furniture from "./create-part/create-furniture";
+import Vehicle from "./create-part/create-vehicle";
 
 export default {
 	name: "infrastructure-assets-create",
 
-	data: () => ({
-		ComponentType: null,
-	}),
+	components : {
+		Land,
+		Document,
+		Electronic,
+		Furniture,
+		Vehicle,
+	},
 
-	data(props){
+	data(){
 		return {
-			components: {
-				CreateLand,
-				CreateDocuments,
-				CreateElectronic,
-				CreateFurniture,
-				CreateVehicle,
-			},
+			currentFormType:'Land',
+			formType: [
+				'Vehicle',
+                'Furniture',
+                'Electronic',
+                'Document',
+                'Land', 
+			],
+			unit: {
+
+			}
 		}
 	},
 

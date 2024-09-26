@@ -1,13 +1,10 @@
-<template v-slot:default="{ 
-	combos: { type_key },
-	record,
-	store,
- }">
-	<h1>Electronic</h1>
+<template>
+	<h2>{{record.assets_type_key}}</h2>
 </template>
 
 <script>
 export default {
 	name: "infrastructure-assets-create-electronic",
+	props: ['record'],
 };
 </script>

@@ -201,4 +201,22 @@ class InfrastructureAssetDocument extends Model
             ], 500);
         }
     }
+
+    /**
+     * The model destroy method
+     *
+     * @param [type] $model
+     * @return void
+     */
+    public static function mapStatus()
+    {
+        return [
+            'dipinjam', // dipinjam
+            'perubahan',  // perubahan
+            'mutasi', // mutasi
+            'tersedia',  // tersedia
+        ];
+    }
+
+
 }

@@ -3,8 +3,8 @@
 namespace Module\Infrastructure\Models;
 
 use Illuminate\Http\Request;
-use Module\System\Traits\HasMeta;
 use Illuminate\Support\Facades\DB;
+use Module\System\Traits\HasMeta;
 use Module\System\Traits\Filterable;
 use Module\System\Traits\Searchable;
 use Module\System\Traits\HasPageSetup;
@@ -12,6 +12,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 // relatedm models morph
+use Module\Human\Models\HumanUnit;
 use Module\Infrastructure\Models\InfrastructureAssetsVehicle;
 use Module\Infrastructure\Models\InfrastructureAssetsFurniture;
 use Module\Infrastructure\Models\InfrastructureAssetsElectronic;
@@ -218,6 +219,17 @@ class InfrastructureAsset extends Model
      */
     public static function mapCombos(Request $request, $model = null): array
     {
+        $human = HumanUnit::get(['id','name','slug']);
+        $units = [];
+        $units_name = [];
+        $units_slug = [];
+
+        foreach ($human as $key => $value) {
+            array_push( $units_name, $value->name );
+            array_push( $units_slug, $value->slug );
+            $units[$value->slug] = $value;
+        }
+
         return array_merge([
 
             'type' => [
@@ -234,6 +246,18 @@ class InfrastructureAsset extends Model
                 'Electronic',
                 'Document',
                 'Land',                
+            ],
+
+            'units' => $units,
+            'units_name' => $units_name,
+            'units_slug' => $units_slug,
+
+            'units_status_map' => [
+                'Vehicle' => InfrastructureAssetsVehicle::mapStatus(),
+                'Furniture' => InfrastructureAssetsFurniture::mapStatus(),
+                'Electronic' => InfrastructureAssetsElectronic::mapStatus(),
+                'Document' => InfrastructureAssetsDocuments::mapStatus(),
+                'Land' => InfrastructureAssetsLand::mapStatus(),
             ]
             
         ]);

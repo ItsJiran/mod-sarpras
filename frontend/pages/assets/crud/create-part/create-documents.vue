@@ -1,16 +1,19 @@
-<template v-slot:default="{ 
-	combos: { type_key },
-	record,
-	store,
- }">
-	<h1>Documents</h1>
+<template>
+	
+	<v-row dense>
+		<v-col cols="12">
+			<v-text-field
+				label="Name"
+				v-model="record.name"
+			></v-text-field>
+		</v-col>
+	</v-row>
+
 </template>
 
 <script>
 export default {
-	setup(){
-		console.log(record,store);
-	},	
 	name: "infrastructure-assets-create-documents",
+	props: ['record'],
 };
 </script>
