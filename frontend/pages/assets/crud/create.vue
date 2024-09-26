@@ -1,7 +1,7 @@
 <template>
 	<form-create with-helpdesk>
 		<template v-slot:default="{ 
-			combos: { type_key, units, units_slug },
+			combos: { type_key, units, units_slug, units_status_map },
 			record,
 			store,
 		 }">
@@ -23,9 +23,9 @@
 						label="Tipe Assets"
 						v-model="record.assets_type_key"
 						:return-object="false"
-						@update:model-value="currentFormType = record.assets_type_key"
+						@update:model-value="selectAssetsType(record, units_status_map, this)"
 						></v-combobox>
-					</v-col>			
+					</v-col>	
 				</v-row>
 
 				<v-row dense>
@@ -33,22 +33,35 @@
 						<v-text-field
 							label="Nama Unit"
 							v-model="unit.name"
-							:readonly="true"
-						
+							:readonly="true"					
 						></v-text-field>
-					</v-col>	
+					</v-col>
 					<v-col cols="6">
 						<v-combobox
 						:items="units_slug" 
 						label="Pilih Unit"
 						v-model="record.unit_slug"
-						@update:model-value="unit = units[record.unit_slug]"
+						@update:model-value="selectUnit(record, units, this)"
 						></v-combobox>
-					</v-col>			
+					</v-col>
 				</v-row>
 
-				<component :record="record" :is="currentFormType"></component>
-				
+				<v-row v-if=" unit.name != undefined && currentFormType != '' " dense>
+					<v-col cols="12">
+						<v-combobox
+						:items="units_status_map[currentFormType]" 
+						:return-object="false"
+						label="Status Asset"
+						v-model="record.status"			
+						></v-combobox>
+					</v-col>
+				</v-row>
+
+				<component 
+					v-if=" unit.name != undefined && currentFormType != '' "
+					:record="record"
+					:is="currentFormType"/>					
+		
 			</v-card-text>
 		</template>
 	</form-create>
@@ -76,7 +89,7 @@ export default {
 
 	data(){
 		return {
-			currentFormType:'Land',
+			currentFormType:"",
 			formType: [
 				'Vehicle',
                 'Furniture',
@@ -84,9 +97,17 @@ export default {
                 'Document',
                 'Land', 
 			],
-			unit: {
+			unit: {}
+		}
+	},
 
-			}
+	methods : {
+		selectUnit : (record, units, data) => {			
+			data.unit = units[record.unit_slug];
+		},
+		selectAssetsType : (record, status_map, data) => {
+			data.currentFormType = record.assets_type_key;
+			record.status = status_map[record.assets_type_key][0];
 		}
 	},
 
