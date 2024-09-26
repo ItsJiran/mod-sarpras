@@ -6,3 +6,4 @@ use Module\Infrastructure\Http\Controllers\InfrastructureAssetController;
 
 Route::get('dashboard', [DashboardController::class, 'index']);
 Route::get('assets', [InfrastructureAssetController::class, 'index']);
+Route::post('assets', [InfrastructureAssetController::class, 'store']);

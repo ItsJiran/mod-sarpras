@@ -3,6 +3,7 @@
 namespace Module\Infrastructure\Models;
 
 use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
 use Module\System\Traits\HasMeta;
 use Illuminate\Support\Facades\DB;
 use Module\System\Traits\Filterable;
@@ -215,6 +216,24 @@ class InfrastructureAssetLand extends Model
         return [
             'dijual', //dijual
             'tersedia', //tersedia
+        ];
+    }
+
+    /**
+     * The model destroy method
+     *
+     * @param [type] $model
+     * @return void
+     */
+    public static function mapStoreValidation()
+    {
+        return [
+            'receive_date' => 'required',
+            'receive_price' => 'required',         
+            'status' => [
+                'required',
+                Rule::in( self::mapStatus() ),
+            ],
         ];
     }
 

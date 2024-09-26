@@ -3,6 +3,7 @@
 namespace Module\Infrastructure\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Gate;
 use Module\Infrastructure\Models\InfrastructureAsset;
@@ -39,9 +40,24 @@ class InfrastructureAssetController extends Controller
     {
         Gate::authorize('create', InfrastructureAsset::class);
 
-        $request->validate([]);
+        // request
+        $request->validate([
+            'name' => 'required|min:3',
+            'unit_slug' => 'required|exists:human_units,slug',
+            'assets_type_key' => [
+                'required',
+                Rule::in( InfrastructureAsset::mapTypeKeyClass() )
+            ],
+        ]);
 
-        return InfrastructureAsset::storeRecord($request);
+        // type class
+        $map_type_class = InfrastructureAsset::mapTypeClass();
+        $type_model_class = $map_type_class[ $request->assets_type_key ];
+
+        // get request validatoin from the type_model
+        $request->validate( $type_model_class::mapStoreValidation() );
+
+        return InfrastructureAsset::storeRecord($request, $type_model_class);
     }
 
     /**

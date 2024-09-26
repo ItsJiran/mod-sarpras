@@ -3,6 +3,7 @@
 namespace Module\Infrastructure\Models;
 
 use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
 use Module\System\Traits\HasMeta;
 use Illuminate\Support\Facades\DB;
 use Module\System\Traits\Filterable;

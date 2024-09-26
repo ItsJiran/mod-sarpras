@@ -3,6 +3,7 @@
 namespace Module\Infrastructure\Models;
 
 use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\DB;
 use Module\System\Traits\HasMeta;
 use Module\System\Traits\Filterable;
@@ -82,15 +83,18 @@ class InfrastructureAsset extends Model
      * @param Request $request
      * @return void
      */
-    public static function storeRecord(Request $request)
+    public static function storeRecord(Request $request, $type_model)
     {
         $model = new static();
+        $type_model = new $type_model();
 
         DB::connection($model->connection)->beginTransaction();
 
         try {
             // ...
             $model->save();
+
+            $type_model->storeRecord( $request, $model );
 
             DB::connection($model->connection)->commit();
 
@@ -231,36 +235,64 @@ class InfrastructureAsset extends Model
         }
 
         return array_merge([
-
-            'type' => [
-                'Vehicle' => InfrastructureAssetVehicle::class,
-                'Furniture' => InfrastructureAssetFurniture::class,
-                'Electronic' => InfrastructureAssetElectronic::class,
-                'Document' => InfrastructureAssetDocument::class,
-                'Land' => InfrastructureAssetLand::class,
-            ],
-
-            'type_key' => [
-                'Vehicle',
-                'Furniture',
-                'Electronic',
-                'Document',
-                'Land',                
-            ],
+            'type' => self::mapTypeClass(),
+            'type_key' => self::mapTypeKeyClass(),
 
             'units' => $units,
             'units_name' => $units_name,
             'units_slug' => $units_slug,
-
-            'units_status_map' => [
-                'Vehicle' => InfrastructureAssetVehicle::mapStatus(),
-                'Furniture' => InfrastructureAssetFurniture::mapStatus(),
-                'Electronic' => InfrastructureAssetElectronic::mapStatus(),
-                'Document' => InfrastructureAssetDocument::mapStatus(),
-                'Land' => InfrastructureAssetLand::mapStatus(),
-            ]
-            
+            'units_status_map' => self::mapTypeStatusClass(),         
         ]);
     }
 
+    /**
+     * The model map combos method
+     *
+     * @param [type] $model
+     * @return array
+     */
+    public static function mapTypeClass() : array
+    {
+        return [
+            'Vehicle' => InfrastructureAssetVehicle::class,
+            'Furniture' => InfrastructureAssetFurniture::class,
+            'Electronic' => InfrastructureAssetElectronic::class,
+            'Document' => InfrastructureAssetDocument::class,
+            'Land' => InfrastructureAssetLand::class,
+        ];
+    }
+
+    /**
+     * The model map combos method
+     *
+     * @param [type] $model
+     * @return array
+     */
+    public static function mapTypeKeyClass() : array
+    {
+        return [
+            'Vehicle',
+            'Furniture',
+            'Electronic',
+            'Document',
+            'Land',                
+        ];
+    }
+
+    /**
+     * The model map combos method
+     *
+     * @param [type] $model
+     * @return array
+     */
+    public static function mapTypeStatusClass() : array
+    {
+        return [
+            'Vehicle' => InfrastructureAssetVehicle::mapStatus(),
+            'Furniture' => InfrastructureAssetFurniture::mapStatus(),
+            'Electronic' => InfrastructureAssetElectronic::mapStatus(),
+            'Document' => InfrastructureAssetDocument::mapStatus(),
+            'Land' => InfrastructureAssetLand::mapStatus(),
+        ];
+    }
 }
