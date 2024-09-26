@@ -69,8 +69,7 @@ class InfrastructureAssetFurniture extends Model
         'asset_id',
         'receive_date',
         'receive_price',
-        'last_location',
-        'slug',
+        'last_location',        
         'status',
     ];
 
@@ -82,24 +81,16 @@ class InfrastructureAssetFurniture extends Model
      */
     public static function storeRecord(Request $request, InfrastructureAsset $asset_model )
     {
-        $model = new static();
-
-        DB::connection($model->connection)->beginTransaction();
-
-        try {
-            // ...
+        $model = new static();        
+        try {            
+            $model->asset_id = $asset_model->id;
+            $model->receive_date = $request->receive_date;
+            $model->receive_price = $request->receive_price;
+            $model->last_location = $request->last_location;
+            $model->status = $request->status;
             $model->save();
-
-            DB::connection($model->connection)->commit();
-
-            // return new AssetFurnitureResource($model);
         } catch (\Exception $e) {
-            DB::connection($model->connection)->rollBack();
-
-            return response()->json([
-                'success' => false,
-                'message' => $e->getMessage()
-            ], 500);
+            throw $e;
         }
     }
 

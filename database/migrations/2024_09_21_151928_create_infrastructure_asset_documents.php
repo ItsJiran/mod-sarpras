@@ -15,7 +15,6 @@ return new class extends Migration
             $table->id();
             $table->foreignId('asset_id');
             $table->foreignId('for_asset_id')->nullable();
-            // tersedia | mutasi | perubahan | etc
             $table->string('status')->default('tersedia')->index();
             $table->morphs('documentable');
             $table->jsonb('meta')->nullable();

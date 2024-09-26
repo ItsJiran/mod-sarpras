@@ -15,7 +15,6 @@ return new class extends Migration
             $table->id();
             $table->foreignId('asset_id');
             $table->string('brand');
-            $table->string('slug')->unique();
             $table->timestamp('receive_date')->nullable();
             $table->double('receive_price')->default(0);
             $table->string('last_location')->nullable();

@@ -128,17 +128,19 @@ class InfrastructureAsset extends Model
 
         DB::connection($model->connection)->beginTransaction();
 
+        $unit = HumanUnit::where('slug',$request->unit_slug)->first();
         $slug_unit = $request->unit_slug;
         $slug_type = self::mapTypeSlug()[$request->assets_type_key];
         $slug = self::generateSlug($slug_unit, $slug_type);      
 
         try {
             
+            $model->unit_id = $unit->id;
             $model->slug = $slug;
             $model->slug_unit = $slug_unit;
             $model->slug_type = $slug_type;
 
-            //$model->save();
+            $model->save();
 
             $type_asset_model->storeRecord( $request, $model );
 
