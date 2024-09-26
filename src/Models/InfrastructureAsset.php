@@ -83,10 +83,10 @@ class InfrastructureAsset extends Model
      * @param Request $request
      * @return void
      */
-    public static function storeRecord(Request $request, $type_model)
+    public static function storeRecord(Request $request, $type_asset_class)
     {
         $model = new static();
-        $type_model = new $type_model();
+        $type_asset_model = new $type_asset_class();
 
         DB::connection($model->connection)->beginTransaction();
 
@@ -94,7 +94,7 @@ class InfrastructureAsset extends Model
             // ...
             $model->save();
 
-            $type_model->storeRecord( $request, $model );
+            $type_asset_model->storeRecord( $request, $model );
 
             DB::connection($model->connection)->commit();
 

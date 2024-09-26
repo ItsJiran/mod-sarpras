@@ -4,13 +4,16 @@ namespace Module\Infrastructure\Models;
 
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
-use Module\System\Traits\HasMeta;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
+
+use Module\System\Traits\HasMeta;
 use Module\System\Traits\Filterable;
 use Module\System\Traits\Searchable;
 use Module\System\Traits\HasPageSetup;
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\SoftDeletes;
+
+use Module\Infrastructure\Models\InfrastructureAsset;
 
 class InfrastructureAssetElectronic extends Model
 {
@@ -77,7 +80,7 @@ class InfrastructureAssetElectronic extends Model
      * @param Request $request
      * @return void
      */
-    public static function storeRecord(Request $request)
+    public static function storeRecord(Request $request, InfrastructureAsset $asset_model )
     {
         $model = new static();
 
