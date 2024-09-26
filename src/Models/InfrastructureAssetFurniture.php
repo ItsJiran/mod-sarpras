@@ -35,7 +35,7 @@ class InfrastructureAssetFurniture extends Model
      *
      * @var string
      */
-    protected $table = 'infrastructure_assetfurnitures';
+    protected $table = 'infrastructure_asset_furnitures';
 
     /**
      * The roles variable
@@ -89,6 +89,8 @@ class InfrastructureAssetFurniture extends Model
             $model->last_location = $request->last_location;
             $model->status = $request->status;
             $model->save();
+
+            return $model;
         } catch (\Exception $e) {
             throw $e;
         }

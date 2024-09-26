@@ -13,7 +13,6 @@ return new class extends Migration
     {
         Schema::create('infrastructure_asset_furnitures', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('asset_id');
             $table->timestamp('receive_date')->nullable();
             $table->double('receive_price')->default(0);
             $table->string('last_location')->nullable();

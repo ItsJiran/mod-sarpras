@@ -35,14 +35,14 @@ class InfrastructureAssetLand extends Model
      *
      * @var string
      */
-    protected $table = 'infrastructure_assetlands';
+    protected $table = 'infrastructure_asset_lands';
 
     /**
      * The roles variable
      *
      * @var array
      */
-    protected $roles = ['infrastructure-assetland'];
+    protected $roles = ['infrastructure-asset-land'];
 
     /**
      * The attributes that should be cast to native types.
@@ -89,6 +89,8 @@ class InfrastructureAssetLand extends Model
             $model->last_location = $request->last_location;
             $model->status = $request->status;
             $model->save();
+
+            return $model;
         } catch (\Exception $e) {
             throw $e;
         }

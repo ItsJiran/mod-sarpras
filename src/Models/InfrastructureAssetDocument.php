@@ -35,14 +35,14 @@ class InfrastructureAssetDocument extends Model
      *
      * @var string
      */
-    protected $table = 'infrastructure_assetdocuments';
+    protected $table = 'infrastructure_asset_documents';
 
     /**
      * The roles variable
      *
      * @var array
      */
-    protected $roles = ['infrastructure-assetdocument'];
+    protected $roles = ['infrastructure-asset-document'];
 
     /**
      * The attributes that should be cast to native types.

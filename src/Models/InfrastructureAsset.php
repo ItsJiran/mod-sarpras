@@ -76,7 +76,8 @@ class InfrastructureAsset extends Model
         'slug_unit',
         'slug_type',
         'unit_id',
-        'assetable',
+        'assetable_id',
+        'assetable_type',
     ];
 
     /**
@@ -133,16 +134,19 @@ class InfrastructureAsset extends Model
         $slug_type = self::mapTypeSlug()[$request->assets_type_key];
         $slug = self::generateSlug($slug_unit, $slug_type);      
 
-        try {
-            
-            $model->unit_id = $unit->id;
+        try {            
+            $model->name = $request->name;
             $model->slug = $slug;
             $model->slug_unit = $slug_unit;
             $model->slug_type = $slug_type;
+            $model->unit_id = $unit->id;
+            $model->assetable_type = $type_asset_class;           
 
+            // store type model morph
+            $type_model = $type_asset_model->storeRecord( $request, $model );
+
+            $model->assetable_id = $type_model->id;
             $model->save();
-
-            $type_asset_model->storeRecord( $request, $model );
 
             DB::connection($model->connection)->commit();
 

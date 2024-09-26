@@ -13,7 +13,6 @@ return new class extends Migration
     {
         Schema::create('infrastructure_asset_documents', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('asset_id');
             $table->foreignId('for_asset_id')->nullable();
             $table->string('status')->default('tersedia')->index();
             $table->morphs('documentable');

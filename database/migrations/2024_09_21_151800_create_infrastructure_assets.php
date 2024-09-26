@@ -18,8 +18,8 @@ return new class extends Migration
             $table->string('slug_unit');
             $table->string('slug_type');
             $table->foreignId('unit_id');
-            $table->jsonb('meta')->nullable();
             $table->morphs('assetable');
+            $table->jsonb('meta')->nullable();
             $table->softDeletes();
             $table->timestamps();
         });
