@@ -66,12 +66,25 @@ class InfrastructureAssetLand extends Model
      * @var array<int, string>
      */
     protected $fillable = [
-        'asset_id',
         'receive_date',
         'receive_price',
-        'slug',
         'status',
     ];
+
+    /**
+     * The model map combos method
+     *
+     * @param [type] $model
+     * @return void
+     */
+    public static function mapResourceShow(Request $request, $model = null): array
+    {
+        return array_merge([
+            'receive_date' => $model->receive_date,
+            'receive_price' => $model->receive_price,
+            'status' => $model->status,
+        ]);
+    }
 
     /**
      * The model store method

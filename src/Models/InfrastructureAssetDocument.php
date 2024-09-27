@@ -66,10 +66,22 @@ class InfrastructureAssetDocument extends Model
      * @var array<int, string>
      */
     protected $fillable = [
-        'asset_id',
         'for_asset_id',
         'documentable',
     ];
+
+    /**
+     * The model map combos method
+     *
+     * @param [type] $model
+     * @return void
+     */
+    public static function mapResourceShow(Request $request, $model = null): array
+    {
+        return array_merge([
+            
+        ]);
+    }
 
     /**
      * The model store method

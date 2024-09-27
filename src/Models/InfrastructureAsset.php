@@ -290,11 +290,28 @@ class InfrastructureAsset extends Model
             // type class
             'type' => self::mapTypeClass(),
             'type_key' => self::mapTypeKeyClass(),
+            'type_slug' => self::mapTypeSlug(),
             // units array merges
             'units' => $units,
             'units_name' => $units_name,
             'units_slug' => $units_slug,
             'units_status_map' => self::mapTypeStatusClass(),         
+        ]);
+    }
+
+    /**
+     * The model map combos method
+     *
+     * @param [type] $model
+     * @return void
+     */
+    public static function mapResourceShow(Request $request, $model = null): array
+    {
+        return array_merge([
+            'name' => $model->name,
+            'slug' => $model->slug,
+            'slug_unit' => $model->slug_unit,
+            'slug_type' => $model->slug_type,
         ]);
     }
 
