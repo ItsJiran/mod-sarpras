@@ -116,10 +116,10 @@ class InfrastructureAsset extends Model
      *
      * @return int
      */
-    public static function countOfSlug($unit_slug, $type_slug) : int 
+    public static function countOfSlug($slug_unit, $type_slug) : int 
     {
         if ($lastRecord = (static::where([
-            ['slug_unit', '=', $unit_slug],
+            ['slug_unit', '=', $slug_unit],
             ['slug_type', '=', $type_slug],
         ]))
         ->withTrashed()
@@ -139,12 +139,12 @@ class InfrastructureAsset extends Model
      * @param [type] $date
      * @return string
      */
-    public static function generateSlug($unit_slug, $type_slug): string
+    public static function generateSlug($slug_unit, $type_slug): string
     {
-        $count = (new self())->countOfSlug($unit_slug, $type_slug);
+        $count = (new self())->countOfSlug($slug_unit, $type_slug);
 
         // 
-        return $unit_slug . '-' . 'SP'. '-' . $type_slug . str_pad($count + 1, 3, '0', STR_PAD_LEFT);
+        return $slug_unit . '-' . 'SP'. '-' . $type_slug . str_pad($count + 1, 3, '0', STR_PAD_LEFT);
     }
 
     /**
@@ -160,9 +160,9 @@ class InfrastructureAsset extends Model
 
         DB::connection($model->connection)->beginTransaction();
 
-        $unit = HumanUnit::where('slug',$request->unit_slug)->first();
-        $slug_unit = $request->unit_slug;
-        $slug_type = self::mapTypeSlug()[$request->assets_type_key];
+        $unit = HumanUnit::where('slug',$request->slug_unit)->first();
+        $slug_unit = $request->slug_unit;
+        $slug_type = self::mapTypeSlug()[$request->asset_type_key];
         $slug = self::generateSlug($slug_unit, $slug_type);      
 
         try {            
@@ -322,11 +322,11 @@ class InfrastructureAsset extends Model
             'type' => self::mapTypeClass(),
             'type_key' => self::mapTypeKeyClass(),
             'type_slug' => self::mapTypeSlug(),
+            'type_status_map' => self::mapTypeStatusClass(),         
             // units array merges
             'units' => $units,
             'units_name' => $units_name,
             'units_slug' => $units_slug,
-            'units_status_map' => self::mapTypeStatusClass(),         
         ]);
     }
 

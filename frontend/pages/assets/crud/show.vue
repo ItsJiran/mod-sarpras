@@ -2,8 +2,12 @@
 	<form-show
 		with-helpdesk
 	>
-		<template v-slot:default="{ record }">
-<v-card-text>
+		<template v-slot:default="{ 
+				combos: { type_key, units, units_slug, type_status_map },
+				record,
+				store,
+			}">
+			<v-card-text>
 				
 				<v-row dense>
 					<v-col cols="12">
@@ -19,9 +23,9 @@
 						<v-combobox
 						:items="type_key" 
 						label="Tipe Assets"
-						v-model="record.assets_type_key"
+						v-model="record.asset_type_key"
 						:return-object="false"
-						@update:model-value="selectAssetsType(record, units_status_map, this)"
+						@update:model-value="selectAssetsType(record, type_status_map, this)"
 						></v-combobox>
 					</v-col>	
 				</v-row>
@@ -38,7 +42,7 @@
 						<v-combobox
 						:items="units_slug" 
 						label="Pilih Unit"
-						v-model="record.unit_slug"
+						v-model="record.slug_unit"
 							:readonly="true"					
 						@update:model-value="selectUnit(record, units, this)"
 						></v-combobox>
@@ -48,7 +52,7 @@
 				<v-row v-if=" unit.name != undefined && currentFormType != '' " dense>
 					<v-col cols="12">
 						<v-combobox
-						:items="units_status_map[currentFormType]" 
+						:items="type_status_map[currentFormType]" 
 						:return-object="false"
 							:readonly="true"					
 						label="Status Asset"
@@ -108,11 +112,11 @@ export default {
 
 	methods : {
 		selectUnit : (record, units, data) => {			
-			data.unit = units[record.unit_slug];
+			data.unit = units[record.slug_unit];
 		},
 		selectAssetsType : (record, status_map, data) => {
-			data.currentFormType = record.assets_type_key;
-			record.status = status_map[record.assets_type_key][0];
+			data.currentFormType = record.asset_type_key;
+			record.status = status_map[record.asset_type_key][0];
 		}
 	},
 };
