@@ -88,6 +88,9 @@ class InfrastructureAsset extends Model
      */
     public static function mapResourceShow(Request $request, $model = null): array
     {
+        // asset key type
+        $asset_type_keys = self::mapTypeClass(true);
+
         $asset_property = [
             'name' => $model->name,
             'slug' => $model->slug,
@@ -97,6 +100,7 @@ class InfrastructureAsset extends Model
             'unit_id' => $model->unit_id,            
             'assetable_id' => $model->assetable_id,
             'assetable_type' => $model->assetable_type,
+            'asset_type_key' => $asset_type_keys[$model->assetable_type],
         ];
 
         // assetable morph
@@ -332,15 +336,25 @@ class InfrastructureAsset extends Model
      * @param [type] $model
      * @return array
      */
-    public static function mapTypeClass() : array
+    public static function mapTypeClass($reverse = false) : array
     {
-        return [
-            'Vehicle' => InfrastructureAssetVehicle::class,
-            'Furniture' => InfrastructureAssetFurniture::class,
-            'Electronic' => InfrastructureAssetElectronic::class,
-            'Document' => InfrastructureAssetDocument::class,
-            'Land' => InfrastructureAssetLand::class,
-        ];
+        if(!$reverse) {
+            return [
+                'Vehicle' => InfrastructureAssetVehicle::class,
+                'Furniture' => InfrastructureAssetFurniture::class,
+                'Electronic' => InfrastructureAssetElectronic::class,
+                'Document' => InfrastructureAssetDocument::class,
+                'Land' => InfrastructureAssetLand::class,
+            ];
+        } else {
+            return [
+                InfrastructureAssetVehicle::class => 'Vehicle',
+                InfrastructureAssetFurniture::class => 'Furniture',
+                InfrastructureAssetElectronic::class => 'Electronic',
+                InfrastructureAssetDocument::class => 'Document',
+                InfrastructureAssetLand::class => 'Land',
+            ];
+        }
     }
 
     /**
