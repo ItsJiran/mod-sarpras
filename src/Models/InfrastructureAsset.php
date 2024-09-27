@@ -81,6 +81,46 @@ class InfrastructureAsset extends Model
     ];
 
     /**
+     * countOfSlugType function
+     *
+     * @return int
+     */
+    public static function countOfSlug($slug_unit, $type_slug) : int 
+    {
+        if ($lastRecord = (static::where([
+            ['slug_unit', '=', $slug_unit],
+            ['slug_type', '=', $type_slug],
+        ]))
+        ->withTrashed()
+        ->orderBy('id', 'DESC')
+        ->first()
+        ) {
+            return intval(substr($lastRecord->slug, 11, 3));
+        }
+
+        return 0;
+    }
+
+    /**
+     * generateSlug function
+     *
+     * @param [type] $type
+     * @param [type] $date
+     * @return string
+     */
+    public static function generateSlug($slug_unit, $type_slug): string
+    {
+        $count = (new self())->countOfSlug($slug_unit, $type_slug);
+        return $slug_unit . '-' . 'SP'. '-' . $type_slug . str_pad($count + 1, 3, '0', STR_PAD_LEFT);
+    }
+
+    /**
+     * ====================================================
+     * +------------------ MAP RESOURCE ------------------+
+     * ====================================================
+     */
+
+    /**
      * The model map combos method
      *
      * @param [type] $model
@@ -115,41 +155,121 @@ class InfrastructureAsset extends Model
         return array_merge($asset_property, $asset_type_properties);
     }
 
-    /**
-     * countOfSlugType function
+/**
+     * The model map combos method
      *
-     * @return int
+     * @param [type] $model
+     * @return void
      */
-    public static function countOfSlug($slug_unit, $type_slug) : int 
+    public static function mapCombos(Request $request, $model = null): array
     {
-        if ($lastRecord = (static::where([
-            ['slug_unit', '=', $slug_unit],
-            ['slug_type', '=', $type_slug],
-        ]))
-        ->withTrashed()
-        ->orderBy('id', 'DESC')
-        ->first()
-        ) {
-            return intval(substr($lastRecord->slug, 11, 3));
+        $human = HumanUnit::get(['id','name','slug']);
+        $units = [];
+        $units_name = [];
+        $units_slug = [];
+
+        foreach ($human as $key => $value) {
+            array_push( $units_name, $value->name );
+            array_push( $units_slug, $value->slug );
+            $units[$value->slug] = $value;
         }
 
-        return 0;
+        return array_merge([
+            // type class
+            'type' => self::mapTypeClass(),
+            'type_key' => self::mapTypeKeyClass(),
+            'type_slug' => self::mapTypeSlug(),
+            'type_status_map' => self::mapTypeStatusClass(),         
+            // units array merges
+            'units' => $units,
+            'units_name' => $units_name,
+            'units_slug' => $units_slug,
+        ]);
     }
 
     /**
-     * generateSlug function
+     * The model map combos method
      *
-     * @param [type] $type
-     * @param [type] $date
-     * @return string
+     * @param [type] $model
+     * @return array
      */
-    public static function generateSlug($slug_unit, $type_slug): string
+    public static function mapTypeClass($reverse = false) : array
     {
-        $count = (new self())->countOfSlug($slug_unit, $type_slug);
-
-        // 
-        return $slug_unit . '-' . 'SP'. '-' . $type_slug . str_pad($count + 1, 3, '0', STR_PAD_LEFT);
+        if(!$reverse) {
+            return [
+                'Vehicle' => InfrastructureAssetVehicle::class,
+                'Furniture' => InfrastructureAssetFurniture::class,
+                'Electronic' => InfrastructureAssetElectronic::class,
+                'Document' => InfrastructureAssetDocument::class,
+                'Land' => InfrastructureAssetLand::class,
+            ];
+        } else {
+            return [
+                InfrastructureAssetVehicle::class => 'Vehicle',
+                InfrastructureAssetFurniture::class => 'Furniture',
+                InfrastructureAssetElectronic::class => 'Electronic',
+                InfrastructureAssetDocument::class => 'Document',
+                InfrastructureAssetLand::class => 'Land',
+            ];
+        }
     }
+
+    /**
+     * The model map combos method
+     *
+     * @param [type] $model
+     * @return array
+     */
+    public static function mapTypeKeyClass() : array
+    {
+        return [
+            'Vehicle',
+            'Furniture',
+            'Electronic',
+            'Document',
+            'Land',                
+        ];
+    }
+
+    /**
+     * The model map combos method
+     *
+     * @param [type] $model
+     * @return array
+     */
+    public static function mapTypeSlug() : array
+    {
+        return [
+            'Vehicle' => 'VHC',
+            'Furniture' => 'FNT',
+            'Electronic' => 'ELC',
+            'Document' => 'DMT',
+            'Land' => 'LND',                
+        ];
+    }
+
+    /**
+     * The model map combos method
+     *
+     * @param [type] $model
+     * @return array
+     */
+    public static function mapTypeStatusClass() : array
+    {
+        return [
+            'Vehicle' => InfrastructureAssetVehicle::mapStatus(),
+            'Furniture' => InfrastructureAssetFurniture::mapStatus(),
+            'Electronic' => InfrastructureAssetElectronic::mapStatus(),
+            'Document' => InfrastructureAssetDocument::mapStatus(),
+            'Land' => InfrastructureAssetLand::mapStatus(),
+        ];
+    }
+
+    /**
+     * ====================================================
+     * +------------------ CRUD METHODS ------------------+
+     * ====================================================
+     */
 
     /**
      * The model store method
@@ -300,115 +420,5 @@ class InfrastructureAsset extends Model
                 'message' => $e->getMessage()
             ], 500);
         }
-    }
-
-    /**
-     * The model map combos method
-     *
-     * @param [type] $model
-     * @return void
-     */
-    public static function mapCombos(Request $request, $model = null): array
-    {
-        $human = HumanUnit::get(['id','name','slug']);
-        $units = [];
-        $units_name = [];
-        $units_slug = [];
-
-        foreach ($human as $key => $value) {
-            array_push( $units_name, $value->name );
-            array_push( $units_slug, $value->slug );
-            $units[$value->slug] = $value;
-        }
-
-        return array_merge([
-            // type class
-            'type' => self::mapTypeClass(),
-            'type_key' => self::mapTypeKeyClass(),
-            'type_slug' => self::mapTypeSlug(),
-            'type_status_map' => self::mapTypeStatusClass(),         
-            // units array merges
-            'units' => $units,
-            'units_name' => $units_name,
-            'units_slug' => $units_slug,
-        ]);
-    }
-
-    /**
-     * The model map combos method
-     *
-     * @param [type] $model
-     * @return array
-     */
-    public static function mapTypeClass($reverse = false) : array
-    {
-        if(!$reverse) {
-            return [
-                'Vehicle' => InfrastructureAssetVehicle::class,
-                'Furniture' => InfrastructureAssetFurniture::class,
-                'Electronic' => InfrastructureAssetElectronic::class,
-                'Document' => InfrastructureAssetDocument::class,
-                'Land' => InfrastructureAssetLand::class,
-            ];
-        } else {
-            return [
-                InfrastructureAssetVehicle::class => 'Vehicle',
-                InfrastructureAssetFurniture::class => 'Furniture',
-                InfrastructureAssetElectronic::class => 'Electronic',
-                InfrastructureAssetDocument::class => 'Document',
-                InfrastructureAssetLand::class => 'Land',
-            ];
-        }
-    }
-
-    /**
-     * The model map combos method
-     *
-     * @param [type] $model
-     * @return array
-     */
-    public static function mapTypeKeyClass() : array
-    {
-        return [
-            'Vehicle',
-            'Furniture',
-            'Electronic',
-            'Document',
-            'Land',                
-        ];
-    }
-
-    /**
-     * The model map combos method
-     *
-     * @param [type] $model
-     * @return array
-     */
-    public static function mapTypeSlug() : array
-    {
-        return [
-            'Vehicle' => 'VHC',
-            'Furniture' => 'FNT',
-            'Electronic' => 'ELC',
-            'Document' => 'DMT',
-            'Land' => 'LND',                
-        ];
-    }
-
-    /**
-     * The model map combos method
-     *
-     * @param [type] $model
-     * @return array
-     */
-    public static function mapTypeStatusClass() : array
-    {
-        return [
-            'Vehicle' => InfrastructureAssetVehicle::mapStatus(),
-            'Furniture' => InfrastructureAssetFurniture::mapStatus(),
-            'Electronic' => InfrastructureAssetElectronic::mapStatus(),
-            'Document' => InfrastructureAssetDocument::mapStatus(),
-            'Land' => InfrastructureAssetLand::mapStatus(),
-        ];
     }
 }
