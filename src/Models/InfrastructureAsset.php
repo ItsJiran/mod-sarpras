@@ -81,6 +81,33 @@ class InfrastructureAsset extends Model
     ];
 
     /**
+     * The model map combos method
+     *
+     * @param [type] $model
+     * @return void
+     */
+    public static function mapResourceShow(Request $request, $model = null): array
+    {
+        $asset_property = [
+            'name' => $model->name,
+            'slug' => $model->slug,
+            'slug_unit' => $model->slug_unit,
+            'slug_type' => $model->slug_type,
+
+            'unit_id' => $model->unit_id,            
+            'assetable_id' => $model->assetable_id,
+            'assetable_type' => $model->assetable_type,
+        ];
+
+        // assetable morph
+        $assetable_type        = $model->assetable_type;
+        $asset_type_model      = $assetable_type::where('id',$model->assetable_id)->first();
+        $asset_type_properties = $assetable_type::mapResourceShow($request, $asset_type_model);
+
+        return array_merge($asset_property, $asset_type_properties);
+    }
+
+    /**
      * countOfSlugType function
      *
      * @return int
@@ -296,22 +323,6 @@ class InfrastructureAsset extends Model
             'units_name' => $units_name,
             'units_slug' => $units_slug,
             'units_status_map' => self::mapTypeStatusClass(),         
-        ]);
-    }
-
-    /**
-     * The model map combos method
-     *
-     * @param [type] $model
-     * @return void
-     */
-    public static function mapResourceShow(Request $request, $model = null): array
-    {
-        return array_merge([
-            'name' => $model->name,
-            'slug' => $model->slug,
-            'slug_unit' => $model->slug_unit,
-            'slug_type' => $model->slug_type,
         ]);
     }
 
