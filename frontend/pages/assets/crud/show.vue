@@ -2,11 +2,12 @@
 	<form-show
 		with-helpdesk
 	>
-		<template v-slot:default="{ 
-				combos: { type_key, units, units_slug, type_status_map },
-				record,
-				store,
-			}">
+	
+	<!-- ========================  -->
+	<!--   THIS IS DEFAULT FORM    -->
+	<!-- ========================  -->
+
+		<template v-slot:default="{ record }">
 			<v-card-text>
 				
 				<v-row dense>
@@ -14,6 +15,7 @@
 						<v-text-field
 							label="Name"
 							v-model="record.name"
+							:readonly="true"
 						></v-text-field>
 					</v-col>
 				</v-row>
@@ -25,7 +27,7 @@
 						label="Tipe Assets"
 						v-model="record.asset_type_key"
 						:return-object="false"
-						@update:model-value="selectAssetsType(record, type_status_map, this)"
+						:readonly="true"
 						></v-combobox>
 					</v-col>	
 				</v-row>
@@ -34,27 +36,24 @@
 					<v-col cols="6">
 						<v-text-field
 							label="Nama Unit"
-							v-model="unit.name"
+							v-model="record.unit_name"
 							:readonly="true"					
 						></v-text-field>
 					</v-col>
 					<v-col cols="6">
 						<v-combobox
-						:items="units_slug" 
 						label="Pilih Unit"
 						v-model="record.slug_unit"
-							:readonly="true"					
-						@update:model-value="selectUnit(record, units, this)"
+						:readonly="true"
 						></v-combobox>
 					</v-col>
 				</v-row>
 
-				<v-row v-if=" unit.name != undefined && currentFormType != '' " dense>
+				<v-row dense>
 					<v-col cols="12">
 						<v-combobox
-						:items="type_status_map[currentFormType]" 
 						:return-object="false"
-							:readonly="true"					
+						:readonly="true"					
 						label="Status Asset"
 						v-model="record.status"			
 						></v-combobox>
@@ -62,12 +61,15 @@
 				</v-row>
 
 				<component 
-					v-if=" unit.name != undefined && currentFormType != '' "
 					:record="record"
-					:is="currentFormType"/>					
+					:is="record.asset_type_key"/>					
 		
 			</v-card-text>
 		</template>
+
+	<!-- ========================  -->
+	<!--     THIS IS HELP DESK      -->
+	<!-- ========================  -->
 
 		<template v-slot:helpdesk>
 
@@ -96,28 +98,7 @@ export default {
 		Vehicle,
 	},
 
-	data(){
-		return {
-			currentFormType:"",
-			formType: [
-				'Vehicle',
-                'Furniture',
-                'Electronic',
-                'Document',
-                'Land', 
-			],
-			unit: {}
-		}
-	},
-
 	methods : {
-		selectUnit : (record, units, data) => {			
-			data.unit = units[record.slug_unit];
-		},
-		selectAssetsType : (record, status_map, data) => {
-			data.currentFormType = record.asset_type_key;
-			record.status = status_map[record.asset_type_key][0];
-		}
 	},
 };
 </script>

@@ -91,13 +91,17 @@ class InfrastructureAsset extends Model
         // asset key type
         $asset_type_keys = self::mapTypeClass(true);
 
+        // moprh
+        $unit = HumanUnit::where('slug',$model->slug_unit)->first();
+
         $asset_property = [
             'name' => $model->name,
             'slug' => $model->slug,
             'slug_unit' => $model->slug_unit,
             'slug_type' => $model->slug_type,
 
-            'unit_id' => $model->unit_id,            
+            'unit_id' => $model->unit_id,   
+            'unit_name' => $unit->name,    
             'assetable_id' => $model->assetable_id,
             'assetable_type' => $model->assetable_type,
             'asset_type_key' => $asset_type_keys[$model->assetable_type],
