@@ -9,8 +9,10 @@ use Module\System\Traits\HasMeta;
 use Module\System\Traits\Filterable;
 use Module\System\Traits\Searchable;
 use Module\System\Traits\HasPageSetup;
+
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Database\Eloquent\Relations\MorphTo;
 
 // relatedm models morph
 use Module\Human\Models\HumanUnit;
@@ -116,6 +118,20 @@ class InfrastructureAsset extends Model
 
     /**
      * ====================================================
+     * +---------------- RELATION METHODS ----------------+
+     * ====================================================
+     */
+
+    /**
+     * Get the model that the image belongs to.
+     */
+    public function assetable(): MorphTo
+    {
+        return $this->morphTo(__FUNCTION__, 'assetable_type', 'assetable_id');
+    }     
+
+    /**
+     * ====================================================
      * +------------------ MAP RESOURCE ------------------+
      * ====================================================
      */
@@ -148,14 +164,12 @@ class InfrastructureAsset extends Model
         ];
 
         // assetable morph
-        $assetable_type        = $model->assetable_type;
-        $asset_type_model      = $assetable_type::where('id',$model->assetable_id)->first();
-        $asset_type_properties = $assetable_type::mapResourceShow($request, $asset_type_model);
+        $asset_type_properties = $model->assetable_type::mapResourceShow($request, $model->assetable);
 
         return array_merge($asset_property, $asset_type_properties);
     }
 
-/**
+    /**
      * The model map combos method
      *
      * @param [type] $model
