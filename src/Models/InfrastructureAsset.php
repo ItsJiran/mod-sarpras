@@ -287,9 +287,10 @@ class InfrastructureAsset extends Model
         }
 
         return array_merge([
+            // type class
             'type' => self::mapTypeClass(),
             'type_key' => self::mapTypeKeyClass(),
-
+            // units array merges
             'units' => $units,
             'units_name' => $units_name,
             'units_slug' => $units_slug,

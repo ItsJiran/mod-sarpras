@@ -110,9 +110,5 @@ export default {
 			record.status = status_map[record.assets_type_key][0];
 		}
 	},
-
-	setup(props){
-		console.log(props.components);
-	}
 };
 </script>

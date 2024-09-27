@@ -5,5 +5,5 @@ use Module\Infrastructure\Http\Controllers\DashboardController;
 use Module\Infrastructure\Http\Controllers\InfrastructureAssetController;
 
 Route::get('dashboard', [DashboardController::class, 'index']);
-Route::get('assets', [InfrastructureAssetController::class, 'index']);
+Route::resource('assets', InfrastructureAssetController::class)->parameters(['assets'=>'infrastructureAsset']);
 Route::post('assets', [InfrastructureAssetController::class, 'store']);

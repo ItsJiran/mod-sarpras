@@ -62,6 +62,22 @@ export default {
 							/* webpackChunkName: "infrastructure" */ "@modules/infrastructure/frontend/pages/assets/crud/create.vue"
 						),
 				},
+				{
+					path: ":assets/show",
+					name: "infrastructure-assets-show",
+					component: () =>
+						import(
+							/* webpackChunkName: "infrastructure" */ "@modules/infrastructure/frontend/pages/assets/crud/show.vue"
+						),
+				},		
+				{
+					path: ":assets/edit",
+					name: "infrastructure-assets-edit",
+					component: () =>
+						import(
+							/* webpackChunkName: "infrastructure" */ "@modules/infrastructure/frontend/pages/assets/crud/edit.vue"
+						),
+				},			
 			]
 		},
 
