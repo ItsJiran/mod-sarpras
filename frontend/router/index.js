@@ -35,6 +35,32 @@ export default {
 							/* webpackChunkName: "infrastructure" */ "@modules/infrastructure/frontend/pages/unit/crud/data.vue"
 						),
 				},
+				{
+					path: ":unit/show",
+					name: "infrastructure-unit-show",
+					component: () =>
+						import(
+							/* webpackChunkName: "infrastructure" */ "@modules/infrastructure/frontend/pages/unit/crud/show.vue"
+						),
+				},
+			],
+		},
+
+		{
+			path: "unit-asset",
+			component: () =>
+				import(
+					/* webpackChunkName: "infrastructure" */ "@modules/infrastructure/frontend/pages/unit-asset/index.vue"
+				),
+			children: [
+				{
+					path: "",
+					name: "infrastructure-unit-asset",
+					component: () =>
+						import(
+							/* webpackChunkName: "infrastructure" */ "@modules/infrastructure/frontend/pages/unit-asset/crud/data.vue"
+						),
+				},
 			]
 		},
 

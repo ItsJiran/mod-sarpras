@@ -1,7 +1,5 @@
 <template>
-	<form-show
-		with-helpdesk
-	>
+	<form-edit with-helpdesk>
 		<template v-slot:default="{ record }">
 			<v-card-text>
 				<v-row dense>
@@ -9,19 +7,16 @@
 						<v-text-field
 							label="Name"
 							v-model="record.name"
-							readonly
 						></v-text-field>
 					</v-col>
 				</v-row>
 			</v-card-text>
 		</template>
-
-		<template v-slot:helpdesk></template>
-	</form-show>
+	</form-edit>
 </template>
 
 <script>
-	export default {
-		name: "infrastructure-unit-show",
-	};
+export default {
+	name: "infrastructure-asset-edit",
+};
 </script>

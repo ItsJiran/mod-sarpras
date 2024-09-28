@@ -21,7 +21,7 @@
 </template>
 
 <script>
-	export default {
-		name: "infrastructure-unit-show",
-	};
+export default {
+	name: "infrastructure-asset-show",
+};
 </script>

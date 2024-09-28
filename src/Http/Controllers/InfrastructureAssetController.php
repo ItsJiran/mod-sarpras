@@ -36,24 +36,6 @@ class InfrastructureAssetController extends Controller
     }
 
     /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function indexUnits(Request $request)
-    {
-        Gate::authorize('view', HumanUnit::class);
-
-        return new UnitCollection(
-            HumanUnit::applyMode($request->mode)
-                ->filter($request->filters)
-                ->search($request->findBy)
-                ->sortBy($request->sortBy)
-                ->paginate($request->itemsPerPage)
-        );
-    }
-
-    /**
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request $request
