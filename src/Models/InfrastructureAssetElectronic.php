@@ -73,6 +73,12 @@ class InfrastructureAssetElectronic extends Model
     ];
 
     /**
+     * ====================================================
+     * +------------------ MAPS METHODS ------------------+
+     * ====================================================
+     */
+
+    /**
      * The model map combos method
      *
      * @param [type] $model
@@ -87,6 +93,66 @@ class InfrastructureAssetElectronic extends Model
             'status' => $model->status,
         ]);
     }
+
+    /**
+     * The model destroy method
+     *
+     * @param [type] $model
+     * @return void
+     */
+    public static function mapStatus()
+    {
+        return [
+            'dijual', // dijual
+            'rusak',  // rusak
+            'dipinjam', // dipinjam
+            'tersedia',    // tersedia
+        ];
+    }
+
+    /**
+     * The model destroy method
+     *
+     * @param [type] $model
+     * @return void
+     */
+    public static function mapStoreValidation()
+    {
+        return [
+            'receive_date' => 'required',
+            'receive_price' => 'required',
+            'last_location' => 'required',            
+            'status' => [
+                'required',
+                Rule::in( self::mapStatus() ),
+            ],
+        ];
+    }
+
+    /**
+     * The model destroy method
+     *
+     * @param [type] $model
+     * @return void
+     */
+    public static function mapUpdateValidation()
+    {
+        return [
+            'receive_date' => 'required',
+            'receive_price' => 'required',
+            'last_location' => 'required',            
+            'status' => [
+                'required',
+                Rule::in( self::mapStatus() ),
+            ],
+        ];
+    }
+
+    /**
+     * ====================================================
+     * +------------------ CRUD METHODS ------------------+
+     * ====================================================
+     */
 
     /**
      * The model store method
@@ -215,42 +281,6 @@ class InfrastructureAssetElectronic extends Model
                 'message' => $e->getMessage()
             ], 500);
         }
-    }
-
-
-    /**
-     * The model destroy method
-     *
-     * @param [type] $model
-     * @return void
-     */
-    public static function mapStatus()
-    {
-        return [
-            'dijual', // dijual
-            'rusak',  // rusak
-            'dipinjam', // dipinjam
-            'tersedia',    // tersedia
-        ];
-    }
-
-    /**
-     * The model destroy method
-     *
-     * @param [type] $model
-     * @return void
-     */
-    public static function mapStoreValidation()
-    {
-        return [
-            'receive_date' => 'required',
-            'receive_price' => 'required',
-            'last_location' => 'required',            
-            'status' => [
-                'required',
-                Rule::in( self::mapStatus() ),
-            ],
-        ];
     }
 
 

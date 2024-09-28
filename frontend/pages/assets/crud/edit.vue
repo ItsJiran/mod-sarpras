@@ -36,7 +36,7 @@
 						:return-object="false"
 						@update:model-value="selectAssetsType(record, type_status_map, this)"
 						></v-combobox>
-					</v-col>	
+					</v-col>
 				</v-row>
 
 				<v-row dense>

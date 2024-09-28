@@ -74,6 +74,12 @@ class InfrastructureAssetVehicle extends Model
     ];
 
     /**
+     * ====================================================
+     * +------------------ MAPS METHODS ------------------+
+     * ====================================================
+     */
+
+    /**
      * The model map combos method
      *
      * @param [type] $model
@@ -89,6 +95,68 @@ class InfrastructureAssetVehicle extends Model
             'status' => $model->status,
         ]);
     }
+
+    /**
+     * The model destroy method
+     *
+     * @param [type] $model
+     * @return void
+     */
+    public static function mapStatus()
+    {
+        return [
+            'dijual',     // dijual
+            'dipinjam', // dipinjam
+            'rusak',  // rusak
+            'tersedia',  // tersedia
+        ];
+    }
+
+    /**
+     * The model destroy method
+     *
+     * @param [type] $model
+     * @return void
+     */
+    public static function mapStoreValidation()
+    {
+        return [
+            'brand' => 'required',
+            'receive_date' => 'required',
+            'receive_price' => 'required',         
+            'last_location' => 'required',         
+            'status' => [
+                'required',
+                Rule::in( self::mapStatus() ),
+            ],
+        ];
+    }
+
+    /**
+     * The model destroy method
+     *
+     * @param [type] $model
+     * @return void
+     */
+    public static function mapUpdateValidation()
+    {
+        return [
+            'brand' => 'required',
+            'receive_date' => 'required',
+            'receive_price' => 'required',         
+            'last_location' => 'required',         
+            'status' => [
+                'required',
+                Rule::in( self::mapStatus() ),
+            ],
+        ];
+    }
+
+    /**
+     * ====================================================
+     * +------------------ CRUD METHODS ------------------+
+     * ====================================================
+     */
 
     /**
      * The model store method
@@ -221,39 +289,4 @@ class InfrastructureAssetVehicle extends Model
         }
     }
 
-    /**
-     * The model destroy method
-     *
-     * @param [type] $model
-     * @return void
-     */
-    public static function mapStatus()
-    {
-        return [
-            'dijual',     // dijual
-            'dipinjam', // dipinjam
-            'rusak',  // rusak
-            'tersedia',  // tersedia
-        ];
-    }
-
-    /**
-     * The model destroy method
-     *
-     * @param [type] $model
-     * @return void
-     */
-    public static function mapStoreValidation()
-    {
-        return [
-            'brand' => 'required',
-            'receive_date' => 'required',
-            'receive_price' => 'required',         
-            'last_location' => 'required',         
-            'status' => [
-                'required',
-                Rule::in( self::mapStatus() ),
-            ],
-        ];
-    }
 }

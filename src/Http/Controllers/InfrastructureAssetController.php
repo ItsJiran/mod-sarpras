@@ -83,8 +83,23 @@ class InfrastructureAssetController extends Controller
     public function update(Request $request, InfrastructureAsset $infrastructureAsset)
     {
         Gate::authorize('update', $infrastructureAsset);
+        
+        // request
+        $request->validate([
+            'name' => 'required|min:3',
+            'slug_unit' => 'required|exists:human_units,slug',
+            'asset_type_key' => [
+                'required',
+                Rule::in( InfrastructureAsset::mapTypeKeyClass() )
+            ],
+        ]);
 
-        $request->validate([]);
+        // type class
+        $map_type_class = InfrastructureAsset::mapTypeClass();
+        $type_model_class = $map_type_class[ $request->asset_type_key ];
+
+        // get request validation from the type_model
+        $request->validate( $type_model_class::mapUpdateValidation() );
 
         return InfrastructureAsset::updateRecord($request, $infrastructureAsset);
     }
