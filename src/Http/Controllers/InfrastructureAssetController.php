@@ -31,6 +31,24 @@ class InfrastructureAssetController extends Controller
     }
 
     /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function indexUnits(Request $request)
+    {
+        Gate::authorize('view', InfrastructureAsset::class);
+
+        return new AssetCollection(
+            InfrastructureAsset::applyMode($request->mode)
+                ->filter($request->filters)
+                ->search($request->findBy)
+                ->sortBy($request->sortBy)
+                ->paginate($request->itemsPerPage)
+        );
+    }
+
+    /**
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request $request
@@ -83,7 +101,7 @@ class InfrastructureAssetController extends Controller
     public function update(Request $request, InfrastructureAsset $infrastructureAsset)
     {
         Gate::authorize('update', $infrastructureAsset);
-        
+
         // request
         $request->validate([
             'name' => 'required|min:3',
