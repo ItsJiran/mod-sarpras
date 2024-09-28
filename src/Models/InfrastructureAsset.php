@@ -341,16 +341,23 @@ class InfrastructureAsset extends Model
     {
         DB::connection($model->connection)->beginTransaction();
 
+        // type class
+        $map_type_class = self::mapTypeClass();
+        $type_model_class = $map_type_class[ $request->asset_type_key ];
+
+        // type model
+        $type_model = $model->assetable();
+
         try {
-            // ...
+            $type_model_class::updateRecord($request, $type_model);
+            
+
+
             $model->save();
 
             DB::connection($model->connection)->commit();
-
-            // return new AssetResource($model);
         } catch (\Exception $e) {
             DB::connection($model->connection)->rollBack();
-
             return response()->json([
                 'success' => false,
                 'message' => $e->getMessage()

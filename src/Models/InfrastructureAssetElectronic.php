@@ -163,8 +163,7 @@ class InfrastructureAssetElectronic extends Model
     public static function storeRecord(Request $request, InfrastructureAsset $asset_model )
     {
         $model = new static();
-        try {
-            $model->asset_id = $asset_model->id;           
+        try {     
             $model->receive_date = $request->receive_date;
             $model->receive_price = $request->receive_price;
             $model->last_location = $request->last_location;
@@ -186,22 +185,14 @@ class InfrastructureAssetElectronic extends Model
      */
     public static function updateRecord(Request $request, $model)
     {
-        DB::connection($model->connection)->beginTransaction();
-
         try {
-            // ...
+            $model->receive_date = $request->receive_date;
+            $model->receive_price = $request->receive_price;
+            $model->last_location = $request->last_location;
+            $model->status = $request->status;
             $model->save();
-
-            DB::connection($model->connection)->commit();
-
-            // return new AssetElectronicResource($model);
         } catch (\Exception $e) {
-            DB::connection($model->connection)->rollBack();
-
-            return response()->json([
-                'success' => false,
-                'message' => $e->getMessage()
-            ], 500);
+            throw $e;
         }
     }
 

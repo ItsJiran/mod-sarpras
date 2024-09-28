@@ -192,22 +192,15 @@ class InfrastructureAssetVehicle extends Model
      */
     public static function updateRecord(Request $request, $model)
     {
-        DB::connection($model->connection)->beginTransaction();
-
         try {
-            // ...
+            $model->brand = $request->brand;
+            $model->receive_date = $request->receive_date;
+            $model->receive_price = $request->receive_price;
+            $model->last_location = $request->last_location;
+            $model->status = $request->status;
             $model->save();
-
-            DB::connection($model->connection)->commit();
-
-            // return new AssetVehicleResource($model);
         } catch (\Exception $e) {
-            DB::connection($model->connection)->rollBack();
-
-            return response()->json([
-                'success' => false,
-                'message' => $e->getMessage()
-            ], 500);
+            throw $e;
         }
     }
 
