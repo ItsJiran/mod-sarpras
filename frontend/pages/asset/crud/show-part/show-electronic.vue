@@ -25,21 +25,11 @@
 			></v-text-field>
 		</v-col>
 	</v-row>
-
-	<v-row dense>
-		<v-col cols="12">
-			<v-text-field
-				label="Brand Kendaraan"
-				v-model="record.brand"
-				:readonly="true"
-			></v-text-field>
-		</v-col>
-	</v-row>
 </template>
 
 <script>
 export default {
-	name: "infrastructure-assets-show-vehicle",
+	name: "infrastructure-asset-show-electronic",
 	props: ['record'],
 };
 </script>

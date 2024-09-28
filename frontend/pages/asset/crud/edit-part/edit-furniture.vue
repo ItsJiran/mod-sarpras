@@ -1,6 +1,5 @@
-<template v-slot:default="{ 
-	record,
- }">
+<template>
+	
 	<v-row dense>
 		<v-col cols="6">
 			<v-currency-field
@@ -16,11 +15,20 @@
 		</v-col>
 	</v-row>
 
+	<v-row dense>
+		<v-col cols="12">
+			<v-text-field
+				label="Lokasi Terakhir"
+				v-model="record.last_location"
+			></v-text-field>
+		</v-col>
+	</v-row>
+
 </template>
 
 <script>
 export default {
-	name: "infrastructure-assets-create-land",
+	name: "infrastructure-asset-edit-furniture",
 	props: ['record'],
 };
 </script>

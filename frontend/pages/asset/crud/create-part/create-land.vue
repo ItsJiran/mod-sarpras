@@ -20,7 +20,7 @@
 
 <script>
 export default {
-	name: "infrastructure-assets-edit-land",
+	name: "infrastructure-asset-create-land",
 	props: ['record'],
 };
 </script>

@@ -1,4 +1,5 @@
 <template>
+	
 	<v-row dense>
 		<v-col cols="6">
 			<v-currency-field
@@ -23,19 +24,11 @@
 		</v-col>
 	</v-row>
 
-	<v-row dense>
-		<v-col cols="12">
-			<v-text-field
-				label="Brand Kendaraan"
-				v-model="record.brand"
-			></v-text-field>
-		</v-col>
-	</v-row>
 </template>
 
 <script>
 export default {
-	name: "infrastructure-assets-create-vehicle",
+	name: "infrastructure-asset-create-furniture",
 	props: ['record'],
 };
 </script>

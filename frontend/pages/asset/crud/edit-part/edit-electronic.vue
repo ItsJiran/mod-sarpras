@@ -1,5 +1,4 @@
 <template>
-	
 	<v-row dense>
 		<v-col cols="6">
 			<v-currency-field
@@ -23,12 +22,11 @@
 			></v-text-field>
 		</v-col>
 	</v-row>
-
 </template>
 
 <script>
 export default {
-	name: "infrastructure-assets-edit-furniture",
+	name: "infrastructure-asset-edit-electronic",
 	props: ['record'],
 };
 </script>

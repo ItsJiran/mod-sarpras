@@ -26,7 +26,7 @@ return new class extends Migration
 
             // period day
             $table->integer('period_day')->default(0);
-            $table->timnestamp('duedate')->nullable();
+            $table->timestamp('duedate')->nullable();
 
             $table->jsonb('meta')->nullable();
             $table->softDeletes();

@@ -10,6 +10,6 @@
 
 <script>
 export default {
-	name: "infrastructure-assets-data",
+	name: "infrastructure-asset-data",
 };
 </script>

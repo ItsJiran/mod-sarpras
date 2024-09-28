@@ -1,17 +1,21 @@
 <template>
-	<form-edit with-helpdesk>
-		<template v-slot:default="{  
-			combos: { type_key, units, units_slug, type_status_map },
-			record,
-			store,
-		}">
-<v-card-text>
+	<form-show
+		with-helpdesk
+	>
+	
+	<!-- ========================  -->
+	<!--   THIS IS DEFAULT FORM    -->
+	<!-- ========================  -->
+
+		<template v-slot:default="{ record }">
+			<v-card-text>
 				
 				<v-row dense>
 					<v-col cols="12">
 						<v-text-field
 							label="Name"
 							v-model="record.name"
+							:readonly="true"
 						></v-text-field>
 					</v-col>
 				</v-row>
@@ -32,11 +36,10 @@
 						:items="type_key" 
 						label="Tipe Assets"
 						v-model="record.asset_type_key"
-						:readonly="true"
 						:return-object="false"
-						@update:model-value="selectAssetsType(record, type_status_map, this)"
+						:readonly="true"
 						></v-combobox>
-					</v-col>
+					</v-col>	
 				</v-row>
 
 				<v-row dense>
@@ -56,10 +59,11 @@
 					</v-col>
 				</v-row>
 
-				<v-row v-if="record.status" dense>
+				<v-row dense>
 					<v-col cols="12">
 						<v-combobox
-						:items="type_status_map[record.asset_type_key]" 					
+						:return-object="false"
+						:readonly="true"					
 						label="Status Asset"
 						v-model="record.status"			
 						></v-combobox>
@@ -68,24 +72,32 @@
 
 				<component 
 					:record="record"
-					:is="record.asset_type_key"/>					
-		
+					:is="record.asset_type_key"/>							
 			</v-card-text>
 		</template>
-	</form-edit>
+
+	<!-- ========================  -->
+	<!--     THIS IS HELP DESK     -->
+	<!-- ========================  -->
+
+		<template v-slot:helpdesk>
+
+
+		</template>
+	</form-show>
 </template>
 
 <script>
 
 // assets type form
-import Land from "./edit-part/edit-land";
-import Document from "./edit-part/edit-documents";
-import Electronic from "./edit-part/edit-electronic";
-import Furniture from "./edit-part/edit-furniture";
-import Vehicle from "./edit-part/edit-vehicle";
+import Land from "./show-part/show-land";
+import Document from "./show-part/show-documents";
+import Electronic from "./show-part/show-electronic";
+import Furniture from "./show-part/show-furniture";
+import Vehicle from "./show-part/show-vehicle";
 
 export default {
-	name: "infrastructure-assets-edit",
+	name: "infrastructure-asset-show",
 
 	components : {
 		Land,
@@ -95,28 +107,7 @@ export default {
 		Vehicle,
 	},
 
-	data(){
-		return {
-			currentFormType:"",
-			formType: [
-				'Vehicle',
-                'Furniture',
-                'Electronic',
-                'Document',
-                'Land', 
-			],
-			unit: {}
-		}
-	},
-
 	methods : {
-		selectUnit : (record, units, data) => {			
-			data.unit = units[record.slug_unit];
-		},
-		selectAssetsType : (record, status_map, data) => {
-			data.currentFormType = record.asset_type_key;
-			record.status = status_map[record.asset_type_key][0];
-		}
 	},
 };
 </script>

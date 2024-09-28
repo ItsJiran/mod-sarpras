@@ -47,7 +47,7 @@ export default {
 		},
 
 		{
-			path: "unit-asset",
+			path: "unit/:unit/asset",
 			component: () =>
 				import(
 					/* webpackChunkName: "infrastructure" */ "@modules/infrastructure/frontend/pages/unit-asset/index.vue"
@@ -64,44 +64,43 @@ export default {
 			]
 		},
 
-
 		{
-			path: "assets",
+			path: "asset",
 			component: () =>
 				import(
-					/* webpackChunkName: "infrastructure" */ "@modules/infrastructure/frontend/pages/assets/index.vue"
+					/* webpackChunkName: "infrastructure" */ "@modules/infrastructure/frontend/pages/asset/index.vue"
 				),
 			children: [
 				{
 					path: "",
-					name: "infrastructure-assets",
+					name: "infrastructure-asset",
 					component: () =>
 						import(
-							/* webpackChunkName: "infrastructure" */ "@modules/infrastructure/frontend/pages/assets/crud/data.vue"
+							/* webpackChunkName: "infrastructure" */ "@modules/infrastructure/frontend/pages/asset/crud/data.vue"
 						),
 				},
 				{
 					path: "create",
-					name: "infrastructure-assets-create",
+					name: "infrastructure-asset-create",
 					component: () =>
 						import(
-							/* webpackChunkName: "infrastructure" */ "@modules/infrastructure/frontend/pages/assets/crud/create.vue"
+							/* webpackChunkName: "infrastructure" */ "@modules/infrastructure/frontend/pages/asset/crud/create.vue"
 						),
 				},
 				{
-					path: ":assets/show",
-					name: "infrastructure-assets-show",
+					path: ":asset/show",
+					name: "infrastructure-asset-show",
 					component: () =>
 						import(
-							/* webpackChunkName: "infrastructure" */ "@modules/infrastructure/frontend/pages/assets/crud/show.vue"
+							/* webpackChunkName: "infrastructure" */ "@modules/infrastructure/frontend/pages/asset/crud/show.vue"
 						),
 				},		
 				{
-					path: ":assets/edit",
-					name: "infrastructure-assets-edit",
+					path: ":asset/edit",
+					name: "infrastructure-asset-edit",
 					component: () =>
 						import(
-							/* webpackChunkName: "infrastructure" */ "@modules/infrastructure/frontend/pages/assets/crud/edit.vue"
+							/* webpackChunkName: "infrastructure" */ "@modules/infrastructure/frontend/pages/asset/crud/edit.vue"
 						),
 				},			
 			]

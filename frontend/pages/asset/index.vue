@@ -1,12 +1,12 @@
 <template>
 	<page-crud
-		page-name="infrastructure-assets"
-		page-key="assets"
+		page-name="infrastructure-asset"
+		page-key="asset"
 	></page-crud>
 </template>
 
 <script>
 export default {
-	name: "infrastructure-assets",
+	name: "infrastructure-asset",
 };
 </script>

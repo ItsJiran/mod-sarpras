@@ -6,7 +6,7 @@
 
 <script>
 export default {
-	name: "infrastructure-assets-edit-documents",
+	name: "infrastructure-asset-show-documents",
 	props: ['record'],
 };
 </script>
