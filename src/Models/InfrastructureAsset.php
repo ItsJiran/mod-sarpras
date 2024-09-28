@@ -348,10 +348,22 @@ class InfrastructureAsset extends Model
         // type model
         $type_model = $model->assetable();
 
+        // units slugs
+        $unit = HumanUnit::where('slug',$request->slug_unit)->first();
+        $slug_unit = $request->slug_unit;
+        $slug_type = self::mapTypeSlug()[$request->asset_type_key];
+        $slug = self::generateSlug($slug_unit, $slug_type);      
+
+
         try {
             $type_model_class::updateRecord($request, $type_model);
             
-
+            // update for main models class
+            $model->name = $request->name;
+            $model->slug = $slug;
+            $model->slug_unit = $slug_unit;
+            $model->slug_type = $slug_type;
+            $model->unit_id = $unit->id;
 
             $model->save();
 
