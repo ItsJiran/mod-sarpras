@@ -7,7 +7,10 @@ use Module\Infrastructure\Http\Controllers\InfrastructureUnitController;
 
 // dashboard resource
 Route::get('dashboard', [DashboardController::class, 'index']);
-Route::resource('asset', InfrastructureAssetController::class)->parameters(['assets'=>'infrastructureAsset']);
+
+// from resource module asset unit
+Route::resource('asset', InfrastructureAssetController::class)->parameters(['asset'=>'infrastructureAsset']);
 
 // from resource module human unit
 Route::resource('unit', InfrastructureUnitController::class)->parameters(['unit'=>'infrastructureUnit']);
+Route::resource('unit.asset', InfrastructureUnitController::class)->parameters(['unit'=>'infrastructureUnit','asset'=>'infrastructureAsset']);
