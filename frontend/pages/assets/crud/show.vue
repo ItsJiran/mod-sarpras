@@ -22,6 +22,16 @@
 
 				<v-row dense>
 					<v-col cols="12">
+						<v-text-field
+							label="Slug"
+							v-model="record.slug"
+							:readonly="true"
+						></v-text-field>
+					</v-col>
+				</v-row>
+
+				<v-row dense>
+					<v-col cols="12">
 						<v-combobox
 						:items="type_key" 
 						label="Tipe Assets"
@@ -42,7 +52,7 @@
 					</v-col>
 					<v-col cols="6">
 						<v-combobox
-						label="Pilih Unit"
+						label="Slug Unit"
 						v-model="record.slug_unit"
 						:readonly="true"
 						></v-combobox>
@@ -62,13 +72,12 @@
 
 				<component 
 					:record="record"
-					:is="record.asset_type_key"/>					
-		
+					:is="record.asset_type_key"/>							
 			</v-card-text>
 		</template>
 
 	<!-- ========================  -->
-	<!--     THIS IS HELP DESK      -->
+	<!--     THIS IS HELP DESK     -->
 	<!-- ========================  -->
 
 		<template v-slot:helpdesk>
