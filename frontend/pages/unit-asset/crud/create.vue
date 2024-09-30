@@ -28,24 +28,6 @@
 					</v-col>	
 				</v-row>
 
-				<v-row dense>
-					<v-col cols="6">
-						<v-text-field
-							label="Nama Unit"
-							v-model="unit.name"
-							:readonly="true"					
-						></v-text-field>
-					</v-col>
-					<v-col cols="6">
-						<v-combobox
-						:items="units_slug" 
-						label="Pilih Unit"
-						v-model="record.slug_unit"
-						@update:model-value="selectUnit(record, units, this)"
-						></v-combobox>
-					</v-col>
-				</v-row>
-
 				<v-row v-if=" unit.name != undefined && currentFormType != '' " dense>
 					<v-col cols="12">
 						<v-combobox

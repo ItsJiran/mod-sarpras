@@ -26,7 +26,7 @@
 
 <script>
 export default {
-	name: "infrastructure-asset-create-electronic",
+	name: "infrastructure-unit-asset-create-electronic",
 	props: ['record'],
 };
 </script>

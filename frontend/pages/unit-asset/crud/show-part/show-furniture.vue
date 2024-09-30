@@ -31,7 +31,7 @@
 
 <script>
 export default {
-	name: "infrastructure-asset-show-furniture",
+	name: "infrastructure-unit-asset-show-furniture",
 	props: ['record'],
 };
 </script>

@@ -29,7 +29,7 @@
 
 <script>
 export default {
-	name: "infrastructure-asset-show-electronic",
+	name: "infrastructure-unit-asset-show-electronic",
 	props: ['record'],
 };
 </script>

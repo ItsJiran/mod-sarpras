@@ -39,7 +39,7 @@
 
 <script>
 export default {
-	name: "infrastructure-asset-show-vehicle",
+	name: "infrastructure-unit-asset-show-vehicle",
 	props: ['record'],
 };
 </script>

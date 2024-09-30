@@ -28,7 +28,7 @@
 
 <script>
 export default {
-	name: "infrastructure-asset-create-furniture",
+	name: "infrastructure-unit-asset-create-furniture",
 	props: ['record'],
 };
 </script>

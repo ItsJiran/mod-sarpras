@@ -35,7 +35,7 @@
 
 <script>
 export default {
-	name: "infrastructure-asset-create-vehicle",
+	name: "infrastructure-unit-asset-create-vehicle",
 	props: ['record'],
 };
 </script>
