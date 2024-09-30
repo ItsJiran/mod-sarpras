@@ -2,10 +2,10 @@
 
 namespace Module\Infrastructure\Http\Resources;
 
-use Module\Infrastructure\Models\InfrastructureAssetTax;
+use Module\Infrastructure\Models\InfrastructureMaintenanceRecord;
 use Illuminate\Http\Resources\Json\ResourceCollection;
 
-class AssetTaxCollection extends ResourceCollection
+class MaintenanceRecordCollection extends ResourceCollection
 {
     /**
      * Transform the resource collection into an array.
@@ -15,7 +15,7 @@ class AssetTaxCollection extends ResourceCollection
      */
     public function toArray($request)
     {
-        return AssetTaxResource::collection($this->collection);
+        return MaintenanceRecordResource::collection($this->collection);
     }
 
     /**
@@ -34,34 +34,34 @@ class AssetTaxCollection extends ResourceCollection
         return [
             'setups' => [
                 /** the page combo */
-                'combos' => InfrastructureAssetTax::mapCombos($request),
+                'combos' => InfrastructureMaintenanceRecord::mapCombos($request),
 
                 /** the page data filter */
-                'filters' => InfrastructureAssetTax::mapFilters(),
+                'filters' => InfrastructureMaintenanceRecord::mapFilters(),
 
                 /** the table header */
-                'headers' => InfrastructureAssetTax::mapHeaders($request),
+                'headers' => InfrastructureMaintenanceRecord::mapHeaders($request),
 
                 /** the page icon */
-                'icon' => InfrastructureAssetTax::getPageIcon('infrastructure-assettax'),
+                'icon' => InfrastructureMaintenanceRecord::getPageIcon('infrastructure-maintenancerecord'),
 
                 /** the record key */
-                'key' => InfrastructureAssetTax::getDataKey(),
+                'key' => InfrastructureMaintenanceRecord::getDataKey(),
 
                 /** the page default */
-                'recordBase' => InfrastructureAssetTax::mapRecordBase($request),
+                'recordBase' => InfrastructureMaintenanceRecord::mapRecordBase($request),
 
                 /** the page statuses */
-                'statuses' => InfrastructureAssetTax::mapStatuses($request),
+                'statuses' => InfrastructureMaintenanceRecord::mapStatuses($request),
 
                 /** the page data mode */
                 'trashed' => $request->trashed ?: false,
 
                 /** the page title */
-                'title' => InfrastructureAssetTax::getPageTitle($request, 'infrastructure-assettax'),
+                'title' => InfrastructureMaintenanceRecord::getPageTitle($request, 'infrastructure-maintenancerecord'),
 
                 /** the usetrash flag */
-                'usetrash' => InfrastructureAssetTax::hasSoftDeleted(),
+                'usetrash' => InfrastructureMaintenanceRecord::hasSoftDeleted(),
             ]
         ];
     }

@@ -3,10 +3,10 @@
 namespace Module\Infrastructure\Http\Resources;
 
 use Illuminate\Http\Resources\Json\JsonResource;
-use Module\Infrastructure\Models\InfrastructureAssetTaxRecord;
+use Module\Infrastructure\Models\InfrastructureTax;
 use Module\System\Http\Resources\UserLogActivity;
 
-class AssetTaxRecordShowResource extends JsonResource
+class TaxShowResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -20,25 +20,25 @@ class AssetTaxRecordShowResource extends JsonResource
             /**
              * the record data
              */
-            'record' => InfrastructureAssetTaxRecord::mapResourceShow($request, $this),
+            'record' => InfrastructureTax::mapResourceShow($request, $this),
 
             /**
              * the page setups
              */
             'setups' => [
-                'combos' => InfrastructureAssetTaxRecord::mapCombos($request, $this),
+                'combos' => InfrastructureTax::mapCombos($request, $this),
 
-                'icon' => InfrastructureAssetTaxRecord::getPageIcon('infrastructure-assettaxrecord'),
+                'icon' => InfrastructureTax::getPageIcon('infrastructure-tax'),
 
-                'key' => InfrastructureAssetTaxRecord::getDataKey(),
+                'key' => InfrastructureTax::getDataKey(),
 
                 'logs' => $request->activities ? UserLogActivity::collection($this->activitylogs) : null,
 
                 'softdelete' => $this->trashed() ?: false,
 
-                'statuses' => InfrastructureAssetTaxRecord::mapStatuses($request, $this),
+                'statuses' => InfrastructureTax::mapStatuses($request, $this),
 
-                'title' => InfrastructureAssetTaxRecord::getPageTitle($request, 'infrastructure-assettaxrecord'),
+                'title' => InfrastructureTax::getPageTitle($request, 'infrastructure-tax'),
             ],
         ];
     }

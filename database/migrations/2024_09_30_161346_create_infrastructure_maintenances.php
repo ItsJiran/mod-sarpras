@@ -11,12 +11,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('infrastructure_asset_maintenances', function (Blueprint $table) {
+        Schema::create('infrastructure_maintenances', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('for_asset_id');
 
             // tipe pajak berkala |  
-            $table->string('name')->default('Pajak');
+            $table->string('name')->default('Perawatan');
 
             // descriptions
             $table->text('description')->nullable();
@@ -39,6 +38,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('infrastructure_asset_maintenances');
+        Schema::dropIfExists('infrastructure_maintenances');
     }
 };

@@ -2,10 +2,10 @@
 
 namespace Module\Infrastructure\Http\Resources;
 
-use Module\Infrastructure\Models\InfrastructureAssetMaintenance;
+use Module\Infrastructure\Models\InfrastructureMaintenance;
 use Illuminate\Http\Resources\Json\ResourceCollection;
 
-class AssetMaintenanceCollection extends ResourceCollection
+class MaintenanceCollection extends ResourceCollection
 {
     /**
      * Transform the resource collection into an array.
@@ -15,7 +15,7 @@ class AssetMaintenanceCollection extends ResourceCollection
      */
     public function toArray($request)
     {
-        return AssetMaintenanceResource::collection($this->collection);
+        return MaintenanceResource::collection($this->collection);
     }
 
     /**
@@ -34,34 +34,34 @@ class AssetMaintenanceCollection extends ResourceCollection
         return [
             'setups' => [
                 /** the page combo */
-                'combos' => InfrastructureAssetMaintenance::mapCombos($request),
+                'combos' => InfrastructureMaintenance::mapCombos($request),
 
                 /** the page data filter */
-                'filters' => InfrastructureAssetMaintenance::mapFilters(),
+                'filters' => InfrastructureMaintenance::mapFilters(),
 
                 /** the table header */
-                'headers' => InfrastructureAssetMaintenance::mapHeaders($request),
+                'headers' => InfrastructureMaintenance::mapHeaders($request),
 
                 /** the page icon */
-                'icon' => InfrastructureAssetMaintenance::getPageIcon('infrastructure-assetmaintenance'),
+                'icon' => InfrastructureMaintenance::getPageIcon('infrastructure-maintenance'),
 
                 /** the record key */
-                'key' => InfrastructureAssetMaintenance::getDataKey(),
+                'key' => InfrastructureMaintenance::getDataKey(),
 
                 /** the page default */
-                'recordBase' => InfrastructureAssetMaintenance::mapRecordBase($request),
+                'recordBase' => InfrastructureMaintenance::mapRecordBase($request),
 
                 /** the page statuses */
-                'statuses' => InfrastructureAssetMaintenance::mapStatuses($request),
+                'statuses' => InfrastructureMaintenance::mapStatuses($request),
 
                 /** the page data mode */
                 'trashed' => $request->trashed ?: false,
 
                 /** the page title */
-                'title' => InfrastructureAssetMaintenance::getPageTitle($request, 'infrastructure-assetmaintenance'),
+                'title' => InfrastructureMaintenance::getPageTitle($request, 'infrastructure-maintenance'),
 
                 /** the usetrash flag */
-                'usetrash' => InfrastructureAssetMaintenance::hasSoftDeleted(),
+                'usetrash' => InfrastructureMaintenance::hasSoftDeleted(),
             ]
         ];
     }

@@ -11,7 +11,7 @@ use Module\System\Traits\HasPageSetup;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class InfrastructureAssetMaintenanceRecord extends Model
+class InfrastructureMaintenanceRecord extends Model
 {
     use Filterable;
     use HasMeta;
@@ -31,14 +31,14 @@ class InfrastructureAssetMaintenanceRecord extends Model
      *
      * @var string
      */
-    protected $table = 'infrastructure_assetmaintenancerecords';
+    protected $table = 'infrastructure_maintenancerecords';
 
     /**
      * The roles variable
      *
      * @var array
      */
-    protected $roles = ['infrastructure-assetmaintenancerecord'];
+    protected $roles = ['infrastructure-maintenancerecord'];
 
     /**
      * The attributes that should be cast to native types.
@@ -74,7 +74,7 @@ class InfrastructureAssetMaintenanceRecord extends Model
 
             DB::connection($model->connection)->commit();
 
-            // return new AssetMaintenanceRecordResource($model);
+            // return new MaintenanceRecordResource($model);
         } catch (\Exception $e) {
             DB::connection($model->connection)->rollBack();
 
@@ -102,7 +102,7 @@ class InfrastructureAssetMaintenanceRecord extends Model
 
             DB::connection($model->connection)->commit();
 
-            // return new AssetMaintenanceRecordResource($model);
+            // return new MaintenanceRecordResource($model);
         } catch (\Exception $e) {
             DB::connection($model->connection)->rollBack();
 

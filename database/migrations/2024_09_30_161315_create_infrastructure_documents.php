@@ -11,12 +11,8 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('infrastructure_asset_maintenance_records', function (Blueprint $table) {
+        Schema::create('infrastructure_documents', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('for_asset_maintenance_id');
-            
-            
-
             $table->jsonb('meta')->nullable();
             $table->softDeletes();
             $table->timestamps();
@@ -28,6 +24,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('infrastructure_asset_maintenance_records');
+        Schema::dropIfExists('infrastructure_documents');
     }
 };

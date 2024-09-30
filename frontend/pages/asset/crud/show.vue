@@ -111,7 +111,6 @@
 
 // assets type form
 import Land from "./show-part/show-land";
-import Document from "./show-part/show-documents";
 import Electronic from "./show-part/show-electronic";
 import Furniture from "./show-part/show-furniture";
 import Vehicle from "./show-part/show-vehicle";
@@ -121,7 +120,6 @@ export default {
 
 	components : {
 		Land,
-		Document,
 		Electronic,
 		Furniture,
 		Vehicle,

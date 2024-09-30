@@ -3,10 +3,10 @@
 namespace Module\Infrastructure\Http\Resources;
 
 use Illuminate\Http\Resources\Json\JsonResource;
-use Module\Infrastructure\Models\InfrastructureAssetMaintenanceRecord;
+use Module\Infrastructure\Models\InfrastructureMaintenanceRecord;
 use Module\System\Http\Resources\UserLogActivity;
 
-class AssetMaintenanceRecordShowResource extends JsonResource
+class MaintenanceRecordShowResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -20,25 +20,25 @@ class AssetMaintenanceRecordShowResource extends JsonResource
             /**
              * the record data
              */
-            'record' => InfrastructureAssetMaintenanceRecord::mapResourceShow($request, $this),
+            'record' => InfrastructureMaintenanceRecord::mapResourceShow($request, $this),
 
             /**
              * the page setups
              */
             'setups' => [
-                'combos' => InfrastructureAssetMaintenanceRecord::mapCombos($request, $this),
+                'combos' => InfrastructureMaintenanceRecord::mapCombos($request, $this),
 
-                'icon' => InfrastructureAssetMaintenanceRecord::getPageIcon('infrastructure-assetmaintenancerecord'),
+                'icon' => InfrastructureMaintenanceRecord::getPageIcon('infrastructure-maintenancerecord'),
 
-                'key' => InfrastructureAssetMaintenanceRecord::getDataKey(),
+                'key' => InfrastructureMaintenanceRecord::getDataKey(),
 
                 'logs' => $request->activities ? UserLogActivity::collection($this->activitylogs) : null,
 
                 'softdelete' => $this->trashed() ?: false,
 
-                'statuses' => InfrastructureAssetMaintenanceRecord::mapStatuses($request, $this),
+                'statuses' => InfrastructureMaintenanceRecord::mapStatuses($request, $this),
 
-                'title' => InfrastructureAssetMaintenanceRecord::getPageTitle($request, 'infrastructure-assetmaintenancerecord'),
+                'title' => InfrastructureMaintenanceRecord::getPageTitle($request, 'infrastructure-maintenancerecord'),
             ],
         ];
     }

@@ -11,9 +11,8 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('infrastructure_asset_taxes', function (Blueprint $table) {
+        Schema::create('infrastructure_taxes', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('for_asset_id');
 
             // tipe pajak berkala |  
             $table->string('name')->default('Pajak');
@@ -39,6 +38,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('infrastructure_asset_taxes');
+        Schema::dropIfExists('infrastructure_taxes');
     }
 };
