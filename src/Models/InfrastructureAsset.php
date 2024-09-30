@@ -15,12 +15,12 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
 
 // relatedm models morph
-use Module\Human\Models\HumanUnit;
 use Module\Infrastructure\Models\InfrastructureAssetVehicle;
 use Module\Infrastructure\Models\InfrastructureAssetFurniture;
 use Module\Infrastructure\Models\InfrastructureAssetElectronic;
 use Module\Infrastructure\Models\InfrastructureAssetDocument;
 use Module\Infrastructure\Models\InfrastructureAssetLand;
+use Module\Infrastructure\Models\InfrastructureUnit;
 
 class InfrastructureAsset extends Model
 {
@@ -148,7 +148,7 @@ class InfrastructureAsset extends Model
         $asset_type_keys = self::mapTypeClass(true);
 
         // moprh
-        $unit = HumanUnit::where('slug',$model->slug_unit)->first();
+        $unit = InfrastructureUnit::where('slug',$model->slug_unit)->first();
 
         $asset_property = [
             'name' => $model->name,
@@ -177,7 +177,7 @@ class InfrastructureAsset extends Model
      */
     public static function mapCombos(Request $request, $model = null): array
     {
-        $human = HumanUnit::get(['id','name','slug']);
+        $human = InfrastructureUnit::get(['id','name','slug']);
         $units = [];
         $units_name = [];
         $units_slug = [];
@@ -298,28 +298,32 @@ class InfrastructureAsset extends Model
 
         DB::connection($model->connection)->beginTransaction();
 
-        $unit = HumanUnit::where('slug',$request->slug_unit)->first();
+        // NOTES : Ambil data unit berdasarkan slug dari si unit..
+        $unit = InfrastructureUnit::where('slug',$request->slug_unit)->first();
+
+        // NOTES : Mapping setiap slug..
         $slug_unit = $request->slug_unit;
         $slug_type = self::mapTypeSlug()[$request->asset_type_key];
         $slug = self::generateSlug($slug_unit, $slug_type);      
 
         try {            
+            // assign properties
+            $model->unit_id = $unit->id;
             $model->name = $request->name;
+            
             $model->slug = $slug;
             $model->slug_unit = $slug_unit;
             $model->slug_type = $slug_type;
-            $model->unit_id = $unit->id;
-            $model->assetable_type = $type_asset_class;           
 
             // store type model morph
+            $model->assetable_type = $type_asset_class;           
             $type_model = $type_asset_model->storeRecord( $request, $model );
 
+            // save
             $model->assetable_id = $type_model->id;
             $model->save();
 
             DB::connection($model->connection)->commit();
-
-            // return new AssetResource($model);
         } catch (\Exception $e) {
             DB::connection($model->connection)->rollBack();
 
@@ -349,7 +353,7 @@ class InfrastructureAsset extends Model
         $type_model = $model->assetable;
 
         // units slugs
-        $unit = HumanUnit::where('slug',$request->slug_unit)->first();
+        $unit = InfrastructureUnit::where('slug',$request->slug_unit)->first();
         $slug_unit = $request->slug_unit;
         $slug_type = self::mapTypeSlug()[$request->asset_type_key];
         $slug = self::generateSlug($slug_unit, $slug_type);      

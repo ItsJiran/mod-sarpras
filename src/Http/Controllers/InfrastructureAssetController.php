@@ -80,6 +80,15 @@ class InfrastructureAssetController extends Controller
         return InfrastructureAsset::storeRecord($request, $type_model_class);
     }
 
+    public function storeFromUnit(Request $request, InfrastructureUnit $unit)
+    {
+        Gate::authorize('create', InfrastructureAsset::class);
+
+        $request->slug_unit = $unit->slug;
+
+        return $this->store($request);
+    }
+
     /**
      * Display the specified resource.
      *
@@ -91,6 +100,19 @@ class InfrastructureAssetController extends Controller
         Gate::authorize('show', $infrastructureAsset);
 
         return new AssetShowResource($infrastructureAsset);
+    }
+
+    /**
+     * Display the specified resource.
+     *
+     * @param  \Module\Infrastructure\Models\InfrastructureAsset $infrastructureAsset
+     * @return \Illuminate\Http\Response
+     */
+    public function showFromUnit(InfrastructureUnit $unit, InfrastructureAsset $asset)
+    {
+        Gate::authorize('show', $asset);
+
+        return new AssetShowResource($asset);
     }
 
     /**
@@ -125,6 +147,19 @@ class InfrastructureAssetController extends Controller
     }
 
     /**
+     * Display the specified resource.
+     *
+     * @param  \Module\Infrastructure\Models\InfrastructureAsset $infrastructureAsset
+     * @return \Illuminate\Http\Response
+     */
+    public function updateFromUnit(Request $request, InfrastructureUnit $unit, InfrastructureAsset $asset)
+    {
+        Gate::authorize('update', $asset);
+
+        return $this->update($request, $asset);
+    }
+
+    /**
      * Remove the specified resource from storage.
      *
      * @param  \Module\Infrastructure\Models\InfrastructureAsset $infrastructureAsset
@@ -135,6 +170,19 @@ class InfrastructureAssetController extends Controller
         Gate::authorize('delete', $infrastructureAsset);
 
         return InfrastructureAsset::deleteRecord($infrastructureAsset);
+    }
+
+    /**
+     * Display the specified resource.
+     *
+     * @param  \Module\Infrastructure\Models\InfrastructureAsset $infrastructureAsset
+     * @return \Illuminate\Http\Response
+     */
+    public function destroyFromUnit(Request $request, InfrastructureUnit $unit, InfrastructureAsset $asset)
+    {
+        Gate::authorize('delete', $asset);
+
+        return $this->destroy($request, $asset);
     }
 
     /**

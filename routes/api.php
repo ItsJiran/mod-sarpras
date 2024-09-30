@@ -13,11 +13,14 @@ Route::resource('unit', InfrastructureUnitController::class)->parameters([
     'unit'=>'infrastructureUnit'
 ]);
 
-// manually from unit/asset
+// +-- manually from unit/asset
 Route::get('unit/{unit}/asset',[InfrastructureAssetController::class, 'indexFromUnit']);
 Route::post('unit/{unit}/asset',[InfrastructureAssetController::class, 'storeFromUnit']);
-Route::put('unit/{unit}/asset',[InfrastructureAssetController::class, 'updateFromUnit']);
-Route::delete('unit/{unit}/asset',[InfrastructureAssetController::class, 'destroyFromUnit']);
+
+// crud
+Route::get('unit/{unit}/asset/{asset}',[InfrastructureAssetController::class, 'showFromUnit']);
+Route::put('unit/{unit}/asset/{asset}',[InfrastructureAssetController::class, 'updateFromUnit']);
+Route::delete('unit/{unit}/asset/{asset}',[InfrastructureAssetController::class, 'destroyFromUnit']);
 
 // from resource module asset
 Route::resource('asset',InfrastructureAssetController::class)->parameters([
