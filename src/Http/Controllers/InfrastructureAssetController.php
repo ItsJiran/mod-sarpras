@@ -19,7 +19,25 @@ class InfrastructureAssetController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index(Request $request, InfrastructureUnit $unit)
+    public function index(Request $request)
+    {
+        Gate::authorize('view', InfrastructureAsset::class);
+
+        return new AssetCollection(
+            InfrastructureAsset::applyMode($request->mode)
+                ->filter($request->filters)
+                ->search($request->findBy)
+                ->sortBy($request->sortBy)
+                ->paginate($request->itemsPerPage)
+        );
+    }
+
+        /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function indexFromUnit(Request $request, InfrastructureUnit $unit)
     {
         Gate::authorize('view', InfrastructureAsset::class);
 

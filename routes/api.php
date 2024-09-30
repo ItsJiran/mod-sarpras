@@ -12,11 +12,17 @@ Route::get('dashboard', [DashboardController::class, 'index']);
 Route::resource('unit', InfrastructureUnitController::class)->parameters([
     'unit'=>'infrastructureUnit'
 ]);
-Route::resource('unit.asset', InfrastructureAssetController::class)->parameters([
-    'unit'=>'infrastructureUnit',
-    'asset'=>'infrastructureAsset'
-]);
 
+// manually from unit/asset
+Route::get('unit/{unit}/asset',[InfrastructureAssetController::class, 'indexFromUnit']);
+Route::post('unit/{unit}/asset',[InfrastructureAssetController::class, 'storeFromUnit']);
+Route::put('unit/{unit}/asset',[InfrastructureAssetController::class, 'updateFromUnit']);
+Route::delete('unit/{unit}/asset',[InfrastructureAssetController::class, 'destroyFromUnit']);
+
+// from resource module asset
+Route::resource('asset',InfrastructureAssetController::class)->parameters([
+    'asset' => 'infrastructureAsset'
+]);
 
 // Route::resource('unit.employee', EmployeeController::class)
 // ->parameters(['unit' => 'hRDUnit', 'employee' => 'hRDEmployee']);
