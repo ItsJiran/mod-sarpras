@@ -13,6 +13,10 @@ return new class extends Migration
     {
         Schema::create('infrastructure_tax_records', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('tax_id');
+
+            
+
             $table->jsonb('meta')->nullable();
             $table->softDeletes();
             $table->timestamps();

@@ -13,6 +13,8 @@ return new class extends Migration
     {
         Schema::create('infrastructure_maintenance_records', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('maintenance_id');
+
             $table->jsonb('meta')->nullable();
             $table->softDeletes();
             $table->timestamps();
