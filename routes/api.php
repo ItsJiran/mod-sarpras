@@ -5,12 +5,17 @@ use Module\Infrastructure\Http\Controllers\DashboardController;
 use Module\Infrastructure\Http\Controllers\InfrastructureAssetController;
 use Module\Infrastructure\Http\Controllers\InfrastructureUnitController;
 
-// dashboard resource
+// +-- dashboard resource
 Route::get('dashboard', [DashboardController::class, 'index']);
 
-// from resource module human unit
+// +-- from resource module human unit
 Route::resource('unit', InfrastructureUnitController::class)->parameters([
     'unit'=>'infrastructureUnit'
+]);
+
+// +-- from resource module asset
+Route::resource('asset',InfrastructureAssetController::class)->parameters([
+    'asset' => 'infrastructureAsset'
 ]);
 
 // +-- manually from unit/asset
@@ -22,10 +27,3 @@ Route::get('unit/{unit}/asset/{asset}',[InfrastructureAssetController::class, 's
 Route::put('unit/{unit}/asset/{asset}',[InfrastructureAssetController::class, 'updateFromUnit']);
 Route::delete('unit/{unit}/asset/{asset}',[InfrastructureAssetController::class, 'destroyFromUnit']);
 
-// from resource module asset
-Route::resource('asset',InfrastructureAssetController::class)->parameters([
-    'asset' => 'infrastructureAsset'
-]);
-
-// Route::resource('unit.employee', EmployeeController::class)
-// ->parameters(['unit' => 'hRDUnit', 'employee' => 'hRDEmployee']);

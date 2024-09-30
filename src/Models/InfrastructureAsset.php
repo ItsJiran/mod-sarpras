@@ -180,12 +180,14 @@ class InfrastructureAsset extends Model
         // temporary
         $human = InfrastructureUnit::get(['id','name','slug']);
         
+        // notes : assign units into properties
         $units = [];
         $units_ids = [];
 
         $units_name = [];
         $units_slug = [];
 
+        // notes : mapping to the array so frontend can consume..
         foreach ($human as $key => $value) {
             array_push( $units_name, $value->name );
             array_push( $units_slug, $value->slug );
@@ -205,7 +207,7 @@ class InfrastructureAsset extends Model
             // units array merges
             'units' => $units,
             'units_ids' => $units_ids,
-            
+
             'units_name' => $units_name,
             'units_slug' => $units_slug,
         ]);
