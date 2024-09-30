@@ -80,8 +80,28 @@
 	<!--     THIS IS HELP DESK     -->
 	<!-- ========================  -->
 
-		<template v-slot:helpdesk>
+		<template v-slot:helpdesk="{ theme }">
 
+			<div class="text-overline mt-4">Aksi</div>
+			<v-divider></v-divider>
+
+			<v-btn
+				class="mt-3"
+				:color="theme"
+				block
+				variant="flat"
+				@click="$router.push({ name: 'infrastructure-asset-document' })"
+				>List Documents</v-btn
+			>
+
+			<v-btn
+				class="mt-3"
+				:color="theme"
+				block
+				variant="flat"
+				@click="$router.push({ name: 'infrastructure-asset-maintenance' })"
+				>List Maintenance</v-btn
+			>
 
 		</template>
 	</form-show>

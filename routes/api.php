@@ -22,7 +22,6 @@ Route::resource('asset',InfrastructureAssetController::class)->parameters([
 Route::get('unit/{unit}/asset',[InfrastructureAssetController::class, 'indexFromUnit']);
 Route::post('unit/{unit}/asset',[InfrastructureAssetController::class, 'storeFromUnit']);
 
-// crud
 Route::get('unit/{unit}/asset/{asset}',[InfrastructureAssetController::class, 'showFromUnit']);
 Route::put('unit/{unit}/asset/{asset}',[InfrastructureAssetController::class, 'updateFromUnit']);
 Route::delete('unit/{unit}/asset/{asset}',[InfrastructureAssetController::class, 'destroyFromUnit']);

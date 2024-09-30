@@ -128,7 +128,7 @@ class InfrastructureAsset extends Model
     public function assetable(): MorphTo
     {
         return $this->morphTo(__FUNCTION__, 'assetable_type', 'assetable_id');
-    }     
+    }          
 
     /**
      * ====================================================
