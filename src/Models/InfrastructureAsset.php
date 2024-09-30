@@ -177,25 +177,35 @@ class InfrastructureAsset extends Model
      */
     public static function mapCombos(Request $request, $model = null): array
     {
+        // temporary
         $human = InfrastructureUnit::get(['id','name','slug']);
+        
         $units = [];
+        $units_ids = [];
+
         $units_name = [];
         $units_slug = [];
 
         foreach ($human as $key => $value) {
             array_push( $units_name, $value->name );
             array_push( $units_slug, $value->slug );
+
             $units[$value->slug] = $value;
+            $units_id[$value->id] = $value;
         }
 
         return array_merge([
             // type class
             'type' => self::mapTypeClass(),
             'type_key' => self::mapTypeKeyClass(),
+            
             'type_slug' => self::mapTypeSlug(),
-            'type_status_map' => self::mapTypeStatusClass(),         
+            'type_status_map' => self::mapTypeStatusClass(),      
+
             // units array merges
             'units' => $units,
+            'units_ids' => $units_ids,
+            
             'units_name' => $units_name,
             'units_slug' => $units_slug,
         ]);

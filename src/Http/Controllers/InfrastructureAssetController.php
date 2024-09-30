@@ -178,11 +178,11 @@ class InfrastructureAssetController extends Controller
      * @param  \Module\Infrastructure\Models\InfrastructureAsset $infrastructureAsset
      * @return \Illuminate\Http\Response
      */
-    public function destroyFromUnit(Request $request, InfrastructureUnit $unit, InfrastructureAsset $asset)
+    public function destroyFromUnit(InfrastructureUnit $unit, InfrastructureAsset $asset)
     {
         Gate::authorize('delete', $asset);
 
-        return $this->destroy($request, $asset);
+        return $this->destroy($asset);
     }
 
     /**
