@@ -27,6 +27,9 @@ return new class extends Migration
             $table->integer('period_day')->default(0);
             $table->timestamp('duedate')->nullable();
 
+            // morph
+            $table->morphs('maintananceable');
+
             $table->jsonb('meta')->nullable();
             $table->softDeletes();
             $table->timestamps();
