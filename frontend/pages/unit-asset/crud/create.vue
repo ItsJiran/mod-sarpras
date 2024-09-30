@@ -28,7 +28,7 @@
 					</v-col>	
 				</v-row>
 
-				<v-row v-if=" unit.name != undefined && currentFormType != '' " dense>
+				<v-row dense>
 					<v-col cols="12">
 						<v-combobox
 						:items="type_status_map[currentFormType]" 
@@ -39,8 +39,7 @@
 					</v-col>
 				</v-row>
 
-				<component 
-					v-if=" unit.name != undefined && currentFormType != '' "
+				<component					
 					:record="record"
 					:is="currentFormType"/>					
 		

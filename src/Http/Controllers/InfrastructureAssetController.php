@@ -84,7 +84,7 @@ class InfrastructureAssetController extends Controller
     {
         Gate::authorize('create', InfrastructureAsset::class);
 
-        $request->slug_unit = $unit->slug;
+        $request->merge([ 'slug_unit' => $unit->slug ]);
 
         return $this->store($request);
     }
