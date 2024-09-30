@@ -79,7 +79,6 @@
 
 // assets type form
 import Land from "./edit-part/edit-land";
-import Document from "./edit-part/edit-documents";
 import Electronic from "./edit-part/edit-electronic";
 import Furniture from "./edit-part/edit-furniture";
 import Vehicle from "./edit-part/edit-vehicle";
@@ -89,7 +88,6 @@ export default {
 
 	components : {
 		Land,
-		Document,
 		Electronic,
 		Furniture,
 		Vehicle,
@@ -102,7 +100,6 @@ export default {
 				'Vehicle',
                 'Furniture',
                 'Electronic',
-                'Document',
                 'Land', 
 			],
 			unit: {}

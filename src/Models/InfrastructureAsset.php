@@ -14,11 +14,10 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
 
-// relatedm models morph
+// related assets models type
 use Module\Infrastructure\Models\InfrastructureAssetVehicle;
 use Module\Infrastructure\Models\InfrastructureAssetFurniture;
 use Module\Infrastructure\Models\InfrastructureAssetElectronic;
-use Module\Infrastructure\Models\InfrastructureAssetDocument;
 use Module\Infrastructure\Models\InfrastructureAssetLand;
 use Module\Infrastructure\Models\InfrastructureUnit;
 
@@ -226,7 +225,6 @@ class InfrastructureAsset extends Model
                 'Vehicle' => InfrastructureAssetVehicle::class,
                 'Furniture' => InfrastructureAssetFurniture::class,
                 'Electronic' => InfrastructureAssetElectronic::class,
-                'Document' => InfrastructureAssetDocument::class,
                 'Land' => InfrastructureAssetLand::class,
             ];
         } else {
@@ -234,7 +232,6 @@ class InfrastructureAsset extends Model
                 InfrastructureAssetVehicle::class => 'Vehicle',
                 InfrastructureAssetFurniture::class => 'Furniture',
                 InfrastructureAssetElectronic::class => 'Electronic',
-                InfrastructureAssetDocument::class => 'Document',
                 InfrastructureAssetLand::class => 'Land',
             ];
         }
@@ -252,7 +249,6 @@ class InfrastructureAsset extends Model
             'Vehicle',
             'Furniture',
             'Electronic',
-            'Document',
             'Land',                
         ];
     }
@@ -269,7 +265,6 @@ class InfrastructureAsset extends Model
             'Vehicle' => 'VHC',
             'Furniture' => 'FNT',
             'Electronic' => 'ELC',
-            'Document' => 'DMT',
             'Land' => 'LND',                
         ];
     }
@@ -286,7 +281,6 @@ class InfrastructureAsset extends Model
             'Vehicle' => InfrastructureAssetVehicle::mapStatus(),
             'Furniture' => InfrastructureAssetFurniture::mapStatus(),
             'Electronic' => InfrastructureAssetElectronic::mapStatus(),
-            'Document' => InfrastructureAssetDocument::mapStatus(),
             'Land' => InfrastructureAssetLand::mapStatus(),
         ];
     }
