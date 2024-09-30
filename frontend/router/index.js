@@ -61,50 +61,74 @@ export default {
 							/* webpackChunkName: "infrastructure" */ "@modules/infrastructure/frontend/pages/unit-asset/crud/data.vue"
 						),
 				},
-			]
-		},
-
-		{
-			path: "asset",
-			component: () =>
-				import(
-					/* webpackChunkName: "infrastructure" */ "@modules/infrastructure/frontend/pages/asset/index.vue"
-				),
-			children: [
-				{
-					path: "",
-					name: "infrastructure-asset",
-					component: () =>
-						import(
-							/* webpackChunkName: "infrastructure" */ "@modules/infrastructure/frontend/pages/asset/crud/data.vue"
-						),
-				},
 				{
 					path: "create",
-					name: "infrastructure-asset-create",
+					name: "infrastructure-unit-asset-create",
 					component: () =>
 						import(
-							/* webpackChunkName: "infrastructure" */ "@modules/infrastructure/frontend/pages/asset/crud/create.vue"
+							/* webpackChunkName: "infrastructure" */ "@modules/infrastructure/frontend/pages/unit-asset/crud/create.vue"
 						),
 				},
 				{
 					path: ":asset/show",
-					name: "infrastructure-asset-show",
+					name: "infrastructure-unit-asset-show",
 					component: () =>
 						import(
-							/* webpackChunkName: "infrastructure" */ "@modules/infrastructure/frontend/pages/asset/crud/show.vue"
+							/* webpackChunkName: "infrastructure" */ "@modules/infrastructure/frontend/pages/unit-asset/crud/show.vue"
 						),
 				},		
 				{
 					path: ":asset/edit",
-					name: "infrastructure-asset-edit",
+					name: "infrastructure-unit-asset-edit",
 					component: () =>
 						import(
-							/* webpackChunkName: "infrastructure" */ "@modules/infrastructure/frontend/pages/asset/crud/edit.vue"
+							/* webpackChunkName: "infrastructure" */ "@modules/infrastructure/frontend/pages/unit-asset/crud/edit.vue"
 						),
-				},			
+				},
 			]
 		},
+
+		// {
+		// 	path: "asset",
+		// 	component: () =>
+		// 		import(
+		// 			/* webpackChunkName: "infrastructure" */ "@modules/infrastructure/frontend/pages/asset/index.vue"
+		// 		),
+		// 	children: [
+		// 		{
+		// 			path: "",
+		// 			name: "infrastructure-asset",
+		// 			component: () =>
+		// 				import(
+		// 					/* webpackChunkName: "infrastructure" */ "@modules/infrastructure/frontend/pages/asset/crud/data.vue"
+		// 				),
+		// 		},
+		// 		{
+		// 			path: "create",
+		// 			name: "infrastructure-asset-create",
+		// 			component: () =>
+		// 				import(
+		// 					/* webpackChunkName: "infrastructure" */ "@modules/infrastructure/frontend/pages/asset/crud/create.vue"
+		// 				),
+		// 		},
+		// 		{
+		// 			path: ":asset/show",
+		// 			name: "infrastructure-asset-show",
+		// 			component: () =>
+		// 				import(
+		// 					/* webpackChunkName: "infrastructure" */ "@modules/infrastructure/frontend/pages/asset/crud/show.vue"
+		// 				),
+		// 		},		
+		// 		{
+		// 			path: ":asset/edit",
+		// 			name: "infrastructure-asset-edit",
+		// 			component: () =>
+		// 				import(
+		// 					/* webpackChunkName: "infrastructure" */ "@modules/infrastructure/frontend/pages/asset/crud/edit.vue"
+		// 				),
+		// 		},			
+		// 	]
+		// },
 
 		// {
 		// 	path: "assets",
