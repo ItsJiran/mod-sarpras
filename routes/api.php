@@ -8,9 +8,15 @@ use Module\Infrastructure\Http\Controllers\InfrastructureUnitController;
 // dashboard resource
 Route::get('dashboard', [DashboardController::class, 'index']);
 
-// from resource module asset unit
-Route::resource('asset', InfrastructureAssetController::class)->parameters(['asset'=>'infrastructureAsset']);
-
 // from resource module human unit
-Route::resource('unit', InfrastructureUnitController::class)->parameters(['unit'=>'infrastructureUnit']);
-Route::resource('unit.asset', InfrastructureUnitController::class)->parameters(['unit'=>'infrastructureUnit','asset'=>'infrastructureAsset']);
+Route::resource('unit', InfrastructureUnitController::class)->parameters([
+    'unit'=>'infrastructureUnit'
+]);
+Route::resource('unit.asset', InfrastructureAssetController::class)->parameters([
+    'unit'=>'infrastructureUnit',
+    'asset'=>'infrastructureAsset'
+]);
+
+
+// Route::resource('unit.employee', EmployeeController::class)
+// ->parameters(['unit' => 'hRDUnit', 'employee' => 'hRDEmployee']);

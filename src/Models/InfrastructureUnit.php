@@ -5,6 +5,7 @@ namespace Module\Infrastructure\Models;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Module\Human\Models\HumanUnit As Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class InfrastructureUnit extends Model
 {

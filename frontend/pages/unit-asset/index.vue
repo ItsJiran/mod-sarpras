@@ -1,6 +1,6 @@
 <template>
 	<page-crud
-		page-name="infrastructure-asset"
+		page-name="infrastructure-unit-asset"
 		page-key="asset"
 		parent-name="infrastructure-unit"
 		parent-key="unit"
@@ -9,6 +9,6 @@
 
 <script>
 export default {
-	name: "infrastructure-asset",
+	name: "infrastructure-unit-asset",
 };
 </script>

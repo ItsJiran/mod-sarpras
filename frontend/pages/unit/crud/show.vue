@@ -16,7 +16,21 @@
 			</v-card-text>
 		</template>
 
-		<template v-slot:helpdesk></template>
+		<template v-slot:helpdesk="{ theme }">
+
+			<div class="text-overline mt-4">Aksi</div>
+			<v-divider></v-divider>
+
+			<v-btn
+				class="mt-3"
+				:color="theme"
+				block
+				variant="flat"
+				@click="$router.push({ name: 'infrastructure-unit-asset' })"
+				>List Asset</v-btn
+			>
+
+		</template>
 	</form-show>
 </template>
 

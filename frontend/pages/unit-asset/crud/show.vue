@@ -22,6 +22,6 @@
 
 <script>
 export default {
-	name: "infrastructure-asset-show",
+	name: "infrastructure-unit-asset-show",
 };
 </script>

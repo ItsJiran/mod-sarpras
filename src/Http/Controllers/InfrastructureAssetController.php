@@ -10,10 +10,7 @@ use Module\Infrastructure\Models\InfrastructureAsset;
 use Module\Infrastructure\Http\Resources\AssetCollection;
 use Module\Infrastructure\Http\Resources\AssetShowResource;
 
-// FROM MODULE HUMAN
-use Module\Human\Models\HumanUnit;
-use Module\Human\Http\Resources\UnitCollection;
-
+use Module\Infrastructure\Models\InfrastructureUnit;
 
 class InfrastructureAssetController extends Controller
 {
@@ -22,12 +19,12 @@ class InfrastructureAssetController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index(Request $request)
+    public function index(Request $request, InfrastructureUnit $unit)
     {
         Gate::authorize('view', InfrastructureAsset::class);
 
         return new AssetCollection(
-            InfrastructureAsset::applyMode($request->mode)
+            $unit->assets()
                 ->filter($request->filters)
                 ->search($request->findBy)
                 ->sortBy($request->sortBy)

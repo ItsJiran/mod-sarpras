@@ -17,6 +17,6 @@
 
 <script>
 export default {
-	name: "infrastructure-asset-create",
+	name: "infrastructure-unit-asset-create",
 };
 </script>
