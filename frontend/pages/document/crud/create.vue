@@ -58,6 +58,7 @@
 						:items="asset_types" 
 						label="Pilih Tipe Asset"
 						v-model="asset_type"
+						@update:model-value="getAssetList(record, units, this)"
 						></v-combobox>
 					</v-col>	
 				</v-row>
@@ -88,6 +89,9 @@ export default {
 
 			asset_type:undefined,
 			asset_types:undefined,
+
+			asset_id:undefined,
+			asset_list:undefined,
 		}
 	},
 	methods : {		
@@ -97,12 +101,23 @@ export default {
 			if ( data.asset_types ) {
 				return;
 			}  
+			
+			data.asset_list = undefined
 
 			this.$http(`infrastructure/api/ref-asset/type`).then(
 				(response) => {
 					data.asset_types = response;
 				}
 			);
+		},
+
+		getAssetList : function (record, units, data) {
+			this.$http(`infrastructure/api/ref-asset/${data.unit.id}/${data.asset_type}`).then(
+				(response) => {
+					data.asset_list = response;
+				}
+			)
+
 		},
 
 		selectType : function (record, data) {
