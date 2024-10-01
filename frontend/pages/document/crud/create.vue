@@ -26,7 +26,7 @@
 					<v-col cols="12">
 						<v-combobox
 						:items="type_key" 
-						label="Tipe Assets"
+						label="Tipe Document"
 						v-model="record.documentable_type_key"
 						:return-object="false"
 						@update:model-value="selectType(record, this)"
@@ -46,12 +46,20 @@
 							:items="units_slug" 
 							label="Pilih Unit"
 							v-model="record.slug_unit"
-							@update:model-value="selectUnit(record, units, this)"
+							@update:model-value="getAssetType($event, record, this)"
 							></v-combobox>
 						</v-col>
 					</v-row>
 
-
+					<v-row v-if="record.slug_unit != undefined" dense>
+						<v-col cols="12">
+							<v-combobox
+							:items="asset_types" 
+							label="Pilih Tipe Asset"
+							v-model="asset_type"
+							></v-combobox>
+						</v-col>				
+					</v-row>
 
 
 				</v-row>
@@ -77,13 +85,16 @@ export default {
 			formType: [
 				'LandCertificate',
 			],
-			unit: {}
+
+			asset_type:undefined,
+			assset_types:undefined,
 		}
 	},
-	methods : {
-		selectUnit : (record, units, data) => {			
-			data.unit = units[record.slug_unit];
+	methods : {		
+		getAssetType( event, record, data ){
+
 		},
+
 		selectType : (record, data) => {
 			data.currentFormType = record.documentable_type_key;
 		}
