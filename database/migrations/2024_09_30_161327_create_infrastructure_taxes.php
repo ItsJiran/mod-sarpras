@@ -14,10 +14,8 @@ return new class extends Migration
         Schema::create('infrastructure_taxes', function (Blueprint $table) {
             $table->id();
 
-            // tipe pajak berkala |  
+            // properties
             $table->string('name')->default('Pajak');
-
-            // descriptions
             $table->text('description')->nullable();
 
             // tipenya berakala / manual
@@ -26,8 +24,7 @@ return new class extends Migration
             // period day
             $table->integer('period_day')->default(0);
             $table->timestamp('duedate')->nullable();
-
-
+            
             // morphs eaither assets or maintenance
             $table->morphs('taxable');
 

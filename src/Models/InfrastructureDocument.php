@@ -57,6 +57,32 @@ class InfrastructureDocument extends Model
     protected $defaultOrder = 'name';
 
     /**
+     * ====================================================
+     * +---------------- RELATION METHODS ----------------+
+     * ====================================================
+     */
+
+    /**
+     * Get the model that the image belongs to.
+     */
+    public function documentable(): MorphTo
+    {
+        return $this->morphTo(__FUNCTION__, 'documentable_type', 'documentable_id');
+    }    
+
+    /**
+     * =====================================================
+     * +------------------ MAP RESOURCES ------------------+
+     * =====================================================
+     */
+
+    /**
+     * ================================================
+     * +------------------ MAP CRUD ------------------+
+     * ================================================
+     */
+
+    /**
      * The model store method
      *
      * @param Request $request

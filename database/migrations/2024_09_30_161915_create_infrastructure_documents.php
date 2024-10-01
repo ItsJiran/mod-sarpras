@@ -13,11 +13,15 @@ return new class extends Migration
     {
         Schema::create('infrastructure_documents', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('assets_id')->nullable();
+
+            // name / descriptions
+            $table->string('name')->default('Pajak');
+            $table->text('description')->nullable();
 
             // driver license etc            
             $table->morphs('documentable');
 
-            
             $table->jsonb('meta')->nullable();
             $table->softDeletes();
             $table->timestamps();
