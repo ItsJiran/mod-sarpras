@@ -14,6 +14,10 @@ use Module\Infrastructure\Models\InfrastructureUnit;
 
 class InfrastructureAssetController extends Controller
 {
+
+    // +-----------------------------------------------------
+    // +---------------- INDEX METHODS ----------------------
+
     /**
      * Display a listing of the resource.
      *
@@ -49,6 +53,10 @@ class InfrastructureAssetController extends Controller
                 ->paginate($request->itemsPerPage)
         );
     }
+
+
+    // +-----------------------------------------------------
+    // +---------------- STORE METHODS ----------------------
 
     /**
      * Store a newly created resource in storage.
@@ -89,6 +97,9 @@ class InfrastructureAssetController extends Controller
         return $this->store($request);
     }
 
+    // +----------------------------------------------------
+    // +---------------- SHOW METHODS ----------------------
+
     /**
      * Display the specified resource.
      *
@@ -114,6 +125,9 @@ class InfrastructureAssetController extends Controller
 
         return new AssetShowResource($asset);
     }
+
+    // +----------------------------------------------------
+    // +-------------- UPDATE METHODS ----------------------
 
     /**
      * Update the specified resource in storage.
@@ -158,6 +172,9 @@ class InfrastructureAssetController extends Controller
 
         return $this->update($request, $asset);
     }
+
+    // +----------------------------------------------------
+    // +------------- DESRTOY METHODS ----------------------
 
     /**
      * Remove the specified resource from storage.
@@ -210,4 +227,13 @@ class InfrastructureAssetController extends Controller
 
         return InfrastructureAsset::destroyRecord($infrastructureAsset);
     }
+
+    // +----------------------------------------------------
+    // +------------ REFRENCE METHODS ----------------------
+
+    public function refUnit(InfrastructureUnit $unit, Request $request)
+    {
+        return $unit->assets->forCombo();
+    }
+
 }
