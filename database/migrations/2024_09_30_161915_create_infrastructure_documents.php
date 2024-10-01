@@ -13,14 +13,14 @@ return new class extends Migration
     {
         Schema::create('infrastructure_documents', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('assets_id')->nullable();
+            $table->foreignId('asset_id')->nullable();
 
             // name / descriptions
             $table->string('name')->default('Pajak');
             $table->text('description')->nullable();
 
             // status : pemindahan etc
-            $table->string('status')->default('pending')->index();
+            $table->string('status')->default('tersedia')->index();
 
             // driver license etc            
             $table->morphs('documentable');

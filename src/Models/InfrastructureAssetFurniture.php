@@ -103,10 +103,10 @@ class InfrastructureAssetFurniture extends Model
     public static function mapStatus()
     {
         return [
-            'dijual',     //dijual
-            'rusak',  // rusak
+            'dijual',     // dijual
+            'rusak',      // rusak
             'peminjaman', // dipinjam
-            'tersedia',    //tersedia
+            'tersedia',   // tersedia
         ];
     }
 

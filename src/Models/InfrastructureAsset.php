@@ -13,6 +13,7 @@ use Module\System\Traits\HasPageSetup;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 // related assets models type
 use Module\Infrastructure\Models\InfrastructureAssetVehicle;
@@ -127,7 +128,15 @@ class InfrastructureAsset extends Model
     public function assetable(): MorphTo
     {
         return $this->morphTo(__FUNCTION__, 'assetable_type', 'assetable_id');
-    }          
+    }   
+    
+    /**
+     * Get the model that the image belongs to.
+     */
+    public function documents(): HasMany 
+    {
+        return $this->hasMany(InfrastructureDocument::class, 'asset_id');
+    }
 
     /**
      * ====================================================
@@ -157,6 +166,7 @@ class InfrastructureAsset extends Model
 
             'unit_id' => $model->unit_id,   
             'unit_name' => $unit->name,    
+
             'assetable_id' => $model->assetable_id,
             'assetable_type' => $model->assetable_type,
             'asset_type_key' => $asset_type_keys[$model->assetable_type],

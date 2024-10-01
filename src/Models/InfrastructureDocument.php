@@ -8,8 +8,13 @@ use Illuminate\Support\Facades\DB;
 use Module\System\Traits\Filterable;
 use Module\System\Traits\Searchable;
 use Module\System\Traits\HasPageSetup;
+
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Database\Eloquent\Relations\MorphTo;
+
+// relateds documents models type
+use Module\Infrastructure\Models\InfrastructureDocumentLandCertificate;
 
 class InfrastructureDocument extends Model
 {
@@ -50,6 +55,19 @@ class InfrastructureDocument extends Model
     ];
 
     /**
+     * The attributes that are mass assignable.
+     *
+     * @var array<int, string>
+     */
+    protected $fillable = [
+        'asset_id',
+        'name',
+        'description',
+        'status',
+        'documentable',
+    ];
+
+    /**
      * The default key for the order.
      *
      * @var string
@@ -68,13 +86,89 @@ class InfrastructureDocument extends Model
     public function documentable(): MorphTo
     {
         return $this->morphTo(__FUNCTION__, 'documentable_type', 'documentable_id');
-    }    
+    }
 
     /**
      * =====================================================
      * +------------------ MAP RESOURCES ------------------+
      * =====================================================
      */
+    
+     /**
+     * The model map combos method
+     *
+     * @param [type] $model
+     * @return void
+     */
+    public static function mapCombos(Request $request, $model = null): array
+    {
+        return array_merge([
+            
+        ]);
+    }
+
+    /**
+     * The model map combos method
+     *
+     * @param [type] $model
+     * @return void
+     */
+    public static function mapResourceShow(Request $request, $model = null): array
+    {
+        // documents key type
+        $documents_type_keys = self::mapTypeClass(true);
+
+        $document_properties = [
+            'asset_id' => $model->asset_id,
+            'name' => $model->name,
+            'description' => $model->description,
+            'status' => $model->status,
+            
+            'documentable_id' => $model->documentable_id,
+            'documentable_type' => $model->documentable_type,
+            'documentable_key' => $documents_type_keys[$model->documentable_type],
+        ];
+
+        // documents type properties
+        $documentable_type_properties = $model->documentable_type::mapResourceShow();
+
+        return array_merge($document_properties,$documentable_type_properties);
+    }
+
+     /**
+     * The model map combos method
+     *
+     * @return array
+     */
+    public static function mapStatus(): array 
+    {
+        return [
+            'tersedia',
+            'perubahan',
+            'pembaharuan',
+            'mutasi',
+            'pinjam',
+        ];
+    }
+
+    /**
+     * The model map combos method
+     *
+     * @param [type] $model
+     * @return array
+     */
+    public static function mapTypeClass($reverse = false) : array
+    {
+        if(!$reverse) {
+            return [
+                'LandCertificate' => InfrastructureDocumentLandCertificate::class,
+            ];
+        } else {
+            return [
+                InfrastructureDocumentLandCertificate::class => 'LandCertificate',
+            ];
+        }
+    }
 
     /**
      * ================================================

@@ -31,14 +31,14 @@ class InfrastructureDocumentLandCertificate extends Model
      *
      * @var string
      */
-    protected $table = 'infrastructure_documentlandcertificates';
+    protected $table = 'infrastructure_document_land_certificates';
 
     /**
      * The roles variable
      *
      * @var array
      */
-    protected $roles = ['infrastructure-documentlandcertificate'];
+    protected $roles = ['infrastructure-document-land-certificate'];
 
     /**
      * The attributes that should be cast to native types.
@@ -55,6 +55,27 @@ class InfrastructureDocumentLandCertificate extends Model
      * @var string
      */
     protected $defaultOrder = 'name';
+
+    /**
+     * ====================================================
+     * +------------------ MAP RELATION ------------------+
+     * ====================================================
+     */
+
+
+     /**
+     * ====================================================
+     * +------------------ MAP RESOURCE ------------------+
+     * ====================================================
+     */
+
+
+
+    /**
+     * ================================================
+     * +------------------ MAP CRUD ------------------+
+     * ================================================
+     *
 
     /**
      * The model store method

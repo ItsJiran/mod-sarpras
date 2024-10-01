@@ -13,6 +13,8 @@ return new class extends Migration
     {
         Schema::create('infrastructure_document_land_certificates', function (Blueprint $table) {
             $table->id();
+            $table->string('nik');
+            $table->string('nip');            
             $table->timestamps();
         });
     }
