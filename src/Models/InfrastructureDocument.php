@@ -103,7 +103,10 @@ class InfrastructureDocument extends Model
     public static function mapCombos(Request $request, $model = null): array
     {
         return array_merge([
-            
+            'status' => self::mapStatus(),
+            // type class
+            'type' => self::mapTypeClass(),
+            'type_key' => self::mapTypeKeyClass(),
         ]);
     }
 
@@ -168,6 +171,19 @@ class InfrastructureDocument extends Model
                 InfrastructureDocumentLandCertificate::class => 'LandCertificate',
             ];
         }
+    }
+
+    /**
+     * The model map combos method
+     *
+     * @param [type] $model
+     * @return array
+     */
+    public static function mapTypeKeyClass() : array
+    {
+        return [
+            'LandCertificate',              
+        ];
     }
 
     /**
