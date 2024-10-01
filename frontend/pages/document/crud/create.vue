@@ -46,27 +46,25 @@
 							:items="units_slug" 
 							label="Pilih Unit"
 							v-model="record.slug_unit"
-							@update:model-value="getAssetType($event, record, this)"
+							@update:model-value="getAssetType(record, units, this)"
 							></v-combobox>
 						</v-col>
 					</v-row>
-
-					<v-row v-if="record.slug_unit != undefined" dense>
-						<v-col cols="12">
-							<v-combobox
-							:items="asset_types" 
-							label="Pilih Tipe Asset"
-							v-model="asset_type"
-							></v-combobox>
-						</v-col>				
-					</v-row>
-
-
 				</v-row>
+
+				<v-row v-if="record.slug_unit != undefined" dense>
+					<v-col cols="12">
+						<v-combobox
+						:items="asset_types" 
+						label="Pilih Tipe Asset"
+						v-model="asset_type"
+						></v-combobox>
+					</v-col>	
+				</v-row>
+
+				<component :record="record" :is="currentFormType"/>	
+
 			</v-card-text>
-
-			<component :record="record" :is="currentFormType"/>	
-
 		</template>
 	</form-create>
 </template>
@@ -86,16 +84,28 @@ export default {
 				'LandCertificate',
 			],
 
+			unit : {},
+
 			asset_type:undefined,
-			assset_types:undefined,
+			asset_types:undefined,
 		}
 	},
 	methods : {		
-		getAssetType( event, record, data ){
+		getAssetType : function ( record, units, data ) {			
+			data.unit = units[record.slug_unit];
 
+			if ( data.asset_types ) {
+				return;
+			}  
+
+			this.$http(`infrastructure/api/ref-asset/type`).then(
+				(response) => {
+					data.asset_types = response;
+				}
+			);
 		},
 
-		selectType : (record, data) => {
+		selectType : function (record, data) {
 			data.currentFormType = record.documentable_type_key;
 		}
 	},
