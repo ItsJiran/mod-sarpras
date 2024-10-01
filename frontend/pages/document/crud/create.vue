@@ -1,7 +1,7 @@
 <template>
 	<form-create with-helpdesk>
 		<template v-slot:default="{ 
-			combos : { status, type_key },
+			combos: { type_key, units, units_slug, type_status_map, status },			
 			record
 			}">
 			<v-card-text>
@@ -33,6 +33,27 @@
 						></v-combobox>
 					</v-col>
 
+					<v-row dense>
+						<v-col cols="6">
+							<v-text-field
+								label="Nama Unit"
+								v-model="unit.name"
+								:readonly="true"					
+							></v-text-field>
+						</v-col>
+						<v-col cols="6">
+							<v-combobox
+							:items="units_slug" 
+							label="Pilih Unit"
+							v-model="record.slug_unit"
+							@update:model-value="selectUnit(record, units, this)"
+							></v-combobox>
+						</v-col>
+					</v-row>
+
+
+
+
 				</v-row>
 			</v-card-text>
 
@@ -55,17 +76,14 @@ export default {
 			currentFormType:"",
 			formType: [
 				'LandCertificate',
-			]
+			],
+			unit: {}
 		}
 	},
 	methods : {
-		// selectUnit : (record, units, data) => {			
-		// 	data.unit = units[record.slug_unit];
-		// },
-		// selectAssetsType : (record, status_map, data) => {
-		// 	data.currentFormType = record.asset_type_key;
-		// 	record.status = status_map[record.asset_type_key][0];
-		// }
+		selectUnit : (record, units, data) => {			
+			data.unit = units[record.slug_unit];
+		},
 		selectType : (record, data) => {
 			data.currentFormType = record.documentable_type_key;
 		}

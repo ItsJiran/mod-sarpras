@@ -231,9 +231,20 @@ class InfrastructureAssetController extends Controller
     // +----------------------------------------------------
     // +------------ REFRENCE METHODS ----------------------
 
-    public function refUnit(InfrastructureUnit $unit, Request $request)
+    public function refAsset(Infrastructure $unit, Request $request)
     {
-        return $unit->assets->forCombo();
+        return $unit->assets()->forCombo();
+    }
+
+    public function refAssetType(Infrastructure $unit, $asset_type, Request $request)
+    {
+        $type_model_class = InfrastructureAsset::mapTypeClass()[$asset_type];
+        return $unit->assets()->where('assetable_type',$type_model_class);
+    }
+
+    public function refType(Request $request)
+    {
+        return InfrastructureAsset::mapTypeKeyClass();
     }
 
 }

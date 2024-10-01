@@ -22,7 +22,9 @@ Route::resource('asset',InfrastructureAssetController::class)->parameters([
 ]);
 
 // +-- manually from unit/asset
-Route::get('ref-unit/{unit}/asset',[InfrastructureAssetController::class, 'refUnit']);
+Route::get('ref-asset/{unit}/asset',[InfrastructureAssetController::class, 'refAsset']);
+Route::get('ref-asset/{unit}/{asset_type}/asset',[InfrastructureAssetController::class, 'refAssetType']);
+Route::get('ref-asset/type',[InfrastructureAssetController::class, 'refType']);
 
 Route::get('unit/{unit}/asset',[InfrastructureAssetController::class, 'indexFromUnit']);
 Route::post('unit/{unit}/asset',[InfrastructureAssetController::class, 'storeFromUnit']);
