@@ -231,12 +231,12 @@ class InfrastructureAssetController extends Controller
     // +----------------------------------------------------
     // +------------ REFRENCE METHODS ----------------------
 
-    public function refAsset(Infrastructure $unit, Request $request)
+    public function refAsset(InfrastructureUnit $unit, Request $request)
     {
-        $assets = $unit->assets();
+        $assets = $unit->assets;
         $assets_slugs = [];
 
-        foreach($assets as $key => $vaue){
+        foreach($assets as $key => $value){
             $assets_slugs[$value->slug] = $value;
         }
 
@@ -246,14 +246,14 @@ class InfrastructureAssetController extends Controller
         ],200);
     }
 
-    public function refAssetType(Infrastructure $unit, $asset_type, Request $request)
+    public function refAssetType(InfrastructureUnit $unit, $asset_type, Request $request)
     {
         $type_model_class = InfrastructureAsset::mapTypeClass()[$asset_type];
 
-        $assets = $unit->assets()->where('assetable_type',$type_model_class);
+        $assets = $unit->assets->where('assetable_type',$type_model_class);
         $assets_slugs = [];
 
-        foreach($assets as $key => $vaue){
+        foreach($assets as $key => $value){
             $assets_slugs[$value->slug] = $value;
         }
 

@@ -63,6 +63,23 @@
 					</v-col>	
 				</v-row>
 
+				<v-row v-if="asset_type != undefined" dense>
+					<v-col cols="6">
+						<v-text-field
+							label="Nama Asset"
+							v-model="asset.name"
+						></v-text-field>
+					</v-col>
+					<v-col cols="6">
+						<v-combobox
+						:items="assets_slugs" 
+						label="Pilih Asset Slug"
+						v-model="record.asset_slug"
+						@update:model-value="getAsset(record, this)"
+						></v-combobox>
+					</v-col>
+				</v-row>
+
 				<component :record="record" :is="currentFormType"/>	
 
 			</v-card-text>
@@ -90,8 +107,10 @@ export default {
 			asset_type:undefined,
 			asset_types:undefined,
 
-			asset_id:undefined,
-			asset_list:undefined,
+			asset:undefined,
+
+			assets:undefined,
+			assets_slugs:undefined,
 		}
 	},
 	methods : {		
@@ -116,10 +135,15 @@ export default {
 
 			this.$http(`infrastructure/api/ref-asset/${data.unit.id}/${data.asset_type}/asset`).then(
 				(response) => {
-					data.asset_list = response;
+					data.assets_slugs = response.assets_slugs;
+					data.assets = response.assets;
 				}
 			)
 
+		},
+
+		getAsset : function (record, data) {
+			data.asset = data.assets_slugs[record.asset_slug];
 		},
 
 		selectType : function (record, data) {
