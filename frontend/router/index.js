@@ -89,6 +89,48 @@ export default {
 		},
 
 		{
+			path: "document",
+			component: () =>
+				import(
+					/* webpackChunkName: "infrastructure" */ "@modules/infrastructure/frontend/pages/document/index.vue"
+				),
+			children: [
+				{
+					path: "",
+					name: "infrastructure-document",
+					component: () =>
+						import(
+							/* webpackChunkName: "infrastructure" */ "@modules/infrastructure/frontend/pages/document/crud/data.vue"
+						),
+				},
+				{
+					path: "create",
+					name: "infrastructure-document-create",
+					component: () =>
+						import(
+							/* webpackChunkName: "infrastructure" */ "@modules/infrastructure/frontend/pages/document/crud/create.vue"
+						),
+				},
+				{
+					path: ":document/show",
+					name: "infrastructure-document-show",
+					component: () =>
+						import(
+							/* webpackChunkName: "infrastructure" */ "@modules/infrastructure/frontend/pages/document/crud/show.vue"
+						),
+				},		
+				{
+					path: ":document/edit",
+					name: "infrastructure-document-edit",
+					component: () =>
+						import(
+							/* webpackChunkName: "infrastructure" */ "@modules/infrastructure/frontend/pages/document/crud/edit.vue"
+						),
+				},			
+			]
+		},
+
+		{
 			path: "asset",
 			component: () =>
 				import(

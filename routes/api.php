@@ -35,9 +35,9 @@ Route::resource('document',InfrastructureDocumentController::class)->parameters(
     'document' => 'infrastructureDocument'
 ]);
 
-
-
-
+// +-- manually from asset/document
+Route::get('asset/{asset}/document',[InfrastructureDocumentController::class, 'indexFromAsset']);
+Route::post('asset/{asset}/document',[InfrastructureDocumentController::class, 'storeFromAsset']);
 
 
 

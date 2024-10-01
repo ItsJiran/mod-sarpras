@@ -158,8 +158,7 @@ class InfrastructureAssetLand extends Model
     public static function storeRecord(Request $request, InfrastructureAsset $asset_model )    
     {
         $model = new static();
-        try {
-            $model->asset_id = $asset_model->id;           
+        try {         
             $model->receive_date = $request->receive_date;
             $model->receive_price = $request->receive_price;
             $model->status = $request->status;

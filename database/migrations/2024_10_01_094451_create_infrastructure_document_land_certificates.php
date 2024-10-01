@@ -15,6 +15,8 @@ return new class extends Migration
             $table->id();
             $table->string('nik');
             $table->string('nip');            
+            $table->jsonb('meta')->nullable();
+            $table->softDeletes();
             $table->timestamps();
         });
     }

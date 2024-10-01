@@ -3,11 +3,15 @@
 namespace Module\Infrastructure\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Gate;
-use Module\Infrastructure\Models\InfrastructureDocument;
 use Module\Infrastructure\Http\Resources\DocumentCollection;
 use Module\Infrastructure\Http\Resources\DocumentShowResource;
+
+use Module\Infrastructure\Models\InfrastructureDocument;
+use Module\Infrastructure\Models\InfrastructureAsset;
+use Module\Infrastructure\Models\InfrastructureUnit;
 
 class InfrastructureDocumentController extends Controller
 {
@@ -30,6 +34,24 @@ class InfrastructureDocumentController extends Controller
     }
 
     /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function indexFromAsset(Request $request, InfrastructureAsset $asset)
+    {
+        Gate::authorize('view', InfrastructureDocument::class);
+
+        return new DocumentCollection(
+            $asset->documents()
+                ->filter($request->filters)
+                ->search($request->findBy)
+                ->sortBy($request->sortBy)
+                ->paginate($request->itemsPerPage)
+        );
+    }
+
+    /**
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request $request
@@ -42,14 +64,41 @@ class InfrastructureDocumentController extends Controller
         // request
         $request->validate([
             'name' => 'required|min:3',
+            'status' => [
+                'required',
+                Rule::in( InfrastructureDocument::mapStatus() )
+            ],
             'documentable_type_key' => [
                 'required',
                 Rule::in( InfrastructureDocument::mapTypeKeyClass() )
             ],
         ]);
 
-        return InfrastructureDocument::storeRecord($request);
+        // type class
+        $map_type_class = InfrastructureDocument::mapTypeClass();
+        $type_model_class = $map_type_class[ $request->documentable_type_key ];
+
+        // get request validatoin from the type_model
+        $request->validate( $type_model_class::mapStoreValidation() );
+
+        return InfrastructureDocument::storeRecord($request, $type_model_class);
     }
+
+    /**
+     * Store a newly created resource in storage.
+     *
+     * @param  \Illuminate\Http\Request $request
+     * @return \Illuminate\Http\Response
+     */
+    public function storeFromAsset(Request $request, Infrastructure $asset)
+    {
+        Gate::authorize('create', InfrastructureAsset::class);
+
+        $request->merge([ 'asset_id' => $asset->id ]);
+
+        return $this->store($request);
+    }
+
 
     /**
      * Display the specified resource.
@@ -57,7 +106,7 @@ class InfrastructureDocumentController extends Controller
      * @param  \Module\Infrastructure\Models\InfrastructureDocument $infrastructureDocument
      * @return \Illuminate\Http\Response
      */
-    public function show(InfrastructureDocument $infrastructureDocument)
+    public  function show(InfrastructureDocument $infrastructureDocument)
     {
         Gate::authorize('show', $infrastructureDocument);
 

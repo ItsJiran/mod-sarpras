@@ -11,6 +11,8 @@ use Module\System\Traits\HasPageSetup;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
+use Module\Infrastructure\Models\InfrastructureDocument;
+
 class InfrastructureDocumentLandCertificate extends Model
 {
     use Filterable;
@@ -50,6 +52,16 @@ class InfrastructureDocumentLandCertificate extends Model
     ];
 
     /**
+     * The attributes that are mass assignable.
+     *
+     * @var array<int, string>
+     */
+    protected $fillable = [
+        'nik',
+        'nip',
+    ];
+
+    /**
      * The default key for the order.
      *
      * @var string
@@ -69,6 +81,22 @@ class InfrastructureDocumentLandCertificate extends Model
      * ====================================================
      */
 
+     public static function mapResourceShow(Request $request, $model = null)
+     {
+         return [
+             'nik' => $model->nik,
+             'nip' => $model->nip,
+         ];
+     }
+
+    public static function mapStoreValidation()
+    {
+        return [
+            'nik' => 'required',
+            'nip' => 'required',
+        ];
+    }
+
 
 
     /**
@@ -83,26 +111,16 @@ class InfrastructureDocumentLandCertificate extends Model
      * @param Request $request
      * @return void
      */
-    public static function storeRecord(Request $request)
+    public static function storeRecord(Request $request, InfrastructureDocument $document_model)
     {
         $model = new static();
-
-        DB::connection($model->connection)->beginTransaction();
-
         try {
-            // ...
+            $model->nik = $request->nik;
+            $model->nip = $request->nip;
             $model->save();
-
-            DB::connection($model->connection)->commit();
-
-            // return new DocumentLandCertificateResource($model);
-        } catch (\Exception $e) {
-            DB::connection($model->connection)->rollBack();
-
-            return response()->json([
-                'success' => false,
-                'message' => $e->getMessage()
-            ], 500);
+            return $model;
+        } catch (\Exception $e) {            
+            throw $e;
         }
     }
 
@@ -115,22 +133,12 @@ class InfrastructureDocumentLandCertificate extends Model
      */
     public static function updateRecord(Request $request, $model)
     {
-        DB::connection($model->connection)->beginTransaction();
-
         try {
-            // ...
+            $model->nik = $request->nik;
+            $model->nip = $request->nip;
             $model->save();
-
-            DB::connection($model->connection)->commit();
-
-            // return new DocumentLandCertificateResource($model);
         } catch (\Exception $e) {
-            DB::connection($model->connection)->rollBack();
-
-            return response()->json([
-                'success' => false,
-                'message' => $e->getMessage()
-            ], 500);
+            throw $e;
         }
     }
 

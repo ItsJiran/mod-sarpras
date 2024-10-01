@@ -122,8 +122,8 @@ class InfrastructureDocument extends Model
         $documents_type_keys = self::mapTypeClass(true);
 
         $document_properties = [
-            'asset_id' => $model->asset_id,
             'name' => $model->name,
+            'asset_id' => $model->asset_id,
             'description' => $model->description,
             'status' => $model->status,
             
@@ -133,7 +133,7 @@ class InfrastructureDocument extends Model
         ];
 
         // documents type properties
-        $documentable_type_properties = $model->documentable_type::mapResourceShow();
+        $documentable_type_properties = $model->documentable_type::mapResourceShow($request, $model->documentable);
 
         return array_merge($document_properties,$documentable_type_properties);
     }
@@ -198,22 +198,29 @@ class InfrastructureDocument extends Model
      * @param Request $request
      * @return void
      */
-    public static function storeRecord(Request $request)
+    public static function storeRecord(Request $request, $type_model_class)
     {
         $model = new static();
 
         DB::connection($model->connection)->beginTransaction();
 
         try {
-            // ...
+            $model->asset_id = $request->asset_id;            
+            $model->name = $request->name;
+            $model->description = $request->description;
+            $model->status = $request->status;
+        
+            // handling morph
+            $type_model = $type_model_class::storeRecord($request, $model);
+
+            $model->documentable_id = $type_model->id;
+            $model->documentable_type = $type_model::class;
+
             $model->save();
 
             DB::connection($model->connection)->commit();
-
-            // return new DocumentResource($model);
         } catch (\Exception $e) {
             DB::connection($model->connection)->rollBack();
-
             return response()->json([
                 'success' => false,
                 'message' => $e->getMessage()

@@ -46,7 +46,7 @@
 import LandCertificate from "./create-part/create-land-certificate";
 
 export default {
-	name: "infrastructure-asset-document-create",
+	name: "infrastructure-document-create",
 	components : {
 		LandCertificate,
 	},
