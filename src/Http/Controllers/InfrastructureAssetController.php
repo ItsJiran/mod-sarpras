@@ -233,13 +233,34 @@ class InfrastructureAssetController extends Controller
 
     public function refAsset(Infrastructure $unit, Request $request)
     {
-        return $unit->assets()->forCombo();
+        $assets = $unit->assets();
+        $assets_slugs = [];
+
+        foreach($assets as $key => $vaue){
+            $assets_slugs[$value->slug] = $value;
+        }
+
+        return response()->json([
+            'assets_slugs' => $assets_slugs,
+            'assets' => $assets,
+        ],200);
     }
 
     public function refAssetType(Infrastructure $unit, $asset_type, Request $request)
     {
         $type_model_class = InfrastructureAsset::mapTypeClass()[$asset_type];
-        return $unit->assets()->where('assetable_type',$type_model_class);
+
+        $assets = $unit->assets()->where('assetable_type',$type_model_class);
+        $assets_slugs = [];
+
+        foreach($assets as $key => $vaue){
+            $assets_slugs[$value->slug] = $value;
+        }
+
+        return response()->json([
+            'assets_slugs' => $assets_slugs,
+            'assets' => $assets,
+        ],200);
     }
 
     public function refType(Request $request)

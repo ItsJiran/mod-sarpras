@@ -112,7 +112,9 @@ export default {
 		},
 
 		getAssetList : function (record, units, data) {
-			this.$http(`infrastructure/api/ref-asset/${data.unit.id}/${data.asset_type}`).then(
+
+
+			this.$http(`infrastructure/api/ref-asset/${data.unit.id}/${data.asset_type}/asset`).then(
 				(response) => {
 					data.asset_list = response;
 				}
