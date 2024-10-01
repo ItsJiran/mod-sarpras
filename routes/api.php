@@ -4,15 +4,18 @@ use Illuminate\Support\Facades\Route;
 use Module\Infrastructure\Http\Controllers\DashboardController;
 use Module\Infrastructure\Http\Controllers\InfrastructureAssetController;
 use Module\Infrastructure\Http\Controllers\InfrastructureUnitController;
+use Module\Infrastructure\Http\Controllers\InfrastructureDocumentController;
 
 // +-- dashboard resource
 Route::get('dashboard', [DashboardController::class, 'index']);
 
+// +-----------------------------------
 // +-- from resource module human unit
 Route::resource('unit', InfrastructureUnitController::class)->parameters([
     'unit'=>'infrastructureUnit'
 ]);
 
+// +-----------------------------------
 // +-- from resource module asset
 Route::resource('asset',InfrastructureAssetController::class)->parameters([
     'asset' => 'infrastructureAsset'
@@ -25,4 +28,16 @@ Route::post('unit/{unit}/asset',[InfrastructureAssetController::class, 'storeFro
 Route::get('unit/{unit}/asset/{asset}',[InfrastructureAssetController::class, 'showFromUnit']);
 Route::put('unit/{unit}/asset/{asset}',[InfrastructureAssetController::class, 'updateFromUnit']);
 Route::delete('unit/{unit}/asset/{asset}',[InfrastructureAssetController::class, 'destroyFromUnit']);
+
+// +-----------------------------------
+// +-- from resource module asset
+Route::resource('document',InfrastructureDocumentController::class)->parameters([
+    'document' => 'infrastructureDocument'
+]);
+
+
+
+
+
+
 

@@ -39,7 +39,14 @@ class InfrastructureDocumentController extends Controller
     {
         Gate::authorize('create', InfrastructureDocument::class);
 
-        $request->validate([]);
+        // request
+        $request->validate([
+            'name' => 'required|min:3',
+            'documentable_type_key' => [
+                'required',
+                Rule::in( InfrastructureDocument::mapTypeKeyClass() )
+            ],
+        ]);
 
         return InfrastructureDocument::storeRecord($request);
     }
