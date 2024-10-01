@@ -2,10 +2,10 @@
 
 namespace Module\Infrastructure\Http\Resources;
 
-use Module\Infrastructure\Models\InfrastructureTaxRecord;
+use Module\Infrastructure\Models\InfrastructureDocumentLandCertificate;
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class TaxRecordResource extends JsonResource
+class DocumentLandCertificateResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -15,6 +15,6 @@ class TaxRecordResource extends JsonResource
      */
     public function toArray($request)
     {
-        return InfrastructureTaxRecord::mapResource($request, $this);
+        return InfrastructureDocumentLandCertificate::mapResource($request, $this);
     }
 }

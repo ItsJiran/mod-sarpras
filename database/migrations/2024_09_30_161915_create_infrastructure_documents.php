@@ -19,6 +19,9 @@ return new class extends Migration
             $table->string('name')->default('Pajak');
             $table->text('description')->nullable();
 
+            // status : pemindahan etc
+            $table->string('status')->default('pending')->index();
+
             // driver license etc            
             $table->morphs('documentable');
 

@@ -11,14 +11,8 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('infrastructure_tax_records', function (Blueprint $table) {
+        Schema::create('infrastructure_document_land_certificates', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('tax_id');
-
-            
-
-            $table->jsonb('meta')->nullable();
-            $table->softDeletes();
             $table->timestamps();
         });
     }
@@ -28,6 +22,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('infrastructure_tax_records');
+        Schema::dropIfExists('infrastructure_document_land_certificates');
     }
 };

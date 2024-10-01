@@ -2,10 +2,10 @@
 
 namespace Module\Infrastructure\Http\Resources;
 
-use Module\Infrastructure\Models\InfrastructureMaintenanceRecord;
+use Module\Infrastructure\Models\InfrastructureDocumentLandCertificate;
 use Illuminate\Http\Resources\Json\ResourceCollection;
 
-class MaintenanceRecordCollection extends ResourceCollection
+class DocumentLandCertificateCollection extends ResourceCollection
 {
     /**
      * Transform the resource collection into an array.
@@ -15,7 +15,7 @@ class MaintenanceRecordCollection extends ResourceCollection
      */
     public function toArray($request)
     {
-        return MaintenanceRecordResource::collection($this->collection);
+        return DocumentLandCertificateResource::collection($this->collection);
     }
 
     /**
@@ -34,34 +34,34 @@ class MaintenanceRecordCollection extends ResourceCollection
         return [
             'setups' => [
                 /** the page combo */
-                'combos' => InfrastructureMaintenanceRecord::mapCombos($request),
+                'combos' => InfrastructureDocumentLandCertificate::mapCombos($request),
 
                 /** the page data filter */
-                'filters' => InfrastructureMaintenanceRecord::mapFilters(),
+                'filters' => InfrastructureDocumentLandCertificate::mapFilters(),
 
                 /** the table header */
-                'headers' => InfrastructureMaintenanceRecord::mapHeaders($request),
+                'headers' => InfrastructureDocumentLandCertificate::mapHeaders($request),
 
                 /** the page icon */
-                'icon' => InfrastructureMaintenanceRecord::getPageIcon('infrastructure-maintenancerecord'),
+                'icon' => InfrastructureDocumentLandCertificate::getPageIcon('infrastructure-documentlandcertificate'),
 
                 /** the record key */
-                'key' => InfrastructureMaintenanceRecord::getDataKey(),
+                'key' => InfrastructureDocumentLandCertificate::getDataKey(),
 
                 /** the page default */
-                'recordBase' => InfrastructureMaintenanceRecord::mapRecordBase($request),
+                'recordBase' => InfrastructureDocumentLandCertificate::mapRecordBase($request),
 
                 /** the page statuses */
-                'statuses' => InfrastructureMaintenanceRecord::mapStatuses($request),
+                'statuses' => InfrastructureDocumentLandCertificate::mapStatuses($request),
 
                 /** the page data mode */
                 'trashed' => $request->trashed ?: false,
 
                 /** the page title */
-                'title' => InfrastructureMaintenanceRecord::getPageTitle($request, 'infrastructure-maintenancerecord'),
+                'title' => InfrastructureDocumentLandCertificate::getPageTitle($request, 'infrastructure-documentlandcertificate'),
 
                 /** the usetrash flag */
-                'usetrash' => InfrastructureMaintenanceRecord::hasSoftDeleted(),
+                'usetrash' => InfrastructureDocumentLandCertificate::hasSoftDeleted(),
             ]
         ];
     }

@@ -3,10 +3,10 @@
 namespace Module\Infrastructure\Http\Resources;
 
 use Illuminate\Http\Resources\Json\JsonResource;
-use Module\Infrastructure\Models\InfrastructureTaxRecord;
+use Module\Infrastructure\Models\InfrastructureDocumentLandCertificate;
 use Module\System\Http\Resources\UserLogActivity;
 
-class TaxRecordShowResource extends JsonResource
+class DocumentLandCertificateShowResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -20,25 +20,25 @@ class TaxRecordShowResource extends JsonResource
             /**
              * the record data
              */
-            'record' => InfrastructureTaxRecord::mapResourceShow($request, $this),
+            'record' => InfrastructureDocumentLandCertificate::mapResourceShow($request, $this),
 
             /**
              * the page setups
              */
             'setups' => [
-                'combos' => InfrastructureTaxRecord::mapCombos($request, $this),
+                'combos' => InfrastructureDocumentLandCertificate::mapCombos($request, $this),
 
-                'icon' => InfrastructureTaxRecord::getPageIcon('infrastructure-taxrecord'),
+                'icon' => InfrastructureDocumentLandCertificate::getPageIcon('infrastructure-documentlandcertificate'),
 
-                'key' => InfrastructureTaxRecord::getDataKey(),
+                'key' => InfrastructureDocumentLandCertificate::getDataKey(),
 
                 'logs' => $request->activities ? UserLogActivity::collection($this->activitylogs) : null,
 
                 'softdelete' => $this->trashed() ?: false,
 
-                'statuses' => InfrastructureTaxRecord::mapStatuses($request, $this),
+                'statuses' => InfrastructureDocumentLandCertificate::mapStatuses($request, $this),
 
-                'title' => InfrastructureTaxRecord::getPageTitle($request, 'infrastructure-taxrecord'),
+                'title' => InfrastructureDocumentLandCertificate::getPageTitle($request, 'infrastructure-documentlandcertificate'),
             ],
         ];
     }
