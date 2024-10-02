@@ -13,6 +13,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 // relateds documents models type
 use Module\Infrastructure\Models\InfrastructureDocumentLandCertificate;
@@ -173,8 +174,11 @@ class InfrastructureDocument extends Model
 
         // assets documents type properties 
         $document_asset_properties = [];
-        if ( is_null($document_properties->asset_id) ) {
-            $document_asset_properties = $model->asset->mapResourceShow();
+        if ( !is_null($model->asset_id) ) {
+            $document_asset_properties = $model->asset::mapResourceShow( 
+                $request,
+                $model->asset,
+            );
         }
 
         return array_merge(
