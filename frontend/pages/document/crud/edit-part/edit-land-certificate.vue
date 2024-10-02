@@ -1,4 +1,5 @@
 <template>
+	<v-card-text>
 		<v-row dense>
 			<v-col cols="12">
 				<v-text-field
@@ -15,11 +16,12 @@
 				></v-text-field>
 			</v-col>
 		</v-row>
+	</v-card-text>
 </template>
 
 <script>
 export default {
-	name: "infrastructure-document-create-land-certificate",
+	name: "infrastructure-document-edit-land-certificate",
 	props: ['record'],
 };
 </script>

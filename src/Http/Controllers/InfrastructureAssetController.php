@@ -252,12 +252,15 @@ class InfrastructureAssetController extends Controller
 
         $assets = $unit->assets->where('assetable_type',$type_model_class);
         $assets_slugs = [];
+        $assets_slugs_combos = [];
 
         foreach($assets as $key => $value){
             $assets_slugs[$value->slug] = $value;
+            array_push( $assets_slugs_combos, $value->slug );
         }
 
         return response()->json([
+            'assets_slugs_combos' => $assets_slugs_combos,
             'assets_slugs' => $assets_slugs,
             'assets' => $assets,
         ],200);

@@ -228,11 +228,12 @@ class InfrastructureDocument extends Model
     public static function storeRecord(Request $request, $type_model_class)
     {
         $model = new static();
-
+        
         DB::connection($model->connection)->beginTransaction();
 
         try {
-            $model->asset_id = $request->asset_id;            
+            $model->asset_id = $request->asset_id; 
+                        
             $model->name = $request->name;
             $model->description = $request->description;
             $model->status = $request->status;
