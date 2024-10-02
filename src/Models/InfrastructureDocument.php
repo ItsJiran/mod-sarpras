@@ -12,6 +12,7 @@ use Module\System\Traits\HasPageSetup;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 // relateds documents models type
 use Module\Infrastructure\Models\InfrastructureDocumentLandCertificate;
@@ -90,6 +91,14 @@ class InfrastructureDocument extends Model
     }
 
     /**
+     * Get the model that the image belongs to.
+     */
+    public function asset(): BelongsTo
+    {
+        return $this->belongsTo(InfrastructureAsset::class, 'asset_id');
+    }
+
+    /**
      * =====================================================
      * +------------------ MAP RESOURCES ------------------+
      * =====================================================
@@ -162,7 +171,17 @@ class InfrastructureDocument extends Model
         // documents type properties
         $documentable_type_properties = $model->documentable_type::mapResourceShow($request, $model->documentable);
 
-        return array_merge($document_properties,$documentable_type_properties);
+        // assets documents type properties 
+        $document_asset_properties = [];
+        if ( is_null($document_properties->asset_id) ) {
+            $document_asset_properties = $model->asset->mapResourceShow();
+        }
+
+        return array_merge(
+            $document_properties,
+            $documentable_type_properties,
+            $document_asset_properties,
+        );
     }
 
      /**
