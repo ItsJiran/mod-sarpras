@@ -90,9 +90,9 @@ class InfrastructureDocumentController extends Controller
      * @param  \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response
      */
-    public function storeFromAsset(Request $request, Infrastructure $asset)
+    public function storeFromAsset(Request $request, InfrastructureAsset $asset)
     {
-        Gate::authorize('create', InfrastructureAsset::class);
+        Gate::authorize('create', InfrastructureDocument::class);
 
         $request->merge([ 'asset_id' => $asset->id ]);
 
@@ -106,12 +106,26 @@ class InfrastructureDocumentController extends Controller
      * @param  \Module\Infrastructure\Models\InfrastructureDocument $infrastructureDocument
      * @return \Illuminate\Http\Response
      */
-    public  function show(InfrastructureDocument $infrastructureDocument)
+    public function show(InfrastructureDocument $infrastructureDocument)
     {
         Gate::authorize('show', $infrastructureDocument);
 
         return new DocumentShowResource($infrastructureDocument);
     }
+
+    /**
+     * Display the specified resource.
+     *
+     * @param  \Module\Infrastructure\Models\InfrastructureDocument $infrastructureDocument
+     * @return \Illuminate\Http\Response
+     */
+    public function showFromAsset(InfrastructureAsset $asset, InfrastructureDocument $document)
+    {
+        Gate::authorize('show', $document);
+
+        return $this->show($document);
+    }
+
 
     /**
      * Update the specified resource in storage.

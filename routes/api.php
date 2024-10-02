@@ -40,6 +40,7 @@ Route::resource('document',InfrastructureDocumentController::class)->parameters(
 ]);
 
 // +-- manually from asset/document
+Route::get('asset/{asset}/document/{document}',[InfrastructureDocumentController::class, 'showFromAsset']);
 Route::get('asset/{asset}/document',[InfrastructureDocumentController::class, 'indexFromAsset']);
 Route::post('asset/{asset}/document',[InfrastructureDocumentController::class, 'storeFromAsset']);
 

@@ -166,20 +166,20 @@ class InfrastructureDocument extends Model
             
             'documentable_id' => $model->documentable_id,
             'documentable_type' => $model->documentable_type,
-            'documentable_key' => $documents_type_keys[$model->documentable_type],
+            'documentable_type_key' => $documents_type_keys[$model->documentable_type],
         ];
 
         // documents type properties
         $documentable_type_properties = $model->documentable_type::mapResourceShow($request, $model->documentable);
 
         // assets documents type properties 
-        $document_asset_properties = [];
+        $document_asset_properties = [ 'asset' => [] ];
         if ( !is_null($model->asset_id) ) {
-            $document_asset_properties = $model->asset::mapResourceShow( 
+            $document_asset_properties['asset'] = $model->asset::mapResourceShow( 
                 $request,
                 $model->asset,
             );
-        }
+        } 
 
         return array_merge(
             $document_properties,
@@ -255,7 +255,9 @@ class InfrastructureDocument extends Model
         DB::connection($model->connection)->beginTransaction();
 
         try {
-            $model->asset_id = $request->asset_id; 
+            if( !is_null($request->asset) && !is_null($request->asset['id']) ){
+                $model->asset_id = $request->asset['id']; 
+            }
                         
             $model->name = $request->name;
             $model->description = $request->description;
@@ -291,7 +293,15 @@ class InfrastructureDocument extends Model
         DB::connection($model->connection)->beginTransaction();
 
         try {
-            // ...
+            if( !is_null($request->asset) && !is_null($request->asset['id']) ){
+                $model->asset_id = $request->asset['id']; 
+            }
+
+            $model->name = $request->name;
+            $model->description = $request->description;
+            $model->status = $request->status;
+
+            $model->documentable::updateRecord($request, $model->documentable);
             $model->save();
 
             DB::connection($model->connection)->commit();

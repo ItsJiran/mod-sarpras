@@ -56,45 +56,47 @@
 							:readonly="true"					
 						></v-text-field>
 					</v-col>
+
 					<v-col cols="6">
 						<v-combobox
 						:items="units_slug" 
 						label="Pilih Unit"
-						v-model="record.slug_unit"
+						v-model="asset.slug_unit"
 						@update:model-value="getAssetType(record, units, this)"
 						></v-combobox>
 					</v-col>
 				</v-row>
 
-				<v-row v-if="record.slug_unit != undefined" dense>
+				<v-row v-if="asset.slug_unit != undefined" dense>
 					<v-col cols="12">
 						<v-combobox
 						:items="assets_types" 
 						label="Pilih Tipe Asset"
-						v-model="record.asset_type"
+						v-model="asset.asset_type_key"
 						@update:model-value="getAssetList(record, this)"
 						></v-combobox>
 					</v-col>	
 				</v-row>
 
-				<v-row v-if="record.asset_type != undefined && assets_slugs_combos != undefined && assets_slugs_combos.length > 0" dense>
+				<v-row v-if="asset.asset_type_key != undefined && assets_slugs_combos != undefined && assets_slugs_combos.length > 0" dense>
 					<v-col cols="6">
 						<v-text-field
 							label="Nama Asset"
 							v-model="asset.name"
+							:readonly="true"
 						></v-text-field>
 					</v-col>
 					<v-col cols="6">
 						<v-combobox
 						:items="assets_slugs_combos" 
 						label="Pilih Asset Slug"
-						v-model="record.asset_slug"
+						v-model="asset.slug"
 						@update:model-value="getAsset(record, this)"
 						></v-combobox>
 					</v-col>
 				</v-row>
 
-				<v-row v-if="record.asset_type != undefined && assets_slugs_combos != undefined && assets_slugs_combos.length <= 0" dense>					
+				<v-row v-if="asset.asset_type_key != undefined && assets_slugs_combos != undefined && assets_slugs_combos.length <= 0" dense>					
 					Tidak Ditemukan
 				</v-row>
 
@@ -129,7 +131,9 @@ export default {
 	},
 	methods : {		
 		getAssetType : function ( record, units, data ) {			
-			data.unit = units[record.slug_unit];
+			data.unit = units[data.asset.slug_unit];
+
+			record.asset = {};
 
 			if ( data.assets_types ) {
 				data.getAssetList( record, data );
@@ -152,12 +156,11 @@ export default {
 			record.asset_id = undefined;
 			record.asset_slug = undefined;
 
-			data.asset = {};
 			data.assets = undefined;
 			data.assets_slugs = undefined;
 			data.assets_slugs_combos = undefined;
 
-			this.$http(`infrastructure/api/ref-asset/${data.unit.id}/${record.asset_type}/asset`).then(
+			this.$http(`infrastructure/api/ref-asset/${data.unit.id}/${data.asset.asset_type_key}/asset`).then(
 				(response) => {
 					data.assets_slugs_combos = response.assets_slugs_combos;
 					data.assets_slugs = response.assets_slugs;
@@ -167,8 +170,12 @@ export default {
 		},
 
 		getAsset : function (record, data) {
-			data.asset = data.assets_slugs[record.asset_slug];
-			record.asset_id = data.asset.id;
+			data.asset = {
+				...data.asset,
+				...data.assets_slugs[data.asset.slug]
+			};
+			
+			record.asset = data.asset;
 		},
 
 		selectType : function (record, data) {
