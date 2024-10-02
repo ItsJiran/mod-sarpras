@@ -305,8 +305,6 @@ class InfrastructureDocument extends Model
             $model->save();
 
             DB::connection($model->connection)->commit();
-
-            // return new DocumentResource($model);
         } catch (\Exception $e) {
             DB::connection($model->connection)->rollBack();
 

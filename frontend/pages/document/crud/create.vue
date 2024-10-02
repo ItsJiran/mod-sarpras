@@ -153,8 +153,6 @@ export default {
 
 		getAssetList : function ( record, data ) {
 			record.asset = {};
-			record.asset_id = undefined;
-			record.asset_slug = undefined;
 
 			data.assets = undefined;
 			data.assets_slugs = undefined;
@@ -174,7 +172,7 @@ export default {
 				...data.asset,
 				...data.assets_slugs[data.asset.slug]
 			};
-			
+
 			record.asset = data.asset;
 		},
 

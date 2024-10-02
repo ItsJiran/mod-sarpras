@@ -52,11 +52,11 @@
 				<div class="text-overline mt-6">Terhubung Ke Asset</div>
 				<v-divider :thickness="3" class="mt-3 mb-10" />
 
-				<div v-if="record.asset.id == undefined" dense>
+				<div v-if="record.asset != undefined && record.asset.id == undefined" dense>
 					Tidak Terhubung Dengan Aset Manapun
 				</div>
 
-				<div v-if="record.asset.id != undefined && record.asset.slug_unit != undefined" dense>
+				<div v-if="record.asset != undefined && record.asset.id != undefined && record.asset.slug_unit != undefined" dense>
 					<v-row dense>
 						<v-col cols="6">
 							<v-text-field

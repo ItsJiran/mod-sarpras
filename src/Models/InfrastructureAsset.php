@@ -159,6 +159,7 @@ class InfrastructureAsset extends Model
         $unit = InfrastructureUnit::where('slug',$model->slug_unit)->first();
 
         $asset_property = [
+            'id' => $model->id,
             'name' => $model->name,
             'slug' => $model->slug,
             'slug_unit' => $model->slug_unit,
