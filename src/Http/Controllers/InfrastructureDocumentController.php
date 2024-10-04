@@ -38,7 +38,25 @@ class InfrastructureDocumentController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function indexFromAsset(Request $request, InfrastructureAsset $asset)
+    public function indexFromAsset(Request $request, InfrastructureAsset $asset,)
+    {
+        Gate::authorize('view', InfrastructureDocument::class);
+
+        return new DocumentCollection(
+            $asset->documents()
+                ->filter($request->filters)
+                ->search($request->findBy)
+                ->sortBy($request->sortBy)
+                ->paginate($request->itemsPerPage)
+        );
+    }
+
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function indexFromUnit(Request $request, InfrastructureUnit $unit = null, InfrastructureAsset $asset,)
     {
         Gate::authorize('view', InfrastructureDocument::class);
 
@@ -126,6 +144,18 @@ class InfrastructureDocumentController extends Controller
         return $this->show($document);
     }
 
+    /**
+     * Display the specified resource.
+     *
+     * @param  \Module\Infrastructure\Models\InfrastructureDocument $infrastructureDocument
+     * @return \Illuminate\Http\Response
+     */
+    public function showFromUnit(InfrastructureUnit $unit = null, InfrastructureAsset $asset, InfrastructureDocument $document)
+    {
+        Gate::authorize('show', $document);
+
+        return $this->show($document);
+    }
 
     /**
      * Update the specified resource in storage.
