@@ -47,6 +47,7 @@ Route::get('asset/{asset}/document/{document}',[InfrastructureDocumentController
 Route::get('asset/{asset}/document',[InfrastructureDocumentController::class, 'indexFromAsset']);
 
 Route::post('asset/{asset}/document',[InfrastructureDocumentController::class, 'storeFromAsset']);
+Route::post('unit/{unit}/asset/{asset}/document',[InfrastructureDocumentController::class, 'storeFromUnit']);
 
 
 

@@ -110,11 +110,19 @@ class InfrastructureDocumentController extends Controller
      */
     public function storeFromAsset(Request $request, InfrastructureAsset $asset)
     {
-        Gate::authorize('create', InfrastructureDocument::class);
-
         $request->merge([ 'asset_id' => $asset->id ]);
-
         return $this->store($request);
+    }
+
+    /**
+     * Store a newly created resource in storage.
+     *
+     * @param  \Illuminate\Http\Request $request
+     * @return \Illuminate\Http\Response
+     */
+    public function storeFromUnit(Request $request, InfrastructureUnit $unit, InfrastructureAsset $asset)
+    {
+        return $this->storeFromAsset($request, $asset);
     }
 
 
