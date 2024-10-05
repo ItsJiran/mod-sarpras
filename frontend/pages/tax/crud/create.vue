@@ -36,7 +36,25 @@
 						:items="units_slug" 
 						label="Pilih Unit"
 						v-model="unit_slug"
-						@update:model-value="getItemType(record, units, this)"
+						@update:model-value="getItemUnit(record, units, this)"
+						></v-combobox>
+					</v-col>
+				</v-row>
+
+				<v-row v-if="unit_slug != undefined && record.taxable_type_key == 'Asset' && items != undefined" dense>
+					<v-col cols="6">
+						<v-text-field
+							label="Nama Asset"
+							v-model="item.name"
+							:readonly="true"
+						></v-text-field>
+					</v-col>
+					<v-col cols="6">
+						<v-combobox
+						:items="items_slugs" 
+						label="Pilih Asset Slug"
+						v-model="item.slug"
+						@update:model-value="getAsset(record, this)"
 						></v-combobox>
 					</v-col>
 				</v-row>
@@ -51,12 +69,12 @@ export default {
 	name: "infrastructure-tax-create",
 	data(){
 		return {
-			formType: [
-				'LandCertificate',
-			],
-
+			item : {},
 			unit : {},
 			unit_slug : undefined,
+
+			items : undefined,
+			items_slugs : undefined,			
 		}
 	},
 	methods : {
@@ -72,12 +90,28 @@ export default {
 			return route_name == name;
 		},
 
-		getItemType : function (record, units, data) {
+		getItemUnit : function (record, units, data) {
 			data.unit = units[data.unit_slug];
+			data.getItemList(record,data);
 		},
 
 		getItemList : function (record, data) {
+			const isUnitlugExist = data.unit_slug != undefined;
+			const isTaxKeyExist = data.unit_slug != undefined;
 
+			// prevent error
+			if( isUnitlugExist && isTaxKeyExist ) return;
+
+			// call items list based on the type of the record taxable
+			data.getAsset(record,data);
+		},
+
+		getAsset : function (record, data) {
+			this.$http(`infrastructure/api/ref-asset/${data.unit.id}/${data.asset.asset_type_key}/asset`).then(
+				(response) => {
+					
+				}
+			)
 		}
 		
 		// getAssetType : function ( record, units, data ) {			
