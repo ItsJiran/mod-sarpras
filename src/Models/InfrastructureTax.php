@@ -10,6 +10,11 @@ use Module\System\Traits\Searchable;
 use Module\System\Traits\HasPageSetup;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Database\Eloquent\Relations\MorphTo;
+
+// Relation Model
+use App\Models\InfrastructureAsset;
+use App\Models\InfrastructureDocument;
 
 class InfrastructureTax extends Model
 {
@@ -57,6 +62,89 @@ class InfrastructureTax extends Model
     protected $defaultOrder = 'name';
 
     /**
+     * The attributes that are mass assignable.
+     *
+     * @var array<int, string>
+     */
+    protected $fillable = [
+        'name',
+        'tax_id',
+        'user_id',
+
+        'name',
+        'description',
+        'paydate',
+        'proof_img_path',
+
+        'taxable_id',
+        'taxable_type',
+    ];
+
+    /**
+     * ====================================================
+     * +---------------- RELATION METHODS ----------------+
+     * ====================================================
+     */
+
+    /**
+     * Get the model that the image belongs to.
+     */
+    public function taxable(): MorphTo
+    {
+        return $this->morphTo(__FUNCTION__, 'taxable_type', 'taxable_id');
+    }  
+
+    /**
+     * ====================================================
+     * +------------------ MAP RESOURCE ------------------+
+     * ====================================================
+     */
+
+        /**
+     * The model map combos method
+     *
+     * @param [type] $model
+     * @return array
+     */
+    public static function mapTypeClass($reverse = false) : array
+    {
+        if(!$reverse) {
+            return [
+                'Asset' => InfrastructureAsset::class,
+                'Document' => InfrastructureDocument::class,
+            ];
+        } else {
+            return [
+                InfrastructureAsset::class => 'Asset',
+                InfrastructureDocument::class => 'Document',
+            ];
+        }
+    }
+
+    /**
+     * The model map combos method
+     *
+     * @param [type] $model
+     * @return array
+     */
+    public static function mapTypeKeyClass() : array
+    {
+        return [
+            'Asset',
+            'Document',             
+        ];
+    }
+
+
+
+    /**
+     * ====================================================
+     * +------------------ CRUD METHODS ------------------+
+     * ====================================================
+     */
+
+
+    /**
      * The model store method
      *
      * @param Request $request
@@ -69,7 +157,6 @@ class InfrastructureTax extends Model
         DB::connection($model->connection)->beginTransaction();
 
         try {
-            // ...
             $model->save();
 
             DB::connection($model->connection)->commit();
@@ -97,12 +184,9 @@ class InfrastructureTax extends Model
         DB::connection($model->connection)->beginTransaction();
 
         try {
-            // ...
             $model->save();
 
             DB::connection($model->connection)->commit();
-
-            // return new TaxResource($model);
         } catch (\Exception $e) {
             DB::connection($model->connection)->rollBack();
 

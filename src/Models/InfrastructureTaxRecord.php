@@ -50,6 +50,21 @@ class InfrastructureTaxRecord extends Model
     ];
 
     /**
+     * The attributes that are mass assignable.
+     *
+     * @var array<int, string>
+     */
+    protected $fillable = [
+        'name',
+        'slug',
+        'slug_unit',
+        'slug_type',
+        'unit_id',
+        'assetable_id',
+        'assetable_type',
+    ];
+
+    /**
      * The default key for the order.
      *
      * @var string
