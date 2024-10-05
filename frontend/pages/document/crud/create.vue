@@ -45,60 +45,63 @@
 
 				<component :record="record" :is="currentFormType"/>	
 
-				<div class="text-overline mt-6">Form Asset Tujuan (optional)</div>
-				<v-divider :thickness="3" class="mt-3 mb-10" />
 
-				<v-row dense>
-					<v-col cols="6">
-						<v-text-field
-							label="Nama Unit"
-							v-model="unit.name"
-							:readonly="true"					
-						></v-text-field>
-					</v-col>
+				<div v-if=" !checkRoute('infrastructure-unit-asset-document') && !checkRoute('infrastructure-asset-document') ">
+					<div class="text-overline mt-6">Form Asset Tujuan (optional)</div>
+					<v-divider :thickness="3" class="mt-3 mb-10" />
 
-					<v-col cols="6">
-						<v-combobox
-						:items="units_slug" 
-						label="Pilih Unit"
-						v-model="asset.slug_unit"
-						@update:model-value="getAssetType(record, units, this)"
-						></v-combobox>
-					</v-col>
-				</v-row>
+					<v-row dense>
+						<v-col cols="6">
+							<v-text-field
+								label="Nama Unit"
+								v-model="unit.name"
+								:readonly="true"					
+							></v-text-field>
+						</v-col>
 
-				<v-row v-if="asset.slug_unit != undefined" dense>
-					<v-col cols="12">
-						<v-combobox
-						:items="assets_types" 
-						label="Pilih Tipe Asset"
-						v-model="asset.asset_type_key"
-						@update:model-value="getAssetList(record, this)"
-						></v-combobox>
-					</v-col>	
-				</v-row>
+						<v-col cols="6">
+							<v-combobox
+							:items="units_slug" 
+							label="Pilih Unit"
+							v-model="asset.slug_unit"
+							@update:model-value="getAssetType(record, units, this)"
+							></v-combobox>
+						</v-col>
+					</v-row>
 
-				<v-row v-if="asset.asset_type_key != undefined && assets_slugs_combos != undefined && assets_slugs_combos.length > 0" dense>
-					<v-col cols="6">
-						<v-text-field
-							label="Nama Asset"
-							v-model="asset.name"
-							:readonly="true"
-						></v-text-field>
-					</v-col>
-					<v-col cols="6">
-						<v-combobox
-						:items="assets_slugs_combos" 
-						label="Pilih Asset Slug"
-						v-model="asset.slug"
-						@update:model-value="getAsset(record, this)"
-						></v-combobox>
-					</v-col>
-				</v-row>
+					<v-row v-if="asset.slug_unit != undefined" dense>
+						<v-col cols="12">
+							<v-combobox
+							:items="assets_types" 
+							label="Pilih Tipe Asset"
+							v-model="asset.asset_type_key"
+							@update:model-value="getAssetList(record, this)"
+							></v-combobox>
+						</v-col>	
+					</v-row>
 
-				<v-row v-if="asset.asset_type_key != undefined && assets_slugs_combos != undefined && assets_slugs_combos.length <= 0" dense>					
-					Tidak Ditemukan
-				</v-row>
+					<v-row v-if="asset.asset_type_key != undefined && assets_slugs_combos != undefined && assets_slugs_combos.length > 0" dense>
+						<v-col cols="6">
+							<v-text-field
+								label="Nama Asset"
+								v-model="asset.name"
+								:readonly="true"
+							></v-text-field>
+						</v-col>
+						<v-col cols="6">
+							<v-combobox
+							:items="assets_slugs_combos" 
+							label="Pilih Asset Slug"
+							v-model="asset.slug"
+							@update:model-value="getAsset(record, this)"
+							></v-combobox>
+						</v-col>
+					</v-row>
+
+					<v-row v-if="asset.asset_type_key != undefined && assets_slugs_combos != undefined && assets_slugs_combos.length <= 0" dense>					
+						Tidak Ditemukan
+					</v-row>
+				</div>
 
 			</v-card-text>
 		</template>
@@ -130,6 +133,17 @@ export default {
 		}
 	},
 	methods : {		
+		checkRoute : function (name = "") {
+			// route_name
+			let route_name = this.$router.currentRoute._value.name;
+			let methods = ['show','delete','update','edit','create'];
+
+			for ( let method of methods ) 
+				route_name = route_name.replaceAll('-' + method,'');
+			
+			return route_name == name;
+		},
+
 		getAssetType : function ( record, units, data ) {			
 			data.unit = units[data.asset.slug_unit];
 
