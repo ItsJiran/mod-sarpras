@@ -45,29 +45,31 @@
 
 				<component :record="record" :is="currentFormType"/>	
 
+				<div class="text-overline mt-6">Form Unit Tujuan</div>
+				<v-divider :thickness="3" class="mt-3 mb-5" />
 
-				<div v-if=" !checkRoute('infrastructure-unit-asset-document') && !checkRoute('infrastructure-asset-document') ">
+				<v-row dense>
+					<v-col cols="6">
+						<v-text-field
+							label="Nama Unit"
+							v-model="unit.name"
+							:readonly="true"					
+						></v-text-field>
+					</v-col>
+
+					<v-col cols="6">
+						<v-combobox
+						:items="units_slug" 
+						label="Pilih Unit"
+						v-model="asset.slug_unit"
+						@update:model-value="getAssetType(record, units, this)"
+						></v-combobox>
+					</v-col>
+				</v-row>
+
+				<div v-if=" !checkRoute('infrastructure-unit-asset-document') && !checkRoute('infrastructure-asset-document') && asset.slug_unit != undefined">
 					<div class="text-overline mt-6">Form Asset Tujuan (optional)</div>
-					<v-divider :thickness="3" class="mt-3 mb-10" />
-
-					<v-row dense>
-						<v-col cols="6">
-							<v-text-field
-								label="Nama Unit"
-								v-model="unit.name"
-								:readonly="true"					
-							></v-text-field>
-						</v-col>
-
-						<v-col cols="6">
-							<v-combobox
-							:items="units_slug" 
-							label="Pilih Unit"
-							v-model="asset.slug_unit"
-							@update:model-value="getAssetType(record, units, this)"
-							></v-combobox>
-						</v-col>
-					</v-row>
+					<v-divider :thickness="3" class="mt-3 mb-5" />
 
 					<v-row v-if="asset.slug_unit != undefined" dense>
 						<v-col cols="12">
@@ -171,6 +173,8 @@ export default {
 			data.assets = undefined;
 			data.assets_slugs = undefined;
 			data.assets_slugs_combos = undefined;
+
+			if(data.unit.id == undefined || data.asset.asset_type_key == undefined) return;
 
 			this.$http(`infrastructure/api/ref-asset/${data.unit.id}/${data.asset.asset_type_key}/asset`).then(
 				(response) => {

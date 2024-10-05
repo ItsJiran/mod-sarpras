@@ -70,6 +70,8 @@
 					</v-col>
 				</v-row>
 
+				
+
 
 				<!-- <v-row v-if="unit_slug != undefined && record.taxable_type_key == 'Asset' && items != undefined" dense>
 					<v-col cols="6">

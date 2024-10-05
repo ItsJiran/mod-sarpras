@@ -18,6 +18,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 // relateds documents models type
 use Module\Infrastructure\Models\InfrastructureDocumentLandCertificate;
 use Module\Infrastructure\Models\InfrastructureUnit;
+use Module\Infrastructure\Models\InfrastructureAsset;
 
 class InfrastructureDocument extends Model
 {
@@ -63,6 +64,7 @@ class InfrastructureDocument extends Model
      * @var array<int, string>
      */
     protected $fillable = [
+        'unit_id',
         'asset_id',
         'name',
         'description',
@@ -89,6 +91,14 @@ class InfrastructureDocument extends Model
     public function documentable(): MorphTo
     {
         return $this->morphTo(__FUNCTION__, 'documentable_type', 'documentable_id');
+    }
+
+    /**
+     * Get the model that the image belongs to.
+     */
+    public function unit(): BelongsTo
+    {
+        return $this->belongsTo(InfrastructureUnit::class, 'unit_id');
     }
 
     /**
@@ -256,9 +266,13 @@ class InfrastructureDocument extends Model
 
         try {
             if( !is_null($request->asset) && !is_null($request->asset['id']) ){
+                $model->unit_id = $request->unit_id;            
+            }                        
+
+            if( !is_null($request->asset) && !is_null($request->asset['id']) ){
                 $model->asset_id = $request->asset['id']; 
             }
-                        
+
             $model->name = $request->name;
             $model->description = $request->description;
             $model->status = $request->status;
@@ -293,6 +307,10 @@ class InfrastructureDocument extends Model
         DB::connection($model->connection)->beginTransaction();
 
         try {
+            if( !is_null($request->asset) && !is_null($request->asset['id']) ){
+                $model->unit_id = $request->unit_id;            
+            }                        
+
             if( !is_null($request->asset) && !is_null($request->asset['id']) ){
                 $model->asset_id = $request->asset['id']; 
             }

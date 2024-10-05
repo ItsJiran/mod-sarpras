@@ -13,6 +13,7 @@ return new class extends Migration
     {
         Schema::create('infrastructure_documents', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('unit_id');
             $table->foreignId('asset_id')->nullable();
 
             // name / descriptions

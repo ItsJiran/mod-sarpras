@@ -82,6 +82,7 @@ class InfrastructureDocumentController extends Controller
         // request
         $request->validate([
             'name' => 'required|min:3',
+            'unit_id' => 'required|exists:human_units,id',
             'status' => [
                 'required',
                 Rule::in( InfrastructureDocument::mapStatus() )
