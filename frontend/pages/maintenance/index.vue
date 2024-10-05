@@ -1,5 +1,11 @@
 <template>
 
+<page-crud v-if=" checkRoute('infrastructure-maintenance')  "	
+		page-name="infrastructure-maintenance"
+		page-key="maintenance"
+	></page-crud>
+
+
 	<page-crud v-if=" checkRoute('infrastructure-asset-maintenance')  "	
 		page-name="infrastructure-maintenance"
 		page-key="maintenance"

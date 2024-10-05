@@ -3,6 +3,8 @@
 use Illuminate\Support\Facades\Route;
 use Module\Infrastructure\Http\Controllers\DashboardController;
 use Module\Infrastructure\Http\Controllers\InfrastructureAssetController;
+use Module\Infrastructure\Http\Controllers\InfrastructureTaxController;
+use Module\Infrastructure\Http\Controllers\InfrastructureMaintenanceController;
 use Module\Infrastructure\Http\Controllers\InfrastructureUnitController;
 use Module\Infrastructure\Http\Controllers\InfrastructureDocumentController;
 
@@ -10,9 +12,21 @@ use Module\Infrastructure\Http\Controllers\InfrastructureDocumentController;
 Route::get('dashboard', [DashboardController::class, 'index']);
 
 // +-----------------------------------
-// +-- from resource module human unit
+// +-- from resource module unit
 Route::resource('unit', InfrastructureUnitController::class)->parameters([
     'unit'=>'infrastructureUnit'
+]);
+
+// +-----------------------------------
+// +-- from resource module tax
+Route::resource('maintenance',InfrastructureMaintenanceController::class)->parameters([
+    'maintenance' => 'infrastructureMaintenance'
+]);
+
+// +-----------------------------------
+// +-- from resource module maintenance
+Route::resource('tax',InfrastructureTaxController::class)->parameters([
+    'tax' => 'infrastructureTax'
 ]);
 
 // +-----------------------------------

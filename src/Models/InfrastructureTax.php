@@ -13,6 +13,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
 
 // Relation Model
+use Module\Infrastructure\Models\InfrastructureUnit;
 use App\Models\InfrastructureAsset;
 use App\Models\InfrastructureDocument;
 
@@ -96,7 +97,47 @@ class InfrastructureTax extends Model
      * ====================================================
      */
 
-        /**
+    /**
+     * The model map combos method
+     *
+     * @param [type] $model
+     * @return void
+     */
+    public static function mapCombos(Request $request, $model = null): array  
+    {
+        // temporary
+        $human = InfrastructureUnit::get(['id','name','slug']);
+
+        // notes : assign units into properties
+        $units = [];
+        $units_ids = [];
+
+        $units_name = [];
+        $units_slug = [];
+
+        // notes : mapping to the array so frontend can consume..
+        foreach ($human as $key => $value) {
+            array_push( $units_name, $value->name );
+            array_push( $units_slug, $value->slug );
+
+            $units[$value->slug] = $value;
+            $units_id[$value->id] = $value;
+        }
+
+        return [
+            'type' => self::mapTypeClass(),
+            'type_key' => self::mapTypeKeyClass(),     
+            
+            // units array merges
+            'units' => $units,
+            'units_ids' => $units_ids,
+
+            'units_name' => $units_name,
+            'units_slug' => $units_slug,
+        ];
+    }
+
+    /**
      * The model map combos method
      *
      * @param [type] $model
@@ -131,14 +172,11 @@ class InfrastructureTax extends Model
         ];
     }
 
-
-
     /**
      * ====================================================
      * +------------------ CRUD METHODS ------------------+
      * ====================================================
      */
-
 
     /**
      * The model store method
