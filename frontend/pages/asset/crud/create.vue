@@ -28,7 +28,7 @@
 					</v-col>	
 				</v-row>
 
-				<v-row dense>
+				<v-row v-if="$router.currentRoute._value.name == 'infrastructure-asset-create'" dense>
 					<v-col cols="6">
 						<v-text-field
 							label="Nama Unit"
@@ -58,7 +58,7 @@
 				</v-row>
 
 				<component 
-					v-if=" unit.name != undefined && currentFormType != '' "
+					v-if=" $router.currentRoute._value.name != 'infrastructure-asset-create' || unit.name != undefined && currentFormType != '' "
 					:record="record"
 					:is="currentFormType"/>					
 		

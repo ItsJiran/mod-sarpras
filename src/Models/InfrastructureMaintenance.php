@@ -2,14 +2,20 @@
 
 namespace Module\Infrastructure\Models;
 
-use Illuminate\Http\Request;
 use Module\System\Traits\HasMeta;
-use Illuminate\Support\Facades\DB;
 use Module\System\Traits\Filterable;
 use Module\System\Traits\Searchable;
 use Module\System\Traits\HasPageSetup;
+
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Database\Eloquent\Relations\MorphTo;
+
+// Relation Model
+use App\Models\InfrastructureAsset;
+use App\Models\InfrastructureDocument;
 
 class InfrastructureMaintenance extends Model
 {
@@ -55,6 +61,67 @@ class InfrastructureMaintenance extends Model
      * @var string
      */
     protected $defaultOrder = 'name';
+
+    /**
+     * ====================================================
+     * +---------------- RELATION METHODS ----------------+
+     * ====================================================
+     */
+
+    /**
+     * Get the model that the image belongs to.
+     */
+    public function maintananceable(): MorphTo
+    {
+        return $this->morphTo(__FUNCTION__, 'maintananceable_type', 'maintananceable_id');
+    } 
+
+    /**
+     * ====================================================
+     * +------------------ MAP RESOURCE ------------------+
+     * ====================================================
+     */
+
+    /**
+     * The model map combos method
+     *
+     * @param [type] $model
+     * @return array
+     */
+    public static function mapTypeClass($reverse = false) : array
+    {
+        if(!$reverse) {
+            return [
+                'Asset' => InfrastructureAsset::class,
+                'Document' => InfrastructureDocument::class,
+            ];
+        } else {
+            return [
+                InfrastructureAsset::class => 'Asset',
+                InfrastructureDocument::class => 'Document',
+            ];
+        }
+    }
+
+    /**
+     * The model map combos method
+     *
+     * @param [type] $model
+     * @return array
+     */
+    public static function mapTypeKeyClass() : array
+    {
+        return [
+            'Asset',
+            'Document',             
+        ];
+    }
+
+    /**
+     * ================================================
+     * +------------------ MAP CRUD ------------------+
+     * ================================================
+     */
 
     /**
      * The model store method
