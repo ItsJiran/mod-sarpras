@@ -68,16 +68,12 @@ class InfrastructureTax extends Model
      */
     protected $fillable = [
         'name',
-        'tax_id',
-        'user_id',
-
-        'name',
         'description',
-        'paydate',
-        'proof_img_path',
-
-        'taxable_id',
-        'taxable_type',
+        'type',
+        'period_day',
+        'duedate',
+        'maintenanceable_id',
+        'maintenanceable_type',
     ];
 
     /**

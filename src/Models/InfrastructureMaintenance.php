@@ -55,6 +55,23 @@ class InfrastructureMaintenance extends Model
         'meta' => 'array'
     ];
 
+
+    /**
+     * The attributes that are mass assignable.
+     *
+     * @var array<int, string>
+     */
+    protected $fillable = [
+        'name',
+        'description',
+        'type',
+        'period_day',
+        'duedate',
+        'maintenanceable_id',
+        'maintenanceable_type',
+    ];
+
+    
     /**
      * The default key for the order.
      *
