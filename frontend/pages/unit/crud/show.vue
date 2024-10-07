@@ -30,6 +30,15 @@
 				>List Asset</v-btn
 			>
 
+			<v-btn
+				class="mt-3"
+				:color="theme"
+				block
+				variant="flat"
+				@click="redirectPage('document')"
+				>List Documents</v-btn
+			>
+
 		</template>
 	</form-show>
 </template>
@@ -49,6 +58,7 @@
 					current_route_name_clean = current_route_name_clean.replaceAll(method,'');
 				
 				let redirect_to = current_route_name_clean + name;
+
 				return this.$router.push({ name : redirect_to });
 			}
 		}

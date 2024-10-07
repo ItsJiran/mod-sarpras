@@ -38,7 +38,7 @@ class InfrastructureDocumentController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function indexFromAsset(Request $request, InfrastructureAsset $asset,)
+    public function indexFromAsset(Request $request, InfrastructureAsset $asset)
     {
         Gate::authorize('view', InfrastructureDocument::class);
 
@@ -56,12 +56,12 @@ class InfrastructureDocumentController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function indexFromUnit(Request $request, InfrastructureUnit $unit = null, InfrastructureAsset $asset,)
+    public function indexFromUnit(Request $request, InfrastructureUnit $unit = null)
     {
         Gate::authorize('view', InfrastructureDocument::class);
 
         return new DocumentCollection(
-            $asset->documents()
+            $unit->documents()
                 ->filter($request->filters)
                 ->search($request->findBy)
                 ->sortBy($request->sortBy)
@@ -82,7 +82,7 @@ class InfrastructureDocumentController extends Controller
         // request
         $request->validate([
             'name' => 'required|min:3',
-            'unit_id' => 'required|exists:human_units,id',
+            'unit' => 'required',
             'status' => [
                 'required',
                 Rule::in( InfrastructureDocument::mapStatus() )
@@ -92,6 +92,20 @@ class InfrastructureDocumentController extends Controller
                 Rule::in( InfrastructureDocument::mapTypeKeyClass() )
             ],
         ]);
+
+        // additional request validation        
+        $request->asset = (object) $request->asset;
+        $request->unit = (object) $request->unit;
+
+        $is_asset_exist = isset($request->asset) && isset($request->asset->slug_unit);
+        $is_unit_slug_same = $is_asset_exist && $request->unit->slug != $request->asset->slug_unit;
+
+        if ( $is_asset_exist && $is_unit_slug_same ){             
+            response()->json([
+                'success' => false,
+                'message' => 'Slug unit dan slug unit pada asset tidak sama..'
+            ], 422);
+        }
 
         // type class
         $map_type_class = InfrastructureDocument::mapTypeClass();
@@ -111,7 +125,11 @@ class InfrastructureDocumentController extends Controller
      */
     public function storeFromAsset(Request $request, InfrastructureAsset $asset)
     {
-        $request->merge([ 'asset_id' => $asset->id ]);
+        $request->merge([ 'asset' => $asset ]);
+
+        if( !isset($request->unit) || !isset($request->unit['id']) )
+            $request->merge([ 'unit' => $asset->unit ]);
+    
         return $this->store($request);
     }
 
@@ -123,6 +141,7 @@ class InfrastructureDocumentController extends Controller
      */
     public function storeFromUnit(Request $request, InfrastructureUnit $unit, InfrastructureAsset $asset)
     {
+        $request->merge([ 'unit' => $unit ]);
         return $this->storeFromAsset($request, $asset);
     }
 
@@ -149,7 +168,6 @@ class InfrastructureDocumentController extends Controller
     public function showFromAsset(InfrastructureAsset $asset, InfrastructureDocument $document)
     {
         Gate::authorize('show', $document);
-
         return $this->show($document);
     }
 
@@ -159,10 +177,9 @@ class InfrastructureDocumentController extends Controller
      * @param  \Module\Infrastructure\Models\InfrastructureDocument $infrastructureDocument
      * @return \Illuminate\Http\Response
      */
-    public function showFromUnit(InfrastructureUnit $unit = null, InfrastructureAsset $asset, InfrastructureDocument $document)
+    public function showFromUnit(InfrastructureUnit $unit = null, InfrastructureDocument $document)
     {
         Gate::authorize('show', $document);
-
         return $this->show($document);
     }
 
@@ -177,9 +194,60 @@ class InfrastructureDocumentController extends Controller
     {
         Gate::authorize('update', $infrastructureDocument);
 
-        $request->validate([]);
+        // request
+        $request->validate([
+            'name' => 'required|min:3',
+            'unit' => 'required',
+            'status' => [
+                'required',
+                Rule::in( InfrastructureDocument::mapStatus() )
+            ],
+            'documentable_type_key' => [
+                'required',
+                Rule::in( InfrastructureDocument::mapTypeKeyClass() )
+            ],
+        ]);
+
+        // additional request validation        
+        $request->asset = (object) $request->asset;
+        $request->unit = (object) $request->unit;
+
+        $is_asset_exist = isset($request->asset) && isset($request->asset->slug_unit);
+        $is_unit_slug_same = $is_asset_exist && $request->unit->slug != $request->asset->slug_unit;
+
+        if ( $is_asset_exist && $is_unit_slug_same ){             
+            response()->json([
+                'success' => false,
+                'message' => 'Slug unit dan slug unit pada asset tidak sama..'
+            ], 422);
+        }
+
 
         return InfrastructureDocument::updateRecord($request, $infrastructureDocument);
+    }
+
+    /**
+     * Display the specified resource.
+     *
+     * @param  \Module\Infrastructure\Models\InfrastructureDocument $infrastructureDocument
+     * @return \Illuminate\Http\Response
+     */
+    public function updateFromAsset(Request $request,  InfrastructureAsset $asset, InfrastructureDocument $document)
+    {
+        Gate::authorize('update', $document);
+        return $this->update($request, $document);
+    }
+
+    /**
+     * Display the specified resource.
+     *
+     * @param  \Module\Infrastructure\Models\InfrastructureDocument $infrastructureDocument
+     * @return \Illuminate\Http\Response
+     */
+    public function updateFromUnit(Request $request, InfrastructureUnit $unit = null, InfrastructureAsset $asset, InfrastructureDocument $document)
+    {
+        Gate::authorize('update', $document);
+        return $this->updateFromAsset($request, $asset,$document);
     }
 
     /**

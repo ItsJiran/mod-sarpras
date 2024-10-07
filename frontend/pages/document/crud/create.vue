@@ -1,7 +1,7 @@
 <template>
 	<form-create with-helpdesk>
 		<template v-slot:default="{ 
-			combos: { type_key, units, units_slug, type_status_map, status },			
+			combos: { type_key, units, units_slug, units_ids, type_status_map, status },			
 			record
 			}">
 			<v-card-text>
@@ -45,33 +45,66 @@
 
 				<component :record="record" :is="currentFormType"/>	
 
-				<div class="text-overline mt-6">Form Unit Tujuan</div>
-				<v-divider :thickness="3" class="mt-3 mb-5" />
+				<div v-if=" !checkRoute('infrastructure-unit-asset-document') && !checkRoute('infrastructure-asset-document') && !checkRoute('infrastructure-unit-document')">
+					<div class="text-overline mt-6">Form Unit Tujuan</div>
+					<v-divider :thickness="3" class="mt-3 mb-5" />
 
-				<v-row dense>
-					<v-col cols="6">
-						<v-text-field
-							label="Nama Unit"
-							v-model="unit.name"
+					<v-row dense>
+						<v-col cols="6">
+							<v-text-field
+								label="Nama Unit"
+								v-model="unit.name"
+								:readonly="true"					
+							></v-text-field>
+						</v-col>
+
+						<v-col cols="6">
+							<v-combobox
+							:items="units_slug" 
+							label="Pilih Unit"
 							:readonly="true"					
-						></v-text-field>
-					</v-col>
+							v-model="unit.slug"
+							@update:model-value="getAssetType(record, units, this)"
+							></v-combobox>
+						</v-col>
+					</v-row>
+				</div>
 
-					<v-col cols="6">
-						<v-combobox
-						:items="units_slug" 
-						label="Pilih Unit"
-						v-model="asset.slug_unit"
-						@update:model-value="getAssetType(record, units, this)"
-						></v-combobox>
-					</v-col>
-				</v-row>
+				<div v-if="checkRoute('infrastructure-unit-document') && unit.id == undefined">
+					{{ initUnitAsset(record,units_ids,units,this) }}
+				</div>
 
-				<div v-if=" !checkRoute('infrastructure-unit-asset-document') && !checkRoute('infrastructure-asset-document') && asset.slug_unit != undefined">
+
+				<div v-if="checkRoute('infrastructure-unit-document')">
+					<div class="text-overline mt-6">Form Unit Tujuan</div>
+					<v-divider :thickness="3" class="mt-3 mb-5" />
+					<v-row dense>
+						<v-col cols="6">
+							<v-text-field
+								label="Nama Unit"
+								v-model="unit.name"
+								:readonly="true"					
+								:disabled="true"
+							></v-text-field>
+						</v-col>
+						<v-col cols="6">
+							<v-combobox
+							:items="units_slug" 
+							label="Pilih Unit"
+							v-model="unit.slug"
+							@update:model-value="getAssetType(record, units, this)"
+							:disabled="true"
+							></v-combobox>
+						</v-col>
+					</v-row>
+				</div>
+
+
+				<div v-if=" !checkRoute('infrastructure-unit-asset-document') && !checkRoute('infrastructure-asset-document') && unit.slug != undefined || checkRoute('infrastructure-unit-document')">
 					<div class="text-overline mt-6">Form Asset Tujuan (optional)</div>
 					<v-divider :thickness="3" class="mt-3 mb-5" />
 
-					<v-row v-if="asset.slug_unit != undefined" dense>
+					<v-row v-if="unit.slug != undefined || checkRoute('infrastructure-unit-document')" dense>
 						<v-col cols="12">
 							<v-combobox
 							:items="assets_types" 
@@ -98,10 +131,35 @@
 							@update:model-value="getAsset(record, this)"
 							></v-combobox>
 						</v-col>
+						<v-btn
+							class="mt-2"
+							color="teal-darken-4"
+							:color="theme"
+							block
+							variant="flat"
+							@click="clearAssetOption(record,this)"
+							>Bersihkan Pilihan Asset</v-btn
+						>
 					</v-row>
 
 					<v-row v-if="asset.asset_type_key != undefined && assets_slugs_combos != undefined && assets_slugs_combos.length <= 0" dense>					
-						Tidak Ditemukan
+						<v-btn
+							class="mt-2"
+							color="teal-darken-4"
+							block
+							variant="flat"
+							:disabled="true"
+							>Tidak Ditemukan</v-btn
+						>
+						<v-btn
+							class="mt-2"
+							color="teal-darken-4"
+							:color="theme"
+							block
+							variant="flat"
+							@click="clearAssetOption(record,this)"
+							>Bersihkan Pilihan Asset</v-btn
+						>
 					</v-row>
 				</div>
 
@@ -135,26 +193,37 @@ export default {
 		}
 	},
 	methods : {		
+		initUnitAsset : function (record,units_ids, units,data) {			
+			// init untuk halaman "infrastructure-unit-document"
+			console.log(units_ids);
+			let unit = units_ids[this.$router.currentRoute._value.params.unit];
+			data.unit = unit;
+			record.unit = unit;
+			this.getAssetType(record, units,data);			
+		},	
+
+		clearAssetOption : function (record, data) {
+			data.asset = {};
+			record.asset = {};			
+		},
 		checkRoute : function (name = "") {
 			// route_name
 			let route_name = this.$router.currentRoute._value.name;
 			let methods = ['show','delete','update','edit','create'];
-
+				
 			for ( let method of methods ) 
 				route_name = route_name.replaceAll('-' + method,'');
-			
+
 			return route_name == name;
 		},
 
 		getAssetType : function ( record, units, data ) {			
-			data.unit = units[data.asset.slug_unit];
-
+			data.unit = units[data.unit.slug];
+			record.unit = units[data.unit.slug];
 			record.asset = {};
 
-			if ( data.assets_types ) {
-				data.getAssetList( record, data );
-				return;
-			}  
+			if ( data.assets_types ) 
+				return data.getAssetList( record, data );				
 			
 			data.asset_list = undefined;
 			data.assets_slugs = undefined;
@@ -174,7 +243,8 @@ export default {
 			data.assets_slugs = undefined;
 			data.assets_slugs_combos = undefined;
 
-			if(data.unit.id == undefined || data.asset.asset_type_key == undefined) return;
+			if(data.unit.id == undefined || data.asset.asset_type_key == undefined) 
+				return;
 
 			this.$http(`infrastructure/api/ref-asset/${data.unit.id}/${data.asset.asset_type_key}/asset`).then(
 				(response) => {

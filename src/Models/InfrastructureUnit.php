@@ -21,6 +21,26 @@ class InfrastructureUnit extends Model
         return $this->hasMany(InfrastructureAsset::class, 'unit_id');
     }
 
+    public function documents(): HasMany
+    {
+        return $this->hasMany(InfrastructureDocument::class, 'unit_id');
+    }
+
+    /**
+     * The model store method
+     *
+     * @param Request $request
+     * @return void
+     */
+    public static function mapResourceShow(Request $request, $model = null) : array
+    {
+        return [
+            'id' => $model->id,
+            'name' => $model->name,
+            'slug' => $model->slug,
+        ];
+    }
+
     /**
      * The model store method
      *

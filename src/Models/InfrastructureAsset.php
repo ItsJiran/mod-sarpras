@@ -14,6 +14,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 // related assets models type
 use Module\Infrastructure\Models\InfrastructureAssetVehicle;
@@ -133,6 +134,14 @@ class InfrastructureAsset extends Model
     /**
      * Get the model that the image belongs to.
      */
+    public function unit(): BelongsTo 
+    {
+        return $this->belongsTo(InfrastructureUnit::class, 'unit_id');
+    }
+
+    /**
+     * Get the model that the image belongs to.
+     */
     public function documents(): HasMany 
     {
         return $this->hasMany(InfrastructureDocument::class, 'asset_id');
@@ -165,7 +174,7 @@ class InfrastructureAsset extends Model
             'slug_unit' => $model->slug_unit,
             'slug_type' => $model->slug_type,
 
-            'unit_id' => $model->unit_id,   
+            'unit_id' => $unit->unit_id,   
             'unit_name' => $unit->name,    
 
             'assetable_id' => $model->assetable_id,

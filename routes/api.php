@@ -60,8 +60,12 @@ Route::get('unit/{unit}/asset/{asset}/document',[InfrastructureDocumentControlle
 Route::get('asset/{asset}/document/{document}',[InfrastructureDocumentController::class, 'showFromAsset']);
 Route::get('asset/{asset}/document',[InfrastructureDocumentController::class, 'indexFromAsset']);
 
+Route::get('unit/{unit}/document/{document}',[InfrastructureDocumentController::class, 'showFromUnit']);
+Route::get('unit/{unit}/document',[InfrastructureDocumentController::class, 'indexFromUnit']);
+
 Route::post('asset/{asset}/document',[InfrastructureDocumentController::class, 'storeFromAsset']);
 Route::post('unit/{unit}/asset/{asset}/document',[InfrastructureDocumentController::class, 'storeFromUnit']);
+Route::post('unit/{unit}/document',[InfrastructureDocumentController::class, 'storeFromUnit']);
 
-
-
+Route::put('asset/{asset}/document/{document}',[InfrastructureDocumentController::class, 'updateFromAsset']);
+Route::put('unit/{unit}/asset/{asset}/document/{document}',[InfrastructureDocumentController::class, 'updateFromUnit']);

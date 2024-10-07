@@ -139,7 +139,7 @@ class InfrastructureDocument extends Model
             array_push( $units_slug, $value->slug );
 
             $units[$value->slug] = $value;
-            $units_id[$value->id] = $value;
+            $units_ids[strval($value->id)] = $value;
         }
 
         return array_merge([
@@ -191,10 +191,20 @@ class InfrastructureDocument extends Model
             );
         } 
 
+        // unist documents properties
+        $document_unit_properties = [ 'unit' => [] ];
+        if ( !is_null($model->unit_id) ) {
+            $document_unit_properties['unit'] = $model->unit::mapResourceShow( 
+                $request,
+                $model->unit,
+            );
+        } 
+
         return array_merge(
             $document_properties,
             $documentable_type_properties,
             $document_asset_properties,
+            $document_unit_properties
         );
     }
 
@@ -265,13 +275,13 @@ class InfrastructureDocument extends Model
         DB::connection($model->connection)->beginTransaction();
 
         try {
-            if( !is_null($request->asset) && !is_null($request->asset['id']) ){
-                $model->unit_id = $request->unit_id;            
-            }                        
+            if( isset($request->unit) && isset($request->unit->id) )
+                $model->unit_id = $request->unit->id;
 
-            if( !is_null($request->asset) && !is_null($request->asset['id']) ){
-                $model->asset_id = $request->asset['id']; 
-            }
+            if( isset($request->asset) && isset($request->asset->id) )
+                $model->asset_id = $request->asset->id;
+            else 
+                $model->asset_id = null;
 
             $model->name = $request->name;
             $model->description = $request->description;
@@ -307,13 +317,13 @@ class InfrastructureDocument extends Model
         DB::connection($model->connection)->beginTransaction();
 
         try {
-            if( !is_null($request->asset) && !is_null($request->asset['id']) ){
-                $model->unit_id = $request->unit_id;            
-            }                        
+            if( isset($request->unit) && isset($request->unit->id) )
+                $model->unit_id = $request->unit->id;
 
-            if( !is_null($request->asset) && !is_null($request->asset['id']) ){
-                $model->asset_id = $request->asset['id']; 
-            }
+            if( isset($request->asset) && isset($request->asset->id) )
+                $model->asset_id = $request->asset->id;
+            else 
+                $model->asset_id = null;
 
             $model->name = $request->name;
             $model->description = $request->description;

@@ -35,7 +35,7 @@
 				</v-row>
 
 				<div class="text-overline mt-6">Form Document</div>
-				<v-divider :thickness="3" class="mt-3 mb-10" />
+				<v-divider :thickness="3" class="mt-3 mb-5" />
 
 				<v-row dense>					
 					<v-col cols="12">
@@ -49,19 +49,14 @@
 					</v-col>
 				</v-row>
 
-				<div class="text-overline mt-6">Terhubung Ke Asset</div>
-				<v-divider :thickness="3" class="mt-3 mb-10" />
+				<div class="text-overline mt-6">Terhubung Ke Unit</div>
+				<v-divider :thickness="3" class="mt-3 mb-5" />
 
-				<div v-if="record.asset != undefined && record.asset.id == undefined" dense>
-					Tidak Terhubung Dengan Aset Manapun
-				</div>
-
-				<div v-if="record.asset != undefined && record.asset.id != undefined && record.asset.slug_unit != undefined" dense>
-					<v-row dense>
+				<v-row v-if="record.unit != undefined" dense>
 						<v-col cols="6">
 							<v-text-field
 								label="Nama Unit"
-								v-model="record.asset.unit_name"
+								v-model="record.unit.name"
 								:readonly="true"					
 							></v-text-field>
 						</v-col>
@@ -69,12 +64,20 @@
 							<v-combobox
 							:items="units_slug" 
 							label="Pilih Unit"
-							v-model="record.asset.slug_unit"
+							v-model="record.unit.slug"
 							:readonly="true"
 							></v-combobox>
 						</v-col>
 					</v-row>
 
+				<div class="text-overline mt-6">Terhubung Ke Asset</div>
+				<v-divider :thickness="3" class="mt-3 mb-5" />
+
+				<div v-if="record.asset != undefined && record.asset.id == undefined" dense>
+					Tidak Terhubung Dengan Aset Manapun
+				</div>
+
+				<div v-if="record.asset != undefined && record.asset.id != undefined && record.asset.slug_unit != undefined" dense>				
 					<v-row dense>
 						<v-col cols="12">
 							<v-combobox

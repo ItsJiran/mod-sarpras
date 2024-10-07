@@ -4,6 +4,13 @@
 		page-key="document"
 	></page-crud>
 
+	<page-crud v-if=" checkRoute('infrastructure-unit-document') "	
+		page-name="infrastructure-unit-document"
+		page-key="document"
+		parent-name="infrastructure-unit"
+		parent-key="unit"
+	></page-crud>
+
 	<page-crud v-if=" checkRoute('infrastructure-asset-document') "	
 		page-name="infrastructure-asset-document"
 		page-key="document"
