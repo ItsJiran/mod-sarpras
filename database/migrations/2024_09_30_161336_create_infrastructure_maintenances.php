@@ -20,7 +20,7 @@ return new class extends Migration
             // descriptions
             $table->text('description')->nullable();
 
-            // tipenya berakala / manual
+            // tipenya berkala / manual
             $table->string('type')->default('berkala')->index();
 
             // period day
