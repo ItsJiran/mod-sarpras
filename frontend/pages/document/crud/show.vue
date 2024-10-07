@@ -118,7 +118,16 @@
 </template>
 
 <script>
+import LandCertificate from "./show-part/show-land-certificate";
 export default {
 	name: "infrastructure-document-show",
+	components : {
+		LandCertificate,
+	},
+	data(){
+		return {
+			
+		}
+	}
 };
 </script>
