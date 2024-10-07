@@ -80,6 +80,10 @@
 					</v-col>	
 				</v-row>
 
+				<div v-if="assets_types == undefined">
+					{{ initAssetTypes(record,this) }}
+				</div>
+
 				<v-row v-if="record.asset != undefined && record.asset.asset_type_key != undefined && assets_slugs_combos != undefined && assets_slugs_combos.length > 0" dense>
 						<v-col cols="6">
 						<v-text-field
@@ -161,6 +165,15 @@ export default {
 		clearAssetOption : function (record, data) {
 			data.asset = {};
 			record.asset = {};			
+		},
+
+		initAssetTypes : function (record,data) {
+			if ( data.assets_types ) return;
+			this.$http(`infrastructure/api/ref-asset/type`).then(
+				(response) => {
+					data.assets_types = response;
+				}
+			);
 		},
 
 		checkRoute : function (name = "") {

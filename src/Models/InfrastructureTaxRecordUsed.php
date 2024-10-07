@@ -2,22 +2,16 @@
 
 namespace Module\Infrastructure\Models;
 
+use Illuminate\Http\Request;
 use Module\System\Traits\HasMeta;
+use Illuminate\Support\Facades\DB;
 use Module\System\Traits\Filterable;
 use Module\System\Traits\Searchable;
 use Module\System\Traits\HasPageSetup;
-
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use Illuminate\Database\Eloquent\Relations\MorphTo;
 
-// Relation Model
-use App\Models\InfrastructureAsset;
-use App\Models\InfrastructureDocument;
-
-class InfrastructureMaintenance extends Model
+class InfrastructureTaxRecordUsed extends Model
 {
     use Filterable;
     use HasMeta;
@@ -37,14 +31,14 @@ class InfrastructureMaintenance extends Model
      *
      * @var string
      */
-    protected $table = 'infrastructure_maintenances';
+    protected $table = 'infrastructure_taxrecorduseds';
 
     /**
      * The roles variable
      *
      * @var array
      */
-    protected $roles = ['infrastructure-maintenance'];
+    protected $roles = ['infrastructure-taxrecordused'];
 
     /**
      * The attributes that should be cast to native types.
@@ -55,128 +49,12 @@ class InfrastructureMaintenance extends Model
         'meta' => 'array'
     ];
 
-
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var array<int, string>
-     */
-    protected $fillable = [
-        'name',
-        'description',
-        'type',
-        'period_day',
-        'duedate',        
-        'maintenanceable_id',
-        'maintenanceable_type',
-    ];
-
-    
     /**
      * The default key for the order.
      *
      * @var string
      */
     protected $defaultOrder = 'name';
-
-    /**
-     * ====================================================
-     * +---------------- RELATION METHODS ----------------+
-     * ====================================================
-     */
-
-    /**
-     * Get the model that the image belongs to.
-     */
-    public function typeable(): MorphTo
-    {
-
-    }
-
-    /**
-     * Get the model that the image belongs to.
-     */
-    public function maintenanceable(): MorphTo
-    {
-        return $this->morphTo(__FUNCTION__, 'maintenanceable_type', 'maintenanceable_id');
-    } 
-
-    /**
-     * ====================================================
-     * +------------------ MAP RESOURCE ------------------+
-     * ====================================================
-     */
-
-    /**
-     * The model map combos method
-     *
-     * @param [type] $model
-     * @return array
-     */
-    public static function mapCombos(Request $request, $model = null) : array 
-    {   
-        return [
-            'types' => self::mapType(),
-            'morph_type' => self::mapMorphTypeClass(),
-            'morph_type_keys' => self::mapMorphTypeKeyClass(),
-        ];
-    }   
-
-    /**
-     * The model map combos method
-     *
-     * @param [type] $model
-     * @return array
-     */
-    public static function mapType() : array
-    {
-        return [
-            'berkala',
-            'manual',
-        ];
-    }
-
-
-    /**
-     * The model map combos method
-     *
-     * @param [type] $model
-     * @return array
-     */
-    public static function mapMorphTypeClass($reverse = false) : array
-    {
-        if(!$reverse) {
-            return [
-                'Asset' => InfrastructureAsset::class,
-                'Document' => InfrastructureDocument::class,
-            ];
-        } else {
-            return [
-                InfrastructureAsset::class => 'Asset',
-                InfrastructureDocument::class => 'Document',
-            ];
-        }
-    }
-
-    /**
-     * The model map combos method
-     *
-     * @param [type] $model
-     * @return array
-     */
-    public static function mapMorphTypeKeyClass() : array
-    {
-        return [
-            'Asset',
-            'Document',             
-        ];
-    }
-
-    /**
-     * ================================================
-     * +------------------ MAP CRUD ------------------+
-     * ================================================
-     */
 
     /**
      * The model store method
@@ -196,7 +74,7 @@ class InfrastructureMaintenance extends Model
 
             DB::connection($model->connection)->commit();
 
-            // return new MaintenanceResource($model);
+            // return new TaxRecordUsedResource($model);
         } catch (\Exception $e) {
             DB::connection($model->connection)->rollBack();
 
@@ -224,7 +102,7 @@ class InfrastructureMaintenance extends Model
 
             DB::connection($model->connection)->commit();
 
-            // return new MaintenanceResource($model);
+            // return new TaxRecordUsedResource($model);
         } catch (\Exception $e) {
             DB::connection($model->connection)->rollBack();
 

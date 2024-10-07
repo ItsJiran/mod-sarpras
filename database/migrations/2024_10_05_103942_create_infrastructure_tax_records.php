@@ -23,6 +23,7 @@ return new class extends Migration
             // tanggal pembayaran
             $table->timestamp('paydate')->nullable();
             $table->string('proof_img_path')->nullable();
+            $table->string('status')->default('pending');
 
             $table->jsonb('meta')->nullable();
             $table->softDeletes();
