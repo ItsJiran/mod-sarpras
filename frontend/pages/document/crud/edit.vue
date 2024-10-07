@@ -44,6 +44,8 @@
 					</v-col>
 				</v-row>
 
+				<component :record="record" :is="record.documentable_type_key"/>	
+
 				<div class="text-overline mt-6">Terhubung Ke Unit</div>
 				<v-divider :thickness="3" class="mt-3 mb-10" />
 
@@ -78,7 +80,7 @@
 					</v-col>	
 				</v-row>
 
-				<v-row v-if="record.asset.asset_type_key != undefined && assets_slugs_combos != undefined && assets_slugs_combos.length > 0" dense>
+				<v-row v-if="record.asset != undefined && record.asset.asset_type_key != undefined && assets_slugs_combos != undefined && assets_slugs_combos.length > 0" dense>
 						<v-col cols="6">
 						<v-text-field
 							label="Nama Asset"
@@ -105,7 +107,7 @@
 					>
 				</v-row>
 
-				<v-row v-if="record.asset.asset_type_key != undefined && assets_slugs_combos != undefined && assets_slugs_combos.length <= 0" dense>					
+				<v-row v-if="record.asset != undefined && record.asset.asset_type_key != undefined && assets_slugs_combos != undefined && assets_slugs_combos.length <= 0" dense>					
 					<v-btn
 						class="mt-2"
 						color="teal-darken-4"

@@ -49,6 +49,8 @@
 					</v-col>
 				</v-row>
 
+				<component :record="record" :is="record.documentable_type_key"/>	
+
 				<div class="text-overline mt-6">Terhubung Ke Unit</div>
 				<v-divider :thickness="3" class="mt-3 mb-5" />
 
