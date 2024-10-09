@@ -16,6 +16,7 @@ use Illuminate\Database\Eloquent\Relations\MorphTo;
 // Relation Model
 use App\Models\InfrastructureAsset;
 use App\Models\InfrastructureDocument;
+use Module\Infrastructure\Models\InfrastructureUnit;
 
 class InfrastructureMaintenance extends Model
 {
@@ -110,8 +111,34 @@ class InfrastructureMaintenance extends Model
      * @return array
      */
     public static function mapCombos(Request $request, $model = null) : array 
-    {   
+    {  
+        // temporary
+        $human = InfrastructureUnit::get(['id','name','slug']);
+
+        // notes : assign units into properties
+        $units = [];
+        $units_ids = [];
+
+        $units_name = [];
+        $units_slug = [];
+
+        // notes : mapping to the array so frontend can consume..
+        foreach ($human as $key => $value) {
+            array_push( $units_name, $value->name );
+            array_push( $units_slug, $value->slug );
+
+            $units[$value->slug] = $value;
+            $units_id[$value->id] = $value;
+        }
+
         return [
+            // units array merges
+            'units' => $units,
+            'units_ids' => $units_ids,
+
+            'units_name' => $units_name,
+            'units_slug' => $units_slug,
+
             'types' => self::mapType(),
             'morph_type' => self::mapMorphTypeClass(),
             'morph_type_keys' => self::mapMorphTypeKeyClass(),
