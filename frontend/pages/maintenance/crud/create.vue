@@ -26,10 +26,20 @@
 					<v-col cols="12">
 						<v-combobox
 						:items="types" 
-						label="Tipe Target Perawatan"
+						label="Tipe Perawatan"
 						v-model="record.type"
 						:return-object="false"
-						:readonly="true"
+						></v-combobox>
+					</v-col>
+				</v-row>
+
+				<v-row v-if="record.type != undefined && record.tpe == 'berkala'" dense>
+					<v-col cols="12">
+						<v-combobox
+						:items="types" 
+						label="Tipe Perawatan"
+						v-model="record.type"
+						:return-object="false"
 						></v-combobox>
 					</v-col>
 				</v-row>
@@ -41,7 +51,6 @@
 						label="Tipe Target Perawatan"
 						v-model="record.maintenanceable_type"
 						:return-object="false"
-						:readonly="true"
 						></v-combobox>
 					</v-col>
 				</v-row>

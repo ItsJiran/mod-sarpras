@@ -22,7 +22,11 @@ return new class extends Migration
             $table->string('type')->default('berkala')->index();
 
             // period day
-            $table->integer('period_day')->default(0);
+            $table->integer('period_number_day')->default(0);
+            $table->integer('period_number_month')->default(0);
+            $table->integer('period_number_year')->default(0);
+
+            // tanggal pembayaran
             $table->timestamp('duedate')->nullable();
             
             // morphs eaither assets or maintenance

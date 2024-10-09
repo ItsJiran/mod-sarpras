@@ -64,8 +64,12 @@ class InfrastructureMaintenance extends Model
     protected $fillable = [
         'name',
         'description',
+        
         'type',
-        'period_day',
+        'period_number_day',
+        'period_number_month',
+        'period_number_year',
+
         'duedate',        
         'maintenanceable_id',
         'maintenanceable_type',
@@ -84,14 +88,6 @@ class InfrastructureMaintenance extends Model
      * +---------------- RELATION METHODS ----------------+
      * ====================================================
      */
-
-    /**
-     * Get the model that the image belongs to.
-     */
-    public function typeable(): MorphTo
-    {
-
-    }
 
     /**
      * Get the model that the image belongs to.

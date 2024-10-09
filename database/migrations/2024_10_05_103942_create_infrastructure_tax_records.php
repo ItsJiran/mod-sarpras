@@ -23,6 +23,12 @@ return new class extends Migration
             // tanggal pembayaran
             $table->timestamp('paydate')->nullable();
             $table->string('proof_img_path')->nullable();
+
+            // + -----
+            // 1. pending
+            // 2. approve | cancelled | unapprove
+
+            // pending -> approve | cancelled | unapprove
             $table->string('status')->default('pending');
 
             $table->jsonb('meta')->nullable();

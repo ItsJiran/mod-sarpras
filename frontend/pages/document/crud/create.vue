@@ -61,8 +61,7 @@
 						<v-col cols="6">
 							<v-combobox
 							:items="units_slug" 
-							label="Pilih Unit"
-							:readonly="true"					
+							label="Pilih Unit"			
 							v-model="unit.slug"
 							@update:model-value="getAssetType(record, units, this)"
 							></v-combobox>
