@@ -52,8 +52,8 @@ Route::delete('unit/{unit}/asset/{asset}',[InfrastructureAssetController::class,
 Route::resource('document',InfrastructureDocumentController::class)->parameters([
     'document' => 'infrastructureDocument'
 ]);
-Route::get('document/combos/unit/{unit}',[InfrastructureDocumentController::class,'mapCombosOnlyUnit']);
-Route::get('document/combos/unit/{unit}/asset/{asset}',[InfrastructureDocumentController::class,'mapCombosOnlyAsset']);
+Route::get('ref-document/combos/unit/{unit}',[InfrastructureDocumentController::class,'mapCombosOnlyUnit']);
+Route::get('ref-document/combos/unit/{unit}/asset/{asset}',[InfrastructureDocumentController::class,'mapCombosOnlyAsset']);
 
 // +-- manually from asset/document
 Route::get('unit/{unit}/asset/{asset}/document/{document}',[InfrastructureDocumentController::class, 'showFromUnit']);

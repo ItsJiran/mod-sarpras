@@ -285,7 +285,6 @@ class InfrastructureDocumentController extends Controller
     public function forceDelete(InfrastructureDocument $infrastructureDocument)
     {
         Gate::authorize('destroy', $infrastructureDocument);
-
         return InfrastructureDocument::destroyRecord($infrastructureDocument);
     }
 

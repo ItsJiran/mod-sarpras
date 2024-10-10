@@ -114,10 +114,27 @@
 							></v-combobox>
 						</v-col>
 					</v-row>
+					
+					<!-- FORM UNTUK PENCARIAN DOKUMEN PADA ASSET -->
+					<div v-if="target_type == 'Document'">
+
+						<!-- DOCUMENT -->
+						<v-row dense>
+							<v-col cols="12">
+								<v-combobox
+								:items="types_documents" 
+								label="Tipe Dokumen Terhubung Ke Mana"
+								v-model="target_type_document"
+								:return-object="false"
+								@update:model-value=" targetChangeDocumentType(this) "
+								></v-combobox>
+							</v-col>
+						</v-row>	
+
+					</div>
 
 					<!-- FORM UNTUK PENCARIAN ASSET -->
-					<div v-if="target_type == 'Asset'">		
-
+					<div v-if="target_type == 'Asset' || target_type == 'Document' && target_type_document == 'Asset'">		
 						<!-- ASSET TYPE -->
 						<v-row v-if="target_unit.id != undefined" dense>
 							<v-col cols="12">
@@ -160,25 +177,6 @@
 								:disabled="true"
 								>Tidak Ditemukan</v-btn>
 						</v-row>
-
-					</div>
-
-					<!-- FORM UNTUK PENCARIAN DOKUMEN PADA ASSET -->
-					<div v-if="target_type == 'Document'">
-
-						<!-- DOCUMENT -->
-						<v-row dense>
-							<v-col cols="12">
-								<v-combobox
-								:items="types_documents" 
-								label="Tipe Dokumen Terhubung Ke Mana"
-								v-model="target_type_document"
-								:return-object="false"
-								@update:model-value=" targetChangeDocumentType(this) "
-								></v-combobox>
-							</v-col>
-						</v-row>	
-
 					</div>
 
 					
@@ -265,19 +263,30 @@ export default {
 			)
 		},
 		
-		getDocumentsList : function (data) {
+		getDocumentsListByUnit : function (data) {
+			this.$http(`infrastructure/api/ref-document/combos/unit/${data.target_unit.id}`).then(
+				(response) => {
+					console.log(response);
+				}
+			)
+		},	
+		getDocumentsListByAsset : function (data) {
+			if(data.target_asset.id == undefined) return;
 
+			is.$http(`infrastructure/api/ref-document/combos/unit/${data.target_unit.id}/asset/${data.target_asset.id}`).then(
+				(response) => {
+					console.log(response);
+				}
+			)
 		},	
 
 		targetChangeDocumentType: function (data) {
-			if( data.target_type_document == 'Asset'  ){
-				
-			} else if( data.target_type_document == 'Unit'  ) {
-
+			if( data.target_type_document == 'Asset' ){
+				data.getDocumentsListByAsset(data);
+			} else if( data.target_type_document == 'Unit' ) {
+				data.getDocumentsListByUnit(data);
 			}
 		},
-
-
 
 		targetChangeAsset : function (data) {
 			data.target_asset = data.target_asset_slugs[ data.target_asset.slug ];			

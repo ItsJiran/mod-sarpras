@@ -122,7 +122,7 @@ class InfrastructureDocument extends Model
      * @param [type] $model
      * @return void
      */
-    public static function mapCombosConsumeOnlyUnit(Request $request, $model = null): array 
+    public static function mapCombosOnlyUnit(Request $request, $model = null) 
     {
         $documents = self::where([
             ['unit_id','=',$request->unit->id],
@@ -138,7 +138,7 @@ class InfrastructureDocument extends Model
      * @param [type] $model
      * @return void
      */
-    public static function mapCombosConsumeOnlyAsset(Request $request, $model = null): array 
+    public static function mapCombosOnlyAsset(Request $request, $model = null) 
     {
         $documents = self::where([
             ['unit_id','=',$request->unit->id],
