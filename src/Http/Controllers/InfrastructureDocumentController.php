@@ -293,7 +293,7 @@ class InfrastructureDocumentController extends Controller
      * @param  \Module\Infrastructure\Models\InfrastructureDocument $infrastructureDocument
      * @return \Illuminate\Http\Response
      */
-    public function mapCombosOnlyUnit(Request $request)
+    public function mapCombosOnlyUnit(Request $request, InfrastructureUnit $unit)
     {
         return response()->json(InfrastructureDocument::mapCombosOnlyUnit($request),200);
     }
@@ -302,7 +302,7 @@ class InfrastructureDocumentController extends Controller
      * @param  \Module\Infrastructure\Models\InfrastructureDocument $infrastructureDocument
      * @return \Illuminate\Http\Response
      */
-    public function mapCombosOnlyAsset(Request $request)
+    public function mapCombosOnlyAsset(Request $request, InfrastructureUnit $unit, InfrastructureAsset $asset)
     {
         return response()->json(InfrastructureDocument::mapCombosOnlyAsset($request),200);
     }

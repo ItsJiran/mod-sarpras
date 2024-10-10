@@ -124,7 +124,11 @@ class InfrastructureDocument extends Model
      */
     public static function mapCombosConsumeOnlyUnit(Request $request, $model = null): array 
     {
-        
+        $documents = self::where([
+            ['unit_id','=',$request->unit->id],
+            ['asset_id','=',null],
+        ])->get();
+        return $documents;
     }
 
      /**
@@ -136,7 +140,11 @@ class InfrastructureDocument extends Model
      */
     public static function mapCombosConsumeOnlyAsset(Request $request, $model = null): array 
     {
-
+        $documents = self::where([
+            ['unit_id','=',$request->unit->id],
+            ['asset_id','=',$request->asset->id],
+        ])->get();
+        return $documents;
     }
 
      /**

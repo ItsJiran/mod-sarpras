@@ -203,6 +203,9 @@ export default {
 			target_asset : {},
 			target_document : {},
 
+			target_documents : undefined,
+			target_documents_slugs : undefined,
+
 			target_assets : undefined,
 			target_asset_slugs : undefined,
 			target_asset_slugs_combos : undefined,
@@ -262,13 +265,18 @@ export default {
 			)
 		},
 		
+		getDocumentsList : function (data) {
+
+		},	
+
 		targetChangeDocumentType: function (data) {
 			if( data.target_type_document == 'Asset'  ){
-
+				
 			} else if( data.target_type_document == 'Unit'  ) {
 
 			}
 		},
+
 
 
 		targetChangeAsset : function (data) {
