@@ -288,4 +288,24 @@ class InfrastructureDocumentController extends Controller
 
         return InfrastructureDocument::destroyRecord($infrastructureDocument);
     }
+
+    /**
+     * @param  \Module\Infrastructure\Models\InfrastructureDocument $infrastructureDocument
+     * @return \Illuminate\Http\Response
+     */
+    public function mapCombosOnlyUnit(Request $request)
+    {
+        return response()->json(InfrastructureDocument::mapCombosOnlyUnit($request),200);
+    }
+
+    /**
+     * @param  \Module\Infrastructure\Models\InfrastructureDocument $infrastructureDocument
+     * @return \Illuminate\Http\Response
+     */
+    public function mapCombosOnlyAsset(Request $request)
+    {
+        return response()->json(InfrastructureDocument::mapCombosOnlyAsset($request),200);
+    }
+
+
 }

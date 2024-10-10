@@ -140,6 +140,8 @@ class InfrastructureMaintenance extends Model
             'units_slug' => $units_slug,
 
             'types' => self::mapType(),
+            'types_documents' => self::mapTypeDocuments(),
+
             'morph_type' => self::mapMorphTypeClass(),
             'morph_type_keys' => self::mapMorphTypeKeyClass(),
         ];
@@ -159,6 +161,19 @@ class InfrastructureMaintenance extends Model
         ];
     }
 
+    /**
+     * The model map combos method
+     *
+     * @param [type] $model
+     * @return array
+     */
+    public static function mapTypeDocuments() : array
+    {
+        return [
+            'Unit',
+            'Asset',
+        ];
+    }
 
     /**
      * The model map combos method

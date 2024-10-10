@@ -116,6 +116,30 @@ class InfrastructureDocument extends Model
      */
     
      /**
+     * The model map combos to be consume for frontend on another page
+     * but only connected to unit
+     *
+     * @param [type] $model
+     * @return void
+     */
+    public static function mapCombosConsumeOnlyUnit(Request $request, $model = null): array 
+    {
+        
+    }
+
+     /**
+     * The model map combos to be consume for frontend on another page
+     * but only connected to asset
+     *
+     * @param [type] $model
+     * @return void
+     */
+    public static function mapCombosConsumeOnlyAsset(Request $request, $model = null): array 
+    {
+
+    }
+
+     /**
      * The model map combos method
      *
      * @param [type] $model
