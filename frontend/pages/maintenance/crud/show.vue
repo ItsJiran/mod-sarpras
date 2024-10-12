@@ -130,6 +130,17 @@
 						</v-col>
 					</v-row>
 
+					<v-row dense>
+						<v-col cols="12">
+							<v-combobox
+							:items="morph_type_keys" 
+							label="Tipe Tujuan"
+							v-model="record.target_type"
+							:return-object="false"
+							></v-combobox>
+						</v-col>
+					</v-row>
+
 				</div>
 
 			</v-card-text>
