@@ -15,8 +15,8 @@ use Illuminate\Database\Eloquent\Relations\MorphTo;
 
 // Relation Model
 use Illuminate\Validation\Rule;
-use App\Models\InfrastructureAsset;
-use App\Models\InfrastructureDocument;
+use Module\Infrastructure\Models\InfrastructureAsset;
+use Module\Infrastructure\Models\InfrastructureDocument;
 use Module\Infrastructure\Models\InfrastructureUnit;
 
 class InfrastructureMaintenance extends Model
@@ -104,6 +104,40 @@ class InfrastructureMaintenance extends Model
      * +------------------ MAP RESOURCE ------------------+
      * ====================================================
      */
+
+    /**
+     * The model map combos method
+     *
+     * @param [type] $model
+     * @return array
+     */
+    public static function mapResourceShow(Request $request, $model = null) : array 
+    {
+        $properties = [
+            'name' => $model->name,
+            'description' => $model->description,
+            
+            'type' => $model->type,
+            'period_number_day' => $model->period_number_day,
+            'period_number_month' => $model->period_number_month,
+            'period_number_year' => $model->period_number_year,
+    
+            'duedate' => $model->duedate,        
+            'maintenanceable_id' => $model->maintenanceable_id,
+            'maintenanceable_type' => $model->maintenanceable_type,
+        ];
+
+        // show properties 
+        $show_properties = [
+            'target' => $model->maintenanceable,
+            'target_type' => $model->mapMorphTypeClass(true)[$model->maintenanceable_type],
+        ];
+
+        return array_merge(
+            $properties,
+            $show_properties,
+        );
+    }    
 
     /**
      * The model map combos method
@@ -264,16 +298,22 @@ class InfrastructureMaintenance extends Model
 
         try {
             // ...
-            $model->save();
             $model->name = $request->name;
             $model->type = $request->type;
             $model->description = $request->description;
-            $model->period_number_day = $request->period_number_day;
-            $model->period_number_month = $request->period_number_month;
-            $model->period_number_year = $request->period_number_year;
+
+            // period day
+            if ($request->period_number_day != null) 
+                $model->period_number_day = $request->period_number_day;
+            if ($request->period_number_month)
+                $model->period_number_month = $request->period_number_month;
+            if ($request->period_number_month)
+                $model->period_number_year = $request->period_number_year;
+
             $model->duedate = $request->duedate;
-            $model->maintenanceable_id = $request->target['id'];
-            $model->maintenanceable_type = self::mapMorphTypeClass(true)[$request->target_type];
+            $model->maintenanceable_id = $request->target['id'];            
+            $model->maintenanceable_type = self::mapMorphTypeClass()[$request->target_type];
+            $model->save();
 
             DB::connection($model->connection)->commit();
 
