@@ -126,7 +126,7 @@
 								label="Tipe Dokumen Terhubung Ke Mana"
 								v-model="target_type_document"
 								:return-object="false"
-								@update:model-value=" targetChangeDocumentType(this) "
+								@update:model-value=" targetChangeDocumentType(record,this) "
 								></v-combobox>
 							</v-col>
 						</v-row>	
@@ -162,7 +162,7 @@
 									:items="target_asset_slugs_combos" 
 									label="Pilih Asset Slug"
 									v-model="target_asset.slug"
-									@update:model-value=" targetChangeAsset(this) "
+									@update:model-value=" targetChangeAsset(record,this) "
 								></v-combobox>
 							</v-col>
 						</v-row>
@@ -175,10 +175,39 @@
 								block
 								variant="flat"
 								:disabled="true"
-								>Tidak Ditemukan</v-btn>
+								>Asset Tidak Ditemukan</v-btn>
 						</v-row>
 					</div>
 
+					<!-- APABILA ADA DOKUMEN -->
+					<v-row v-if="target_documents != undefined && target_documents.length > 0" dense>
+						<v-col cols="6">
+							<v-text-field								
+								label="Document Name"
+								v-model="target_document.name"
+								:readonly="true"
+							></v-text-field>
+						</v-col>
+						<v-col cols="6">
+							<v-combobox
+								:items="target_documents_ids_combos" 
+								label="Pilih Document Id"
+								v-model="target_document.id"
+								@update:model-value=" targetChangeDocument(record,this) "
+							></v-combobox>
+						</v-col>
+					</v-row>
+
+					<!-- APABILA DOKUMEN KOSONG -->
+					<v-row v-if="( target_type_document == 'Asset' && target_asset_slugs_combos != undefined && target_asset_slugs_combos.length > 0 && target_asset != undefined || target_type_document == 'Unit' ) && target_type == 'Document' && target_documents != undefined && target_documents.length <= 0" dense>
+						<v-btn
+							class="mt-2"
+							color="teal-darken-4"
+							block
+							variant="flat"
+							:disabled="true"
+							>Dokumen Tidak Ditemukan</v-btn>
+					</v-row>
 					
 				</div>
 
@@ -194,20 +223,17 @@ export default {
 	},
 	data(){	
 		return {
-			targets_assets_needed : [],
-			targets_documents_needed : [],
-
 			target_unit  : {},
 			target_asset : {},
 			target_document : {},
 
 			target_documents : undefined,
-			target_documents_slugs : undefined,
+			target_documents_ids : undefined,
+			target_documents_ids_combos : undefined,
 
 			target_assets : undefined,
 			target_asset_slugs : undefined,
 			target_asset_slugs_combos : undefined,
-			additonal_documents : undefined,
 
 			target_type : undefined,
 			target_type_key : undefined,
@@ -249,6 +275,10 @@ export default {
 		},
 		getAssetList : function (data) {
 			// reset every new asset list fetched
+			data.target_asset = {};
+			data.target_documents = [];
+
+			// reset every new asset list fetched
 			data.target_asset_slugs_combos = undefined;
 			data.target_asset_slugs = undefined;
 			data.target_assets = undefined;
@@ -264,23 +294,35 @@ export default {
 		},
 		
 		getDocumentsListByUnit : function (data) {
+			if(data.target_unit.id == undefined) return;
+			data.target_documents = [];
+
 			this.$http(`infrastructure/api/ref-document/combos/unit/${data.target_unit.id}`).then(
 				(response) => {
-					console.log(response);
+					data.target_documents_ids_combos = response.documents_ids_combos;
+					data.target_documents_ids = response.documents_ids;
+					data.target_documents = response.documents;
 				}
 			)
 		},	
 		getDocumentsListByAsset : function (data) {
 			if(data.target_asset.id == undefined) return;
+			data.target_documents = [];
 
-			is.$http(`infrastructure/api/ref-document/combos/unit/${data.target_unit.id}/asset/${data.target_asset.id}`).then(
+			this.$http(`infrastructure/api/ref-document/combos/unit/${data.target_unit.id}/asset/${data.target_asset.id}`).then(
 				(response) => {
-					console.log(response);
+					data.target_documents_ids_combos = response.documents_ids_combos;
+					data.target_documents_ids = response.documents_ids;
+					data.target_documents = response.documents;
 				}
 			)
 		},	
 
-		targetChangeDocumentType: function (data) {
+		targetChangeDocumentType: function (record, data) {
+			data.target_document = {};
+			record.target = undefined;
+			record.target_type = undefined;
+
 			if( data.target_type_document == 'Asset' ){
 				data.getDocumentsListByAsset(data);
 			} else if( data.target_type_document == 'Unit' ) {
@@ -288,10 +330,26 @@ export default {
 			}
 		},
 
-		targetChangeAsset : function (data) {
-			data.target_asset = data.target_asset_slugs[ data.target_asset.slug ];			
-		},
+		targetChangeAsset : function (record,data) {
+			data.target_asset = data.target_asset_slugs[ data.target_asset.slug ];
 
+			// record target
+			if(data.target_type == 'Asset'){
+				record.target = data.target_asset;
+				record.target_type = data.target_type;
+			}
+
+			if ( data.target_type_document == 'Asset' ) {
+				data.getDocumentsListByAsset(data);
+			}
+		},
+		targetChangeDocument : function (record,data) {
+			data.target_document = data.target_documents_ids[data.target_document.id];
+
+			// record target
+			record.target = data.target_document;
+			record.target_type = data.target_type;
+		},
 		targetChangeUnit : function (data, units) {
 			data.target_unit = units[data.target_unit.slug];
 			data.target_asset = {};

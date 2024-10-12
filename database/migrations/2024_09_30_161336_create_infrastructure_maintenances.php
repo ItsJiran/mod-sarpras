@@ -32,7 +32,7 @@ return new class extends Migration
             $table->timestamp('duedate')->nullable();
 
             // morph
-            $table->morphs('maintananceable');
+            $table->morphs('maintenanceable');
 
             $table->jsonb('meta')->nullable();
             $table->softDeletes();

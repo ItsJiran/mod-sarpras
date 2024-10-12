@@ -14,6 +14,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
 
 // Relation Model
+use Illuminate\Validation\Rule;
 use App\Models\InfrastructureAsset;
 use App\Models\InfrastructureDocument;
 use Module\Infrastructure\Models\InfrastructureUnit;
@@ -103,6 +104,39 @@ class InfrastructureMaintenance extends Model
      * +------------------ MAP RESOURCE ------------------+
      * ====================================================
      */
+
+    /**
+     * The model map combos method
+     *
+     * @param [type] $model
+     * @return array
+     */
+    public static function mapRequestValidation(Request $request, $model = null):array
+    {
+        $validation = [
+            'name' => 'required',
+            'duedate' => 'required|date',
+            'type' => [
+                'required',
+                Rule::in( self::mapType() )
+            ],
+            'target' => 'required',
+            'target_type' => [
+                'required',
+                Rule::in( self::mapMorphTypeKeyClass() )
+            ],
+        ];
+
+        if ( $request->type == 'berkala' ) {
+            $validation = array_merge( $validation, [
+                'period_number_day' => 'required|numeric',
+                'period_number_month' => 'required|numeric',
+                'period_number_year' => 'required|numeric',
+            ] );
+        }
+
+        return $validation;
+    }
 
     /**
      * The model map combos method
@@ -231,6 +265,15 @@ class InfrastructureMaintenance extends Model
         try {
             // ...
             $model->save();
+            $model->name = $request->name;
+            $model->type = $request->type;
+            $model->description = $request->description;
+            $model->period_number_day = $request->period_number_day;
+            $model->period_number_month = $request->period_number_month;
+            $model->period_number_year = $request->period_number_year;
+            $model->duedate = $request->duedate;
+            $model->maintenanceable_id = $request->target['id'];
+            $model->maintenanceable_type = self::mapMorphTypeClass(true)[$request->target_type];
 
             DB::connection($model->connection)->commit();
 

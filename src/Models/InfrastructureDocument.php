@@ -128,7 +128,20 @@ class InfrastructureDocument extends Model
             ['unit_id','=',$request->unit->id],
             ['asset_id','=',null],
         ])->get();
-        return $documents;
+
+        $documents_ids = [];
+        $documents_ids_combos = [];
+
+        foreach ($documents as $key => $value) {            
+            $documents_ids[ $value->id ] = $value;
+            array_push( $documents_ids_combos, $value->id );
+        }
+
+        return [
+            'documents' => $documents,
+            'documents_ids' => $documents_ids,
+            'documents_ids_combos' => $documents_ids_combos,
+        ];
     }
 
      /**
@@ -144,7 +157,20 @@ class InfrastructureDocument extends Model
             ['unit_id','=',$request->unit->id],
             ['asset_id','=',$request->asset->id],
         ])->get();
-        return $documents;
+
+        $documents_ids = [];
+        $documents_ids_combos = [];
+
+        foreach ($documents as $key => $value) {
+            $documents_ids[ $value->id ] = $value;
+            array_push( $documents_ids_combos, $value->id );
+        }
+
+        return [
+            'documents' => $documents,
+            'documents_ids' => $documents_ids,
+            'documents_ids_combos' => $documents_ids_combos,
+        ];
     }
 
      /**
