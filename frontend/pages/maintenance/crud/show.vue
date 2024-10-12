@@ -3,6 +3,7 @@
 		with-helpdesk
 	>
 		<template v-slot:default="{ 
+			record,
 			combos : { 
 				morph_type, 
 				morph_type_keys, 
@@ -11,7 +12,6 @@
 				units, 
 				units_slug 
 			},
-			record
 			}">
 			<v-card-text>
 				<v-row dense>
@@ -19,7 +19,7 @@
 						<v-text-field
 							label="Name"
 							v-model="record.name"
-							readonly
+							:readonly="true"
 						></v-text-field>
 					</v-col>
 				</v-row>
@@ -28,6 +28,7 @@
 					<v-col cols="12">
 						<v-text-field
 							label="Deskripsi"
+							:readonly="true"
 							v-model="record.description"
 						></v-text-field>
 					</v-col>
@@ -42,6 +43,7 @@
 						:items="types" 
 						label="Tipe Perawatan"
 						v-model="record.type"
+							:readonly="true"
 						:return-object="false"
 						></v-combobox>
 					</v-col>
@@ -53,6 +55,7 @@
 						<v-number-input
 						label="Jumlah Hari"
 						v-model="record.period_number_day"
+							:readonly="true"
 						:min="0"
 						></v-number-input>
 					</v-col>
@@ -60,6 +63,7 @@
 						<v-number-input
 						label="Jumlah Bulan"
 						v-model="record.period_number_month"
+							:readonly="true"
 						:min="0"
 						></v-number-input>
 					</v-col>
@@ -67,6 +71,7 @@
 						<v-number-input
 						label="Jumlah Tahun"
 						v-model="record.period_number_year"
+							:readonly="true"
 						:min="0"
 						></v-number-input>
 					</v-col>
@@ -80,6 +85,7 @@
 						<v-date-input
 							label="Deadine Tanggal Pembayaran"
 							v-model="record.duedate"
+							:readonly="true"
 						></v-date-input>
 					</v-col>
 				</v-row>
@@ -88,24 +94,28 @@
 				<v-divider :thickness="3" class="mt-3 mb-6" />
 
 				<!-- INIT SHOW PROPERTIES -->
-				<div v-if="!initShow">
-					{{ initShowProperties( this, record, { 
-						morph_type, 
-						morph_type_keys, 
-						types, 
-						types_documents, 
-						units, 
-						units_slug 
-					}) }}
+				<div v-if="!initShow && record != undefined && record.target != undefined">
+					{{ initShowProperties( 
+						this, 
+						record, 
+						{ 
+							morph_type, 
+							morph_type_keys, 
+							types, 
+							types_documents, 
+							units, 
+							units_slug 
+						}
+					) }}
 				</div>
 
-				<div v-if="initShow" class="px-2 py-2">
+				<div v-if="initShow && record != undefined && record.target != undefined" class="px-2 py-2">
 
 					<v-row dense>
 						<v-col cols="6">
 							<v-text-field
 								label="Nama Unit"
-								v-model="target_unit.name"
+								v-model="record.target_unit.name"
 								:readonly="true"
 							></v-text-field>
 						</v-col>
@@ -113,9 +123,9 @@
 							<v-combobox
 							:items="units_slug" 
 							label="Slug Unit"
-							v-model="target_unit.slug"
+							v-model="record.target_unit.slug"
 							:return-object="false"
-							@update:model-value=" targetChangeUnit(this,units) "
+							:readonly="true"
 							></v-combobox>
 						</v-col>
 					</v-row>
@@ -157,8 +167,13 @@ export default {
 	},
 	methods : {
 		initShowProperties : function ( data, record, combos ) {
-			console.log('test');
-			console.log(combos);
+			console.log*(record.target.unit_id);
+			for ( const [key,unit] of Object.entries(combos.units) ) {
+				if (record.target.unit_id == unit.id){
+					record.target_unit = unit;
+					break;
+				}
+			}
 			data.initShow = true;
 		}
 	}
