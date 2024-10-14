@@ -358,8 +358,23 @@ class InfrastructureMaintenance extends Model
     {
         DB::connection($model->connection)->beginTransaction();
 
-        try {
-            // ...
+        try {            
+            $model->name = $request->name;
+            $model->type = $request->type;
+            $model->description = $request->description;
+
+            // period day
+            if ($request->period_number_day != null) 
+                $model->period_number_day = $request->period_number_day;
+            if ($request->period_number_month)
+                $model->period_number_month = $request->period_number_month;
+            if ($request->period_number_month)
+                $model->period_number_year = $request->period_number_year;
+
+            $model->duedate = $request->duedate;
+            $model->maintenanceable_id = $request->target['id'];            
+            $model->maintenanceable_type = self::mapMorphTypeClass()[$request->target_type];
+
             $model->save();
 
             DB::connection($model->connection)->commit();
