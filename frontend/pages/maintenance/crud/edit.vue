@@ -82,7 +82,7 @@
 				<div class="text-overline mt-6">Form Pencarian Asset atau Dokumen Yang Terhubung</div>
 				<v-divider :thickness="3" class="mt-3 mb-6" />
 
-				<div v-if="initEdit == true" class="px-2 py-2">
+				<div v-if="initEdit == true && record != undefined" class="px-2 py-2">
 
 					<v-row dense>
 						<v-col cols="6">
@@ -211,7 +211,7 @@
 				</div>
 
 				<!-- INISIASI PROPERTY EDIT -->
-				<div v-if="initEdit == false">
+				<div v-if="initEdit == false && record.target != undefined">
 					{{ initPropEdit(record,this) }}
 				</div>
 
@@ -247,7 +247,55 @@ export default {
 		}
 	},
 	methods : {
-		initPropEdit(record,data){
+		initPropEdit : function(record,data){
+
+			// extract prop
+			data.target_unit  = record.target_unit;
+			data.target_asset = record.target_asset;
+			data.target_document = record.target_document;
+
+			data.target_type = record.target_type;
+			data.target_type_key = record.target_type_key;
+			data.target_type_document = record.target_type_document;
+
+
+			if(data.target_type == 'Document'){
+				if(data.target_type_document == 'Unit'){
+					this.$http(`infrastructure/api/ref-document/combos/unit/${data.target_unit.id}`).then(
+						(response) => {
+							data.target_documents_ids_combos = response.documents_ids_combos;
+							data.target_documents_ids = response.documents_ids;
+							data.target_documents = response.documents;
+						}
+					)
+				}
+				if(data.target_type_document == 'Asset'){
+					this.$http(`infrastructure/api/ref-document/combos/unit/${data.target_unit.id}/asset/${data.target_asset.id}`).then(
+						(response) => {
+							data.target_documents_ids_combos = response.documents_ids_combos;
+							data.target_documents_ids = response.documents_ids;
+							data.target_documents = response.documents;
+						}
+					)
+				}
+			}
+
+			this.$http(`infrastructure/api/ref-asset/type`).then(
+				(response) => {
+					data.target_asset_types = response;
+				}
+			);
+
+			// get asset list
+			this.$http(`infrastructure/api/ref-asset/${data.target_unit.id}/${data.target_type_key}/asset`).then(
+				(response) => {
+					data.target_asset_slugs_combos = response.assets_slugs_combos;
+					data.target_asset_slugs = response.assets_slugs;
+					data.target_assets = response.assets;
+				}
+			)
+
+
 			data.initEdit = true;
 		},
 
