@@ -1,20 +1,19 @@
 <template>
 
-<page-crud v-if=" checkRoute('infrastructure-maintenance')  "	
+	<page-crud v-if=" checkRoute('infrastructure-maintenance') "	
 		page-name="infrastructure-maintenance"
 		page-key="maintenance"
 	></page-crud>
 
-
-	<page-crud v-if=" checkRoute('infrastructure-asset-maintenance')  "	
-		page-name="infrastructure-maintenance"
+	<page-crud v-if=" checkRoute('infrastructure-asset-maintenance') "	
+		page-name="infrastructure-asset-maintenance"
 		page-key="maintenance"
 		parent-name="infrastructure-asset"
 		parent-key="asset"
 	></page-crud>
 
 	<page-crud v-if=" checkRoute('infrastructure-document-maintenance') "	
-		page-name="infrastructure-maintenance"
+		page-name="infrastructure-document-maintenance"
 		page-key="maintenance"
 		parent-name="infrastructure-document"
 		parent-key="document"

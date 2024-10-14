@@ -23,11 +23,18 @@ Route::resource('maintenance',InfrastructureMaintenanceController::class)->param
     'maintenance' => 'infrastructureMaintenance'
 ]);
 
+Route::get('asset/{asset}/maintenance',[InfrastructureMaintenanceController::class,'indexFromAsset']);
+Route::get('document/{document}/maintenance',[InfrastructureMaintenanceController::class,'indexFromAsset']);
+
+
+
 // +-----------------------------------
 // +-- from resource module maintenance
 Route::resource('tax',InfrastructureTaxController::class)->parameters([
     'tax' => 'infrastructureTax'
 ]);
+
+
 
 // +-----------------------------------
 // +-- from resource module asset

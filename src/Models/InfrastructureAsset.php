@@ -17,6 +17,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 // related assets models type
+use Module\Infrastructure\Models\InfrastructureMaintenance;
 use Module\Infrastructure\Models\InfrastructureAssetVehicle;
 use Module\Infrastructure\Models\InfrastructureAssetFurniture;
 use Module\Infrastructure\Models\InfrastructureAssetElectronic;
@@ -145,6 +146,14 @@ class InfrastructureAsset extends Model
     public function documents(): HasMany 
     {
         return $this->hasMany(InfrastructureDocument::class, 'asset_id');
+    }
+
+    /**
+     * Get the model that the image belongs to.
+     */
+    public function maintenances(): HasMany 
+    {
+        return $this->hasMany(InfrastructureMaintenance::class, 'asset_id');
     }
 
     /**

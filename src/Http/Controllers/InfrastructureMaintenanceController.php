@@ -5,9 +5,11 @@ namespace Module\Infrastructure\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Gate;
-use Module\Infrastructure\Models\InfrastructureMaintenance;
 use Module\Infrastructure\Http\Resources\MaintenanceCollection;
 use Module\Infrastructure\Http\Resources\MaintenanceShowResource;
+
+use Module\Infrastructure\Models\InfrastructureMaintenance;
+use Module\Infrastructure\Models\InfrastructureAsset;
 
 class InfrastructureMaintenanceController extends Controller
 {
@@ -28,6 +30,22 @@ class InfrastructureMaintenanceController extends Controller
                 ->paginate($request->itemsPerPage)
         );
     }
+
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function indexFromAsset(Request $request, InfrastructureAsset $asset){
+        return new MaintenanceCollection(
+            $asset->maintenances
+            ->filter($request->filters)
+            ->search($request->findBy)
+            ->sortBy($request->sortBy)
+            ->paginate($request->itemsPerPage)
+        );
+    }
+
 
     /**
      * Store a newly created resource in storage.
