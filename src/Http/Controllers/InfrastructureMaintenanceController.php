@@ -68,7 +68,7 @@ class InfrastructureMaintenanceController extends Controller
     {
         Gate::authorize('update', $infrastructureMaintenance);
 
-        $request->validate([]);
+        $request->validate( InfrastructureMaintenance::mapRequestValidation($request) );
 
         return InfrastructureMaintenance::updateRecord($request, $infrastructureMaintenance);
     }
