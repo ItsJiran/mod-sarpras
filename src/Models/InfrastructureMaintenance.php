@@ -131,7 +131,26 @@ class InfrastructureMaintenance extends Model
         $show_properties = [
             'target' => $model->maintenanceable,
             'target_type' => $model->mapMorphTypeClass(true)[$model->maintenanceable_type],
+            'target_unit' => InfrastructureUnit::mapResourceShow($request, $model->maintenanceable->unit),
         ];
+
+        // determine properties for show 
+        if ($show_properties['target_type'] == 'Asset') {
+            $show_properties['target_asset'] = $show_properties['target'];            
+            $show_properties['target_type_key'] = InfrastructureAsset::mapTypeClass(true)[ $model->maintenanceable->assetable_type ];            
+        }
+
+        if ($show_properties['target_type'] == 'Document') {
+            $show_properties['target_asset'] = InfrastructureUnit::mapResourceShow($request, $model->maintenanceable->asset);
+            $show_properties['target_document'] = $show_properties['target'];
+
+            if ( $show_properties['target']->asset_id == null ) {
+                $show_properties['target_type_document'] = 'Unit';
+            } else {
+                $show_properties['target_type_key'] = InfrastructureAsset::mapTypeClass(true)[ $model->maintenanceable->asset->assetable_type ];
+                $show_properties['target_type_document'] = 'Asset';
+            }
+        } 
 
         return array_merge(
             $properties,

@@ -93,23 +93,7 @@
 				<div class="text-overline mt-6">Form Pencarian Asset atau Dokumen Yang Terhubung</div>
 				<v-divider :thickness="3" class="mt-3 mb-6" />
 
-				<!-- INIT SHOW PROPERTIES -->
-				<div v-if="!initShow && record != undefined && record.target != undefined">
-					{{ initShowProperties( 
-						this, 
-						record, 
-						{ 
-							morph_type, 
-							morph_type_keys, 
-							types, 
-							types_documents, 
-							units, 
-							units_slug 
-						}
-					) }}
-				</div>
-
-				<div v-if="initShow && record != undefined && record.target != undefined" class="px-2 py-2">
+				<div v-if="record != undefined && record.target != undefined" class="px-2 py-2">
 
 					<v-row dense>
 						<v-col cols="6">
@@ -133,13 +117,86 @@
 					<v-row dense>
 						<v-col cols="12">
 							<v-combobox
-							:items="morph_type_keys" 
 							label="Tipe Tujuan"
 							v-model="record.target_type"
 							:return-object="false"
+							:readonly="true"
 							></v-combobox>
 						</v-col>
 					</v-row>
+
+					<!-- FORM UNTUK PENCARIAN DOKUMEN PADA DOCUMENT -->
+					<div v-if="record.target_type == 'Document'">
+						<!-- DOCUMENT -->
+						<v-row dense>
+							<v-col cols="12">
+								<v-combobox
+								label="Tipe Dokumen Terhubung Ke Mana"
+								v-model="record.target_type_document"
+								:return-object="false"
+								:readonly="true"
+								></v-combobox>
+							</v-col>
+						</v-row>
+					</div>
+
+					<!-- FORM UNTUK PENCARIAN ASSET -->
+					<div v-if="record.target_type == 'Asset' || record.target_type == 'Document' && record.target_type_document == 'Asset'">		
+						<!-- ASSET TYPE -->
+						<v-row dense>
+							<v-col cols="12">
+								<v-combobox
+								label="Tipe Asset"
+								v-model="record.target_type_key"
+								:return-object="false"
+								:readonly="true"
+								@update:model-value=" targetChangeType(this) "
+								></v-combobox>
+							</v-col>
+						</v-row>
+
+						<!-- ASSET -->
+						<v-row dense>
+							<v-col cols="6">
+								<v-text-field
+									label="Nama Asset"
+									v-model="record.target_asset.name"
+									:readonly="true"
+								></v-text-field>
+							</v-col>
+							<v-col cols="6">
+								<v-combobox									 
+									label="Pilih Asset Slug"
+									v-model="record.target_asset.slug"
+									:readonly="true"
+									@update:model-value=" targetChangeAsset(record,this) "
+								></v-combobox>
+							</v-col>
+						</v-row>
+
+						<!-- APABILA ADA DOKUMEN -->
+						<v-row v-if='record.target_document != undefined' dense>
+							<v-col cols="6">
+								<v-text-field								
+									label="Document Name"
+									v-model="record.target_document.name"
+									:readonly="true"
+								></v-text-field>
+							</v-col>
+							<v-col cols="6">
+								<v-combobox
+									label="Pilih Document Id"
+									v-model="record.target_document.id"
+									:readonly="true"
+									@update:model-value=" targetChangeDocument(record,this) "
+								></v-combobox>
+							</v-col>
+						</v-row>
+
+						<!-- APABILA ADA DOKUMEN -->
+
+
+					</div>
 
 				</div>
 
@@ -177,16 +234,7 @@ export default {
 		}
 	},
 	methods : {
-		initShowProperties : function ( data, record, combos ) {
-			console.log*(record.target.unit_id);
-			for ( const [key,unit] of Object.entries(combos.units) ) {
-				if (record.target.unit_id == unit.id){
-					record.target_unit = unit;
-					break;
-				}
-			}
-			data.initShow = true;
-		}
+	
 	}
 };
 </script>
