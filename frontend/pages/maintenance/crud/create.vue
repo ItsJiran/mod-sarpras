@@ -180,7 +180,7 @@
 					</div>
 
 					<!-- APABILA ADA DOKUMEN -->
-					<v-row v-if="target_documents != undefined && target_documents.length > 0" dense>
+					<v-row v-if="target_type == 'Document' && target_documents != undefined && target_documents.length > 0" dense>
 						<v-col cols="6">
 							<v-text-field								
 								label="Document Name"
@@ -243,7 +243,6 @@ export default {
 		}
 	},
 	methods : {
-
 		addTargetAsset : function (data) {
 			// prevent error
 			for( let target of data.target_assets_needed ) {
