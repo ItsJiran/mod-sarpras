@@ -99,7 +99,7 @@
 				:color="theme"
 				block
 				variant="flat"
-				@click="redirectPage('maintenace')"
+				@click="redirectPage('maintenance')"
 				>List Maintenance</v-btn
 			>
 

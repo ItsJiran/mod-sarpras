@@ -21,8 +21,6 @@ export default {
 			let route_name = this.$router.currentRoute._value.name;
 			let methods = ['show','delete','update','edit','create'];
 
-			console.log(route_name);
-
 			for ( let method of methods ) 
 				route_name = route_name.replaceAll('-' + method,'');
 			

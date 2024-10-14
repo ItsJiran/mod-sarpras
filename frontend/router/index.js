@@ -425,6 +425,48 @@ export default {
 			]
 		},
 
+		{
+			path: "asset/:asset/maintenance",
+			component: () =>
+				import(
+					/* webpackChunkName: "infrastructure" */ "@modules/infrastructure/frontend/pages/maintenance/index.vue"
+				),
+			children: [
+				{
+					path: "",
+					name: "infrastructure-asset-maintenance",
+					component: () =>
+						import(
+							/* webpackChunkName: "infrastructure" */ "@modules/infrastructure/frontend/pages/maintenance/crud/data.vue"
+						),
+				},
+				{
+					path: "create",
+					name: "infrastructure-asset-maintenance-create",
+					component: () =>
+						import(
+							/* webpackChunkName: "infrastructure" */ "@modules/infrastructure/frontend/pages/maintenance/crud/create.vue"
+						),
+				},
+				{
+					path: ":maintenance/show",
+					name: "infrastructure-asset-maintenance-show",
+					component: () =>
+						import(
+							/* webpackChunkName: "infrastructure" */ "@modules/infrastructure/frontend/pages/maintenance/crud/show.vue"
+						),
+				},		
+				{
+					path: ":maintenance/edit",
+					name: "infrastructure-asset-maintenance-edit",
+					component: () =>
+						import(
+							/* webpackChunkName: "infrastructure" */ "@modules/infrastructure/frontend/pages/maintenance/crud/edit.vue"
+						),
+				},			
+			]
+		},
+
 		// {
 		// 	path: "asset/:asset/maintenance",
 		// 	component: () =>
