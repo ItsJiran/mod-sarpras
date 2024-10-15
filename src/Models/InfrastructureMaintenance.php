@@ -20,6 +20,8 @@ use Illuminate\Validation\Rule;
 use Module\Infrastructure\Models\InfrastructureAsset;
 use Module\Infrastructure\Models\InfrastructureDocument;
 use Module\Infrastructure\Models\InfrastructureUnit;
+use Module\Infrastructure\Models\InfrastructureMaintenanceAsset;
+use Module\Infrastructure\Models\InfrastructureMaintenanceDocument;
 
 class InfrastructureMaintenance extends Model
 {
@@ -74,11 +76,9 @@ class InfrastructureMaintenance extends Model
         'period_number_day',
         'period_number_month',
         'period_number_year',
-
                
-        'unit_id',
-        'asset_id',
-        'document_id',
+        'maintenanceable_id',
+        'maintenanceable_type',
     ];
 
     
@@ -98,26 +98,10 @@ class InfrastructureMaintenance extends Model
     /**
      * Get the model that the image belongs to.
      */
-    public function unit(): BelongsTo 
+    public function maintenanceable(): MorphTo
     {
-        return $this->belongsTo(InfrastructureUnit::class, 'unit_id');
-    }
-
-    /**
-     * Get the model that the image belongs to.
-     */
-    public function asset(): BelongsTo 
-    {
-        return $this->belongsTo(InfrastructureAsset::class, 'asset_id');
-    }
-
-    /**
-     * Get the model that the image belongs to.
-     */
-    public function document(): BelongsTo 
-    {
-        return $this->belongsTo(InfrastructureDocument::class, 'document_id');
-    }
+        return $this->morphTo(__FUNCTION__, 'maintenanceable_type', 'maintenanceable_id');
+    }   
 
     /**
      * ====================================================
@@ -147,31 +131,6 @@ class InfrastructureMaintenance extends Model
             'maintenanceable_type' => $model->maintenanceable_type,
         ];
 
-        // show properties 
-        $show_properties = [
-            'target' => $model->maintenanceable,
-            'target_type' => $model->mapMorphTypeClass(true)[$model->maintenanceable_type],
-            'target_unit' => InfrastructureUnit::mapResourceShow($request, $model->maintenanceable->unit),
-        ];
-
-        // determine properties for show 
-        if ($show_properties['target_type'] == 'Asset') {
-            $show_properties['target_asset'] = $show_properties['target'];            
-            $show_properties['target_type_key'] = InfrastructureAsset::mapTypeClass(true)[ $model->maintenanceable->assetable_type ];            
-        }
-
-        if ($show_properties['target_type'] == 'Document') {
-            $show_properties['target_asset'] = InfrastructureUnit::mapResourceShow($request, $model->maintenanceable->asset);
-            $show_properties['target_document'] = $show_properties['target'];
-
-            if ( $show_properties['target']->asset_id == null ) {
-                $show_properties['target_type_document'] = 'Unit';
-            } else {
-                $show_properties['target_type_key'] = InfrastructureAsset::mapTypeClass(true)[ $model->maintenanceable->asset->assetable_type ];
-                $show_properties['target_type_document'] = 'Asset';
-            }
-        } 
-
         return array_merge(
             $properties,
             $show_properties,
@@ -184,8 +143,9 @@ class InfrastructureMaintenance extends Model
      * @param [type] $model
      * @return array
      */
-    public static function mapRequestValidation(Request $request, $model = null):array
+    public static function mapStoreRequestValidation(Request $request, $model = null):array
     {
+        // validasi awal..
         $validation = [
             'name' => 'required',
             'duedate' => 'required|date',
@@ -193,13 +153,13 @@ class InfrastructureMaintenance extends Model
                 'required',
                 Rule::in( self::mapType() )
             ],
-            'target' => 'required',
-            'target_type' => [
+            'maintenanceable_type' => [
                 'required',
                 Rule::in( self::mapMorphTypeKeyClass() )
             ],
         ];
 
+        // kalau berkala check angka period nya terisi atau tidak..
         if ( $request->type == 'berkala' ) {
             $validation = array_merge( $validation, [
                 'period_number_day' => 'required|numeric',
@@ -207,6 +167,14 @@ class InfrastructureMaintenance extends Model
                 'period_number_year' => 'required|numeric',
             ] );
         }
+
+        // mendapatkan request validasi dari morph nya..
+        $morph_type_class = self::mapMorphTypeClass()[$request->maintenanceable];
+
+        $validation = array_merge( 
+            $validation, 
+            $morph_type_class::mapStoreRequestValidation($request) 
+        );
 
         return $validation;
     }
@@ -219,33 +187,7 @@ class InfrastructureMaintenance extends Model
      */
     public static function mapCombos(Request $request, $model = null) : array 
     {  
-        // temporary
-        $human = InfrastructureUnit::get(['id','name','slug']);
-
-        // notes : assign units into properties
-        $units = [];
-        $units_ids = [];
-
-        $units_name = [];
-        $units_slug = [];
-
-        // notes : mapping to the array so frontend can consume..
-        foreach ($human as $key => $value) {
-            array_push( $units_name, $value->name );
-            array_push( $units_slug, $value->slug );
-
-            $units[$value->slug] = $value;
-            $units_id[$value->id] = $value;
-        }
-
         return [
-            // units array merges
-            'units' => $units,
-            'units_ids' => $units_ids,
-
-            'units_name' => $units_name,
-            'units_slug' => $units_slug,
-
             'types' => self::mapType(),
             'types_documents' => self::mapTypeDocuments(),
 
@@ -292,13 +234,13 @@ class InfrastructureMaintenance extends Model
     {
         if(!$reverse) {
             return [
-                'Asset' => InfrastructureAsset::class,
-                'Document' => InfrastructureDocument::class,
+                'Asset' => InfrastructureMaintenanceAsset::class,
+                'Document' => InfrastructureMaintenanceDocument::class,
             ];
         } else {
             return [
-                InfrastructureAsset::class => 'Asset',
-                InfrastructureDocument::class => 'Document',
+                InfrastructureMaintenanceAsset::class => 'Asset',
+                InfrastructureMaintenanceDocument::class => 'Document',
             ];
         }
     }
@@ -335,11 +277,14 @@ class InfrastructureMaintenance extends Model
 
         DB::connection($model->connection)->beginTransaction();
 
+        $morph_class = self::mapMorphTypeClass()[$request->target_type];
+
         try {
-            // ...
+            // basic props
             $model->name = $request->name;
             $model->type = $request->type;
             $model->description = $request->description;
+            $model->duedate = $request->duedate;        
 
             // period day
             if ($request->period_number_day != null) 
@@ -349,9 +294,10 @@ class InfrastructureMaintenance extends Model
             if ($request->period_number_month)
                 $model->period_number_year = $request->period_number_year;
 
-            $model->duedate = $request->duedate;
+            // morph class properties
             $model->maintenanceable_id = $request->target['id'];            
-            $model->maintenanceable_type = self::mapMorphTypeClass()[$request->target_type];
+            $model->maintenanceable_type = $morph_class;
+
             $model->save();
 
             DB::connection($model->connection)->commit();
@@ -379,9 +325,11 @@ class InfrastructureMaintenance extends Model
         DB::connection($model->connection)->beginTransaction();
 
         try {            
+            // basic props
             $model->name = $request->name;
             $model->type = $request->type;
             $model->description = $request->description;
+            $model->duedate = $request->duedate;        
 
             // period day
             if ($request->period_number_day != null) 
@@ -391,11 +339,18 @@ class InfrastructureMaintenance extends Model
             if ($request->period_number_month)
                 $model->period_number_year = $request->period_number_year;
 
-            $model->duedate = $request->duedate;
-            $model->maintenanceable_id = $request->target['id'];            
-            $model->maintenanceable_type = self::mapMorphTypeClass()[$request->target_type];
+            // morph class store
+            $morph_type_class::storeRecord($request);
 
+            // store the morph class first
+            $morph_class = self::mapMorphTypeClass()[$request->target_type];
+            $morph_model = $morph_class::storeRecord($request);
+            $model->maintenanceable_type = $morph_class;
+
+            // save
             $model->save();
+
+            // update
 
             DB::connection($model->connection)->commit();
 

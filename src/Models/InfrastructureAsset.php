@@ -151,9 +151,9 @@ class InfrastructureAsset extends Model
     /**
      * Get the model that the image belongs to.
      */
-    public function maintenances(): HasMany 
+    public function maintenances()
     {
-        return $this->hasMany(InfrastructureMaintenance::class, 'asset_id');
+        // return InfrastructureMaintenance::where('');
     }
 
     /**

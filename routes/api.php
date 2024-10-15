@@ -17,6 +17,9 @@ Route::resource('unit', InfrastructureUnitController::class)->parameters([
     'unit'=>'infrastructureUnit'
 ]);
 
+Route::get('ref-unit/combos',[InfrastructureUnitController::class, 'refCombos']);
+
+
 // +-----------------------------------
 // +-- from resource module tax
 Route::resource('maintenance',InfrastructureMaintenanceController::class)->parameters([
@@ -25,8 +28,6 @@ Route::resource('maintenance',InfrastructureMaintenanceController::class)->param
 
 Route::get('asset/{asset}/maintenance',[InfrastructureMaintenanceController::class,'indexFromAsset']);
 Route::get('document/{document}/maintenance',[InfrastructureMaintenanceController::class,'indexFromAsset']);
-
-
 
 // +-----------------------------------
 // +-- from resource module maintenance

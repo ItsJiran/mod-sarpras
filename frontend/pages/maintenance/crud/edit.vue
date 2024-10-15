@@ -258,7 +258,6 @@ export default {
 			data.target_type_key = record.target_type_key;
 			data.target_type_document = record.target_type_document;
 
-
 			if(data.target_type == 'Document'){
 				if(data.target_type_document == 'Unit'){
 					this.$http(`infrastructure/api/ref-document/combos/unit/${data.target_unit.id}`).then(

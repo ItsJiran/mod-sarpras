@@ -13,9 +13,6 @@ return new class extends Migration
     {
         Schema::create('infrastructure_maintenances', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('unit_id');
-            $table->foreignId('asset_id');
-            $table->foreignId('document_id')->nullable();
 
             // tipe pajak berkala |  
             $table->string('name')->default('Perawatan');
@@ -34,6 +31,8 @@ return new class extends Migration
             $table->integer('period_number_month')->default(0);
             $table->integer('period_number_year')->default(0);
             
+            $table->morphs('maintenanceable');
+
             $table->jsonb('meta')->nullable();
             $table->softDeletes();
             $table->timestamps();

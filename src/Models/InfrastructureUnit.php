@@ -41,138 +41,32 @@ class InfrastructureUnit extends Model
         ];
     }
 
-    /**
-     * The model store method
-     *
-     * @param Request $request
-     * @return void
-     */
-    public static function storeRecord(Request $request)
+    public static function refCombos() : array
     {
-        $model = new static();
+        // temporary
+        $human = InfrastructureUnit::get(['id','name','slug']);
 
-        DB::connection($model->connection)->beginTransaction();
+        // notes : assign units into properties
+        $units = [];
+        $ids = [];
 
-        try {
-            // ...
-            $model->save();
+        $names = [];
+        $slugs = [];
 
-            DB::connection($model->connection)->commit();
-
-            // return new AbilityResource($model);
-        } catch (\Exception $e) {
-            DB::connection($model->connection)->rollBack();
-
-            return response()->json([
-                'success' => false,
-                'message' => $e->getMessage()
-            ], 500);
+        // notes : mapping to the array so frontend can consume..
+        foreach ($human as $key => $value) {
+            array_push( $names, $value->name );
+            array_push( $slugs, $value->slug );
+            array_push( $units, $value );
+            $ids[$value->id] = $value;
         }
+
+        return [
+            'units' => $units,
+            'ids' => $ids,
+            'names' => $names,
+            'slugs' => $slugs,
+        ];
     }
 
-    /**
-     * The model update method
-     *
-     * @param Request $request
-     * @param [type] $model
-     * @return void
-     */
-    public static function updateRecord(Request $request, $model)
-    {
-        DB::connection($model->connection)->beginTransaction();
-
-        try {
-            // ...
-            $model->save();
-
-            DB::connection($model->connection)->commit();
-
-            // return new AbilityResource($model);
-        } catch (\Exception $e) {
-            DB::connection($model->connection)->rollBack();
-
-            return response()->json([
-                'success' => false,
-                'message' => $e->getMessage()
-            ], 500);
-        }
-    }
-
-    /**
-     * The model delete method
-     *
-     * @param [type] $model
-     * @return void
-     */
-    public static function deleteRecord($model)
-    {
-        DB::connection($model->connection)->beginTransaction();
-
-        try {
-            $model->delete();
-
-            DB::connection($model->connection)->commit();
-
-            return response()->json(['success' => true]);
-        } catch (\Exception $e) {
-            DB::connection($model->connection)->rollBack();
-
-            return response()->json([
-                'success' => false,
-                'message' => $e->getMessage()
-            ], 500);
-        }
-    }
-
-    /**
-     * The model restore method
-     *
-     * @param [type] $model
-     * @return void
-     */
-    public static function restoreRecord($model)
-    {
-        DB::connection($model->connection)->beginTransaction();
-
-        try {
-            $model->restore();
-
-            DB::connection($model->connection)->commit();
-
-            return response()->json(['success' => true]);
-        } catch (\Exception $e) {
-            DB::connection($model->connection)->rollBack();
-
-            return response()->json([
-                'success' => false,
-                'message' => $e->getMessage()
-            ], 500);
-        }
-    }
-
-    /**
-     * The model destroy method
-     *
-     * @param [type] $model
-     * @return void
-     */
-    public static function destroyRecord($model)
-    {
-        DB::connection($model->connection)->beginTransaction();
-
-        try {
-            $model->forceDelete();
-
-            DB::connection($model->connection)->commit();
-
-            return response()->json(['success' => true]);
-        } catch (\Exception $e) {
-            DB::connection($model->connection)->rollBack();
-
-            return response()->json([
-                'success' => false,
-                'message' => $e->getMessage()
-            ], 500);
-        }
-    }
 }

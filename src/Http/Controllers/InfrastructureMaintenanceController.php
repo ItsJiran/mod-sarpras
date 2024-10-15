@@ -57,7 +57,7 @@ class InfrastructureMaintenanceController extends Controller
     {
         Gate::authorize('create', InfrastructureMaintenance::class);
 
-        $request->validate( InfrastructureMaintenance::mapRequestValidation($request) );
+        $request->validate( InfrastructureMaintenance::mapStoreRequestValidation($request) );
 
         return InfrastructureMaintenance::storeRecord($request);
     }

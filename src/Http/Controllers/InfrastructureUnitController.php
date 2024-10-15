@@ -111,4 +111,10 @@ class InfrastructureUnitController extends Controller
 
         return InfrastructureUnit::destroyRecord($infrastructureUnit);
     }
+
+    public function refCombos()
+    {
+        return InfrastructureUnit::refCombos();
+    }
+
 }
