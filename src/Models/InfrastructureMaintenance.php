@@ -12,6 +12,8 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 // Relation Model
 use Illuminate\Validation\Rule;
@@ -65,16 +67,18 @@ class InfrastructureMaintenance extends Model
      */
     protected $fillable = [
         'name',
-        'description',
-        
         'type',
+        'description',
+        'duedate', 
+        
         'period_number_day',
         'period_number_month',
         'period_number_year',
 
-        'duedate',        
-        'maintenanceable_id',
-        'maintenanceable_type',
+               
+        'unit_id',
+        'asset_id',
+        'document_id',
     ];
 
     
@@ -94,10 +98,26 @@ class InfrastructureMaintenance extends Model
     /**
      * Get the model that the image belongs to.
      */
-    public function maintenanceable(): MorphTo
+    public function unit(): BelongsTo 
     {
-        return $this->morphTo(__FUNCTION__, 'maintenanceable_type', 'maintenanceable_id');
-    } 
+        return $this->belongsTo(InfrastructureUnit::class, 'unit_id');
+    }
+
+    /**
+     * Get the model that the image belongs to.
+     */
+    public function asset(): BelongsTo 
+    {
+        return $this->belongsTo(InfrastructureAsset::class, 'asset_id');
+    }
+
+    /**
+     * Get the model that the image belongs to.
+     */
+    public function document(): BelongsTo 
+    {
+        return $this->belongsTo(InfrastructureDocument::class, 'document_id');
+    }
 
     /**
      * ====================================================
