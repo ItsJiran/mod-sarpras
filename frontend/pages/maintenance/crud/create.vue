@@ -101,7 +101,8 @@
 						:items="morph_type_keys" 
 						:return-object="false"
 						label="Perawatan Untuk"
-						v-model="record.maintenanceable_type"			
+						v-model="record.maintenanceable_type"		
+						@update:model-value="changeMaintenanceType(record,this)"	
 						></v-combobox>
 					</v-col>
 				</v-row>
@@ -132,6 +133,16 @@ export default {
 		}
 	},
 	methods : {
+		// methods
+		changeMaintenanceType : function (record,data) {
+			// reset data ref prevent unwanted behaviour
+			data.refAsset = undefined,
+			data.refAssetType = undefined,
+			data.refDocument = undefined,
+			// reset data from preivous
+			record.asset = undefined;
+			record.document = undefined;
+		},
 		// get refrences
 		getRefUnit : function (record,data) {
 			if(data.refAssetType != undefined) return;
@@ -182,123 +193,6 @@ export default {
 				(response) => { data.refDocument = response }
 			);
 		},
-		
-
-
-		// addTargetAsset : function (data) {
-		// 	// prevent error
-		// 	for( let target of data.target_assets_needed ) {
-		// 		if(target.id == data.target_asset.id) return;
-		// 	}
-
-		// 	data.targets_assets_needed.push( data.target_asset );
-		// },
-		// addTargetDocument : function (data) {
-		// 	data.targets_documents_needed.push( data.target_document );
-		// },
-		// addtarget : function (data) {
-		// 	if ( data.target_type == 'Asset' ) {
-		// 		data.addTargetAsset(data);
-		// 	} else if ( data.target_type == 'Document' ) {
-		// 		data.addTargetDocument(data);
-		// 	}
-		// },
-
-		// getAssetType : function (data) {
-		// 	if ( data.assets_types ) 
-		// 		return data.getAssetList( record, data );	
-
-		// 	this.$http(`infrastructure/api/ref-asset/type`).then(
-		// 		(response) => {
-		// 			data.target_asset_types = response;
-		// 		}
-		// 	);
-		// },
-		// getAssetList : function (data) {
-		// 	// reset every new asset list fetched
-		// 	data.target_asset = {};
-		// 	data.target_documents = [];
-
-		// 	// reset every new asset list fetched
-		// 	data.target_asset_slugs_combos = undefined;
-		// 	data.target_asset_slugs = undefined;
-		// 	data.target_assets = undefined;
-
-		// 	// fetch list asset
-		// 	this.$http(`infrastructure/api/ref-asset/${data.target_unit.id}/${data.target_type_key}/asset`).then(
-		// 		(response) => {
-		// 			data.target_asset_slugs_combos = response.assets_slugs_combos;
-		// 			data.target_asset_slugs = response.assets_slugs;
-		// 			data.target_assets = response.assets;
-		// 		}
-		// 	)
-		// },
-		
-		// getDocumentsListByUnit : function (data) {
-		// 	if(data.target_unit.id == undefined) return;
-		// 	data.target_documents = [];
-
-		// 	this.$http(`infrastructure/api/ref-document/combos/unit/${data.target_unit.id}`).then(
-		// 		(response) => {
-		// 			data.target_documents_ids_combos = response.documents_ids_combos;
-		// 			data.target_documents_ids = response.documents_ids;
-		// 			data.target_documents = response.documents;
-		// 		}
-		// 	)
-		// },	
-		// getDocumentsListByAsset : function (data) {
-		// 	if(data.target_asset.id == undefined) return;
-		// 	data.target_documents = [];
-
-		// 	this.$http(`infrastructure/api/ref-document/combos/unit/${data.target_unit.id}/asset/${data.target_asset.id}`).then(
-		// 		(response) => {
-		// 			data.target_documents_ids_combos = response.documents_ids_combos;
-		// 			data.target_documents_ids = response.documents_ids;
-		// 			data.target_documents = response.documents;
-		// 		}
-		// 	)
-		// },	
-
-		// targetChangeDocumentType: function (record, data) {
-		// 	data.target_document = {};
-		// 	record.target = undefined;
-		// 	record.target_type = undefined;
-
-		// 	if( data.target_type_document == 'Asset' ){
-		// 		data.getDocumentsListByAsset(data);
-		// 	} else if( data.target_type_document == 'Unit' ) {
-		// 		data.getDocumentsListByUnit(data);
-		// 	}
-		// },
-
-		// targetChangeAsset : function (record,data) {
-		// 	data.target_asset = data.target_asset_slugs[ data.target_asset.slug ];
-
-		// 	// record target
-		// 	if(data.target_type == 'Asset'){
-		// 		record.target = data.target_asset;
-		// 		record.target_type = data.target_type;
-		// 	}
-
-		// 	if ( data.target_type_document == 'Asset' ) {
-		// 		data.getDocumentsListByAsset(data);
-		// 	}
-		// },
-		// targetChangeDocument : function (record,data) {
-		// 	data.target_document = data.target_documents_ids[data.target_document.id];
-
-		// 	// record target
-		// 	record.target = data.target_document;
-		// 	record.target_type = data.target_type;
-		// },
-		// targetChangeUnit : function (data, units) {
-		// 	data.target_unit = units[data.target_unit.slug];
-		// 	data.target_asset = {};
-		// 	data.getAssetType(data);
-		// },
-		// targetChangeType : function (data) {
-		// 	data.getAssetList(data);
-		// },		
 	}
 };
 </script>

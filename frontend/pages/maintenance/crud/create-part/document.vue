@@ -84,7 +84,23 @@
 
 	<!-- FORM LIST DOCUMENT -->
 	<v-row v-if="data.refDocument != undefined && data.refDocument.documents != undefined && data.refDocument.documents.length > 0" dense>			
-
+		<v-col cols="6">
+				<v-combobox
+				:return-object="false"
+				:readonly="true"
+				v-model="record.document.name"	
+				label="Nama Document"						
+				></v-combobox>
+			</v-col>
+			<v-col cols="6">
+				<v-combobox
+				:items="data.refDocument.documents_ids_combos"
+				:return-object="false"
+				v-model="record.document.id"
+				@update:model-value="changeDocument(record,data)"	
+				label="Id Document"		
+				></v-combobox>
+			</v-col>
 	</v-row>
 
 	<!-- TAMPILKAN KOSONG APABILA ASSET TIDAK ADA -->	
@@ -176,6 +192,9 @@ export default {
 				data, 
 				componentData.jenis == 'Iya' 
 			);
+		},
+		changeDocument:function(record,data){
+			record.document = data.refDocument.documents_ids[record.document.id];
 		},
 	},
 };
