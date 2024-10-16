@@ -128,6 +128,7 @@ export default {
 			refUnit : undefined,
 			refAssetType : undefined,
 			refAsset : undefined,
+			refDocument : undefined,
 		}
 	},
 	methods : {
@@ -135,48 +136,47 @@ export default {
 		getRefUnit : function (record,data) {
 			if(data.refAssetType != undefined) return;
 
+			// prevent loop call
+			data.refUnit = {};
+
 			this.$http(`infrastructure/api/ref-unit/combos`).then(
 				(response) => { data.refUnit = response; }
 			);
-
-			// prevent loop call
-			data.refUnit = {};
 		},
 		getRefAssetType : function (record,data) {
 			if(data.refAssetType != undefined) return;
+			
+			// prevent loop call
+			data.refAssetType = [];
 
 			this.$http(`infrastructure/api/ref-asset/type`).then(
-				(response) => {
-					data.refAssetType = response;
-				}
+				(response) => { data.refAssetType = response; }
 			);
-
-			// prevent loop call
-			data.refAssetType = {};
 		},
 		getRefAsset : function (record,data) {
-			if(data.refAsset != undefined) return;
+			// prevent error call
+			data.refAsset = [];
 
 			// ambil asset untuk list 
-			if ( record.maintenanceable_type == 'Asset' )
-				data.getRefAssetOnly(record,data);
-			if ( record.maintenanceable_type == 'Document' )
-				data.getRefAssetForDocument(record,data);
-
-			// prevent loop call
-			data.refAsset = [];
-		},
-		getRefAssetOnly : function (record,data) {
-			this.$http(`infrastructure/api/ref-asset/type`).then(
-				(response) => {
-					data.refAsset = response;
-				}
+			this.$http(`infrastructure/api/ref-asset/${record.unit.id}/${record.asset.type}/asset`).then(				
+				(response) => { data.refAsset = response }
 			);
 		},
-		getRefAssetForDocument : function (record,data) {
+		getRefDocument : function (record,data,isConnectedToAsset) {
+			if ( isConnectedToAsset == undefined ) return;
+			
+			if ( isConnectedToAsset )
+				data.getRefDocumentAsset(record,data);
+			if ( !isConnectedToAsset )
+				data.getRefDocument(record,data);
+		},
+		getRefDocumment : function (record,data) {
+			
+		},
+		getRefDocumentAsset : function (record,data) {
 
 		},
-
+		
 
 
 		// addTargetAsset : function (data) {

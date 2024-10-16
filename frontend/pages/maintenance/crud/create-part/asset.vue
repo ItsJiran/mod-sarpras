@@ -24,11 +24,46 @@
 		<v-col cols="12">
 			<v-combobox
 			:items="data.refAssetType"
+			item-title="name"
+			:return-object="false"
 			v-model="record.asset.type"
-			@update:model-value="changeAssetType(record,data)"			
-			label="Pilih Asset Dari Unit Ini"		
+			@update:model-value="changeAssetType(record,data)"
+			label="Pilih Jenis Asset"
 			></v-combobox>
 		</v-col>
+	</v-row>
+
+	<!-- PILIH ASSETS -->
+	<v-row v-if="data.refAsset != undefined && data.refAsset.assets != undefined && data.refAsset.assets.length > 0" dense>
+		<v-col cols="6">
+			<v-combobox
+			:items="data.refAsset.assets"
+			:return-object="false"
+			:readonly="true"
+			v-model="record.asset.name"	
+			label="Nama Asset"		
+			></v-combobox>
+		</v-col>
+		<v-col cols="6">
+			<v-combobox
+			:items="data.refAsset.assets_slugs_combos"
+			:return-object="false"
+			v-model="record.asset.slug"
+			@update:model-value="changeAsset(record,data)"	
+			label="Slug Asset"		
+			></v-combobox>
+		</v-col>
+	</v-row>
+
+	<v-row v-if="data.refAsset != undefined && data.refAsset.assets != undefined && data.refAsset.assets.length == 0" dense>
+		<v-btn
+			class="mt-2"
+			color="teal-darken-4"
+			block
+			variant="flat"
+			:disabled="true"
+			>Tidak Ditemukan</v-btn
+		>
 	</v-row>
 
 </template>
@@ -40,17 +75,30 @@ export default {
 	methods:{
 		changeUnit:function (record,data){
 			// insiasi object asset untuk pemilihan asset 
-			record.asset = {};
+			if(record.asset != undefined && record.asset.type != undefined)
+				record.asset = { type : record.asset.type };
+			else 
+				record.asset = {};
+
+			// mengrefresh list asset setiap pergantian unit
+			data.refAsset = undefined;
 			
 			// pangggil pilihan tipe asset
-			if(data.refAssetType == undefined)
+			if ( data.refAssetType == undefined )			
 				data.getRefAssetType(record,data);
-		},
-		changeAssetType:function(record,data){
 
+			// apabila ternyata tipe asset sudah ada
+			if( record.asset != undefined && record.asset.type != undefined )
+				data.getRefAsset(record,data);
+		},
+		changeAssetType:function(record,data){			
+			data.getRefAsset(record,data);
 		},
 		changeAsset:function(record,data){
-
+			record.asset = { 
+				...record.asset, 
+				...data.refAsset.assets_slugs[record.asset.slug] 
+			};
 		}
 	},
 };
