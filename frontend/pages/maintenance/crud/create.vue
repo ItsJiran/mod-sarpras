@@ -170,9 +170,9 @@ export default {
 				data.getRefDocumentAsset(record,data);
 
 			if ( !isConnectedToAsset )
-				data.getRefDocument(record,data);
+				data.getRefDocummentUnit(record,data);
 		},
-		getRefDocumment : function (record,data) {
+		getRefDocummentUnit : function (record,data) {
 			this.$http(`infrastructure/api/ref-document/combos/unit/${record.unit.id}`).then(				
 				(response) => { data.refDocument = response }
 			);

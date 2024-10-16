@@ -26,6 +26,7 @@
 			:return-object="false"
 			v-model="jenis"	
 			label="Apakah Dokumen Terhubung Dengan Asset Dari Unit Ini?"		
+			@update:model-value="changeDocumentType(record,data,this)"	
 			></v-combobox>
 		</v-col>
 	</v-row>
@@ -40,7 +41,7 @@
 				item-title="name"
 				:return-object="false"
 				v-model="record.asset.type"
-				@update:model-value="changeAssetType(record,data,componentData)"			
+				@update:model-value="changeAssetType(record,data,this)"			
 				label="Pilih Jenis Asset"		
 				></v-combobox>
 			</v-col>
@@ -62,30 +63,41 @@
 				:items="data.refAsset.assets_slugs_combos"
 				:return-object="false"
 				v-model="record.asset.slug"
-				@update:model-value="changeAsset(record,data)"	
+				@update:model-value="changeAsset(record,data,this)"	
 				label="Slug Asset"		
 				></v-combobox>
 			</v-col>
 		</v-row>
 
 		<!-- TAMPILKAN KOSONG APABILA ASSET TIDAK ADA -->	
-		<v-row v-if="data.refAsset != undefined && data.refAsset.assets != undefined && data.refAsset.assets.length == 0" dense>
+		<v-row v-if="data.refAsset != undefined && data.refAsset.assets != undefined && data.refAsset.assets.length <= 0" dense>
 			<v-btn
 				class="mt-2"
 				color="teal-darken-4"
 				block
 				variant="flat"
 				:disabled="true"
-				>Tidak Ditemukan</v-btn
+				>Tidak Ditemukan Asset</v-btn
 			>
 		</v-row>
 	</div>
 
 	<!-- FORM LIST DOCUMENT -->
-	<div v-if="data.refDocument != undefined ">
+	<v-row v-if="data.refDocument != undefined && data.refDocument.documents != undefined && data.refDocument.documents.length > 0" dense>			
 
-	</div>
+	</v-row>
 
+	<!-- TAMPILKAN KOSONG APABILA ASSET TIDAK ADA -->	
+	<v-row v-if="data.refDocument != undefined && data.refDocument.documents != undefined && data.refDocument.documents.length <= 0" dense>					
+		<v-btn
+			class="mt-2"
+			color="teal-darken-4"
+			block
+			variant="flat"
+			:disabled="true"
+			>Tidak Ditemukan Dokumen</v-btn
+		>
+	</v-row>
 
 </template>
 
@@ -111,33 +123,40 @@ export default {
 
 			// mengrefresh list asset setiap pergantian unit
 			data.refAsset = undefined;
+
+			// mengrefresh list documnet setiap pergantian unit
+			data.refDocument = undefined;
+
 			
 			// pangggil pilihan tipe asset
 			if ( data.refAssetType == undefined )			
 				data.getRefAssetType(record,data);
 
 			// apabila jenis hubungan iya
-			if( componentData.jenisHubungan == 'Iya' && record.asset != undefined && record.asset.type != undefined )
+			if( componentData.jenis == 'Iya' && record.asset != undefined && record.asset.type != undefined )
 				data.getRefAsset(record,data);
 			
 			// apabila jenis hubungan tidak..
-			if ( componentData.jenisHubungan == 'Tidak' )
+			if ( componentData.jenis == 'Tidak' )
 				data.getRefDocument( 
 					record, 
 					data, 
-					componentData.jenisHubungan == 'Iya' 
+					componentData.jenis == 'Iya' 
 				);
 		},
-		changeDocumentType : function (record,data,componentData) {		
+		changeDocumentType : function (record,data,componentData) {	
+			// mengrefresh list documnet setiap pergantian tipe document
+			data.refDocument = undefined;
+			
 			// prevent error
 			record.document = {};
 			
 			// apabila jenis hubungan tidak.. maka langsung panggil refDocument
-			if ( componentData.jenisHubungan == 'Tidak' )
+			if ( componentData.jenis == 'Tidak' )
 				data.getRefDocument( 
 					record, 
 					data, 
-					componentData.jenisHubungan == 'Iya' 
+					componentData.jenis == 'Iya' 
 				);
 		},
 		changeAssetType:function(record,data){			
@@ -155,7 +174,7 @@ export default {
 			data.getRefDocument( 
 				record, 
 				data, 
-				componentData.jenisHubungan == 'Iya' 
+				componentData.jenis == 'Iya' 
 			);
 		},
 	},
