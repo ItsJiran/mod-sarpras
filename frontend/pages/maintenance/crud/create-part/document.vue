@@ -40,7 +40,7 @@
 				item-title="name"
 				:return-object="false"
 				v-model="record.asset.type"
-				@update:model-value="changeAssetType(record,data)"			
+				@update:model-value="changeAssetType(record,data,componentData)"			
 				label="Pilih Jenis Asset"		
 				></v-combobox>
 			</v-col>
@@ -102,7 +102,7 @@ export default {
 	},
 	props: ['record','data'],
 	methods:{
-		changeUnit:function (record,data,comnponentData){
+		changeUnit:function (record,data,componentData){
 			// insiasi object asset untuk pemilihan asset 
 			if(record.asset != undefined && record.asset.type != undefined)
 				record.asset = { type : record.asset.type };
@@ -116,18 +116,32 @@ export default {
 			if ( data.refAssetType == undefined )			
 				data.getRefAssetType(record,data);
 
-			// apabila ternyata tipe asset sudah ada
-			if( comnponentData.jenisHubungan == 'Iya' && record.asset != undefined && record.asset.type != undefined )
+			// apabila jenis hubungan iya
+			if( componentData.jenisHubungan == 'Iya' && record.asset != undefined && record.asset.type != undefined )
 				data.getRefAsset(record,data);
+			
+			// apabila jenis hubungan tidak..
+			if ( componentData.jenisHubungan == 'Tidak' )
+				data.getRefDocument( 
+					record, 
+					data, 
+					componentData.jenisHubungan == 'Iya' 
+				);
 		},
 		changeAssetType:function(record,data){			
 			data.getRefAsset(record,data);
 		},
-		changeAsset:function(record,data){
+		changeAsset:function(record,data,componentData){
 			record.asset = { 
 				...record.asset, 
 				...data.refAsset.assets_slugs[record.asset.slug] 
 			};
+
+			data.getRefDocument( 
+				record, 
+				data, 
+				componentData.jenisHubungan == 'Iya' 
+			);
 		},
 	},
 };

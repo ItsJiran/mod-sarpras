@@ -163,18 +163,24 @@ export default {
 			);
 		},
 		getRefDocument : function (record,data,isConnectedToAsset) {
-			if ( isConnectedToAsset == undefined ) return;
-			
+			if ( isConnectedToAsset == undefined ) 
+				return;
+
 			if ( isConnectedToAsset )
 				data.getRefDocumentAsset(record,data);
+
 			if ( !isConnectedToAsset )
 				data.getRefDocument(record,data);
 		},
 		getRefDocumment : function (record,data) {
-			
+			this.$http(`infrastructure/api/ref-document/combos/unit/${record.unit.id}`).then(				
+				(response) => { data.refDocument = response }
+			);
 		},
 		getRefDocumentAsset : function (record,data) {
-
+			this.$http(`infrastructure/api/ref-document/combos/unit/${record.unit.id}/asset/${record.asset.id}`).then(
+				(response) => { data.refDocument = response }
+			);
 		},
 		
 
