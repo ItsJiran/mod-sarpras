@@ -81,8 +81,8 @@
 		</v-row>
 	</div>
 
-	<!-- APABILA HUBUNGAN DOKUMEN TERHUBUNG DENGAN UNIT -->
-	<div v-if="jenis == 'Tidak'">
+	<!-- FORM LIST DOCUMENT -->
+	<div v-if="data.refDocument != undefined ">
 
 	</div>
 
@@ -128,6 +128,18 @@ export default {
 					componentData.jenisHubungan == 'Iya' 
 				);
 		},
+		changeDocumentType : function (record,data,componentData) {		
+			// prevent error
+			record.document = {};
+			
+			// apabila jenis hubungan tidak.. maka langsung panggil refDocument
+			if ( componentData.jenisHubungan == 'Tidak' )
+				data.getRefDocument( 
+					record, 
+					data, 
+					componentData.jenisHubungan == 'Iya' 
+				);
+		},
 		changeAssetType:function(record,data){			
 			data.getRefAsset(record,data);
 		},
@@ -136,6 +148,9 @@ export default {
 				...record.asset, 
 				...data.refAsset.assets_slugs[record.asset.slug] 
 			};
+
+			// prevent error
+			record.document = {};
 
 			data.getRefDocument( 
 				record, 
