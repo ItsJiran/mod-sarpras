@@ -77,7 +77,7 @@
 				<!-- -------------------------------------- -->
 				<!-- +--- DEADLINE TANGGAL PEMBAYARAN ----+ -->
 
-				<div class="text-overline mt-6">Deadline Tanggal Pembayaran</div>
+				<div class="text-overline mt-6">Deadline Tanggal Pembayaran (Optional)</div>
 				<v-divider :thickness="3" class="mt-3 mb-6" />
 
 				<v-row dense>
@@ -88,6 +88,15 @@
 						></v-date-input>
 					</v-col>
 				</v-row>
+
+				<v-btn
+				v-if="record.duedate != undefined"
+				class="mt-2"
+				color="teal-darken-4"
+				block
+				variant="flat"
+				@click="()=>{ record.duedate = undefined }"
+				>Hapus Deadline</v-btn>
 
 				<!-- ---------------------------------------- -->
 				<!-- +--- DEADLINE TIPE PERAWATAN MODEL ----+ -->
