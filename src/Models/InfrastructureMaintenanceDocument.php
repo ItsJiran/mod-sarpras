@@ -111,23 +111,6 @@ class InfrastructureMaintenanceDocument extends Model
     {
         $model = new static();
 
-        DB::connection($model->connection)->beginTransaction();
-
-        try {
-            // ...
-            $model->save();
-
-            DB::connection($model->connection)->commit();
-
-            // return new MaintenanceDocumentResource($model);
-        } catch (\Exception $e) {
-            DB::connection($model->connection)->rollBack();
-
-            return response()->json([
-                'success' => false,
-                'message' => $e->getMessage()
-            ], 500);
-        }
     }
 
     /**
