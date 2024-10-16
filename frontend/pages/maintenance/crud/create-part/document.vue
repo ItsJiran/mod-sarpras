@@ -142,8 +142,7 @@ export default {
 
 			// mengrefresh list documnet setiap pergantian unit
 			data.refDocument = undefined;
-
-			
+		
 			// pangggil pilihan tipe asset
 			if ( data.refAssetType == undefined )			
 				data.getRefAssetType(record,data);
@@ -175,7 +174,10 @@ export default {
 					componentData.jenis == 'Iya' 
 				);
 		},
-		changeAssetType:function(record,data){			
+		changeAssetType:function(record,data){		
+			// mengrefresh list documnet setiap pergantian tipe document
+			data.refDocument = undefined;
+			
 			data.getRefAsset(record,data);
 		},
 		changeAsset:function(record,data,componentData){

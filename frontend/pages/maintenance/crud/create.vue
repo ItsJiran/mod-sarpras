@@ -174,6 +174,8 @@ export default {
 			);
 		},
 		getRefDocument : function (record,data,isConnectedToAsset) {
+			console.log(isConnectedToAsset);
+
 			if ( isConnectedToAsset == undefined ) 
 				return;
 
