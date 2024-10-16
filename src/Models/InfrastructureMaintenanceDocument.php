@@ -76,11 +76,22 @@ class InfrastructureMaintenanceDocument extends Model
 
     public static function mapStoreRequestValidation(Request $request) : array
     {
-        return [
-            'unit_id' => 'required|numeric|exists:human_units,id',
-            'asset_id' => 'required|numeric|exists:infrastructure_assets,id',
-            'document_id' => 'required|numeric|exists:infrastructure_documents,id',
+        $validation = [
+            'unit' => 'required|array',
+            'unit.id' => 'required|numeric|exists:human_units,id',
+
+            'document' => 'required|array',
+            'document.id' => 'required|numeric|exists:infrastructure_documents,id',
         ];
+
+        if($request->asset != undefined){
+            $validation = array_merge($validation, [
+                'asset' => 'required|array',
+                'asset.id' => 'required|numeric|exists:infrastructure_assets,id',
+            ]);
+        };
+
+        return $validation;
     }
 
 

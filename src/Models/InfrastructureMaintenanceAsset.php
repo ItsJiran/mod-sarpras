@@ -82,10 +82,12 @@ class InfrastructureMaintenanceAsset extends Model
 
      public static function mapStoreRequestValidation(Request $request) : array
      {
-         return [
-             'unit_id' => 'required|numeric|exists:human_units,id',
-             'asset_id' => 'required|numeric|exists:infrastructure_assets,id',
-         ];
+        return [
+        'unit' => 'required|array',
+        'unit.id' => 'required|numeric|exists:human_units,id',
+        'asset' => 'required|array',
+        'asset.id' => 'required|numeric|exists:infrastructure_assets,id',
+        ];
      }
  
    /**
