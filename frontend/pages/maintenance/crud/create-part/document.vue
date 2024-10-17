@@ -13,7 +13,7 @@
 			item-title="name"
 			v-model="record.unit"
 			@update:model-value="changeUnit(record,data,this)"			
-			:label="'Untuk ' + record.maintenanceable_type + ' Dari Unit'"		
+			:label="'Untuk ' + record.targetable_type + ' Dari Unit'"		
 			></v-combobox>
 		</v-col>
 	</v-row>

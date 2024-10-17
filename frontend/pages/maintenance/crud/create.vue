@@ -44,7 +44,7 @@
 				<v-row dense>
 					<v-col cols="12">
 						<v-combobox
-						:items="morph_target_keys" 
+						:items="morph_type_keys" 
 						label="Tipe Perawatan"
 						v-model="record.maintenanceable_type"
 						:return-object="false"
@@ -53,30 +53,6 @@
 				</v-row>
 
 				<component :record="record" :data="this" :is="record.maintenanceable_type"/>	
-
-				<!-- <v-row v-if="record.type != undefined && record.type == 'berkala'" dense>
-					<v-col cols="4">
-						<v-number-input
-						label="Jumlah Hari"
-						v-model="record.period_number_day"
-						:min="0"
-						></v-number-input>
-					</v-col>
-					<v-col cols="4">
-						<v-number-input
-						label="Jumlah Bulan"
-						v-model="record.period_number_month"
-						:min="0"
-						></v-number-input>
-					</v-col>
-					<v-col cols="4">
-						<v-number-input
-						label="Jumlah Tahun"
-						v-model="record.period_number_year"
-						:min="0"
-						></v-number-input>
-					</v-col>
-				</v-row> -->
 
 				<!-- -------------------------------------- -->
 				<!-- +--- DEADLINE TANGGAL PEMBAYARAN ----+ -->
@@ -111,7 +87,7 @@
 				<v-row dense>
 					<v-col cols="12">
 						<v-combobox
-						:items="morph_type_keys" 
+						:items="morph_target_keys" 
 						:return-object="false"
 						label="Perawatan Untuk"
 						v-model="record.targetable_type"		
@@ -120,7 +96,11 @@
 					</v-col>
 				</v-row>
 
-				<component :record="record" :data="this" :is="record.targetable_type"/>	
+				<component 
+					:record="record" 
+					:data="this" 
+					:is="record.targetable_type"
+				/>	
 
 			</v-card-text>
 		</template>

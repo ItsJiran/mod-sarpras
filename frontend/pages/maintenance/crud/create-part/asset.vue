@@ -13,8 +13,8 @@
 			:items="data.refUnit.units"
 			item-title="name"
 			v-model="record.unit"
-			@update:model-value="changeUnit(record,data)"			
-			:label="'Untuk ' + record.maintenanceable_type + ' Dari Unit'"		
+			@update:model-value="changeUnit(record,data)"	
+			:label="'Untuk ' + record.targetable_type + ' Dari Unit'"		
 			></v-combobox>
 		</v-col>
 	</v-row>
