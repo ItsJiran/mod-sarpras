@@ -64,7 +64,6 @@ class InfrastructureMaintenancePeriodic extends Model
     protected $fillable = [        
         'maintenance_id', 
         'duedate',
-
         'period_number_day',
         'period_number_month',
         'period_number_year',               
@@ -95,24 +94,13 @@ class InfrastructureMaintenancePeriodic extends Model
     public static function storeRecord(Request $request)
     {
         $model = new static();
-
-        DB::connection($model->connection)->beginTransaction();
-
-        try {
-            // ...
-            $model->save();
-
-            DB::connection($model->connection)->commit();
-
-            // return new MaintenancePeriodicResource($model);
-        } catch (\Exception $e) {
-            DB::connection($model->connection)->rollBack();
-
-            return response()->json([
-                'success' => false,
-                'message' => $e->getMessage()
-            ], 500);
-        }
+        
+        $model->duedate = $request->duedate;        
+        $model->period_number_day = $request->period_number_day;        
+        $model->period_number_month = $request->period_number_month;        
+        $model->period_number_year = $request->period_number_year;        
+            
+        return $model;
     }
 
     /**

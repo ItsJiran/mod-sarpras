@@ -52,31 +52,7 @@
 					</v-col>
 				</v-row>
 
-				<component :record="record" :data="this" :is="record.maintenanceable_type"/>	
-
-				<!-- -------------------------------------- -->
-				<!-- +--- DEADLINE TANGGAL PEMBAYARAN ----+ -->
-
-				<div class="text-overline mt-6">Deadline Tanggal Pembayaran (Optional)</div>
-				<v-divider :thickness="3" class="mt-3 mb-6" />
-
-				<v-row dense>
-					<v-col cols="12">
-						<v-date-input
-							label="Deadine Tanggal Pembayaran"
-							v-model="record.duedate"
-						></v-date-input>
-					</v-col>
-				</v-row>
-
-				<v-btn
-				v-if="record.duedate != undefined"
-				class="mt-2"
-				color="teal-darken-4"
-				block
-				variant="flat"
-				@click="()=>{ record.duedate = undefined }"
-				>Hapus Deadline</v-btn>
+				<component :record="record" :data="this" :is="record.maintenanceable_type"/>
 
 				<!-- ---------------------------------------- -->
 				<!-- +--- DEADLINE TIPE PERAWATAN MODEL ----+ -->
