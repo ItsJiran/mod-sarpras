@@ -20,6 +20,12 @@ use Illuminate\Validation\Rule;
 use Module\Infrastructure\Models\InfrastructureAsset;
 use Module\Infrastructure\Models\InfrastructureDocument;
 use Module\Infrastructure\Models\InfrastructureUnit;
+
+// type of the morph 
+use Module\Infrastructure\Models\InfrastructureMaintenanceLog;
+use Module\Infrastructure\Models\InfrastructureMaintenancePeriodic;
+
+// type of the target maintenance
 use Module\Infrastructure\Models\InfrastructureMaintenanceAsset;
 use Module\Infrastructure\Models\InfrastructureMaintenanceDocument;
 
@@ -69,14 +75,11 @@ class InfrastructureMaintenance extends Model
      */
     protected $fillable = [
         'name',
-        'type',
         'description',
-        'duedate', 
         
-        'period_number_day',
-        'period_number_month',
-        'period_number_year',
-               
+        'targetable_id',
+        'targetable_type',
+
         'maintenanceable_id',
         'maintenanceable_type',
     ];
@@ -104,6 +107,14 @@ class InfrastructureMaintenance extends Model
     }   
 
     /**
+     * Get the model that the image belongs to.
+     */
+    public function targetable(): MorphTo
+    {
+        return $this->morphTo(__FUNCTION__, 'targetable_type', 'targetable_id');
+    }   
+
+    /**
      * ====================================================
      * +------------------ MAP RESOURCE ------------------+
      * ====================================================
@@ -120,15 +131,12 @@ class InfrastructureMaintenance extends Model
         $properties = [
             'name' => $model->name,
             'description' => $model->description,
-            
-            'type' => $model->type,
-            'period_number_day' => $model->period_number_day,
-            'period_number_month' => $model->period_number_month,
-            'period_number_year' => $model->period_number_year,
-    
-            'duedate' => $model->duedate,        
+             
             'maintenanceable_id' => $model->maintenanceable_id,
             'maintenanceable_type' => $model->maintenanceable_type,
+
+            'targetable_id' => $model->targetable_id,
+            'targetable_type' => $model->targetable_type,
         ];
 
         return array_merge(
@@ -149,31 +157,26 @@ class InfrastructureMaintenance extends Model
         $validation = [
             'name' => 'required',
             'duedate' => 'required|date',
-            'type' => [
-                'required',
-                Rule::in( self::mapType() )
-            ],
+
             'maintenanceable_type' => [
                 'required',
                 Rule::in( self::mapMorphTypeKeyClass() )
             ],
+
+            'targetable_type' => [
+                'required',
+                Rule::in( self::mapMorphTargetKeyClass() )
+            ],
         ];
 
-        // kalau berkala check angka period nya terisi atau tidak..
-        if ( $request->type == 'berkala' ) {
-            $validation = array_merge( $validation, [
-                'period_number_day' => 'required|numeric',
-                'period_number_month' => 'required|numeric',
-                'period_number_year' => 'required|numeric',
-            ] );
-        }
-
         // mendapatkan request validasi dari morph nya..
-        $morph_type_class = self::mapMorphTypeClass()[$request->maintenanceable];
+        $maintenanceable_class = self::mapMorphTypeClass()[$request->maintenanceable_type];
+        $targetable_class = self::mapMorphTypeClass()[$request->targetable_class];
 
         $validation = array_merge( 
             $validation, 
-            $morph_type_class::mapStoreRequestValidation($request) 
+            $maintenanceable_class::mapStoreRequestValidation($request),
+            $targetable_class::mapStoreRequestValidation($request),
         );
 
         return $validation;
@@ -187,28 +190,16 @@ class InfrastructureMaintenance extends Model
      */
     public static function mapCombos(Request $request, $model = null) : array 
     {  
-        return [
-            'types' => self::mapType(),
+        return [            
             'types_documents' => self::mapTypeDocuments(),
 
-            'morph_type' => self::mapMorphTypeClass(),
-            'morph_type_keys' => self::mapMorphTypeKeyClass(),
+            'morph_target' => self::mapMorphTypeClass(),
+            'morph_target_keys' => self::mapMorphTypeKeyClass(),
+
+            'morph_type' => self::mapMorphTargetClass(),
+            'morph_type_keys' => self::mapMorphTargetKeyClass(),
         ];
     }   
-
-    /**
-     * The model map combos method
-     *
-     * @param [type] $model
-     * @return array
-     */
-    public static function mapType() : array
-    {
-        return [
-            'berkala',
-            'manual',
-        ];
-    }
 
     /**
      * The model map combos method
@@ -230,7 +221,7 @@ class InfrastructureMaintenance extends Model
      * @param [type] $model
      * @return array
      */
-    public static function mapMorphTypeClass($reverse = false) : array
+    public static function mapMorphTargetClass($reverse = false) : array
     {
         if(!$reverse) {
             return [
@@ -241,6 +232,41 @@ class InfrastructureMaintenance extends Model
             return [
                 InfrastructureMaintenanceAsset::class => 'Asset',
                 InfrastructureMaintenanceDocument::class => 'Document',
+            ];
+        }        
+    }
+
+    /**
+     * The model map combos method
+     *
+     * @param [type] $model
+     * @return array
+     */
+    public static function mapMorphTargetKeyClass() : array
+    {
+        return [
+            'Log',
+            'Periodic',             
+        ];
+    }
+
+    /**
+     * The model map combos method
+     *
+     * @param [type] $model
+     * @return array
+     */
+    public static function mapMorphTypeClass($reverse = false) : array
+    {
+        if(!$reverse) {
+            return [
+                'Log' => InfrastructureMaintenanceLog::class,
+                'Periodic' => InfrastructureMaintenancePeriodic::class,
+            ];
+        } else {
+            return [
+                InfrastructureMaintenanceLog::class => 'Log',
+                InfrastructureMaintenancePeriodic::class => 'Periodic',
             ];
         }
     }
@@ -279,6 +305,7 @@ class InfrastructureMaintenance extends Model
 
         $morph_class = self::mapMorphTypeClass()[$request->target_type];
 
+
         try {
             // basic props
             $model->name = $request->name;
@@ -297,6 +324,8 @@ class InfrastructureMaintenance extends Model
             // morph class properties
             $model->maintenanceable_id = $request->target['id'];            
             $model->maintenanceable_type = $morph_class;
+
+            $morph_model = $morph_class::storeRecord($request, $model);
 
             $model->save();
 

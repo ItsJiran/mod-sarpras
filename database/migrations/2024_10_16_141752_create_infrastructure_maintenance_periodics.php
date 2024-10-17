@@ -11,28 +11,15 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('infrastructure_maintenances', function (Blueprint $table) {
+        Schema::create('infrastructure_maintenance_periodics', function (Blueprint $table) {
             $table->id();
-
-            // tipe pajak berkala |  
-            $table->string('name')->default('Perawatan');
-
-            // descriptions
-            $table->text('description')->nullable();
-
-            // tipenya berkala / manual
-            $table->string('type')->default('berkala')->index();
-
-            // tanggal pembayaran
-            $table->timestamp('duedate')->nullable();
-
+            $table->foreignId('maintenance_id');
+            $table->timestamp('duedate');
             // period day
             $table->integer('period_number_day')->default(0);
             $table->integer('period_number_month')->default(0);
             $table->integer('period_number_year')->default(0);
-            
-            $table->morphs('maintenanceable');
-
+            // timestamps
             $table->jsonb('meta')->nullable();
             $table->softDeletes();
             $table->timestamps();
@@ -44,6 +31,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('infrastructure_maintenances');
+        Schema::dropIfExists('infrastructure_maintenance_periodics');
     }
 };
