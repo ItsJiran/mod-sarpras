@@ -1,5 +1,5 @@
 <template>
-    <v-row v-if="record.type != undefined && record.type == 'berkala'" dense>
+    <v-row dense>
         <v-col cols="4">
             <v-number-input
             label="Jumlah Hari"

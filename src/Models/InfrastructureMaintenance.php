@@ -303,8 +303,9 @@ class InfrastructureMaintenance extends Model
 
         DB::connection($model->connection)->beginTransaction();
 
-        $morph_class = self::mapMorphTypeClass()[$request->target_type];
-
+        // class for each bla-bla
+        $maintenanceable_class = self::mapMorphTypeClass()[$request->maintenanceable_type];
+        $targetable_class = self::mapMorphTypeClass()[$request->targetable_type];
 
         try {
             // basic props
@@ -313,19 +314,17 @@ class InfrastructureMaintenance extends Model
             $model->description = $request->description;
             $model->duedate = $request->duedate;        
 
-            // period day
-            if ($request->period_number_day != null) 
-                $model->period_number_day = $request->period_number_day;
-            if ($request->period_number_month)
-                $model->period_number_month = $request->period_number_month;
-            if ($request->period_number_month)
-                $model->period_number_year = $request->period_number_year;
+            // save in morph class
+            $maintenanceable_model = $maintenanceable_class::storeRecord($request, $model);
+            $targetable_model = $targetable_class::storeRecord($request, $model);
 
             // morph class properties
-            $model->maintenanceable_id = $request->target['id'];            
-            $model->maintenanceable_type = $morph_class;
+            $model->targetable_id = $targetable_model->id;
+            $model->targetable_type = $targetable_model::class;
 
-            $morph_model = $morph_class::storeRecord($request, $model);
+            // morph class properties
+            $model->maintenanceable_id = $maintenanceable_model->id;
+            $model->maintenanceable_type = $maintenanceable_model::class;
 
             $model->save();
 
