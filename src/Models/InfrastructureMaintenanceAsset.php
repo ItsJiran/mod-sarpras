@@ -140,11 +140,9 @@ class InfrastructureMaintenanceAsset extends Model
     {
        return [
             'unit' => $model->unit::class::mapResourceShow( $request, $model->unit ),
-            'unit' => $model->unit::class::mapResourceShow( $request, $model->unit ),
-            'asset' => $model->asset,
+            'asset' => $model->asset::class::mapResourceShow( $request, $model->asset ),
        ];
     }
-
 
    /**
      * ================================================

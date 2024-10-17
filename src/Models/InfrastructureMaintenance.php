@@ -128,6 +128,7 @@ class InfrastructureMaintenance extends Model
      */
     public static function mapResourceShow(Request $request, $model = null) : array 
     {
+
         $properties = [
             'name' => $model->name,
             'description' => $model->description,
@@ -162,17 +163,17 @@ class InfrastructureMaintenance extends Model
             'duedate' => 'required|date',
 
             'maintenanceable_type' => [
-                'required',
+                'required', 
                 Rule::in( self::mapMorphTypeKeyClass() )
             ],
 
             'targetable_type' => [
-                'required',
+                'required', 
                 Rule::in( self::mapMorphTargetKeyClass() )
             ],
         ];
 
-        // mendapatkan request validasi dari morph nya..
+        // mendapatkan request validasi dari morph nya..        
         $maintenanceable_class = self::mapMorphTypeClass()[$request->maintenanceable_type];
         $targetable_class = self::mapMorphTargetClass()[$request->targetable_type];
 

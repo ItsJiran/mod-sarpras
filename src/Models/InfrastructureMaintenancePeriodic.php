@@ -71,6 +71,13 @@ class InfrastructureMaintenancePeriodic extends Model
 
     /**
      * ====================================================
+     * +------------------ MAP RELATION ------------------+
+     * ====================================================
+     */
+    
+
+    /**
+     * ====================================================
      * +------------------ MAP RESOURCE ------------------+
      * ====================================================
      */
@@ -88,6 +95,22 @@ class InfrastructureMaintenancePeriodic extends Model
             'period_number_day' => 'required|numeric',
             'period_number_month' => 'required|numeric',
             'period_number_year' => 'required|numeric',
+        ];
+    }
+
+    /**
+     * The model store method
+     *
+     * @param Request $request
+     * @return array
+     */
+    public static function mapResourceShow(Request $request, $model = null) : array
+    {
+        return [
+            'duedate' => $model->duedate,
+            'period_number_day' => $model->period_number_day,
+            'period_number_month' => $model->period_number_month,
+            'period_number_year' => $model->period_number_year,
         ];
     }
 
