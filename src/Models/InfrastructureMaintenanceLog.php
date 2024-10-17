@@ -62,7 +62,27 @@ class InfrastructureMaintenanceLog extends Model
      * @var array<int, string>
      */
     protected $fillable = [          
+        'maintenance_id'
     ];
+
+    /**
+     * ====================================================
+     * +------------------ MAP RESOURCE ------------------+
+     * ====================================================
+     */
+
+    /**
+     * The model map combos method
+     *
+     * @param [type] $model
+     * @return array
+     */
+     public static function mapResourceShow(Request $request, $model = null) : array 
+     {
+        return [
+        ];
+     }
+
 
     /**
      * The model store method
@@ -73,23 +93,14 @@ class InfrastructureMaintenanceLog extends Model
     public static function mapStoreRequestValidation(Request $request)
     {
         return [
-            'maintenance_id'
         ];
     }
 
     /**
-     * The model store method
-     *
-     * @param Request $request
-     * @return void
+     * ====================================================
+     * +------------------ CRUD METHODS ------------------+
+     * ====================================================
      */
-    public function getNewId() 
-    {   
-        $latest = self::latest()->pluck('id')->first();
-        if ( is_null( $latest ) ) return 1;
-        else                      return $latest->id + 1;        
-    }
-
 
     /**
      * The model store method

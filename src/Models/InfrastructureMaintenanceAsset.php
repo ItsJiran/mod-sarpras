@@ -3,13 +3,16 @@
 namespace Module\Infrastructure\Models;
 
 use Illuminate\Http\Request;
-use Module\System\Traits\HasMeta;
 use Illuminate\Support\Facades\DB;
+
+use Module\System\Traits\HasMeta;
 use Module\System\Traits\Filterable;
 use Module\System\Traits\Searchable;
 use Module\System\Traits\HasPageSetup;
+
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 use Module\Infrastructure\Models\InfrastructureAsset;
 use Module\Infrastructure\Models\InfrastructureDocument;
@@ -80,6 +83,36 @@ class InfrastructureMaintenanceAsset extends Model
      * ====================================================
      */
 
+     /**
+     * Get the model that the image belongs to.
+     */
+    public function maintenance(): BelongsTo
+    {
+        return $this->belongsTo(InfrastructureMaintenance::class, 'maintenance_id');
+    } 
+
+     /**
+     * Get the model that the image belongs to.
+     */
+    public function unit(): BelongsTo
+    {
+        return $this->belongsTo(InfrastructureUnit::class, 'unit_id');
+    } 
+
+    /**
+     * Get the model that the image belongs to.
+     */
+    public function asset(): BelongsTo
+    {
+        return $this->belongsTo(InfrastructureAsset::class, 'asset_id');
+    }
+
+    /**
+     * ================================================
+     * +-------------- MAP RESOURCE ------------------+
+     * ================================================
+     */
+
      public static function mapStoreRequestValidation(Request $request) : array
      {
         if( is_array($request->unit) )
@@ -96,19 +129,22 @@ class InfrastructureMaintenanceAsset extends Model
             'asset.id' => 'required|numeric|exists:infrastructure_assets,id',
         ];
      }
- 
+
     /**
-     * The model store method
+     * The model map combos method
      *
-     * @param Request $request
-     * @return void
+     * @param [type] $model
+     * @return array
      */
-    public function getNewId() 
-    {   
-        $latest = self::latest()->pluck('id')->first();
-        if ( is_null( $latest ) ) return 1;
-        else                      return $latest->id + 1;        
+    public static function mapResourceShow(Request $request, $model = null) : array 
+    {
+       return [
+            'unit' => $model->unit::class::mapResourceShow( $request, $model->unit ),
+            'unit' => $model->unit::class::mapResourceShow( $request, $model->unit ),
+            'asset' => $model->asset,
+       ];
     }
+
 
    /**
      * ================================================

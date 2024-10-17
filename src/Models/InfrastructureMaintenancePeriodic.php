@@ -92,25 +92,6 @@ class InfrastructureMaintenancePeriodic extends Model
     }
 
     /**
-     * ====================================================
-     * +------------------ HELPER RESOURCE ---------------+
-     * ====================================================
-     */
-
-    /**
-     * The model store method
-     *
-     * @param Request $request
-     * @return void
-     */
-    public function getNewId() 
-    {   
-        $latest = self::latest()->pluck('id')->first();
-        if ( is_null( $latest ) ) return 1;
-        else                      return $latest->id + 1;        
-    }
-
-    /**
      * =================================================
      * +------------------ CRUD METHODS ---------------+
      * =================================================
