@@ -1,76 +1,54 @@
 <template>
 
-	<!-- INISIASI COMBOS UNITS -->
-	<div v-if="data.refUnit == undefined"> 
-		{{ data.getRefUnit(record,data) }} 
-	</div>
-
 	<!-- PILIH UNITS -->
-	<v-row v-if="data.refUnit != undefined" dense>
+	<v-row dense>
 		<v-col cols="12">
 			<v-combobox
-			:return-object="true"
-			:items="data.refUnit.units"
-			item-title="name"
-			v-model="record.unit"
-			@update:model-value="changeUnit(record,data)"	
+			v-model="record.unit.name"
 			:label="'Untuk ' + record.targetable_type_key + ' Dari Unit'"		
+			:readonly="true"
 			></v-combobox>
 		</v-col>
 	</v-row>
 
 	<!-- PILIH TIPE ASSETS -->
-	<v-row v-if="data.refAssetType != undefined" dense>
+	<v-row dense>
 		<v-col cols="12">
 			<v-combobox
-			:items="data.refAssetType"
 			item-title="name"
 			:return-object="false"
 			v-model="record.asset.assetable_type_key"
-			@update:model-value="changeAssetType(record,data)"
 			label="Pilih Jenis Asset"
+			:readonly="true"
 			></v-combobox>
 		</v-col>
 	</v-row>
 
 	<!-- PILIH ASSETS -->
-	<v-row v-if="data.refAsset != undefined && data.refAsset.assets != undefined && data.refAsset.assets.length > 0" dense>
+	<v-row dense>
 		<v-col cols="6">
 			<v-combobox
-			:items="data.refAsset.assets"
 			:return-object="false"
 			:readonly="true"
 			v-model="record.asset.name"	
-			label="Nama Asset"		
+			label="Nama Asset"
 			></v-combobox>
 		</v-col>
 		<v-col cols="6">
 			<v-combobox
-			:items="data.refAsset.assets_slugs_combos"
 			:return-object="false"
 			v-model="record.asset.slug"
-			@update:model-value="changeAsset(record,data)"	
 			label="Slug Asset"		
+			:readonly="true"
 			></v-combobox>
 		</v-col>
-	</v-row>
-
-	<v-row v-if="data.refAsset != undefined && data.refAsset.assets != undefined && data.refAsset.assets.length == 0" dense>
-		<v-btn
-			class="mt-2"
-			color="teal-darken-4"
-			block
-			variant="flat"
-			:disabled="true"
-			>Tidak Ditemukan</v-btn
-		>
 	</v-row>
 
 </template>
 
 <script>
 export default {
-	name: "infrastructure-maintenance-create-asset",
+	name: "infrastructure-maintenance-show-asset",
 	props: ['record','data'],
 	methods:{
 		changeUnit:function (record,data){

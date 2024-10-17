@@ -7,8 +7,6 @@
 
 				morph_target, 
 				morph_target_keys, 
-
-				types_documents
 			},
 			record }">
 
@@ -46,7 +44,7 @@
 						<v-combobox
 						:items="morph_type_keys" 
 						label="Tipe Perawatan"
-						v-model="record.maintenanceable_type"
+						v-model="record.maintenanceable_type_key"
 						:return-object="false"
 						></v-combobox>
 					</v-col>
@@ -55,7 +53,7 @@
 				<component 
 					:record="record" 
 					:data="this" 
-					:is="record.maintenanceable_type"
+					:is="record.maintenanceable_type_key"
 				/>
 
 				<!-- ---------------------------------------- -->
@@ -70,7 +68,7 @@
 						:items="morph_target_keys" 
 						:return-object="false"
 						label="Perawatan Untuk"
-						v-model="record.targetable_type"		
+						v-model="record.targetable_type_key"		
 						@update:model-value="changeTargetType(record,this)"	
 						></v-combobox>
 					</v-col>
@@ -79,7 +77,7 @@
 				<component 
 					:record="record" 
 					:data="this" 
-					:is="record.targetable_type"
+					:is="record.targetable_type_key"
 				/>	
 
 			</v-card-text>

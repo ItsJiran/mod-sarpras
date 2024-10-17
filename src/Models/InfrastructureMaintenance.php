@@ -128,7 +128,6 @@ class InfrastructureMaintenance extends Model
      */
     public static function mapResourceShow(Request $request, $model = null) : array 
     {
-
         $properties = [
             'name' => $model->name,
             'description' => $model->description,
@@ -162,20 +161,20 @@ class InfrastructureMaintenance extends Model
             'name' => 'required',
             'duedate' => 'required|date',
 
-            'maintenanceable_type' => [
+            'maintenanceable_type_key' => [
                 'required', 
                 Rule::in( self::mapMorphTypeKeyClass() )
             ],
 
-            'targetable_type' => [
+            'targetable_type_key' => [
                 'required', 
                 Rule::in( self::mapMorphTargetKeyClass() )
             ],
         ];
 
         // mendapatkan request validasi dari morph nya..        
-        $maintenanceable_class = self::mapMorphTypeClass()[$request->maintenanceable_type];
-        $targetable_class = self::mapMorphTargetClass()[$request->targetable_type];
+        $maintenanceable_class = self::mapMorphTypeClass()[$request->maintenanceable_type_key];
+        $targetable_class = self::mapMorphTargetClass()[$request->targetable_type_key];
 
         $validation = array_merge( 
             $validation, 
@@ -321,8 +320,8 @@ class InfrastructureMaintenance extends Model
         DB::connection($model->connection)->beginTransaction();
 
         // class for each bla-bla
-        $maintenanceable_class = self::mapMorphTypeClass()[$request->maintenanceable_type];
-        $targetable_class = self::mapMorphTargetClass()[$request->targetable_type];
+        $maintenanceable_class = self::mapMorphTypeClass()[$request->maintenanceable_type_key];
+        $targetable_class = self::mapMorphTargetClass()[$request->targetable_type_key];
 
         try {
             // id

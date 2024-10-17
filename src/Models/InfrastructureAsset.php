@@ -188,6 +188,7 @@ class InfrastructureAsset extends Model
 
             'assetable_id' => $model->assetable_id,
             'assetable_type' => $model->assetable_type,
+            'assetable_type_key' => $asset_type_keys[$model->assetable_type],
             'asset_type_key' => $asset_type_keys[$model->assetable_type],
         ];
 
