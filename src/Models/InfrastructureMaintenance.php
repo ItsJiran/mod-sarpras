@@ -311,8 +311,8 @@ class InfrastructureMaintenance extends Model
             // basic props
             $model->name = $request->name;
             $model->type = $request->type;
-            $model->description = $request->description;
             $model->duedate = $request->duedate;        
+            $model->description = $request->description;
 
             // save in morph class
             $maintenanceable_model = $maintenanceable_class::storeRecord($request, $model);
@@ -352,33 +352,23 @@ class InfrastructureMaintenance extends Model
     {
         DB::connection($model->connection)->beginTransaction();
 
+        // class for each bla-bla
+        $maintenanceable_class = self::mapMorphTypeClass()[$request->maintenanceable_type];
+        $targetable_class = self::mapMorphTypeClass()[$request->targetable_type];
+
         try {            
             // basic props
             $model->name = $request->name;
             $model->type = $request->type;
-            $model->description = $request->description;
             $model->duedate = $request->duedate;        
+            $model->description = $request->description;
 
-            // period day
-            if ($request->period_number_day != null) 
-                $model->period_number_day = $request->period_number_day;
-            if ($request->period_number_month)
-                $model->period_number_month = $request->period_number_month;
-            if ($request->period_number_month)
-                $model->period_number_year = $request->period_number_year;
-
-            // morph class store
-            $morph_type_class::storeRecord($request);
-
-            // store the morph class first
-            $morph_class = self::mapMorphTypeClass()[$request->target_type];
-            $morph_model = $morph_class::storeRecord($request);
-            $model->maintenanceable_type = $morph_class;
-
+            // morphh class
+            $maintenanceable_class::updateRecord($request,$model);
+            $targetable_class::updateRecord($request,$model);
+            
             // save
             $model->save();
-
-            // update
 
             DB::connection($model->connection)->commit();
 
