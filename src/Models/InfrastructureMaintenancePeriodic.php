@@ -31,14 +31,14 @@ class InfrastructureMaintenancePeriodic extends Model
      *
      * @var string
      */
-    protected $table = 'infrastructure_maintenanceperiodics';
+    protected $table = 'infrastructure_maintenance_periodics';
 
     /**
      * The roles variable
      *
      * @var array
      */
-    protected $roles = ['infrastructure-maintenanceperiodic'];
+    protected $roles = ['infrastructure-maintenance-periodic'];
 
     /**
      * The attributes that should be cast to native types.
@@ -69,7 +69,13 @@ class InfrastructureMaintenancePeriodic extends Model
         'period_number_year',               
     ];
 
-        /**
+    /**
+     * ====================================================
+     * +------------------ MAP RESOURCE ------------------+
+     * ====================================================
+     */
+
+    /**
      * The model store method
      *
      * @param Request $request
@@ -86,19 +92,46 @@ class InfrastructureMaintenancePeriodic extends Model
     }
 
     /**
+     * ====================================================
+     * +------------------ HELPER RESOURCE ---------------+
+     * ====================================================
+     */
+
+    /**
      * The model store method
      *
      * @param Request $request
      * @return void
      */
-    public static function storeRecord(Request $request)
+    public function getNewId() 
+    {   
+        $latest = self::latest()->pluck('id')->first();
+        if ( is_null( $latest ) ) return 1;
+        else                      return $latest->id + 1;        
+    }
+
+    /**
+     * =================================================
+     * +------------------ CRUD METHODS ---------------+
+     * =================================================
+     */
+
+    /**
+     * The model store method
+     *
+     * @param Request $request
+     * @return void
+     */
+    public static function storeRecord(Request $request, InfrastructureMaintenance $main_model) : InfrastructureMaintenancePeriodic
     {
         $model = new static();
         
+        $model->maintenance_id = $main_model->id;        
         $model->duedate = $request->duedate;        
         $model->period_number_day = $request->period_number_day;        
         $model->period_number_month = $request->period_number_month;        
-        $model->period_number_year = $request->period_number_year;        
+        $model->period_number_year = $request->period_number_year;       
+        $model->save();
             
         return $model;
     }

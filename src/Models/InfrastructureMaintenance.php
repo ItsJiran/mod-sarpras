@@ -171,7 +171,7 @@ class InfrastructureMaintenance extends Model
 
         // mendapatkan request validasi dari morph nya..
         $maintenanceable_class = self::mapMorphTypeClass()[$request->maintenanceable_type];
-        $targetable_class = self::mapMorphTypeClass()[$request->targetable_class];
+        $targetable_class = self::mapMorphTargetClass()[$request->targetable_type];
 
         $validation = array_merge( 
             $validation, 
@@ -193,11 +193,11 @@ class InfrastructureMaintenance extends Model
         return [            
             'types_documents' => self::mapTypeDocuments(),
 
-            'morph_target' => self::mapMorphTypeClass(),
-            'morph_target_keys' => self::mapMorphTypeKeyClass(),
+            'morph_target' => self::mapMorphTargetClass(),
+            'morph_target_keys' => self::mapMorphTargetKeyClass(),
 
-            'morph_type' => self::mapMorphTargetClass(),
-            'morph_type_keys' => self::mapMorphTargetKeyClass(),
+            'morph_type' => self::mapMorphTypeClass(),
+            'morph_type_keys' => self::mapMorphTypeKeyClass(),
         ];
     }   
 
@@ -286,6 +286,19 @@ class InfrastructureMaintenance extends Model
     }
 
     /**
+     * The model store method
+     *
+     * @param Request $request
+     * @return void
+     */
+    public function getNewId() 
+    {   
+        $latest = self::latest()->pluck('id')->first();
+        if ( is_null( $latest ) ) return 1;
+        else                      return $latest->id + 1;        
+    }
+
+    /**
      * ================================================
      * +------------------ MAP CRUD ------------------+
      * ================================================
@@ -305,9 +318,12 @@ class InfrastructureMaintenance extends Model
 
         // class for each bla-bla
         $maintenanceable_class = self::mapMorphTypeClass()[$request->maintenanceable_type];
-        $targetable_class = self::mapMorphTypeClass()[$request->targetable_type];
+        $targetable_class = self::mapMorphTargetClass()[$request->targetable_type];
 
         try {
+            // id
+            $model->id = $model->getNewId();
+            
             // basic props
             $model->name = $request->name;
             $model->type = $request->type;

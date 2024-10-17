@@ -38,14 +38,14 @@ class InfrastructureMaintenanceAsset extends Model
      *
      * @var string
      */
-    protected $table = 'infrastructure_maintenanceassets';
+    protected $table = 'infrastructure_maintenance_assets';
 
     /**
      * The roles variable
      *
      * @var array
      */
-    protected $roles = ['infrastructure-maintenanceasset'];
+    protected $roles = ['infrastructure-maintenance-asset'];
 
     /**
      * The attributes that should be cast to native types.
@@ -82,6 +82,12 @@ class InfrastructureMaintenanceAsset extends Model
 
      public static function mapStoreRequestValidation(Request $request) : array
      {
+        if( is_array($request->unit) )
+            $request->unit = (object) $request->unit;
+
+        if( is_array($request->asset) )
+            $request->asset = (object) $request->asset;
+
         return [
             'unit' => 'required|array',
             'unit.id' => 'required|numeric|exists:human_units,id',
@@ -91,6 +97,19 @@ class InfrastructureMaintenanceAsset extends Model
         ];
      }
  
+    /**
+     * The model store method
+     *
+     * @param Request $request
+     * @return void
+     */
+    public function getNewId() 
+    {   
+        $latest = self::latest()->pluck('id')->first();
+        if ( is_null( $latest ) ) return 1;
+        else                      return $latest->id + 1;        
+    }
+
    /**
      * ================================================
      * +------------------ MAP CRUD ------------------+
@@ -107,7 +126,13 @@ class InfrastructureMaintenanceAsset extends Model
     {
         $model = new static();
         
-    }
+        $model->maintenance_id = $main_model->id;
+        $model->unit_id = $request->unit->id;
+        $model->asset_id = $request->asset->id;
+        $model->save();
+
+        return $model;
+    }   
 
     /**
      * The model update method

@@ -40,16 +40,7 @@
             ></v-date-input>
         </v-col>
     </v-row>
-
-    <v-btn
-    v-if="record.duedate != undefined"
-    class="mt-2"
-    color="teal-darken-4"
-    block
-    variant="flat"
-    @click="()=>{ record.duedate = undefined }"
-    >Hapus Deadline</v-btn>
-
+    
 </template>
 
 <script>

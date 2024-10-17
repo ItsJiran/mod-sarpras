@@ -52,7 +52,11 @@
 					</v-col>
 				</v-row>
 
-				<component :record="record" :data="this" :is="record.maintenanceable_type"/>
+				<component 
+					:record="record" 
+					:data="this" 
+					:is="record.maintenanceable_type"
+				/>
 
 				<!-- ---------------------------------------- -->
 				<!-- +--- DEADLINE TIPE PERAWATAN MODEL ----+ -->

@@ -73,7 +73,7 @@ class InfrastructureMaintenanceLog extends Model
     public static function mapStoreRequestValidation(Request $request)
     {
         return [
-            // ...
+            'maintenance_id'
         ];
     }
 
@@ -83,27 +83,26 @@ class InfrastructureMaintenanceLog extends Model
      * @param Request $request
      * @return void
      */
-    public static function storeRecord(Request $request)
+    public function getNewId() 
+    {   
+        $latest = self::latest()->pluck('id')->first();
+        if ( is_null( $latest ) ) return 1;
+        else                      return $latest->id + 1;        
+    }
+
+
+    /**
+     * The model store method
+     *
+     * @param Request $request
+     * @return void
+     */
+    public static function storeRecord(Request $request, InfrastructureMaintenance $main_model) : InfrastructureMaintenanceLog
     {
         $model = new static();
-
-        DB::connection($model->connection)->beginTransaction();
-
-        try {
-            // ...
-            $model->save();
-
-            DB::connection($model->connection)->commit();
-
-            // return new MaintenanceLogResource($model);
-        } catch (\Exception $e) {
-            DB::connection($model->connection)->rollBack();
-
-            return response()->json([
-                'success' => false,
-                'message' => $e->getMessage()
-            ], 500);
-        }
+        $model->maintenance_id = $main_model->id;
+        $model->save();
+        return $model;
     }
 
     /**

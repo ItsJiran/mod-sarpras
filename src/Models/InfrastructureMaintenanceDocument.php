@@ -91,9 +91,30 @@ class InfrastructureMaintenanceDocument extends Model
             ]);
         };
 
+        if( is_array($request->unit) )
+            $request->unit = (object) $request->unit;
+
+        if( is_array($request->asset) )
+            $request->asset = (object) $request->asset;
+
+        if( is_array($request->document) )
+            $request->document = (object) $request->document;
+
         return $validation;
     }
 
+    /**
+     * The model store method
+     *
+     * @param Request $request
+     * @return void
+     */
+    public function getNewId() 
+    {   
+        $latest = self::latest()->pluck('id')->first();
+        if ( is_null( $latest ) ) return 1;
+        else                      return $latest->id + 1;        
+    }
 
     /**
      * ================================================
@@ -107,10 +128,16 @@ class InfrastructureMaintenanceDocument extends Model
      * @param Request $request
      * @return void
      */
-    public static function storeRecord(Request $request)
+    public static function storeRecord(Request $request, InfrastructureMaintenance $main_model) : InfrastructureMaintenanceDocument
     {
         $model = new static();
 
+        $model->maintenance_id = $main_model->id;
+        $model->unit_id = $request->unit->id;
+        $model->asset_id = $request->asset->id;
+        $model->save();
+
+        return $model;
     }
 
     /**
