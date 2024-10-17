@@ -101,7 +101,6 @@ export default {
 		// TARGETABLE TYPE
 		Asset,
 		Document,
-
 		// MAINTENANCEABLE TYPE
 		Log,
 		Periodic,
@@ -154,7 +153,7 @@ export default {
 			data.refAsset = [];
 
 			// ambil asset untuk list 
-			this.$http(`infrastructure/api/ref-asset/${record.unit.id}/${record.asset.type}/asset`).then(				
+			this.$http(`infrastructure/api/ref-asset/${record.unit.id}/${record.asset.assetable_type_key}/asset`).then(				
 				(response) => { data.refAsset = response }
 			);
 		},
