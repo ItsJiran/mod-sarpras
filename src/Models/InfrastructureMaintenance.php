@@ -381,9 +381,28 @@ class InfrastructureMaintenance extends Model
             $model->duedate = $request->duedate;        
             $model->description = $request->description;
 
-            // morphh class
-            $maintenanceable_class::updateRecord($request,$model);
-            $targetable_class::updateRecord($request,$model);
+            // -- morph class udpate
+            // kalau ganti tipe maka delete dan buat record baru di type yang baru
+            if( $maintenanceable_class == $model->maintenanceable_type ){
+                $maintenanceable_class::updateRecord($request, $model, $model->maintenanceable);
+            } else if ( $maintenanceable_class != $model->maintenanceable_type ) {
+                $new_maintenanceable_model = $maintenanceable_class::storeRecord($request, $model);
+
+                $model->maintenanceable_type::destroyRecord( $model->maintenanceable );
+                $model->maintenanceable_id = $new_maintenanceable_model->id;
+                $model->maintenanceable_type = $new_maintenanceable_model::class;
+            }
+
+            // kalau ganti tipe maka delete dan buat record baru di type yang baru
+            if( $targetable_class == $model->targetable_type ){
+                $targetable_class::updateRecord($request, $model, $model->targetable);
+            } else if ( $targetable_class != $model->targetable_type ) {
+                $new_targetable_model = $targetable_class::storeRecord($request, $model);
+
+                $model->targetable_type::destroyRecord( $model->targetable );
+                $model->targetable_id = $new_targetable_model->id;
+                $model->targetable_type = $new_targetable_model::class;
+            }
             
             // save
             $model->save();

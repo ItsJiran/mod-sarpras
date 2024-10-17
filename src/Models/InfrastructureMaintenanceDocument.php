@@ -185,6 +185,7 @@ class InfrastructureMaintenanceDocument extends Model
         $model->maintenance_id = $main_model->id;
         $model->unit_id = $request->unit->id;
         $model->asset_id = $request->asset->id;
+        $model->document_id = $request->document->id;
         $model->save();
 
         return $model;
@@ -197,25 +198,14 @@ class InfrastructureMaintenanceDocument extends Model
      * @param [type] $model
      * @return void
      */
-    public static function updateRecord(Request $request, $model)
+    public static function updateRecord(Request $request,InfrastructureMaintenance $main_model, $model = null) : InfrastructureMaintenanceDocument
     {
-        DB::connection($model->connection)->beginTransaction();
-
-        try {
-            // ...
-            $model->save();
-
-            DB::connection($model->connection)->commit();
-
-            // return new MaintenanceDocumentResource($model);
-        } catch (\Exception $e) {
-            DB::connection($model->connection)->rollBack();
-
-            return response()->json([
-                'success' => false,
-                'message' => $e->getMessage()
-            ], 500);
-        }
+        $model->maintenance_id = $main_model->id;   
+        $model->unit_id = $request->unit->id;
+        $model->asset_id = $request->asset->id;
+        $model->document_id = $request->document->id;
+        $model->save();
+        return $model;
     }
 
     /**

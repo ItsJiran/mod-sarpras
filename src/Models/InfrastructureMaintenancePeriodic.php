@@ -147,25 +147,15 @@ class InfrastructureMaintenancePeriodic extends Model
      * @param [type] $model
      * @return void
      */
-    public static function updateRecord(Request $request, $model)
+    public static function updateRecord(Request $request,InfrastructureMaintenance $main_model, $model = null) : InfrastructureMaintenanceAsset
     {
-        DB::connection($model->connection)->beginTransaction();
-
-        try {
-            // ...
-            $model->save();
-
-            DB::connection($model->connection)->commit();
-
-            // return new MaintenancePeriodicResource($model);
-        } catch (\Exception $e) {
-            DB::connection($model->connection)->rollBack();
-
-            return response()->json([
-                'success' => false,
-                'message' => $e->getMessage()
-            ], 500);
-        }
+        $model->maintenance_id = $main_model->id;        
+        $model->duedate = $request->duedate;        
+        $model->period_number_day = $request->period_number_day;        
+        $model->period_number_month = $request->period_number_month;        
+        $model->period_number_year = $request->period_number_year; 
+        $model->save();
+        return $model;
     }
 
     /**

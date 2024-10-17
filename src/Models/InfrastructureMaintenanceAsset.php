@@ -175,25 +175,13 @@ class InfrastructureMaintenanceAsset extends Model
      * @param [type] $model
      * @return void
      */
-    public static function updateRecord(Request $request, $model)
+    public static function updateRecord(Request $request,InfrastructureMaintenance $main_model, $model = null) : InfrastructureMaintenanceAsset
     {
-        DB::connection($model->connection)->beginTransaction();
-
-        try {
-            // ...
-            $model->save();
-
-            DB::connection($model->connection)->commit();
-
-            // return new MaintenanceAssetResource($model);
-        } catch (\Exception $e) {
-            DB::connection($model->connection)->rollBack();
-
-            return response()->json([
-                'success' => false,
-                'message' => $e->getMessage()
-            ], 500);
-        }
+        $model->maintenance_id = $main_model->id;   
+        $model->unit_id = $request->unit->id;
+        $model->asset_id = $request->asset->id;
+        $model->save();
+        return $model;
     }
 
     /**
