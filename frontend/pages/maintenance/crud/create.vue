@@ -44,15 +44,17 @@
 				<v-row dense>
 					<v-col cols="12">
 						<v-combobox
-						:items="types" 
+						:items="morph_target_keys" 
 						label="Tipe Perawatan"
-						v-model="record.type"
+						v-model="record.maintenanceable_type"
 						:return-object="false"
 						></v-combobox>
 					</v-col>
 				</v-row>
 
-				<v-row v-if="record.type != undefined && record.type == 'berkala'" dense>
+				<component :record="record" :data="this" :is="record.maintenanceable_type"/>	
+
+				<!-- <v-row v-if="record.type != undefined && record.type == 'berkala'" dense>
 					<v-col cols="4">
 						<v-number-input
 						label="Jumlah Hari"
@@ -74,7 +76,7 @@
 						:min="0"
 						></v-number-input>
 					</v-col>
-				</v-row>
+				</v-row> -->
 
 				<!-- -------------------------------------- -->
 				<!-- +--- DEADLINE TANGGAL PEMBAYARAN ----+ -->
@@ -126,14 +128,25 @@
 </template>
 
 <script>
+
+// TARGETABLE TYPE
 import Asset from "./create-part/asset";
 import Document from "./create-part/document";
+
+// MAINTENANCEABLE TYPE
+import Log from "./create-part/type_log.vue";
+import Periodic from "./create-part/type_periodic.vue";
 
 export default {
 	name: "infrastructure-maintenance-create",
 	components : {	
+		// TARGETABLE TYPE
 		Asset,
 		Document,
+
+		// MAINTENANCEABLE TYPE
+		Log,
+		Periodic,
 	},	
 	data(){	
 		return {
@@ -146,7 +159,7 @@ export default {
 	methods : {
 		// methods
 		changeMaintenaceType : function (record,data) {
-			
+
 		},
 		changeTargetType : function (record,data) {
 			// reset data ref prevent unwanted behaviour

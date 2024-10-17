@@ -245,8 +245,8 @@ class InfrastructureMaintenance extends Model
     public static function mapMorphTargetKeyClass() : array
     {
         return [
-            'Log',
-            'Periodic',             
+            'Asset',
+            'Document',
         ];
     }
 
@@ -280,8 +280,8 @@ class InfrastructureMaintenance extends Model
     public static function mapMorphTypeKeyClass() : array
     {
         return [
-            'Asset',
-            'Document',             
+            'Log',
+            'Periodic',             
         ];
     }
 
