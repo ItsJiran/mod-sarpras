@@ -134,14 +134,17 @@ class InfrastructureMaintenance extends Model
              
             'maintenanceable_id' => $model->maintenanceable_id,
             'maintenanceable_type' => $model->maintenanceable_type,
+            'maintenanceable_type_key' => self::mapMorphTarget(true)[$model->maintenanceable_type],
 
             'targetable_id' => $model->targetable_id,
             'targetable_type' => $model->targetable_type,
+            'targetable_type_key' => self::mapMorphTarget(true)[$model->targetable_type],
         ];
 
         return array_merge(
             $properties,
-            $show_properties,
+            $model->maintenanceable_type::mapResourceShow($request, $model->maintenanceable),
+            $model->targetable_type::mapResourceShow($request, $model->targetable),
         );
     }    
 
@@ -323,7 +326,7 @@ class InfrastructureMaintenance extends Model
         try {
             // id
             $model->id = $model->getNewId();
-            
+
             // basic props
             $model->name = $request->name;
             $model->type = $request->type;
