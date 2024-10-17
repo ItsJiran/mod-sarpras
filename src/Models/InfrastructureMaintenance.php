@@ -134,11 +134,11 @@ class InfrastructureMaintenance extends Model
              
             'maintenanceable_id' => $model->maintenanceable_id,
             'maintenanceable_type' => $model->maintenanceable_type,
-            'maintenanceable_type_key' => self::mapMorphTarget(true)[$model->maintenanceable_type],
+            'maintenanceable_type_key' => self::mapMorphTypeClass(true)[$model->maintenanceable_type],
 
             'targetable_id' => $model->targetable_id,
             'targetable_type' => $model->targetable_type,
-            'targetable_type_key' => self::mapMorphTarget(true)[$model->targetable_type],
+            'targetable_type_key' => self::mapMorphTargetClass(true)[$model->targetable_type],
         ];
 
         return array_merge(
