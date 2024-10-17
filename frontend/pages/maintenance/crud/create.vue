@@ -5,7 +5,9 @@
 				morph_type, 
 				morph_type_keys, 
 
-				types, 
+				morph_target, 
+				morph_target_keys, 
+
 				types_documents
 			},
 			record }">
@@ -110,13 +112,13 @@
 						:items="morph_type_keys" 
 						:return-object="false"
 						label="Perawatan Untuk"
-						v-model="record.maintenanceable_type"		
-						@update:model-value="changeMaintenanceType(record,this)"	
+						v-model="record.targetable_type"		
+						@update:model-value="changeTargetType(record,this)"	
 						></v-combobox>
 					</v-col>
 				</v-row>
 
-				<component :record="record" :data="this" :is="record.maintenanceable_type"/>	
+				<component :record="record" :data="this" :is="record.targetable_type"/>	
 
 			</v-card-text>
 		</template>
@@ -143,7 +145,10 @@ export default {
 	},
 	methods : {
 		// methods
-		changeMaintenanceType : function (record,data) {
+		changeMaintenaceType : function (record,data) {
+			
+		},
+		changeTargetType : function (record,data) {
 			// reset data ref prevent unwanted behaviour
 			data.refAsset = undefined,
 			data.refAssetType = undefined,

@@ -189,7 +189,7 @@ class InfrastructureMaintenance extends Model
      * @return array
      */
     public static function mapCombos(Request $request, $model = null) : array 
-    {  
+    {
         return [            
             'types_documents' => self::mapTypeDocuments(),
 
