@@ -381,7 +381,7 @@ class InfrastructureMaintenance extends Model
             $model->duedate = $request->duedate;        
             $model->description = $request->description;
 
-            // -- morph class udpate
+            // -- morph class update
             // kalau ganti tipe maka delete dan buat record baru di type yang baru
             if( $maintenanceable_class == $model->maintenanceable_type ){
                 $maintenanceable_class::updateRecord($request, $model, $model->maintenanceable);

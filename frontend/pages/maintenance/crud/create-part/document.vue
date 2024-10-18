@@ -40,7 +40,7 @@
 				:items="data.refAssetType"
 				item-title="name"
 				:return-object="false"
-				v-model="record.asset.type"
+				v-model="record.asset.assetable_type_key"
 				@update:model-value="changeAssetType(record,data,this)"			
 				label="Pilih Jenis Asset"		
 				></v-combobox>
@@ -132,8 +132,8 @@ export default {
 	methods:{
 		changeUnit:function (record,data,componentData){
 			// insiasi object asset untuk pemilihan asset 
-			if(record.asset != undefined && record.asset.type != undefined)
-				record.asset = { type : record.asset.type };
+			if(record.asset != undefined && record.asset.assetable_type_key != undefined)
+				record.asset = { type : record.asset.assetable_type_key };
 			else 
 				record.asset = {};
 
@@ -148,7 +148,7 @@ export default {
 				data.getRefAssetType(record,data);
 
 			// apabila jenis hubungan iya
-			if( componentData.jenis == 'Iya' && record.asset != undefined && record.asset.type != undefined )
+			if( componentData.jenis == 'Iya' && record.asset != undefined && record.asset.assetable_type_key != undefined )
 				data.getRefAsset(record,data);
 			
 			// apabila jenis hubungan tidak..
@@ -159,7 +159,7 @@ export default {
 					componentData.jenis == 'Iya' 
 				);
 		},
-		changeDocumentType : function (record,data,componentData) {	
+		changeDocumentType : function (record,data,componentData) {
 			// mengrefresh list documnet setiap pergantian tipe document
 			data.refDocument = undefined;
 			
@@ -167,12 +167,14 @@ export default {
 			record.document = {};
 			
 			// apabila jenis hubungan tidak.. maka langsung panggil refDocument
-			if ( componentData.jenis == 'Tidak' )
-				data.getRefDocument( 
-					record, 
-					data, 
-					componentData.jenis == 'Iya' 
-				);
+			if ( componentData.jenis == 'Tidak' ) {
+				data.getRefDocument( record, data, componentData.jenis == 'Iya' );
+			} else if ( componentData.jenis == 'Iya' ) {
+				if(data.refAssetType == undefined)
+					data.getRefAssetType( record, data );
+				else 
+					data.getRefAsset( record, data );
+			}
 		},
 		changeAssetType:function(record,data){		
 			// mengrefresh list documnet setiap pergantian tipe document

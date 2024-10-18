@@ -160,7 +160,7 @@ export default {
 		getRefDocument : function (record,data,isConnectedToAsset) {
 			if ( isConnectedToAsset == undefined ) 
 				return;
-
+			
 			if ( isConnectedToAsset )
 				data.getRefDocumentAsset(record,data);
 
