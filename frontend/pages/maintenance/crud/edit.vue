@@ -88,8 +88,8 @@
 <script>
 
 // TARGETABLE TYPE
-import Asset from "./create-part/asset";
-import Document from "./create-part/document";
+import Asset from "./edit-part/asset";
+import Document from "./edit-part/document";
 
 // MAINTENANCEABLE TYPE
 import Log from "./create-part/type_log.vue";
@@ -151,7 +151,7 @@ export default {
 		getRefAsset : function (record,data) {
 			// prevent error call
 			data.refAsset = [];
-
+			console.log(record);
 			// ambil asset untuk list 
 			this.$http(`infrastructure/api/ref-asset/${record.unit.id}/${record.asset.assetable_type_key}/asset`).then(				
 				(response) => { data.refAsset = response }

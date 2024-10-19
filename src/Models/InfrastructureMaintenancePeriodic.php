@@ -78,7 +78,7 @@ class InfrastructureMaintenancePeriodic extends Model
 
     /**
      * ====================================================
-     * +------------------ MAP RESOURCE ------------------+
+     * +------------------- MAP REQUEST ------------------+
      * ====================================================
      */
 
@@ -97,6 +97,24 @@ class InfrastructureMaintenancePeriodic extends Model
             'period_number_year' => 'required|numeric',
         ];
     }
+
+    /**
+     * The model store method
+     *
+     * @param Request $request
+     * @return array
+     */
+    public static function mapUpdateRequestValidation(Request $request) : array
+    {
+        return [
+        ];
+    }
+
+    /**
+     * ====================================================
+     * +------------------ MAP RESOURCE ------------------+
+     * ====================================================
+     */
 
     /**
      * The model store method

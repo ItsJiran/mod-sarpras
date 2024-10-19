@@ -97,6 +97,18 @@ class InfrastructureMaintenanceLog extends Model
     }
 
     /**
+     * The model store method
+     *
+     * @param Request $request
+     * @return array
+     */
+    public static function mapUpdateRequestValidation(Request $request) : array
+    {
+        return [
+        ];
+    }
+
+    /**
      * ====================================================
      * +------------------ CRUD METHODS ------------------+
      * ====================================================

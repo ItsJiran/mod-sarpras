@@ -159,7 +159,6 @@ class InfrastructureMaintenance extends Model
         // validasi awal..
         $validation = [
             'name' => 'required',
-            'duedate' => 'required|date',
 
             'maintenanceable_type_key' => [
                 'required', 
@@ -180,6 +179,42 @@ class InfrastructureMaintenance extends Model
             $validation, 
             $maintenanceable_class::mapStoreRequestValidation($request),
             $targetable_class::mapStoreRequestValidation($request),
+        );
+
+        return $validation;
+    }
+
+    /**
+     * The model map combos method
+     *
+     * @param [type] $model
+     * @return array
+     */
+    public static function mapUpdateRequestValidation(Request $request, $model = null):array
+    {
+        // validasi awal..
+        $validation = [
+            'name' => 'required',
+
+            'maintenanceable_type_key' => [
+                'required', 
+                Rule::in( self::mapMorphTypeKeyClass() )
+            ],
+
+            'targetable_type_key' => [
+                'required', 
+                Rule::in( self::mapMorphTargetKeyClass() )
+            ],
+        ];
+
+        // mendapatkan request validasi dari morph nya..        
+        $maintenanceable_class = self::mapMorphTypeClass()[$request->maintenanceable_type_key];
+        $targetable_class = self::mapMorphTargetClass()[$request->targetable_type_key];
+
+        $validation = array_merge( 
+            $validation, 
+            $maintenanceable_class::mapUpdateRequestValidation($request),
+            $targetable_class::mapUpdateRequestValidation($request),
         );
 
         return $validation;
@@ -296,9 +331,9 @@ class InfrastructureMaintenance extends Model
      */
     public function getNewId() 
     {   
-        $latest = self::latest()->pluck('id')->first();
-        if ( is_null( $latest ) ) return 1;
-        else                      return $latest->id + 1;        
+        $latest_id = self::latest()->pluck('id')->first();
+        if ( is_null( $latest_id ) ) return 1;
+        else                      return $latest_id + 1;        
     }
 
     /**
@@ -349,7 +384,7 @@ class InfrastructureMaintenance extends Model
             DB::connection($model->connection)->commit();
 
             // return new MaintenanceResource($model);
-        } catch (\Exception $e) {
+        } catch (\Exception $e) {            
             DB::connection($model->connection)->rollBack();
 
             return response()->json([

@@ -151,6 +151,35 @@ class InfrastructureMaintenanceDocument extends Model
         return $validation;
     }
 
+    public static function mapUpdateRequestValidation(Request $request) : array
+    {
+        $validation = [
+            'unit' => 'required|array',
+            'unit.id' => 'required|numeric|exists:human_units,id',
+
+            'document' => 'required|array',
+            'document.id' => 'required|numeric|exists:infrastructure_documents,id',
+        ];
+
+        if($request->asset != undefined){
+            $validation = array_merge($validation, [
+                'asset' => 'required|array',
+                'asset.id' => 'required|numeric|exists:infrastructure_assets,id',
+            ]);
+        };
+
+        if( is_array($request->unit) )
+            $request->unit = (object) $request->unit;
+
+        if( is_array($request->asset) )
+            $request->asset = (object) $request->asset;
+
+        if( is_array($request->document) )
+            $request->document = (object) $request->document;
+
+        return $validation;
+    }
+
     /**
      * The model map combos method
      *
