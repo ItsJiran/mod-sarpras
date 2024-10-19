@@ -202,7 +202,7 @@ export default {
 				data.getRefDocummentUnit(record,data);
 		},
 		getRefDocummentUnit : function (record,data) {
-			if(record.unit == undefined || record.asset == undefined)
+			if(record.unit == undefined)
 				return;
 
 			this.$http(`infrastructure/api/ref-document/combos/unit/${record.unit.id}`).then(				
@@ -210,7 +210,8 @@ export default {
 			);
 		},
 		getRefDocumentAsset : function (record,data) {
-			if(record.unit == undefined || record.jenis == 'Iya' && record.asset == undefined)
+			console.log('test');
+			if(record.unit == undefined || record.asset == undefined)
 				return;
 
 			this.$http(`infrastructure/api/ref-document/combos/unit/${record.unit.id}/asset/${record.asset.id}`).then(
