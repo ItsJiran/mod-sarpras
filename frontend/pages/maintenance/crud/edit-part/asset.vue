@@ -73,21 +73,7 @@
 export default {
 	name: "infrastructure-maintenance-edit-asset",
 	props: ['record','data'],
-	methods:{
-		initEdit : function(record,data) {
-			// fetch type data assets
-			data.getRefAssetType(record,data);
-
-			// fetch asset
-			if ( record.targetable_type_key == 'Asset' || record.targetable_type_key == 'Document' ) {
-				data.getRefAsset(record,data);
-			}
-
-			// fecth documents
-			if ( record.targetable_type_key == 'Document' ) {
-				data.getRefDocument(record,data)
-			}
-		},
+	methods:{		
 		changeUnit:function (record,data){
 			// insiasi object asset untuk pemilihan asset 
 			if(record.asset != undefined && record.asset.assetable_type_key != undefined)

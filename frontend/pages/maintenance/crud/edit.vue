@@ -11,6 +11,12 @@
 			record }">
 			<v-card-text>
 
+				<!-- -------------------- -->
+				<!-- +--- INIT EDIT ----+ -->
+				<div v-if="!initEditBool"> 
+					{{ initEdit(record,this) }} 
+				</div>
+
 				<!-- ------------------------ -->
 				<!-- +--- DEFAULT PROPS ----+ -->
 
@@ -111,9 +117,28 @@ export default {
 			refAssetType : undefined,
 			refAsset : undefined,
 			refDocument : undefined,
+			initEditBool : false,
 		}
 	},
 	methods : {
+		initEdit : function(record,data) {
+			// fetch type data assets
+			data.getRefAssetType(record,data);
+
+			// fetch asset
+			if ( record.targetable_type_key == 'Asset' || record.targetable_type_key == 'Document' ) {
+				data.getRefAsset(record,data);
+			}
+
+			// fecth documents
+			if ( record.targetable_type_key == 'Document' ) {
+				data.getRefDocument(record,data)
+			}
+
+			// additional prop for document
+			if ( record.targetable_type_key == 'Document' ) {
+			}
+		},
 		// methods
 		changeMaintenaceType : function (record,data) {
 
@@ -151,7 +176,6 @@ export default {
 		getRefAsset : function (record,data) {
 			// prevent error call
 			data.refAsset = [];
-			console.log(record);
 			// ambil asset untuk list 
 			this.$http(`infrastructure/api/ref-asset/${record.unit.id}/${record.asset.assetable_type_key}/asset`).then(				
 				(response) => { data.refAsset = response }
