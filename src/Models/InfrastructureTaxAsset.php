@@ -166,7 +166,14 @@ class InfrastructureTaxAsset extends Model
      */
     public static function storeRecord(Request $request, InfrastructureTax $main_model) : InfrastructureTaxAsset
     {
+        $model = new static();
         
+        $model->tax_id = $main_model->id;
+        $model->unit_id = $request->unit->id;
+        $model->asset_id = $request->asset->id;
+        $model->save();
+
+        return $model;   
     }
 
     /**
@@ -178,7 +185,11 @@ class InfrastructureTaxAsset extends Model
      */
     public static function updateRecord(Request $request, InfrastructureTax $main_model, $model) : InfrastructureTaxAsset
     {
-
+        $model->tax_id = $main_model->id;   
+        $model->unit_id = $request->unit->id;
+        $model->asset_id = $request->asset->id;
+        $model->save();
+        return $model;
     }
 
     /**
