@@ -116,9 +116,7 @@ class InfrastructureMaintenanceDocument extends Model
         return $this->belongsTo(InfrastructureDocument::class, 'document_id');
     }
 
-    /**
-     * Get the model that the image belongs to.
-     */
+
 
     /**
      * ====================================================
@@ -136,7 +134,7 @@ class InfrastructureMaintenanceDocument extends Model
             'document.id' => 'required|numeric|exists:infrastructure_documents,id',
         ];
 
-        if ( $request->asset != null ) {
+        if ( $request->jenis == 'Iya' ) {
             $validation = array_merge($validation, [
                 'asset' => 'required|array',
                 'asset.id' => 'required|numeric|exists:infrastructure_assets,id',
@@ -154,9 +152,11 @@ class InfrastructureMaintenanceDocument extends Model
 
             'document' => 'required|array',
             'document.id' => 'required|numeric|exists:infrastructure_documents,id',
+
+            'jenis' => 'required|string',
         ];
 
-        if ( $request->asset != null ) {
+        if ( $request->jenis == 'Iya' ) {
             $validation = array_merge($validation, [
                 'asset' => 'required|array',
                 'asset.id' => 'required|numeric|exists:infrastructure_assets,id',
@@ -182,6 +182,14 @@ class InfrastructureMaintenanceDocument extends Model
     }
 
     /**
+     * Get the model that the image belongs to.
+     */
+    public static function mapJenis(Request $request) : array 
+    {
+        return [ 'Iya', 'Tidak' ];
+    }
+
+    /**
      * ================================================
      * +------------------ MAP CRUD ------------------+
      * ================================================
@@ -196,13 +204,11 @@ class InfrastructureMaintenanceDocument extends Model
     public static function storeRecord(Request $request, InfrastructureMaintenance $main_model) : InfrastructureMaintenanceDocument
     {
         $model = new static();
-
         $model->maintenance_id = $main_model->id;
         $model->unit_id = $request->unit->id;
-        $model->asset_id = $request->asset->id;
+        $model->asset_id = $request->document->asset_id;
         $model->document_id = $request->document->id;
         $model->save();
-
         return $model;
     }
 
@@ -217,7 +223,7 @@ class InfrastructureMaintenanceDocument extends Model
     {
         $model->maintenance_id = $main_model->id;   
         $model->unit_id = $request->unit->id;
-        $model->asset_id = $request->asset->id;
+        $model->asset_id = $request->document->asset_id;
         $model->document_id = $request->document->id;
         $model->save();
         return $model;

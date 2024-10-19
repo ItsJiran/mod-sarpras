@@ -1,6 +1,6 @@
 <template>
-<!-- INISIASI COMBOS UNITS -->
-<div v-if="data.refUnit == undefined"> 
+	<!-- INISIASI COMBOS UNITS -->
+	<div v-if="data.refUnit == undefined"> 
 		{{ data.getRefUnit(record,data) }} 
 	</div>
 
