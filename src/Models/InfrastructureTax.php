@@ -74,8 +74,8 @@ class InfrastructureTax extends Model
         'targetable_id',
         'targetable_type',
 
-        'maintenanceable_id',
-        'maintenanceable_type',
+        'taxable_id',
+        'taxable_type',
     ];
 
     /**
@@ -90,6 +90,14 @@ class InfrastructureTax extends Model
     public function taxable(): MorphTo
     {
         return $this->morphTo(__FUNCTION__, 'taxable_type', 'taxable_id');
+    }  
+
+    /**
+     * Get the model that the image belongs to.
+     */
+    public function targetable(): MorphTo
+    {
+        return $this->morphTo(__FUNCTION__, 'targetable_type', 'targetable_id');
     }  
 
     /**
