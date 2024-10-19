@@ -123,6 +123,7 @@ export default {
 	methods : {
 		initEdit : function(record,data) {
 			// fetch type data assets
+			data.getRefUnit(record,data)
 			data.getRefAssetType(record,data);
 
 			// fetch asset
@@ -140,17 +141,27 @@ export default {
 			}
 		},
 		// methods
+		// methods
 		changeMaintenaceType : function (record,data) {
 
 		},
 		changeTargetType : function (record,data) {
 			// reset data ref prevent unwanted behaviour
-			data.refAsset = undefined,
-			data.refAssetType = undefined,
-			data.refDocument = undefined,
-			// reset data from preivous
-			record.asset = undefined;
-			record.document = undefined;
+			data.refAsset = undefined;
+			data.refDocument = undefined;
+
+			// reset data from previous
+			if( record.asset != undefined ) {
+				record.asset = { 
+					assetable_type_key : record.asset.assetable_type_key 
+				};
+				
+				data.getRefAsset(record,data);
+			} else {
+				record.asset = {};
+			}
+
+			record.document = {};
 		},
 		// get refrences
 		getRefUnit : function (record,data) {
@@ -174,8 +185,13 @@ export default {
 			);
 		},
 		getRefAsset : function (record,data) {
+			// agar supaya nantinya tidak error
+			if ( record.unit == undefined || record.asset.assetable_type_key == undefined )
+				return;
+
 			// prevent error call
 			data.refAsset = [];
+
 			// ambil asset untuk list 
 			this.$http(`infrastructure/api/ref-asset/${record.unit.id}/${record.asset.assetable_type_key}/asset`).then(				
 				(response) => { data.refAsset = response }
@@ -184,7 +200,7 @@ export default {
 		getRefDocument : function (record,data,isConnectedToAsset) {
 			if ( isConnectedToAsset == undefined ) 
 				return;
-			
+
 			if ( isConnectedToAsset )
 				data.getRefDocumentAsset(record,data);
 

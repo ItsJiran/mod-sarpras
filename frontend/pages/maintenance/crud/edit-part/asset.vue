@@ -1,11 +1,5 @@
 <template>
 
-	<!-- INISIASI COMBOS UNITS -->
-	<div v-if="data.refUnit == undefined"> 
-		{{ data.getRefUnit(record,data) }} 
-		{{ initEdit(record,data) }} 
-	</div>
-
 	<!-- PILIH UNITS -->
 	<v-row v-if="data.refUnit != undefined" dense>
 		<v-col cols="12">
