@@ -161,7 +161,7 @@ class InfrastructureMaintenanceDocument extends Model
             'document.id' => 'required|numeric|exists:infrastructure_documents,id',
         ];
 
-        if($request->asset != undefined){
+        if($request->asset != null){
             $validation = array_merge($validation, [
                 'asset' => 'required|array',
                 'asset.id' => 'required|numeric|exists:infrastructure_assets,id',

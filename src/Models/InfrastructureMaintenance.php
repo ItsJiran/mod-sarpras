@@ -406,8 +406,8 @@ class InfrastructureMaintenance extends Model
         DB::connection($model->connection)->beginTransaction();
 
         // class for each bla-bla
-        $maintenanceable_class = self::mapMorphTypeClass()[$request->maintenanceable_type];
-        $targetable_class = self::mapMorphTypeClass()[$request->targetable_type];
+        $maintenanceable_class = self::mapMorphTypeClass()[$request->maintenanceable_type_key];
+        $targetable_class = self::mapMorphTypeClass()[$request->targetable_type_key];
 
         try {            
             // basic props
@@ -416,25 +416,34 @@ class InfrastructureMaintenance extends Model
             $model->duedate = $request->duedate;        
             $model->description = $request->description;
 
-            // -- morph class update
-            // kalau ganti tipe maka delete dan buat record baru di type yang baru
+            // -- morph class update            
             if( $maintenanceable_class == $model->maintenanceable_type ){
+                // kalau sama maka jalankan model tipe method update record..
                 $maintenanceable_class::updateRecord($request, $model, $model->maintenanceable);
             } else if ( $maintenanceable_class != $model->maintenanceable_type ) {
+                // kalau ganti tipe maka delete dan buat record baru di type yang baru
                 $new_maintenanceable_model = $maintenanceable_class::storeRecord($request, $model);
 
+                // detroy record di maintenance type yang lama
                 $model->maintenanceable_type::destroyRecord( $model->maintenanceable );
+
+                // update maintenace dengna property yang baru
                 $model->maintenanceable_id = $new_maintenanceable_model->id;
                 $model->maintenanceable_type = $new_maintenanceable_model::class;
             }
 
             // kalau ganti tipe maka delete dan buat record baru di type yang baru
             if( $targetable_class == $model->targetable_type ){
+                // kalau sama maka jalankan model tipe method update record..
                 $targetable_class::updateRecord($request, $model, $model->targetable);
             } else if ( $targetable_class != $model->targetable_type ) {
+                // kalau ganti tipe maka delete dan buat record baru di type yang baru
                 $new_targetable_model = $targetable_class::storeRecord($request, $model);
 
+                // detroy record di maintenance type yang lama
                 $model->targetable_type::destroyRecord( $model->targetable );
+                
+                // update maintenace dengna property yang baru
                 $model->targetable_id = $new_targetable_model->id;
                 $model->targetable_type = $new_targetable_model::class;
             }
