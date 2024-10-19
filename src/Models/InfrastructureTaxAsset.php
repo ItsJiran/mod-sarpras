@@ -68,32 +68,105 @@ class InfrastructureTaxAsset extends Model
     protected $defaultOrder = 'name';
 
     /**
+     * ====================================================
+     * +-------------- MAP RELATIONSHIP ------------------+
+     * ====================================================
+     */
+
+    /**
+     * Get the model that the image belongs to.
+     */
+    public function tax(): BelongsTo
+    {
+        return $this->belongsTo(InfrastructureTax::class, 'tax_id');
+    } 
+
+     /**
+     * Get the model that the image belongs to.
+     */
+    public function unit(): BelongsTo
+    {
+        return $this->belongsTo(InfrastructureUnit::class, 'unit_id');
+    } 
+
+    /**
+     * Get the model that the image belongs to.
+     */
+    public function asset(): BelongsTo
+    {
+        return $this->belongsTo(InfrastructureAsset::class, 'asset_id');
+    }
+
+    /**
+     * ================================================
+     * +-------------- MAP RESOURCE ------------------+
+     * ================================================
+     */
+
+     public static function mapStoreRequestValidation(Request $request) : array
+     {
+        if( is_array($request->unit) )
+            $request->unit = (object) $request->unit;
+
+        if( is_array($request->asset) )
+            $request->asset = (object) $request->asset;
+
+        return [
+            'unit' => 'required|array',
+            'unit.id' => 'required|numeric|exists:human_units,id',
+            
+            'asset' => 'required|array',
+            'asset.id' => 'required|numeric|exists:infrastructure_assets,id',
+        ];
+     }
+
+
+    public static function mapUpdateRequestValidation(Request $request) : array
+    {
+        if( is_array($request->unit) )
+            $request->unit = (object) $request->unit;
+
+        if( is_array($request->asset) )
+            $request->asset = (object) $request->asset;
+
+        return [
+            'unit' => 'required|array',
+            'unit.id' => 'required|numeric|exists:human_units,id',
+            
+            'asset' => 'required|array',
+            'asset.id' => 'required|numeric|exists:infrastructure_assets,id',
+        ];
+    }
+
+    /**
+     * The model map combos method
+     *
+     * @param [type] $model
+     * @return array
+     */
+    public static function mapResourceShow(Request $request, $model = null) : array 
+    {
+       return [
+            'unit' => $model->unit::class::mapResourceShow( $request, $model->unit ),
+            'asset' => $model->asset::class::mapResourceShow( $request, $model->asset ),
+       ];
+    }
+
+     /**
+     * ============================================
+     * +-------------- MAP CRUD ------------------+
+     * ============================================
+     */
+
+    /**
      * The model store method
      *
      * @param Request $request
      * @return void
      */
-    public static function storeRecord(Request $request)
+    public static function storeRecord(Request $request, InfrastructureTax $main_model) : InfrastructureTaxAsset
     {
-        $model = new static();
-
-        DB::connection($model->connection)->beginTransaction();
-
-        try {
-            // ...
-            $model->save();
-
-            DB::connection($model->connection)->commit();
-
-            // return new TaxAssetResource($model);
-        } catch (\Exception $e) {
-            DB::connection($model->connection)->rollBack();
-
-            return response()->json([
-                'success' => false,
-                'message' => $e->getMessage()
-            ], 500);
-        }
+        
     }
 
     /**
@@ -103,25 +176,9 @@ class InfrastructureTaxAsset extends Model
      * @param [type] $model
      * @return void
      */
-    public static function updateRecord(Request $request, $model)
+    public static function updateRecord(Request $request, InfrastructureTax $main_model, $model) : InfrastructureTaxAsset
     {
-        DB::connection($model->connection)->beginTransaction();
 
-        try {
-            // ...
-            $model->save();
-
-            DB::connection($model->connection)->commit();
-
-            // return new TaxAssetResource($model);
-        } catch (\Exception $e) {
-            DB::connection($model->connection)->rollBack();
-
-            return response()->json([
-                'success' => false,
-                'message' => $e->getMessage()
-            ], 500);
-        }
     }
 
     /**
