@@ -407,9 +407,12 @@ class InfrastructureTax extends Model
 
             // -- morph class update            
             if( $taxable_class == $model->taxable_type ){
+
                 // kalau sama maka jalankan model tipe method update record..
                 $taxable_class::updateRecord($request, $model, $model->taxable);
+
             } else if ( $taxable_class != $model->taxable_type ) {
+
                 // kalau ganti tipe maka delete dan buat record baru di type yang baru
                 $new_taxable_model = $taxable_class::storeRecord($request, $model);
 
@@ -419,13 +422,17 @@ class InfrastructureTax extends Model
                 // update maintenace dengna property yang baru
                 $model->taxable_id = $new_taxable_model->id;
                 $model->taxable_type = $new_taxable_model::class;
+
             }
 
             // kalau ganti tipe maka delete dan buat record baru di type yang baru
             if( $targetable_class == $model->targetable_type ){
+
                 // kalau sama maka jalankan model tipe method update record..
                 $targetable_class::updateRecord($request, $model, $model->targetable);
+
             } else if ( $targetable_class != $model->targetable_type ) {
+
                 // kalau ganti tipe maka delete dan buat record baru di type yang baru
                 $new_targetable_model = $targetable_class::storeRecord($request, $model);
 
@@ -435,6 +442,7 @@ class InfrastructureTax extends Model
                 // update maintenace dengna property yang baru
                 $model->targetable_id = $new_targetable_model->id;
                 $model->targetable_type = $new_targetable_model::class;
+                
             }
 
             $model->save();
