@@ -50,6 +50,17 @@ class InfrastructureTaxAsset extends Model
     ];
 
     /**
+     * The attributes that are mass assignable.
+     *
+     * @var array<int, string>
+     */
+    protected $fillable = [
+        'tax_id',
+        'unit_id',
+        'asset_id',
+    ];
+
+    /**
      * The default key for the order.
      *
      * @var string

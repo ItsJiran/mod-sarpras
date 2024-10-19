@@ -50,6 +50,19 @@ class InfrastructureTaxPeriodics extends Model
     ];
 
     /**
+     * The attributes that are mass assignable.
+     *
+     * @var array<int, string>
+     */
+    protected $fillable = [        
+        'tax_id', 
+        'duedate',
+        'period_number_day',
+        'period_number_month',
+        'period_number_year',               
+    ];
+
+    /**
      * The default key for the order.
      *
      * @var string

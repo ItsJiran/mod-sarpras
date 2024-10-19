@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('infrastructure_tax_assets', function (Blueprint $table) {
             $table->id();
             // for relatition use
-            $table->foreignId('maintenance_id');
+            $table->foreignId('tax_id');
             $table->foreignId('unit_id');
             $table->foreignId('asset_id');
             // timestamps
