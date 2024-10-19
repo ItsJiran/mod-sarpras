@@ -24,7 +24,7 @@
 			<v-combobox
 			:items="jenisHubungan"
 			:return-object="false"
-			v-model="jenis"	
+			v-model="record.jenis"	
 			label="Apakah Dokumen Terhubung Dengan Asset Dari Unit Ini?"		
 			@update:model-value="changeDocumentType(record,data,this)"	
 			></v-combobox>
@@ -32,7 +32,7 @@
 	</v-row>
 
 	<!-- APABILA HUBUNGAN DOKUMEN TERHUBUNG DENGAN ASSET -->
-	<div v-if="jenis == 'Iya'">
+	<div v-if="record.jenis == 'Iya'">
 		<!-- PILIH TIPE ASSETS -->
 		<v-row v-if="data.refAssetType != undefined" dense>
 			<v-col cols="12">
@@ -125,7 +125,6 @@ export default {
 			// tipe hubugan apakah document tersebut terhubung dengan asset dari
 			// unit tersebut atau tidak..
 			jenisHubungan : [ 'Iya','Tidak' ],	
-			jenis : undefined,		
 		};
 	},
 	props: ['record','data'],
@@ -148,16 +147,16 @@ export default {
 				data.getRefAssetType(record,data);
 
 			// apabila jenis hubungan iya
-			if( componentData.jenis == 'Iya' && record.asset != undefined && record.asset.assetable_type_key != undefined ) {
+			if( record.jenis == 'Iya' && record.asset != undefined && record.asset.assetable_type_key != undefined ) {
 				data.getRefAsset(record,data);
 			}
 			
 			// apabila jenis hubungan tidak..
-			if ( componentData.jenis == 'Tidak' ) {
+			if ( record.jenis == 'Tidak' ) {
 				data.getRefDocument( 
 					record, 
 					data, 
-					componentData.jenis == 'Iya' 
+					record.jenis == 'Iya' 
 				);
 			}
 		},
@@ -169,10 +168,10 @@ export default {
 			record.document = {};
 			
 			// apabila jenis hubungan tidak.. maka langsung panggil refDocument
-			if ( componentData.jenis == 'Tidak' ) {
+			if ( record.jenis == 'Tidak' ) {
 				record.asset = {};
-				data.getRefDocument( record, data, componentData.jenis == 'Iya' );
-			} else if ( componentData.jenis == 'Iya' ) {
+				data.getRefDocument( record, data, record.jenis == 'Iya' );
+			} else if ( record.jenis == 'Iya' ) {
 				if ( data.refAssetType == undefined ) {
 					data.getRefAssetType( record, data );
 				} else  {
@@ -198,7 +197,7 @@ export default {
 			data.getRefDocument( 
 				record, 
 				data, 
-				componentData.jenis == 'Iya' 
+				record.jenis == 'Iya' 
 			);
 		},
 		changeDocument:function(record,data){

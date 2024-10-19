@@ -132,6 +132,8 @@ class InfrastructureMaintenanceDocument extends Model
 
             'document' => 'required|array',
             'document.id' => 'required|numeric|exists:infrastructure_documents,id',
+            
+            'jenis' => 'required|string',
         ];
 
         if ( $request->jenis == 'Iya' ) {
