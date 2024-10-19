@@ -13,9 +13,18 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
 
 // Relation Model
+use Illuminate\Validation\Rule;
+use Module\Infrastructure\Models\InfrastructureAsset;
+use Module\Infrastructure\Models\InfrastructureDocument;
 use Module\Infrastructure\Models\InfrastructureUnit;
-use App\Models\InfrastructureAsset;
-use App\Models\InfrastructureDocument;
+
+// type of the morph 
+use Module\Infrastructure\Models\InfrastructureTaxLog;
+use Module\Infrastructure\Models\InfrastructureTaxPeriodic;
+
+// type of the target tax
+use Module\Infrastructure\Models\InfrastructureTaxAsset;
+use Module\Infrastructure\Models\InfrastructureTaxDocument;
 
 class InfrastructureTax extends Model
 {
@@ -102,6 +111,103 @@ class InfrastructureTax extends Model
 
     /**
      * ====================================================
+     * +------------------- MAP REQUEST ------------------+
+     * ====================================================
+     */
+/**
+     * The model map combos method
+     *
+     * @param [type] $model
+     * @return array
+     */
+    public static function mapStoreRequestValidation(Request $request, $model = null):array
+    {
+        // convert to obj
+        if( is_array($request->unit) )
+            $request->unit = (object) $request->unit;
+
+        if( is_array($request->asset) )
+            $request->asset = (object) $request->asset;
+
+        if( is_array($request->document) )
+            $request->document = (object) $request->document;
+
+        // validasi awal..
+        $validation = [
+            'name' => 'required',
+
+            'taxable_type_key' => [
+                'required', 
+                Rule::in( self::mapMorphTypeKeyClass() )
+            ],
+
+            'targetable_type_key' => [
+                'required', 
+                Rule::in( self::mapMorphTargetKeyClass() )
+            ],
+        ];
+
+        // mendapatkan request validasi dari morph nya..        
+        $taxable_class = self::mapMorphTypeClass()[$request->taxable_type_key];
+        $targetable_class = self::mapMorphTargetClass()[$request->targetable_type_key];
+
+        $validation = array_merge( 
+            $validation, 
+            $taxable_class::mapStoreRequestValidation($request),
+            $targetable_class::mapStoreRequestValidation($request),
+        );
+
+        return $validation;
+    }
+
+    /**
+     * The model map combos method
+     *
+     * @param [type] $model
+     * @return array
+     */
+    public static function mapUpdateRequestValidation(Request $request, $model = null):array
+    {
+        // convert to obj
+        if( is_array($request->unit) )
+            $request->unit = (object) $request->unit;
+
+        if( is_array($request->asset) )
+            $request->asset = (object) $request->asset;
+
+        if( is_array($request->document) )
+            $request->document = (object) $request->document;
+
+        // validasi awal..
+        $validation = [
+            'name' => 'required',
+
+            'taxable_type_key' => [
+                'required', 
+                Rule::in( self::mapMorphTypeKeyClass() )
+            ],
+
+            'targetable_type_key' => [
+                'required', 
+                Rule::in( self::mapMorphTargetKeyClass() )
+            ],
+        ];
+
+        // mendapatkan request validasi dari morph nya..        
+        $taxable_class = self::mapMorphTypeClass()[$request->taxable_type_key];
+        $targetable_class = self::mapMorphTargetClass()[$request->targetable_type_key];
+
+        $validation = array_merge( 
+            $validation, 
+            $taxable_class::mapUpdateRequestValidation($request),
+            $targetable_class::mapUpdateRequestValidation($request),
+        );
+
+        return $validation;
+    }
+
+    /**
+     * ====================================================
      * +------------------ MAP RESOURCE ------------------+
      * ====================================================
      */
@@ -110,39 +216,32 @@ class InfrastructureTax extends Model
      * The model map combos method
      *
      * @param [type] $model
-     * @return void
+     * @return array
      */
-    public static function mapCombos(Request $request, $model = null): array  
+    public static function mapCombos(Request $request, $model = null) : array 
     {
-        // temporary
-        $human = InfrastructureUnit::get(['id','name','slug']);
+        return [            
+            'types_documents' => self::mapTypeDocuments(),
 
-        // notes : assign units into properties
-        $units = [];
-        $units_ids = [];
+            'morph_target' => self::mapMorphTargetClass(),
+            'morph_target_keys' => self::mapMorphTargetKeyClass(),
 
-        $units_name = [];
-        $units_slug = [];
+            'morph_type' => self::mapMorphTypeClass(),
+            'morph_type_keys' => self::mapMorphTypeKeyClass(),
+        ];
+    }   
 
-        // notes : mapping to the array so frontend can consume..
-        foreach ($human as $key => $value) {
-            array_push( $units_name, $value->name );
-            array_push( $units_slug, $value->slug );
-
-            $units[$value->slug] = $value;
-            $units_id[$value->id] = $value;
-        }
-
+    /**
+     * The model map combos method
+     *
+     * @param [type] $model
+     * @return array
+     */
+    public static function mapTypeDocuments() : array
+    {
         return [
-            'type' => self::mapTypeClass(),
-            'type_key' => self::mapTypeKeyClass(),     
-            
-            // units array merges
-            'units' => $units,
-            'units_ids' => $units_ids,
-
-            'units_name' => $units_name,
-            'units_slug' => $units_slug,
+            'Unit',
+            'Asset',
         ];
     }
 
@@ -152,17 +251,52 @@ class InfrastructureTax extends Model
      * @param [type] $model
      * @return array
      */
-    public static function mapTypeClass($reverse = false) : array
+    public static function mapMorphTargetClass($reverse = false) : array
     {
         if(!$reverse) {
             return [
-                'Asset' => InfrastructureAsset::class,
-                'Document' => InfrastructureDocument::class,
+                'Asset' => InfrastructureTaxAsset::class,
+                'Document' => InfrastructureTaxDocument::class,
             ];
         } else {
             return [
-                InfrastructureAsset::class => 'Asset',
-                InfrastructureDocument::class => 'Document',
+                InfrastructureTaxAsset::class => 'Asset',
+                InfrastructureTaxDocument::class => 'Document',
+            ];
+        }        
+    }
+
+    /**
+     * The model map combos method
+     *
+     * @param [type] $model
+     * @return array
+     */
+    public static function mapMorphTargetKeyClass() : array
+    {
+        return [
+            'Asset',
+            'Document',
+        ];
+    }
+
+    /**
+     * The model map combos method
+     *
+     * @param [type] $model
+     * @return array
+     */
+    public static function mapMorphTypeClass($reverse = false) : array
+    {
+        if(!$reverse) {
+            return [
+                'Log' => InfrastructureTaxLog::class,
+                'Periodic' => InfrastructureTaxPeriodic::class,
+            ];
+        } else {
+            return [
+                InfrastructureTaxLog::class => 'Log',
+                InfrastructureTaxPeriodic::class => 'Periodic',
             ];
         }
     }
@@ -173,12 +307,25 @@ class InfrastructureTax extends Model
      * @param [type] $model
      * @return array
      */
-    public static function mapTypeKeyClass() : array
+    public static function mapMorphTypeKeyClass() : array
     {
         return [
-            'Asset',
-            'Document',             
+            'Log',
+            'Periodic',             
         ];
+    }
+
+    /**
+     * The model store method
+     *
+     * @param Request $request
+     * @return void
+     */
+    public function getNewId() 
+    {   
+        $latest_id = self::latest()->pluck('id')->first();
+        if ( is_null( $latest_id ) ) return 1;
+        else                      return $latest_id + 1;        
     }
 
     /**
@@ -199,7 +346,28 @@ class InfrastructureTax extends Model
 
         DB::connection($model->connection)->beginTransaction();
 
+        // class for each bla-bla
+        $taxable_class = self::mapMorphTypeClass()[$request->taxable_type_key];
+        $targetable_class = self::mapMorphTargetClass()[$request->targetable_type_key];
+
         try {
+            // basic props
+            $model->name = $request->name;
+            $model->type = $request->type;
+            $model->description = $request->description;
+
+            // save in morph class
+            $taxable_model = $taxable_class::storeRecord($request, $model);
+            $targetable_model = $targetable_class::storeRecord($request, $model);
+
+            // morph class properties
+            $model->targetable_id = $targetable_model->id;
+            $model->targetable_type = $targetable_model::class;
+
+            // morph class properties
+            $model->taxable_id = $taxable_model->id;
+            $model->taxable_type = $taxable_model::class;
+
             $model->save();
 
             DB::connection($model->connection)->commit();
@@ -226,7 +394,49 @@ class InfrastructureTax extends Model
     {
         DB::connection($model->connection)->beginTransaction();
 
+        // class for each bla-bla
+        $taxable_class = self::mapMorphTypeClass()[$request->taxable_type_key];
+        $targetable_class = self::mapMorphTargetClass()[$request->targetable_type_key];
+
         try {
+            // basic props
+            $model->name = $request->name;
+            $model->type = $request->type;
+            $model->duedate = $request->duedate;        
+            $model->description = $request->description;
+
+            // -- morph class update            
+            if( $taxable_class == $model->taxable_type ){
+                // kalau sama maka jalankan model tipe method update record..
+                $taxable_class::updateRecord($request, $model, $model->taxable);
+            } else if ( $taxable_class != $model->taxable_type ) {
+                // kalau ganti tipe maka delete dan buat record baru di type yang baru
+                $new_taxable_model = $taxable_class::storeRecord($request, $model);
+
+                // detroy record di maintenance type yang lama
+                $model->taxable_type::destroyRecord( $model->taxable );
+
+                // update maintenace dengna property yang baru
+                $model->taxable_id = $new_taxable_model->id;
+                $model->taxable_type = $new_taxable_model::class;
+            }
+
+            // kalau ganti tipe maka delete dan buat record baru di type yang baru
+            if( $targetable_class == $model->targetable_type ){
+                // kalau sama maka jalankan model tipe method update record..
+                $targetable_class::updateRecord($request, $model, $model->targetable);
+            } else if ( $targetable_class != $model->targetable_type ) {
+                // kalau ganti tipe maka delete dan buat record baru di type yang baru
+                $new_targetable_model = $targetable_class::storeRecord($request, $model);
+
+                // detroy record di maintenance type yang lama
+                $model->targetable_type::destroyRecord( $model->targetable );
+
+                // update maintenace dengna property yang baru
+                $model->targetable_id = $new_targetable_model->id;
+                $model->targetable_type = $new_targetable_model::class;
+            }
+
             $model->save();
 
             DB::connection($model->connection)->commit();
