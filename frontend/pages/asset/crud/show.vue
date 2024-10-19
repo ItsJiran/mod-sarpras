@@ -91,8 +91,7 @@
 				block
 				variant="flat"
 				@click="redirectPage('document')"
-				>List Documents</v-btn
-			>
+				>List Documents</v-btn>
 
 			<v-btn
 				class="mt-3"
@@ -100,8 +99,15 @@
 				block
 				variant="flat"
 				@click="redirectPage('maintenance')"
-				>List Maintenance</v-btn
-			>
+				>List Maintenance</v-btn>
+
+			<v-btn
+				class="mt-3"
+				:color="theme"
+				block
+				variant="flat"
+				@click="redirectPage('tax')"
+				>List Tax</v-btn>
 
 		</template>
 	</form-show>

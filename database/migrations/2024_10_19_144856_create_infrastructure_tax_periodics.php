@@ -11,28 +11,15 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('infrastructure_taxes', function (Blueprint $table) {
+        Schema::create('infrastructure_tax_periodics', function (Blueprint $table) {
             $table->id();
-
-            // properties
-            $table->string('name')->default('Pajak');
-            $table->text('description')->nullable();
-
-            // tipenya berakala / manual
-            $table->string('type')->default('berkala')->index();
-
+            $table->foreignId('tax_id');
+            $table->timestamp('duedate');
             // period day
             $table->integer('period_number_day')->default(0);
             $table->integer('period_number_month')->default(0);
             $table->integer('period_number_year')->default(0);
-
-            // tanggal pembayaran
-            $table->timestamp('duedate')->nullable();
-            
-            // morphs eaither assets or maintenance
-            $table->morphs('taxable');
-            $table->morphs('targetable');
-
+            // timestamps
             $table->jsonb('meta')->nullable();
             $table->softDeletes();
             $table->timestamps();
@@ -44,6 +31,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('infrastructure_taxes');
+        Schema::dropIfExists('infrastructure_tax_periodics');
     }
 };

@@ -73,8 +73,8 @@ class InfrastructureTax extends Model
         'type',
         'period_day',
         'duedate',
-        'maintenanceable_id',
-        'maintenanceable_type',
+        'taxable_id',
+        'taxable_type',
     ];
 
     /**
