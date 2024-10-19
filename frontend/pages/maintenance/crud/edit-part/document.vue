@@ -170,10 +170,12 @@
 				if ( record.jenis == 'Tidak' ) {
 					data.getRefDocument( record, data, record.jenis == 'Iya' );
 				} else if ( record.jenis == 'Iya' ) {
-					if(data.refAssetType == undefined)
+					console.log(data.refAssetType);
+					if(data.refAssetType == undefined) {
 						data.getRefAssetType( record, data );
-					else 
+					} else  {
 						data.getRefAsset( record, data );
+					}
 				}
 			},
 			changeAssetType:function(record,data){		

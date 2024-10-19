@@ -135,6 +135,8 @@ export default {
 			if ( record.targetable_type_key == 'Document' ) {
 				data.getRefDocument(record,data)
 			}
+
+			data.initEditBool = true;
 		},
 		// methods
 		changeMaintenaceType : function (record,data) {
@@ -181,7 +183,7 @@ export default {
 		},
 		getRefAsset : function (record,data) {
 			// agar supaya nantinya tidak error
-			if ( record.unit == undefined || record.asset.assetable_type_key == undefined )
+			if ( record.unit == undefined || record.asset == undefined || record.asset.assetable_type_key == undefined )
 				return;
 
 			// prevent error call
@@ -192,7 +194,7 @@ export default {
 				(response) => { data.refAsset = response }
 			);
 		},
-		getRefDocument : function (record,data,isConnectedToAsset) {
+		getRefDocument : function (record,data) {
 			if ( record.jenis == 'Iya' )
 				data.getRefDocumentAsset(record,data);
 
@@ -200,11 +202,17 @@ export default {
 				data.getRefDocummentUnit(record,data);
 		},
 		getRefDocummentUnit : function (record,data) {
+			if(record.unit == undefined || record.asset == undefined)
+				return;
+
 			this.$http(`infrastructure/api/ref-document/combos/unit/${record.unit.id}`).then(				
 				(response) => { data.refDocument = response }
 			);
 		},
 		getRefDocumentAsset : function (record,data) {
+			if(record.unit == undefined || record.asset == undefined)
+				return;
+
 			this.$http(`infrastructure/api/ref-document/combos/unit/${record.unit.id}/asset/${record.asset.id}`).then(
 				(response) => { data.refDocument = response }
 			);
