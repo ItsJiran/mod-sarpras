@@ -22,21 +22,21 @@
 			<v-combobox
 			:items="jenisHubungan"
 			:return-object="false"
-			v-model="jenis"	
+			v-model="record.jenis"	
 			label="Apakah Dokumen Terhubung Dengan Asset Dari Unit Ini?"					
 			></v-combobox>
 		</v-col>
 	</v-row>
 
 	<!-- APABILA HUBUNGAN DOKUMEN TERHUBUNG DENGAN ASSET -->
-	<div v-if="jenis == 'Iya'">
+	<div v-if="record.jenis == 'Iya'">
 		<!-- PILIH TIPE ASSETS -->
 		<v-row dense>
 			<v-col cols="12">
 				<v-combobox
 				item-title="name"
 				:return-object="false"
-				v-model="record.asset.type"				
+				v-model="record.asset.assetable_type_key"				
 				label="Pilih Jenis Asset"		
 				></v-combobox>
 			</v-col>

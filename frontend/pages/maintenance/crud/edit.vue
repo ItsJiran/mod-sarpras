@@ -135,12 +135,7 @@ export default {
 			if ( record.targetable_type_key == 'Document' ) {
 				data.getRefDocument(record,data)
 			}
-
-			// additional prop for document
-			if ( record.targetable_type_key == 'Document' ) {
-			}
 		},
-		// methods
 		// methods
 		changeMaintenaceType : function (record,data) {
 
@@ -198,13 +193,10 @@ export default {
 			);
 		},
 		getRefDocument : function (record,data,isConnectedToAsset) {
-			if ( isConnectedToAsset == undefined ) 
-				return;
-
-			if ( isConnectedToAsset )
+			if ( record.jenis == 'Iya' )
 				data.getRefDocumentAsset(record,data);
 
-			if ( !isConnectedToAsset )
+			if ( record.jenis == 'Tidak' )
 				data.getRefDocummentUnit(record,data);
 		},
 		getRefDocummentUnit : function (record,data) {
