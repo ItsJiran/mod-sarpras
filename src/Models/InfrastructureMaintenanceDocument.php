@@ -132,7 +132,7 @@ class InfrastructureMaintenanceDocument extends Model
 
             'document' => 'required|array',
             'document.id' => 'required|numeric|exists:infrastructure_documents,id',
-            
+
             'jenis' => 'required|string',
         ];
 
@@ -176,11 +176,20 @@ class InfrastructureMaintenanceDocument extends Model
      */
     public static function mapResourceShow(Request $request, $model = null) : array 
     {
-       return [
+        $array = [
+            'id' => $model->id,
             'unit' => $model->unit::class::mapResourceShow( $request, $model->unit ),
-            'asset' => $model->asset::class::mapResourceShow( $request, $model->asset ),
             'document' => $model->document::class::mapResourceShow( $request, $model->document ),
-       ];
+        ];
+
+        if ( !is_null($model->asset) ) {
+            $array['jenis'] = 'Iya';
+            $array['asset'] = $model->asset::class::mapResourceShow( $request, $model->asset );
+        } else {
+            $array['jenis'] = 'Tidak';
+        }
+
+       return $array;
     }
 
     /**

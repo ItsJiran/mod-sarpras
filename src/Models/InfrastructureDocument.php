@@ -227,6 +227,7 @@ class InfrastructureDocument extends Model
         $documents_type_keys = self::mapTypeClass(true);
 
         $document_properties = [
+            'id' => $model->id,
             'name' => $model->name,
             'asset_id' => $model->asset_id,
             'description' => $model->description,
