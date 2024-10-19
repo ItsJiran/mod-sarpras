@@ -107,6 +107,10 @@ class InfrastructureMaintenancePeriodic extends Model
     public static function mapUpdateRequestValidation(Request $request) : array
     {
         return [
+            'duedate' => 'required|date',
+            'period_number_day' => 'required|numeric',
+            'period_number_month' => 'required|numeric',
+            'period_number_year' => 'required|numeric',
         ];
     }
 
