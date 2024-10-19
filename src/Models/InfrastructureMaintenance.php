@@ -156,6 +156,16 @@ class InfrastructureMaintenance extends Model
      */
     public static function mapStoreRequestValidation(Request $request, $model = null):array
     {
+        // convert to obj
+        if( is_array($request->unit) )
+            $request->unit = (object) $request->unit;
+
+        if( is_array($request->asset) )
+            $request->asset = (object) $request->asset;
+
+        if( is_array($request->document) )
+            $request->document = (object) $request->document;
+
         // validasi awal..
         $validation = [
             'name' => 'required',
@@ -192,6 +202,16 @@ class InfrastructureMaintenance extends Model
      */
     public static function mapUpdateRequestValidation(Request $request, $model = null):array
     {
+        // convert to obj
+        if( is_array($request->unit) )
+            $request->unit = (object) $request->unit;
+
+        if( is_array($request->asset) )
+            $request->asset = (object) $request->asset;
+
+        if( is_array($request->document) )
+            $request->document = (object) $request->document;
+
         // validasi awal..
         $validation = [
             'name' => 'required',
@@ -407,7 +427,7 @@ class InfrastructureMaintenance extends Model
 
         // class for each bla-bla
         $maintenanceable_class = self::mapMorphTypeClass()[$request->maintenanceable_type_key];
-        $targetable_class = self::mapMorphTypeClass()[$request->targetable_type_key];
+        $targetable_class = self::mapMorphTargetClass()[$request->targetable_type_key];
 
         try {            
             // basic props
@@ -442,7 +462,7 @@ class InfrastructureMaintenance extends Model
 
                 // detroy record di maintenance type yang lama
                 $model->targetable_type::destroyRecord( $model->targetable );
-                
+
                 // update maintenace dengna property yang baru
                 $model->targetable_id = $new_targetable_model->id;
                 $model->targetable_type = $new_targetable_model::class;

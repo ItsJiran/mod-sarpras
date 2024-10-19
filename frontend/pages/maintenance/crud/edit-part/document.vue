@@ -148,16 +148,18 @@ export default {
 				data.getRefAssetType(record,data);
 
 			// apabila jenis hubungan iya
-			if( componentData.jenis == 'Iya' && record.asset != undefined && record.asset.assetable_type_key != undefined )
+			if( componentData.jenis == 'Iya' && record.asset != undefined && record.asset.assetable_type_key != undefined ) {
 				data.getRefAsset(record,data);
+			}
 			
 			// apabila jenis hubungan tidak..
-			if ( componentData.jenis == 'Tidak' )
+			if ( componentData.jenis == 'Tidak' ) {
 				data.getRefDocument( 
 					record, 
 					data, 
 					componentData.jenis == 'Iya' 
 				);
+			}
 		},
 		changeDocumentType : function (record,data,componentData) {
 			// mengrefresh list documnet setiap pergantian tipe document
@@ -168,12 +170,14 @@ export default {
 			
 			// apabila jenis hubungan tidak.. maka langsung panggil refDocument
 			if ( componentData.jenis == 'Tidak' ) {
+				record.asset = {};
 				data.getRefDocument( record, data, componentData.jenis == 'Iya' );
 			} else if ( componentData.jenis == 'Iya' ) {
-				if(data.refAssetType == undefined)
+				if ( data.refAssetType == undefined ) {
 					data.getRefAssetType( record, data );
-				else 
+				} else  {
 					data.getRefAsset( record, data );
+				}
 			}
 		},
 		changeAssetType:function(record,data){		

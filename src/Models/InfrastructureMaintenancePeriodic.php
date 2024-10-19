@@ -169,7 +169,7 @@ class InfrastructureMaintenancePeriodic extends Model
      * @param [type] $model
      * @return void
      */
-    public static function updateRecord(Request $request,InfrastructureMaintenance $main_model, $model = null) : InfrastructureMaintenanceAsset
+    public static function updateRecord(Request $request,InfrastructureMaintenance $main_model, $model = null) : InfrastructureMaintenancePeriodic
     {
         $model->maintenance_id = $main_model->id;        
         $model->duedate = $request->duedate;        

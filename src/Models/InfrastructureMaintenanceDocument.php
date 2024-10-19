@@ -41,7 +41,7 @@ class InfrastructureMaintenanceDocument extends Model
      *
      * @var string
      */
-    protected $table = 'infrastructure_maintenancedocuments';
+    protected $table = 'infrastructure_maintenance_documents';
 
     /**
      * The roles variable
@@ -117,6 +117,10 @@ class InfrastructureMaintenanceDocument extends Model
     }
 
     /**
+     * Get the model that the image belongs to.
+     */
+
+    /**
      * ====================================================
      * +-------------- MAP RELATIONSHIP ------------------+
      * ====================================================
@@ -132,21 +136,12 @@ class InfrastructureMaintenanceDocument extends Model
             'document.id' => 'required|numeric|exists:infrastructure_documents,id',
         ];
 
-        if($request->asset != undefined){
+        if ( $request->asset != null ) {
             $validation = array_merge($validation, [
                 'asset' => 'required|array',
                 'asset.id' => 'required|numeric|exists:infrastructure_assets,id',
             ]);
         };
-
-        if( is_array($request->unit) )
-            $request->unit = (object) $request->unit;
-
-        if( is_array($request->asset) )
-            $request->asset = (object) $request->asset;
-
-        if( is_array($request->document) )
-            $request->document = (object) $request->document;
 
         return $validation;
     }
@@ -161,21 +156,12 @@ class InfrastructureMaintenanceDocument extends Model
             'document.id' => 'required|numeric|exists:infrastructure_documents,id',
         ];
 
-        if($request->asset != null){
+        if ( $request->asset != null ) {
             $validation = array_merge($validation, [
                 'asset' => 'required|array',
                 'asset.id' => 'required|numeric|exists:infrastructure_assets,id',
             ]);
         };
-
-        if( is_array($request->unit) )
-            $request->unit = (object) $request->unit;
-
-        if( is_array($request->asset) )
-            $request->asset = (object) $request->asset;
-
-        if( is_array($request->document) )
-            $request->document = (object) $request->document;
 
         return $validation;
     }
