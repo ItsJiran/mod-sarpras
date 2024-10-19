@@ -22,6 +22,7 @@
 			<v-combobox
 			:items="jenisHubungan"
 			:return-object="false"
+			:readonly="true"
 			v-model="record.jenis"	
 			label="Apakah Dokumen Terhubung Dengan Asset Dari Unit Ini?"					
 			></v-combobox>

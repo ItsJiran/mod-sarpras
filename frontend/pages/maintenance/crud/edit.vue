@@ -182,6 +182,8 @@ export default {
 			);
 		},
 		getRefAsset : function (record,data) {
+
+			console.log(record.asset);
 			// agar supaya nantinya tidak error
 			if ( record.unit == undefined || record.asset == undefined || record.asset.assetable_type_key == undefined )
 				return;
@@ -210,7 +212,6 @@ export default {
 			);
 		},
 		getRefDocumentAsset : function (record,data) {
-			console.log('test');
 			if(record.unit == undefined || record.asset == undefined)
 				return;
 

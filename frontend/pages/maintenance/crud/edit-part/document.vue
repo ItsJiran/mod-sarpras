@@ -26,7 +26,7 @@
 				:return-object="false"
 				v-model="record.jenis"
 				label="Apakah Dokumen Terhubung Dengan Asset Dari Unit Ini?"		
-				@update:model-value="changeDocumentType(record,data,this)"	
+				@update:model-value="changeDocumentType(record,data)"	
 				></v-combobox>
 			</v-col>
 		</v-row>
@@ -41,7 +41,7 @@
 					item-title="name"
 					:return-object="false"
 					v-model="record.asset.assetable_type_key"
-					@update:model-value="changeAssetType(record,data,this)"			
+					@update:model-value="changeAssetType(record,data)"			
 					label="Pilih Jenis Asset"		
 					></v-combobox>
 				</v-col>
@@ -124,8 +124,7 @@
 			return {
 				// tipe hubugan apakah document tersebut terhubung dengan asset dari
 				// unit tersebut atau tidak..
-				jenisHubungan : [ 'Iya','Tidak' ],	
-				jenis : undefined,		
+				jenisHubungan : [ 'Iya','Tidak' ]
 			};
 		},
 		props: ['record','data'],
@@ -159,18 +158,19 @@
 						record.jenis == 'Iya' 
 					);
 			},
-			changeDocumentType : function (record,data,componentData) {
+			changeDocumentType : function (record,data) {
 				// mengrefresh list documnet setiap pergantian tipe document
 				data.refDocument = undefined;
 				
 				// prevent error
 				record.document = {};
+				if(record.asset == undefined)
+					record.asset = {};
 				
 				// apabila jenis hubungan tidak.. maka langsung panggil refDocument
 				if ( record.jenis == 'Tidak' ) {
 					data.getRefDocument( record, data, record.jenis == 'Iya' );
-				} else if ( record.jenis == 'Iya' ) {
-					console.log(data.refAssetType);
+				} else if ( record.jenis == 'Iya' ) {					
 					if(data.refAssetType == undefined) {
 						data.getRefAssetType( record, data );
 					} else  {
@@ -179,7 +179,7 @@
 				}
 			},
 			changeAssetType:function(record,data){		
-				// mengrefresh list documnet setiap pergantian tipe document
+				// mengrefresh list document setiap pergantian tipe document
 				data.refDocument = undefined;
 				
 				data.getRefAsset(record,data);
