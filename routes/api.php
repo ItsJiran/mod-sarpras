@@ -35,8 +35,6 @@ Route::resource('tax',InfrastructureTaxController::class)->parameters([
     'tax' => 'infrastructureTax'
 ]);
 
-
-
 // +-----------------------------------
 // +-- from resource module asset
 Route::resource('asset',InfrastructureAssetController::class)->parameters([

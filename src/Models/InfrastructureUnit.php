@@ -7,6 +7,10 @@ use Illuminate\Support\Facades\DB;
 use Module\Human\Models\HumanUnit As Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
+use Module\Infrastructure\Models\InfrastructureMaintenanceAsset;
+use Module\Infrastructure\Models\InfrastructureMaintenanceDocument;
+use Module\Infrastructure\Models\InfrastructureMaintenance;
+
 class InfrastructureUnit extends Model
 {
     /**
@@ -16,15 +20,52 @@ class InfrastructureUnit extends Model
      */
     protected $roles = ['infrastructure-unit'];
 
+
+    /**
+     * ====================================================
+     * +------------------ MAP RELATION ------------------+
+     * ====================================================
+     */
+
+    /**
+     * Get the model that the image belongs to.
+     */
     public function assets(): HasMany
     {
         return $this->hasMany(InfrastructureAsset::class, 'unit_id');
     }
-
+    
+    /**
+     * Get the model that the image belongs to.
+     */
     public function documents(): HasMany
     {
         return $this->hasMany(InfrastructureDocument::class, 'unit_id');
     }
+
+    /**
+     * Get the model that the image belongs to.
+     */
+    public function maintenances_assets()
+    {
+        return InfrastructureMaintenanceAsset::where('unit_id',$this->id)
+        ->join('infrastructure_maintenances','infrastructure_maintenances.id','=','infrastructure_maintenance_assets.maintenance_id');                
+    }
+
+    /**
+     * Get the model that the image belongs to.
+     */
+    public function maintenances_documents()
+    {
+        return InfrastructureMaintenanceDocuments::where('unit_id',$this->id)
+        ->join('infrastructure_maintenances','infrastructure_maintenances.id','=','infrastructure_maintenance_documents.maintenance_id');                
+    }
+
+    /**
+     * ====================================================
+     * +------------------ MAP RESOURCE ------------------+
+     * ====================================================
+     */
 
     /**
      * The model store method

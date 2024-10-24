@@ -19,6 +19,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Module\Infrastructure\Models\InfrastructureDocumentLandCertificate;
 use Module\Infrastructure\Models\InfrastructureUnit;
 use Module\Infrastructure\Models\InfrastructureAsset;
+use Module\Infrastructure\Models\InfrastructureMaintenanceDocument;
 
 class InfrastructureDocument extends Model
 {
@@ -107,6 +108,15 @@ class InfrastructureDocument extends Model
     public function asset(): BelongsTo
     {
         return $this->belongsTo(InfrastructureAsset::class, 'asset_id');
+    }
+
+    /**
+     * Get the model that the image belongs to.
+     */
+    public function maintenances()
+    {
+        return InfrastructureMaintenanceDocument::where('document_id',$this->id)
+        ->join('infrastructure_maintenances','infrastructure_maintenances.id','=','infrastructure_maintenance_documents.maintenance_id');                
     }
 
     /**

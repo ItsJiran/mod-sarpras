@@ -17,6 +17,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 // related assets models type
+use Module\Infrastructure\Models\InfrastructureMaintenanceAsset;
 use Module\Infrastructure\Models\InfrastructureMaintenance;
 use Module\Infrastructure\Models\InfrastructureAssetVehicle;
 use Module\Infrastructure\Models\InfrastructureAssetFurniture;
@@ -153,7 +154,8 @@ class InfrastructureAsset extends Model
      */
     public function maintenances()
     {
-        // return InfrastructureMaintenance::where('');
+        return InfrastructureMaintenanceAsset::where('asset_id',$this->id)
+        ->join('infrastructure_maintenances','infrastructure_maintenances.id','=','infrastructure_maintenance_assets.maintenance_id');                
     }
 
     /**

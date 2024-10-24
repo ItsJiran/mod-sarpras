@@ -10,6 +10,7 @@ use Module\Infrastructure\Http\Resources\MaintenanceShowResource;
 
 use Module\Infrastructure\Models\InfrastructureMaintenance;
 use Module\Infrastructure\Models\InfrastructureAsset;
+use Module\Infrastructure\Models\InfrastructureUnit;
 
 class InfrastructureMaintenanceController extends Controller
 {
@@ -36,9 +37,42 @@ class InfrastructureMaintenanceController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function indexFromAsset(Request $request, InfrastructureAsset $asset){
+     public function indexFromUnit(Request $request, InfrastructureUnit $unit){        
         return new MaintenanceCollection(
-            $asset->maintenances
+            $unit->maintenances()
+            ->applyMode($request->mode)
+            ->filter($request->filters)
+            ->search($request->findBy)
+            ->sortBy($request->sortBy)
+            ->paginate($request->itemsPerPage)
+        );
+    }
+
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function indexFromAsset(Request $request, InfrastructureAsset $asset){        
+        return new MaintenanceCollection(
+            $asset->maintenances()
+            ->applyMode($request->mode)
+            ->filter($request->filters)
+            ->search($request->findBy)
+            ->sortBy($request->sortBy)
+            ->paginate($request->itemsPerPage)
+        );
+    }
+
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function indexFromDocument(Request $request, InfrastructureDocument $document){        
+        return new MaintenanceCollection(
+            $document->maintenances()
+            ->applyMode($request->mode)
             ->filter($request->filters)
             ->search($request->findBy)
             ->sortBy($request->sortBy)
