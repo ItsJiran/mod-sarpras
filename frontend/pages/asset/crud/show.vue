@@ -145,7 +145,6 @@ export default {
 			let redirect_to = current_route_name_clean + name;
 			return this.$router.push({ name : redirect_to });
 		}
-
 	},
 };
 </script>

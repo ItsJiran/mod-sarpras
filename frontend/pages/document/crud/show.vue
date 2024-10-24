@@ -113,7 +113,25 @@
 			</v-card-text>
 		</template>
 
-		<template v-slot:helpdesk></template>
+		<template v-slot:helpdesk="{ theme }">
+
+			<v-btn
+				class="mt-3"
+				:color="theme"
+				block
+				variant="flat"
+				@click="redirectPage('maintenance')"
+				>List Maintenance</v-btn>
+
+			<v-btn
+				class="mt-3"
+				:color="theme"
+				block
+				variant="flat"
+				@click="redirectPage('tax')"
+				>List Tax</v-btn>
+
+		</template>
 	</form-show>
 </template>
 
@@ -128,6 +146,21 @@ export default {
 		return {
 			
 		}
-	}
+	},
+	methods : {
+		redirectPage : function ( name = '' ) {
+			const current_route = this.$router.currentRoute._value;
+			const current_route_name = current_route.name;
+			
+			let target_methods = ['show','create','delete','update'];
+			let current_route_name_clean = current_route_name;
+
+			for ( let method of target_methods )
+				current_route_name_clean = current_route_name_clean.replaceAll(method,'');
+			
+			let redirect_to = current_route_name_clean + name;
+			return this.$router.push({ name : redirect_to });
+		}
+	},
 };
 </script>

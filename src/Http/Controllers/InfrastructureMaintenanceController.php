@@ -9,6 +9,7 @@ use Module\Infrastructure\Http\Resources\MaintenanceCollection;
 use Module\Infrastructure\Http\Resources\MaintenanceShowResource;
 
 use Module\Infrastructure\Models\InfrastructureMaintenance;
+use Module\Infrastructure\Models\InfrastructureDocument;
 use Module\Infrastructure\Models\InfrastructureAsset;
 use Module\Infrastructure\Models\InfrastructureUnit;
 
@@ -80,7 +81,6 @@ class InfrastructureMaintenanceController extends Controller
         );
     }
 
-
     /**
      * Store a newly created resource in storage.
      *
@@ -107,6 +107,30 @@ class InfrastructureMaintenanceController extends Controller
         Gate::authorize('show', $infrastructureMaintenance);
 
         return new MaintenanceShowResource($infrastructureMaintenance);
+    }
+
+    /**
+     * Display the specified resource.
+     *
+     * @param  \Module\Infrastructure\Models\InfrastructureMaintenance $infrastructureMaintenance
+     * @return \Illuminate\Http\Response
+     */
+    public function showFromDocument(InfrastructureDocument $document, InfrastructureMaintenance $maintenance)
+    {
+        Gate::authorize('show', $maintenance);
+        return new MaintenanceShowResource($maintenance);
+    }
+
+    /**
+     * Display the specified resource.
+     *
+     * @param  \Module\Infrastructure\Models\InfrastructureMaintenance $infrastructureMaintenance
+     * @return \Illuminate\Http\Response
+     */
+    public function showFromAsset(InfrastructureAsset $asset, InfrastructureMaintenance $maintenance)
+    {
+        Gate::authorize('show', $maintenance);
+        return new MaintenanceShowResource($maintenance);
     }
 
     /**

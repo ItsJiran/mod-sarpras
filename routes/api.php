@@ -27,7 +27,15 @@ Route::resource('maintenance',InfrastructureMaintenanceController::class)->param
 ]);
 
 Route::get('asset/{asset}/maintenance',[InfrastructureMaintenanceController::class,'indexFromAsset']);
-Route::get('document/{document}/maintenance',[InfrastructureMaintenanceController::class,'indexFromAsset']);
+Route::get('document/{document}/maintenance',[InfrastructureMaintenanceController::class,'indexFromDocument']);
+
+Route::get('asset/{asset}/maintenance/{maintenance}',[InfrastructureMaintenanceController::class, 'showFromAsset']);
+Route::put('asset/{asset}/maintenance/{maintenance}',[InfrastructureMaintenanceController::class, 'updateFromAsset']);
+Route::delete('asset/{asset}/maintenance/{maintenance}',[InfrastructureMaintenanceController::class, 'destroyFromAsset']);
+
+Route::get('document/{document}/maintenance/{maintenance}',[InfrastructureMaintenanceController::class, 'showFromDocument']);
+Route::put('document/{document}/maintenance/{maintenance}',[InfrastructureMaintenanceController::class, 'updateFromDocument']);
+Route::delete('document/{document}/maintenance/{maintenance}',[InfrastructureMaintenanceController::class, 'destroyFromDocument']);
 
 // +-----------------------------------
 // +-- from resource module maintenance
