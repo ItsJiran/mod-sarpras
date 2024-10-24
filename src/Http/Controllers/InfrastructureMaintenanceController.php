@@ -150,6 +150,32 @@ class InfrastructureMaintenanceController extends Controller
     }
 
     /**
+     * Update the specified resource in storage.
+     *
+     * @param  \Illuminate\Http\Request $request
+     * @param  \Module\Infrastructure\Models\InfrastructureMaintenance $infrastructureMaintenance
+     * @return \Illuminate\Http\Response
+     */
+    public function updateFromAsset(Request $request, InfrastructureAsset $asset, InfrastructureMaintenance $maintenance)    
+    {   
+        Gate::authorize('update', $infrastructureMaintenance);
+        return $this->update($request, $maintenance);
+    }
+
+/**
+     * Update the specified resource in storage.
+     *
+     * @param  \Illuminate\Http\Request $request
+     * @param  \Module\Infrastructure\Models\InfrastructureMaintenance $infrastructureMaintenance
+     * @return \Illuminate\Http\Response
+     */
+    public function updateFromDocument(Request $request, InfrastructureDocument $document, InfrastructureMaintenance $maintenance)    
+    {   
+        Gate::authorize('update', $infrastructureMaintenance);
+        return $this->update($request, $maintenance);
+    }
+
+    /**
      * Remove the specified resource from storage.
      *
      * @param  \Module\Infrastructure\Models\InfrastructureMaintenance $infrastructureMaintenance
