@@ -117,6 +117,19 @@ class InfrastructureMaintenanceController extends Controller
      * @param  \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response
      */
+    public function storeFromUnitAsset(Request $request, InfrastructureUnit $unit, InfrastructureAsset $asset)
+    {
+        Gate::authorize('create', InfrastructureMaintenance::class);
+
+        return $this->storeFromAsset($request, $asset);
+    }
+
+    /**
+     * Store a newly created resource in storage.
+     *
+     * @param  \Illuminate\Http\Request $request
+     * @return \Illuminate\Http\Response
+     */
     public function storeFromDocument(Request $request, InfrastructureDocument $document)
     {
         Gate::authorize('create', InfrastructureMaintenance::class);
@@ -124,6 +137,19 @@ class InfrastructureMaintenanceController extends Controller
         $request = InfrastructureMaintenance::mergeRequestDocument($request, $document);
 
         return InfrastructureMaintenance::storeRecord($request);
+    }
+
+    /**
+     * Store a newly created resource in storage.
+     *
+     * @param  \Illuminate\Http\Request $request
+     * @return \Illuminate\Http\Response
+     */
+    public function storeFromUnitDocument(Request $request, InfrastructureUnit $unit, InfrastructureDocument $document)
+    {
+        Gate::authorize('create', InfrastructureMaintenance::class);
+
+        return $this->storeFromDocument($request, $document);
     }
 
     /**
