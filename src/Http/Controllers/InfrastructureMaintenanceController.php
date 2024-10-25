@@ -97,6 +97,34 @@ class InfrastructureMaintenanceController extends Controller
     }
 
     /**
+     * Store a newly created resource in storage.
+     *
+     * @param  \Illuminate\Http\Request $request
+     * @return \Illuminate\Http\Response
+     */
+     public function storeFromAsset(Request $request, InfrastructureAsset $asset)
+    {
+        Gate::authorize('create', InfrastructureMaintenance::class);
+
+
+        return InfrastructureMaintenance::storeRecord($request);
+    }
+
+    /**
+     * Store a newly created resource in storage.
+     *
+     * @param  \Illuminate\Http\Request $request
+     * @return \Illuminate\Http\Response
+     */
+    public function storeFromDocument(Request $request, InfrastructureDocument $document)
+    {
+        Gate::authorize('create', InfrastructureMaintenance::class);
+
+
+        return InfrastructureMaintenance::storeRecord($request);
+    }
+
+    /**
      * Display the specified resource.
      *
      * @param  \Module\Infrastructure\Models\InfrastructureMaintenance $infrastructureMaintenance
