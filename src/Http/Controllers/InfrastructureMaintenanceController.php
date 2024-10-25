@@ -100,6 +100,15 @@ class InfrastructureMaintenanceController extends Controller
     }
 
     /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function indexFromUnitAssetDocument(Request $request, InfrastructureUnit $unit, InfrastructureAsset $asset, InfrastructureDocument $document){
+        return $this->indexFromDocument($request, $document);
+    }
+
+    /**
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request $request
@@ -201,11 +210,36 @@ class InfrastructureMaintenanceController extends Controller
      * @param  \Module\Infrastructure\Models\InfrastructureMaintenance $infrastructureMaintenance
      * @return \Illuminate\Http\Response
      */
+    public function showFromUnitDocument(InfrastructureUnit $unit, InfrastructureDocument $document, InfrastructureMaintenance $maintenance)
+    {
+        Gate::authorize('show', $maintenance);
+        return new MaintenanceShowResource($maintenance);
+    }
+
+    /**
+     * Display the specified resource.
+     *
+     * @param  \Module\Infrastructure\Models\InfrastructureMaintenance $infrastructureMaintenance
+     * @return \Illuminate\Http\Response
+     */
     public function showFromAsset(InfrastructureAsset $asset, InfrastructureMaintenance $maintenance)
     {
         Gate::authorize('show', $maintenance);
         return new MaintenanceShowResource($maintenance);
     }
+
+    /**
+     * Display the specified resource.
+     *
+     * @param  \Module\Infrastructure\Models\InfrastructureMaintenance $infrastructureMaintenance
+     * @return \Illuminate\Http\Response
+     */
+    public function showFromUnitAsset(InfrastructureUnit $unit, InfrastructureAsset $asset, InfrastructureMaintenance $maintenance)
+    {
+        Gate::authorize('show', $maintenance);
+        return new MaintenanceShowResource($maintenance);
+    }
+
 
     /**
      * Update the specified resource in storage.
@@ -243,7 +277,33 @@ class InfrastructureMaintenanceController extends Controller
      * @param  \Module\Infrastructure\Models\InfrastructureMaintenance $infrastructureMaintenance
      * @return \Illuminate\Http\Response
      */
+    public function updateFromUnitAsset(Request $request, InfrastructureUnit $unit, InfrastructureAsset $asset, InfrastructureMaintenance $maintenance)    
+    {   
+        Gate::authorize('update', $maintenance);
+        return $this->update($request, $maintenance);
+    }
+
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param  \Illuminate\Http\Request $request
+     * @param  \Module\Infrastructure\Models\InfrastructureMaintenance $infrastructureMaintenance
+     * @return \Illuminate\Http\Response
+     */
     public function updateFromDocument(Request $request, InfrastructureDocument $document, InfrastructureMaintenance $maintenance)    
+    {   
+        Gate::authorize('update', $maintenance);
+        return $this->update($request, $maintenance);
+    }
+
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param  \Illuminate\Http\Request $request
+     * @param  \Module\Infrastructure\Models\InfrastructureMaintenance $infrastructureMaintenance
+     * @return \Illuminate\Http\Response
+     */
+    public function updateFromUnitDocument(Request $request, InfrastructureUnit $unit, InfrastructureDocument $document, InfrastructureMaintenance $maintenance)    
     {   
         Gate::authorize('update', $maintenance);
         return $this->update($request, $maintenance);
@@ -276,6 +336,19 @@ class InfrastructureMaintenanceController extends Controller
     }
 
     /**
+     * Update the specified resource in storage.
+     *
+     * @param  \Illuminate\Http\Request $request
+     * @param  \Module\Infrastructure\Models\InfrastructureMaintenance $infrastructureMaintenance
+     * @return \Illuminate\Http\Response
+     */
+    public function destroyFromUnitAsset(Request $request, InfrastructureUnit $unit, InfrastructureAsset $asset, InfrastructureMaintenance $maintenance)    
+    {   
+        Gate::authorize('delete', $maintenance);
+        return $this->destroy($maintenance);
+    }
+
+    /**
      * destroy the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request $request
@@ -283,6 +356,19 @@ class InfrastructureMaintenanceController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function destroyFromDocument(Request $request, InfrastructureDocument $document, InfrastructureMaintenance $maintenance)    
+    {   
+        Gate::authorize('delete', $maintenance);
+        return $this->destroy($maintenance);
+    }
+
+    /**
+     * destroy the specified resource in storage.
+     *
+     * @param  \Illuminate\Http\Request $request
+     * @param  \Module\Infrastructure\Models\InfrastructureMaintenance $infrastructureMaintenance
+     * @return \Illuminate\Http\Response
+     */
+    public function destroyFromUnitDocument(Request $request, InfrastructureUnit $unit, InfrastructureDocument $document, InfrastructureMaintenance $maintenance)    
     {   
         Gate::authorize('delete', $maintenance);
         return $this->destroy($maintenance);

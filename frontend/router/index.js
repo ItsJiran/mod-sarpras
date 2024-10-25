@@ -594,7 +594,7 @@ export default {
 		},
 
 		{
-			path: "unit/{unit}/document/:document/maintenance",
+			path: "unit/:unit/document/:document/maintenance",
 			component: () =>
 				import(
 					/* webpackChunkName: "infrastructure" */ "@modules/infrastructure/frontend/pages/maintenance/index.vue"

@@ -382,9 +382,9 @@ class InfrastructureMaintenance extends Model
      */
     public function getNewId() 
     {   
-        $latest_id = self::latest()->pluck('id')->first();
+        $latest_id = self::latest()->withTrashed()->pluck('id')->first();
         if ( is_null( $latest_id ) ) return 1;
-        else                      return $latest_id + 1;        
+        else                         return $latest_id + 1;        
     }
 
     /**
@@ -412,7 +412,7 @@ class InfrastructureMaintenance extends Model
         try {
             // id
             $model->id = $model->getNewId();
-
+            
             // basic props
             $model->name = $request->name;
             $model->type = $request->type;
