@@ -552,7 +552,7 @@ export default {
 		},
 
 		{
-			path: "unit/{unit}/asset/:asset/maintenance",
+			path: "unit/:unit/asset/:asset/maintenance",
 			component: () =>
 				import(
 					/* webpackChunkName: "infrastructure" */ "@modules/infrastructure/frontend/pages/maintenance/index.vue"
@@ -581,7 +581,7 @@ export default {
 						import(
 							/* webpackChunkName: "infrastructure" */ "@modules/infrastructure/frontend/pages/maintenance/crud/show.vue"
 						),
-				},		
+				},
 				{
 					path: ":maintenance/edit",
 					name: "infrastructure-unit-asset-maintenance-edit",
@@ -631,7 +631,7 @@ export default {
 						import(
 							/* webpackChunkName: "infrastructure" */ "@modules/infrastructure/frontend/pages/maintenance/crud/edit.vue"
 						),
-				},			
+				},
 			]
 		},
 

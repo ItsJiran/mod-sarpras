@@ -28,19 +28,18 @@ Route::resource('maintenance',InfrastructureMaintenanceController::class)->param
 
 Route::get('asset/{asset}/maintenance',[InfrastructureMaintenanceController::class,'indexFromAsset']);
 Route::get('document/{document}/maintenance',[InfrastructureMaintenanceController::class,'indexFromDocument']);
-
-Route::post('unit/{unit}/asset/{asset}/maintenance',[InfrastructureMaintenanceController::class, 'storeFromUnitAsset']);
-Route::get('unit/{unit}/asset/{asset}/maintenance/{maintenance}',[InfrastructureMaintenanceController::class, 'showFromUnitAsset']);
+Route::get('unit/{unit}/asset/{asset}/maintenance',[InfrastructureMaintenanceController::class, 'indexFromUnitAsset']);
+Route::get('unit/{unit}/document/{document}/maintenance',[InfrastructureMaintenanceController::class, 'indexFromUnitDocument']);
 
 Route::post('asset/{asset}/maintenance',[InfrastructureMaintenanceController::class, 'storeFromAsset']);
+Route::post('document/{document}/maintenance',[InfrastructureMaintenanceController::class, 'storeFromDocument']);
+Route::post('unit/{unit}/asset/{asset}/maintenance',[InfrastructureMaintenanceController::class, 'storeFromUnitAsset']);
+Route::post('unit/{unit}/document/{document}/maintenance',[InfrastructureMaintenanceController::class, 'storeFromUnitDocument']);
+
 Route::get('asset/{asset}/maintenance/{maintenance}',[InfrastructureMaintenanceController::class, 'showFromAsset']);
 Route::put('asset/{asset}/maintenance/{maintenance}',[InfrastructureMaintenanceController::class, 'updateFromAsset']);
 Route::delete('asset/{asset}/maintenance/{maintenance}',[InfrastructureMaintenanceController::class, 'destroyFromAsset']);
 
-Route::post('unit/{unit}/document/{document}/maintenance',[InfrastructureMaintenanceController::class, 'storeFromUnitDocument']);
-Route::get('unit/{unit}/document/{document}/maintenance/{maintenance}',[InfrastructureMaintenanceController::class, 'showFromUnitDocument']);
-
-Route::post('document/{document}/maintenance',[InfrastructureMaintenanceController::class, 'storeFromDocument']);
 Route::get('document/{document}/maintenance/{maintenance}',[InfrastructureMaintenanceController::class, 'showFromDocument']);
 Route::put('document/{document}/maintenance/{maintenance}',[InfrastructureMaintenanceController::class, 'updateFromDocument']);
 Route::delete('document/{document}/maintenance/{maintenance}',[InfrastructureMaintenanceController::class, 'destroyFromDocument']);
