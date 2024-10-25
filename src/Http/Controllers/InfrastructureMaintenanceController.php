@@ -64,6 +64,15 @@ class InfrastructureMaintenanceController extends Controller
             ->paginate($request->itemsPerPage)
         );
     }
+    
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function indexFromUnitAsset(Request $request, InfrastructureUnit $unit, InfrastructureAsset $asset){
+        return $this->indexFromAsset($request, $asset);
+    }
 
     /**
      * Display a listing of the resource.
@@ -79,6 +88,15 @@ class InfrastructureMaintenanceController extends Controller
             ->sortBy($request->sortBy)
             ->paginate($request->itemsPerPage)
         );
+    }
+
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function indexFromUnitDocument(Request $request, InfrastructureUnit $unit, InfrastructureDocument $document){
+        return $this->indexFromDocument($request, $document);
     }
 
     /**
