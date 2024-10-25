@@ -158,11 +158,11 @@ class InfrastructureMaintenanceController extends Controller
      */
     public function updateFromAsset(Request $request, InfrastructureAsset $asset, InfrastructureMaintenance $maintenance)    
     {   
-        Gate::authorize('update', $infrastructureMaintenance);
+        Gate::authorize('update', $maintenance);
         return $this->update($request, $maintenance);
     }
 
-/**
+    /**
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request $request
@@ -171,7 +171,7 @@ class InfrastructureMaintenanceController extends Controller
      */
     public function updateFromDocument(Request $request, InfrastructureDocument $document, InfrastructureMaintenance $maintenance)    
     {   
-        Gate::authorize('update', $infrastructureMaintenance);
+        Gate::authorize('update', $maintenance);
         return $this->update($request, $maintenance);
     }
 
@@ -186,6 +186,32 @@ class InfrastructureMaintenanceController extends Controller
         Gate::authorize('delete', $infrastructureMaintenance);
 
         return InfrastructureMaintenance::deleteRecord($infrastructureMaintenance);
+    }
+
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param  \Illuminate\Http\Request $request
+     * @param  \Module\Infrastructure\Models\InfrastructureMaintenance $infrastructureMaintenance
+     * @return \Illuminate\Http\Response
+     */
+    public function destroyFromAsset(Request $request, InfrastructureAsset $asset, InfrastructureMaintenance $maintenance)    
+    {   
+        Gate::authorize('delete', $maintenance);
+        return $this->destroy($maintenance);
+    }
+
+    /**
+     * destroy the specified resource in storage.
+     *
+     * @param  \Illuminate\Http\Request $request
+     * @param  \Module\Infrastructure\Models\InfrastructureMaintenance $infrastructureMaintenance
+     * @return \Illuminate\Http\Response
+     */
+    public function destroyFromDocument(Request $request, InfrastructureDocument $document, InfrastructureMaintenance $maintenance)    
+    {   
+        Gate::authorize('delete', $maintenance);
+        return $this->destroy($maintenance);
     }
 
     /**
