@@ -551,6 +551,90 @@ export default {
 			]
 		},
 
+		{
+			path: "unit/{unit}/asset/:asset/maintenance",
+			component: () =>
+				import(
+					/* webpackChunkName: "infrastructure" */ "@modules/infrastructure/frontend/pages/maintenance/index.vue"
+				),
+			children: [
+				{
+					path: "",
+					name: "infrastructure-unit-asset-maintenance",
+					component: () =>
+						import(
+							/* webpackChunkName: "infrastructure" */ "@modules/infrastructure/frontend/pages/maintenance/crud/data.vue"
+						),
+				},
+				{
+					path: "create",
+					name: "infrastructure-unit-asset-maintenance-create",
+					component: () =>
+						import(
+							/* webpackChunkName: "infrastructure" */ "@modules/infrastructure/frontend/pages/maintenance/crud/create.vue"
+						),
+				},
+				{
+					path: ":maintenance/show",
+					name: "infrastructure-unit-asset-maintenance-show",
+					component: () =>
+						import(
+							/* webpackChunkName: "infrastructure" */ "@modules/infrastructure/frontend/pages/maintenance/crud/show.vue"
+						),
+				},		
+				{
+					path: ":maintenance/edit",
+					name: "infrastructure-unit-asset-maintenance-edit",
+					component: () =>
+						import(
+							/* webpackChunkName: "infrastructure" */ "@modules/infrastructure/frontend/pages/maintenance/crud/edit.vue"
+						),
+				},			
+			]
+		},
+
+		{
+			path: "unit/{unit}/document/:document/maintenance",
+			component: () =>
+				import(
+					/* webpackChunkName: "infrastructure" */ "@modules/infrastructure/frontend/pages/maintenance/index.vue"
+				),
+			children: [
+				{
+					path: "",
+					name: "infrastructure-unit-document-maintenance",
+					component: () =>
+						import(
+							/* webpackChunkName: "infrastructure" */ "@modules/infrastructure/frontend/pages/maintenance/crud/data.vue"
+						),
+				},
+				{
+					path: "create",
+					name: "infrastructure-unit-document-maintenance-create",
+					component: () =>
+						import(
+							/* webpackChunkName: "infrastructure" */ "@modules/infrastructure/frontend/pages/maintenance/crud/create.vue"
+						),
+				},
+				{
+					path: ":maintenance/show",
+					name: "infrastructure-unit-document-maintenance-show",
+					component: () =>
+						import(
+							/* webpackChunkName: "infrastructure" */ "@modules/infrastructure/frontend/pages/maintenance/crud/show.vue"
+						),
+				},		
+				{
+					path: ":maintenance/edit",
+					name: "infrastructure-unit-document-maintenance-edit",
+					component: () =>
+						import(
+							/* webpackChunkName: "infrastructure" */ "@modules/infrastructure/frontend/pages/maintenance/crud/edit.vue"
+						),
+				},			
+			]
+		},
+
 		// {
 		// 	path: "asset/:asset/maintenance",
 		// 	component: () =>
