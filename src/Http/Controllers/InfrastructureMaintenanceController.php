@@ -106,6 +106,7 @@ class InfrastructureMaintenanceController extends Controller
     {
         Gate::authorize('create', InfrastructureMaintenance::class);
 
+        $request = InfrastructureMaintenance::mergeRequestAsset($request, $asset);
 
         return InfrastructureMaintenance::storeRecord($request);
     }
@@ -120,6 +121,7 @@ class InfrastructureMaintenanceController extends Controller
     {
         Gate::authorize('create', InfrastructureMaintenance::class);
 
+        $request = InfrastructureMaintenance::mergeRequestDocument($request, $document);
 
         return InfrastructureMaintenance::storeRecord($request);
     }

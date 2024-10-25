@@ -59,26 +59,30 @@
 				<!-- ---------------------------------------- -->
 				<!-- +--- DEADLINE TIPE PERAWATAN MODEL ----+ -->
 
-				<div class="text-overline mt-6">Tujuan Perawatan</div>
-				<v-divider :thickness="3" class="mt-3 mb-6" />
+				<div v-if="$router.currentRoute._value.name == 'infrastructure-maintenance-create'">
 
-				<v-row dense>
-					<v-col cols="12">
-						<v-combobox
-						:items="morph_target_keys" 
-						:return-object="false"
-						label="Perawatan Untuk"
-						v-model="record.targetable_type_key"		
-						@update:model-value="changeTargetType(record,this)"	
-						></v-combobox>
-					</v-col>
-				</v-row>
+					<div class="text-overline mt-6">Tujuan Perawatan</div>
+					<v-divider :thickness="3" class="mt-3 mb-6" />
 
-				<component 
-					:record="record" 
-					:data="this" 
-					:is="record.targetable_type_key"
-				/>	
+					<v-row dense>
+						<v-col cols="12">
+							<v-combobox
+							:items="morph_target_keys" 
+							:return-object="false"
+							label="Perawatan Untuk"
+							v-model="record.targetable_type_key"		
+							@update:model-value="changeTargetType(record,this)"	
+							></v-combobox>
+						</v-col>
+					</v-row>
+
+					<component 
+						:record="record" 
+						:data="this" 
+						:is="record.targetable_type_key"
+					/>	
+
+				</div>
 
 			</v-card-text>
 		</template>

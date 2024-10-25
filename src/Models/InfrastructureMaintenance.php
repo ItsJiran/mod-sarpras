@@ -126,6 +126,37 @@ class InfrastructureMaintenance extends Model
      * @param [type] $model
      * @return array
      */
+    public static function mergeRequestAsset(Request $request, InfrastructureAsset $asset) : Request 
+    {
+        return $request->merge([ 
+            'unit' => $asset->unit,
+            'asset' => $asset,
+            'targetable_type_key' => 'Asset',
+        ]);
+    }
+
+    /**
+     * The model map combos method
+     *
+     * @param [type] $model
+     * @return array
+     */
+    public static function mergeRequestDocument(Request $request, InfrastructureDocument $document) : Request 
+    {
+        return $request->merge([ 
+            'unit' => $document->unit,
+            'asset' => $document->asset,
+            'document' => $document,
+            'targetable_type_key' => 'Document',
+        ]);
+    }
+
+    /**
+     * The model map combos method
+     *
+     * @param [type] $model
+     * @return array
+     */
     public static function mapResourceShow(Request $request, $model = null) : array 
     {
         $properties = [
