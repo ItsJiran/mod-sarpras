@@ -26,6 +26,13 @@
 		parent-key="asset"
 	></page-crud>
 
+	<page-crud v-if=" checkRoute('infrastructure-unit-asset-document-maintenance') "	
+		page-name="infrastructure-unit-asset-document-maintenance"
+		page-key="maintenance"
+		parent-name="infrastructure-unit-asset-document"
+		parent-key="asset"
+	></page-crud>
+
 	<page-crud v-if=" checkRoute('infrastructure-unit-document-maintenance') "	
 		page-name="infrastructure-unit-document-maintenance"
 		page-key="maintenance"
