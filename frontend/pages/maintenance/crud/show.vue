@@ -89,9 +89,15 @@
 			</v-card-text>
 		</template>
 
-		<template v-slot:helpdesk>
+		<template v-slot:helpdesk="{ theme }">
 
-
+			<v-btn
+				class="mt-3"
+				:color="theme"
+				block
+				variant="flat"
+				@click="redirectPage('tax-record')"
+				>List Record</v-btn>
 
 		</template>
 	</form-show>
