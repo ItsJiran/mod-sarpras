@@ -324,9 +324,87 @@ class InfrastructureTaxController extends Controller
     {
         Gate::authorize('update', $infrastructureTax);
 
-        $request->validate([]);
+        $request->validate( InfrastructureTax::mapUpdateRequestValidation($request) );        
 
         return InfrastructureTax::updateRecord($request, $infrastructureTax);
+    }
+
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param  \Illuminate\Http\Request $request
+     * @param  \Module\Infrastructure\Models\InfrastructureMaintenance $infrastructureMaintenance
+     * @return \Illuminate\Http\Response
+     */
+    public function updateFromAsset(Request $request, InfrastructureAsset $asset, InfrastructureTax $tax)    
+    {   
+        Gate::authorize('update', $tax);
+        return $this->update($request, $tax);
+    }
+
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param  \Illuminate\Http\Request $request
+     * @param  \Module\Infrastructure\Models\InfrastructureMaintenance $infrastructureMaintenance
+     * @return \Illuminate\Http\Response
+     */
+    public function updateFromUnitAsset(Request $request, InfrastructureUnit $unit, InfrastructureAsset $asset, InfrastructureTax $tax)    
+    {   
+        Gate::authorize('update', $tax);
+        return $this->update($request, $tax);
+    }
+
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param  \Illuminate\Http\Request $request
+     * @param  \Module\Infrastructure\Models\InfrastructureMaintenance $infrastructureMaintenance
+     * @return \Illuminate\Http\Response
+     */
+    public function updateFromUnitAssetDocument(Request $request, InfrastructureUnit $unit, InfrastructureAsset $asset, InfrastructureDocument $document, InfrastructureTax $tax)    
+    {   
+        Gate::authorize('update', $tax);
+        return $this->update($request, $tax);
+    }
+
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param  \Illuminate\Http\Request $request
+     * @param  \Module\Infrastructure\Models\InfrastructureMaintenance $infrastructureMaintenance
+     * @return \Illuminate\Http\Response
+     */
+    public function updateFromAssetDocument(Request $request, InfrastructureAsset $asset, InfrastructureDocument $document, InfrastructureTax $tax)    
+    {   
+        Gate::authorize('update', $tax);
+        return $this->update($request, $tax);
+    }
+
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param  \Illuminate\Http\Request $request
+     * @param  \Module\Infrastructure\Models\InfrastructureMaintenance $infrastructureMaintenance
+     * @return \Illuminate\Http\Response
+     */
+    public function updateFromDocument(Request $request, InfrastructureDocument $document, InfrastructureTax $tax)    
+    {   
+        Gate::authorize('update', $tax);
+        return $this->update($request, $tax);
+    }
+
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param  \Illuminate\Http\Request $request
+     * @param  \Module\Infrastructure\Models\InfrastructureMaintenance $infrastructureMaintenance
+     * @return \Illuminate\Http\Response
+     */
+    public function updateFromUnitDocument(Request $request, InfrastructureUnit $unit, InfrastructureDocument $document, InfrastructureTax $tax)    
+    {   
+        Gate::authorize('update', $tax);
+        return $this->update($request, $tax);
     }
 
     // +================================================
