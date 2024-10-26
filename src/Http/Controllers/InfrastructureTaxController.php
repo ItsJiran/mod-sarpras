@@ -44,7 +44,7 @@ class InfrastructureTaxController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function indexFromUnit(Request $request, InfrastructureUnit $unit){        
-        return new MaintenanceCollection(
+        return new TaxCollection(
             $unit->taxes()
             ->applyMode($request->mode)
             ->filter($request->filters)
@@ -60,7 +60,7 @@ class InfrastructureTaxController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function indexFromAsset(Request $request, InfrastructureAsset $asset){        
-        return new MaintenanceCollection(
+        return new TaxCollection(
             $asset->taxes()
             ->applyMode($request->mode)
             ->filter($request->filters)
@@ -85,7 +85,7 @@ class InfrastructureTaxController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function indexFromDocument(Request $request, InfrastructureDocument $document){        
-        return new MaintenanceCollection(
+        return new TaxCollection(
             $document->taxes()
             ->applyMode($request->mode)
             ->filter($request->filters)
