@@ -424,6 +424,84 @@ class InfrastructureTaxController extends Controller
         return InfrastructureTax::deleteRecord($infrastructureTax);
     }
 
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param  \Illuminate\Http\Request $request
+     * @param  \Module\Infrastructure\Models\InfrastructureMaintenance $infrastructureMaintenance
+     * @return \Illuminate\Http\Response
+     */
+    public function destroyFromAsset(Request $request, InfrastructureAsset $asset, InfrastructureTax $tax)    
+    {   
+        Gate::authorize('delete', $tax);
+        return $this->destroy($tax);
+    }
+
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param  \Illuminate\Http\Request $request
+     * @param  \Module\Infrastructure\Models\InfrastructureMaintenance $infrastructureMaintenance
+     * @return \Illuminate\Http\Response
+     */
+    public function destroyFromUnitAsset(Request $request, InfrastructureUnit $unit, InfrastructureAsset $asset, InfrastructureTax $tax)    
+    {   
+        Gate::authorize('delete', $tax);
+        return $this->destroy($tax);
+    }
+
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param  \Illuminate\Http\Request $request
+     * @param  \Module\Infrastructure\Models\InfrastructureMaintenance $infrastructureMaintenance
+     * @return \Illuminate\Http\Response
+     */
+    public function destroyFromUnitAssetDocument(Request $request, InfrastructureUnit $unit, InfrastructureAsset $asset, InfrastructureDocument $document, InfrastructureTax $tax)    
+    {   
+        Gate::authorize('delete', $tax);
+        return $this->destroy($tax);
+    }
+
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param  \Illuminate\Http\Request $request
+     * @param  \Module\Infrastructure\Models\InfrastructureMaintenance $infrastructureMaintenance
+     * @return \Illuminate\Http\Response
+     */
+    public function destroyFromAssetDocument(Request $request, InfrastructureAsset $asset, InfrastructureDocument $document, InfrastructureTax $tax)    
+    {   
+        Gate::authorize('delete', $tax);
+        return $this->destroy($tax);
+    }
+
+    /**
+     * destroy the specified resource in storage.
+     *
+     * @param  \Illuminate\Http\Request $request
+     * @param  \Module\Infrastructure\Models\InfrastructureMaintenance $infrastructureMaintenance
+     * @return \Illuminate\Http\Response
+     */
+    public function destroyFromDocument(Request $request, InfrastructureDocument $document, InfrastructureTax $tax)    
+    {   
+        Gate::authorize('delete', $tax);
+        return $this->destroy($tax);
+    }
+
+    /**
+     * destroy the specified resource in storage.
+     *
+     * @param  \Illuminate\Http\Request $request
+     * @param  \Module\Infrastructure\Models\InfrastructureMaintenance $infrastructureMaintenance
+     * @return \Illuminate\Http\Response
+     */
+    public function destroyFromUnitDocument(Request $request, InfrastructureUnit $unit, InfrastructureDocument $document, InfrastructureTax $tax)    
+    {   
+        Gate::authorize('delete', $tax);
+        return $this->destroy($tax);
+    }
+
     // +================================================
     // +-------------------- RESTORE METHODS
     // +================================================
