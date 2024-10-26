@@ -17,9 +17,6 @@ return new class extends Migration
             // properties
             $table->string('name')->default('Pajak');
             $table->text('description')->nullable();
-
-            // tipenya berakala / manual
-            $table->string('type')->default('berkala')->index();
             
             // morphs eaither assets or maintenance
             $table->morphs('taxable');

@@ -415,7 +415,6 @@ class InfrastructureMaintenance extends Model
             
             // basic props
             $model->name = $request->name;
-            $model->type = $request->type;
             $model->description = $request->description;
 
             // save in morph class

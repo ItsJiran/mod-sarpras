@@ -412,9 +412,10 @@ class InfrastructureTax extends Model
         $targetable_class = self::mapMorphTargetClass()[$request->targetable_type_key];
 
         try {
+            $model->id = $model->getNewId();
+
             // basic props
             $model->name = $request->name;
-            $model->type = $request->type;
             $model->description = $request->description;
 
             // save in morph class
@@ -464,7 +465,7 @@ class InfrastructureTax extends Model
             $model->name = $request->name;
             $model->type = $request->type;
             $model->duedate = $request->duedate;        
-            $model->description = $request->description;
+            $model->description = $request->description;        
 
             // -- morph class update            
             if( $taxable_class == $model->taxable_type ){
