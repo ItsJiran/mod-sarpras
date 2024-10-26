@@ -5,14 +5,13 @@ namespace Module\Infrastructure\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Gate;
-use Module\Infrastructure\Models\InfrastructureTax;
 use Module\Infrastructure\Http\Resources\TaxCollection;
 use Module\Infrastructure\Http\Resources\TaxShowResource;
 
-use Module\Infrastructure\Models\InfrastructureMaintenance;
 use Module\Infrastructure\Models\InfrastructureDocument;
 use Module\Infrastructure\Models\InfrastructureAsset;
 use Module\Infrastructure\Models\InfrastructureUnit;
+use Module\Infrastructure\Models\InfrastructureTax;
 
 class InfrastructureTaxController extends Controller
 {
@@ -137,9 +136,88 @@ class InfrastructureTaxController extends Controller
     {
         Gate::authorize('create', InfrastructureTax::class);
 
-        $request->validate([]);
+        $request->validate( InfrastructureTax::mapStoreRequestValidation($request) );        
 
         return InfrastructureTax::storeRecord($request);
+    }
+
+    /**
+     * Store a newly created resource in storage.
+     *
+     * @param  \Illuminate\Http\Request $request
+     * @return \Illuminate\Http\Response
+     */
+    public function storeFromAsset(Request $request, InfrastructureAsset $asset)
+    {
+        Gate::authorize('create', InfrastructureTax::class);
+
+        $request = InfrastructureTax::mergeRequestAsset($request, $asset);
+
+        return InfrastructureTax::storeRecord($request);
+    }
+
+    /**
+     * Store a newly created resource in storage.
+     *
+     * @param  \Illuminate\Http\Request $request
+     * @return \Illuminate\Http\Response
+     */
+    public function storeFromUnitAsset(Request $request, InfrastructureUnit $unit, InfrastructureAsset $asset)
+    {
+        Gate::authorize('create', InfrastructureTax::class);
+        return $this->storeFromAsset($request, $asset);
+    }
+
+    /**
+     * Store a newly created resource in storage.
+     *
+     * @param  \Illuminate\Http\Request $request
+     * @return \Illuminate\Http\Response
+     */
+    public function storeFromAssetDocument(Request $request, InfrastructureAsset $asset, InfrastructureDocument $document)
+    {
+        Gate::authorize('create', InfrastructureTax::class);
+        return $this->storeFromDocument($request, $document);
+    }
+
+    /**
+     * Store a newly created resource in storage.
+     *
+     * @param  \Illuminate\Http\Request $request
+     * @return \Illuminate\Http\Response
+     */
+    public function storeFromUnitAssetDocument(Request $request, InfrastructureUnit $unit, InfrastructureAsset $asset, InfrastructureDocument $document)
+    {
+        Gate::authorize('create', InfrastructureTax::class);
+        return $this->storeFromDocument($request, $document);
+    }
+
+    /**
+     * Store a newly created resource in storage.
+     *
+     * @param  \Illuminate\Http\Request $request
+     * @return \Illuminate\Http\Response
+     */
+    public function storeFromDocument(Request $request, InfrastructureDocument $document)
+    {
+        Gate::authorize('create', InfrastructureTax::class);
+
+        $request = InfrastructureTax::mergeRequestDocument($request, $document);
+
+        return InfrastructureTax::storeRecord($request);
+    }
+
+    /**
+     * Store a newly created resource in storage.
+     *
+     * @param  \Illuminate\Http\Request $request
+     * @return \Illuminate\Http\Response
+     */
+    public function storeFromUnitDocument(Request $request, InfrastructureUnit $unit, InfrastructureDocument $document)
+    {
+        Gate::authorize('create', InfrastructureTax::class);
+
+        return $this->storeFromDocument($request, $document);
     }
 
     // +================================================
@@ -157,6 +235,78 @@ class InfrastructureTaxController extends Controller
         Gate::authorize('show', $infrastructureTax);
 
         return new TaxShowResource($infrastructureTax);
+    }
+
+    /**
+     * Display the specified resource.
+     *
+     * @param  \Module\Infrastructure\Models\InfrastructureMaintenance $infrastructureMaintenance
+     * @return \Illuminate\Http\Response
+     */
+    public function showFromDocument(InfrastructureDocument $document, InfrastructureTax $tax)
+    {
+        Gate::authorize('show', $tax);
+        return new TaxShowResource($tax);
+    }
+
+    /**
+     * Display the specified resource.
+     *
+     * @param  \Module\Infrastructure\Models\InfrastructureMaintenance $infrastructureMaintenance
+     * @return \Illuminate\Http\Response
+     */
+    public function showFromUnitDocument(InfrastructureUnit $unit, InfrastructureDocument $document, InfrastructureTax $tax)
+    {
+        Gate::authorize('show', $tax);
+        return new TaxShowResource($tax);
+    }
+
+    /**
+     * Display the specified resource.
+     *
+     * @param  \Module\Infrastructure\Models\InfrastructureMaintenance $infrastructureMaintenance
+     * @return \Illuminate\Http\Response
+     */
+    public function showFromAsset(InfrastructureAsset $asset, InfrastructureTax $tax)
+    {
+        Gate::authorize('show', $tax);
+        return new TaxShowResource($tax);
+    }
+
+    /**
+     * Display the specified resource.
+     *
+     * @param  \Module\Infrastructure\Models\InfrastructureMaintenance $infrastructureMaintenance
+     * @return \Illuminate\Http\Response
+     */
+    public function showFromAssetDocument(InfrastructureAsset $asset, InfrastructureDocument $document, InfrastructureTax $tax)
+    {
+        Gate::authorize('show', $tax);
+        return new TaxShowResource($tax);
+    }
+
+    /**
+     * Display the specified resource.
+     *
+     * @param  \Module\Infrastructure\Models\InfrastructureMaintenance $infrastructureMaintenance
+     * @return \Illuminate\Http\Response
+     */
+    public function showFromUnitAsset(InfrastructureUnit $unit, InfrastructureAsset $asset, InfrastructureTax $tax)
+    {
+        Gate::authorize('show', $tax);
+        return new TaxShowResource($tax);
+    }
+
+    /**
+     * Display the specified resource.
+     *
+     * @param  \Module\Infrastructure\Models\InfrastructureMaintenance $infrastructureMaintenance
+     * @return \Illuminate\Http\Response
+     */
+    public function showFromUnitAssetDocument(InfrastructureUnit $unit, InfrastructureAsset $asset, InfrastructureDocument $document, InfrastructureTax $tax)
+    {
+        Gate::authorize('show', $tax);
+        return new TaxShowResource($tax);
     }
 
     // +================================================
