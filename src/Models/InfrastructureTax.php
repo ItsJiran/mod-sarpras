@@ -114,7 +114,68 @@ class InfrastructureTax extends Model
      * +------------------- MAP REQUEST ------------------+
      * ====================================================
      */
-/**
+    
+
+    /**
+     * The model map combos method
+     *
+     * @param [type] $model
+     * @return array
+     */
+    public static function mergeRequestAsset(Request $request, InfrastructureAsset $asset) : Request 
+    {
+        return $request->merge([ 
+            'unit' => $asset->unit,
+            'asset' => $asset,
+            'targetable_type_key' => 'Asset',
+        ]);
+    }
+
+    /**
+     * The model map combos method
+     *
+     * @param [type] $model
+     * @return array
+     */
+    public static function mergeRequestDocument(Request $request, InfrastructureDocument $document) : Request 
+    {
+        return $request->merge([ 
+            'unit' => $document->unit,
+            'asset' => $document->asset,
+            'document' => $document,
+            'targetable_type_key' => 'Document',
+        ]);
+    }
+
+    /**
+     * The model map combos method
+     *
+     * @param [type] $model
+     * @return array
+     */
+    public static function mapResourceShow(Request $request, $model = null) : array 
+    {
+        $properties = [
+            'name' => $model->name,
+            'description' => $model->description,
+             
+            'taxable_id' => $model->taxable_id,
+            'taxable_type' => $model->taxable_type,
+            'taxable_type_key' => self::mapMorphTypeClass(true)[$model->taxable_type],
+
+            'targetable_id' => $model->targetable_id,
+            'targetable_type' => $model->targetable_type,
+            'targetable_type_key' => self::mapMorphTargetClass(true)[$model->targetable_type],
+        ];
+
+        return array_merge(
+            $properties,
+            $model->taxable_type::mapResourceShow($request, $model->taxable),
+            $model->targetable_type::mapResourceShow($request, $model->targetable),
+        );
+    }
+
+     /**
      * The model map combos method
      *
      * @param [type] $model
@@ -323,9 +384,9 @@ class InfrastructureTax extends Model
      */
     public function getNewId() 
     {   
-        $latest_id = self::latest()->pluck('id')->first();
+        $latest_id = self::latest()->withTrashed()->pluck('id')->first();
         if ( is_null( $latest_id ) ) return 1;
-        else                      return $latest_id + 1;        
+        else                         return $latest_id + 1;        
     }
 
     /**

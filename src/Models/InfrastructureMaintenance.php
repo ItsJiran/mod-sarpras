@@ -177,7 +177,7 @@ class InfrastructureMaintenance extends Model
             $model->maintenanceable_type::mapResourceShow($request, $model->maintenanceable),
             $model->targetable_type::mapResourceShow($request, $model->targetable),
         );
-    }    
+    }
 
     /**
      * The model map combos method
