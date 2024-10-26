@@ -50,5 +50,17 @@
 <script>
 export default {
 	name: "infrastructure-tax",
+	methods : {
+		checkRoute : function (name = "") {
+			// route_name
+			let route_name = this.$router.currentRoute._value.name;
+			let methods = ['show','delete','update','edit','create'];
+
+			for ( let method of methods ) 
+				route_name = route_name.replaceAll('-' + method,'');
+			
+			return route_name == name;
+		}
+	}
 };
 </script>
