@@ -594,6 +594,48 @@ export default {
 		},
 
 		{
+			path: "asset/:asset/document/:document/tax",
+			component: () =>
+				import(
+					/* webpackChunkName: "infrastructure" */ "@modules/infrastructure/frontend/pages/tax/index.vue"
+				),
+			children: [
+				{
+					path: "",
+					name: "infrastructure-asset-document-tax",
+					component: () =>
+						import(
+							/* webpackChunkName: "infrastructure" */ "@modules/infrastructure/frontend/pages/tax/crud/data.vue"
+						),
+				},
+				{
+					path: "create",
+					name: "infrastructure-asset-document-tax-create",
+					component: () =>
+						import(
+							/* webpackChunkName: "infrastructure" */ "@modules/infrastructure/frontend/pages/tax/crud/create.vue"
+						),
+				},
+				{
+					path: ":tax/show",
+					name: "infrastructure-asset-document-tax-show",
+					component: () =>
+						import(
+							/* webpackChunkName: "infrastructure" */ "@modules/infrastructure/frontend/pages/tax/crud/show.vue"
+						),
+				},		
+				{
+					path: ":tax/edit",
+					name: "infrastructure-asset-document-tax-edit",
+					component: () =>
+						import(
+							/* webpackChunkName: "infrastructure" */ "@modules/infrastructure/frontend/pages/tax/crud/edit.vue"
+						),
+				},			
+			]
+		},
+
+		{
 			path: "document/:document/maintenance",
 			component: () =>
 				import(
@@ -677,6 +719,47 @@ export default {
 			]
 		},
 
+		{
+			path: "unit/:unit/asset/:asset/tax",
+			component: () =>
+				import(
+					/* webpackChunkName: "infrastructure" */ "@modules/infrastructure/frontend/pages/tax/index.vue"
+				),
+			children: [
+				{
+					path: "",
+					name: "infrastructure-unit-asset-tax",
+					component: () =>
+						import(
+							/* webpackChunkName: "infrastructure" */ "@modules/infrastructure/frontend/pages/tax/crud/data.vue"
+						),
+				},
+				{
+					path: "create",
+					name: "infrastructure-unit-asset-tax-create",
+					component: () =>
+						import(
+							/* webpackChunkName: "infrastructure" */ "@modules/infrastructure/frontend/pages/tax/crud/create.vue"
+						),
+				},
+				{
+					path: ":tax/show",
+					name: "infrastructure-unit-asset-tax-show",
+					component: () =>
+						import(
+							/* webpackChunkName: "infrastructure" */ "@modules/infrastructure/frontend/pages/tax/crud/show.vue"
+						),
+				},
+				{
+					path: ":tax/edit",
+					name: "infrastructure-unit-asset-tax-edit",
+					component: () =>
+						import(
+							/* webpackChunkName: "infrastructure" */ "@modules/infrastructure/frontend/pages/tax/crud/edit.vue"
+						),
+				},			
+			]
+		},
 
 		{
 			path: "unit/:unit/asset/:asset/document/:document/maintenance",
@@ -715,6 +798,48 @@ export default {
 					component: () =>
 						import(
 							/* webpackChunkName: "infrastructure" */ "@modules/infrastructure/frontend/pages/maintenance/crud/edit.vue"
+						),
+				},			
+			]
+		},
+
+		{
+			path: "unit/:unit/asset/:asset/document/:document/tax",
+			component: () =>
+				import(
+					/* webpackChunkName: "infrastructure" */ "@modules/infrastructure/frontend/pages/tax/index.vue"
+				),
+			children: [
+				{
+					path: "",
+					name: "infrastructure-unit-asset-document-tax",
+					component: () =>
+						import(
+							/* webpackChunkName: "infrastructure" */ "@modules/infrastructure/frontend/pages/tax/crud/data.vue"
+						),
+				},
+				{
+					path: "create",
+					name: "infrastructure-unit-asset-document-tax-create",
+					component: () =>
+						import(
+							/* webpackChunkName: "infrastructure" */ "@modules/infrastructure/frontend/pages/tax/crud/create.vue"
+						),
+				},
+				{
+					path: ":tax/show",
+					name: "infrastructure-unit-asset-document-tax-show",
+					component: () =>
+						import(
+							/* webpackChunkName: "infrastructure" */ "@modules/infrastructure/frontend/pages/tax/crud/show.vue"
+						),
+				},
+				{
+					path: ":tax/edit",
+					name: "infrastructure-unit-asset-document-tax-edit",
+					component: () =>
+						import(
+							/* webpackChunkName: "infrastructure" */ "@modules/infrastructure/frontend/pages/tax/crud/edit.vue"
 						),
 				},			
 			]
