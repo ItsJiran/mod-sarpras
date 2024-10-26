@@ -18,6 +18,9 @@ use Module\Infrastructure\Models\InfrastructureTaxAsset;
 use Module\Infrastructure\Models\InfrastructureTaxDocument;
 use Module\Infrastructure\Models\InfrastructureTax;
 
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+
 class InfrastructureTaxDocument extends Model
 {
     use Filterable;
