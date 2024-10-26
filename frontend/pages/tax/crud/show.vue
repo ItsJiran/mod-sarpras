@@ -96,7 +96,7 @@
 				:color="theme"
 				block
 				variant="flat"
-				@click="redirectPage('tax-record')"
+				@click="redirectPage('record')"
 				>List Record</v-btn>
 
 		</template>
