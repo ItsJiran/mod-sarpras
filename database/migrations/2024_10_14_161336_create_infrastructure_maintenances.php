@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('infrastructure_maintenances', function (Blueprint $table) {
             $table->id();
 
-            // tipe perawata berkala
+            // tipe perawatan berkala
             $table->string('name')->default('Perawatan');
             $table->text('description')->nullable();
             
