@@ -1,95 +1,88 @@
 <template>
 	<form-create with-helpdesk>
 		<template v-slot:default="{ 
-			combos: { type, type_key, units, units_slug },			
-			record,
-			store
-			}">
+			combos : { 
+				morph_type, 
+				morph_type_keys, 
+
+				morph_target, 
+				morph_target_keys, 
+			},
+			record }">
+
 			<v-card-text>
 
-				<div class="text-overline mt-6">Form Pajak Tujuan</div>
-				<v-divider :thickness="3" class="mt-3 mb-10" />
+				<!-- ------------------------ -->
+				<!-- +--- DEFAULT PROPS ----+ -->
 
-				<v-row dense>					
+				<v-row dense>
+					<v-col cols="12">
+						<v-text-field
+							label="Name"
+							v-model="record.name"
+						></v-text-field>
+					</v-col>
+				</v-row>
+
+				<v-row dense>
+					<v-col cols="12">
+						<v-text-field
+							label="Deskripsi"
+							v-model="record.description"
+						></v-text-field>
+					</v-col>
+				</v-row>
+
+				<!-- ------------------------- -->
+				<!-- +--- TIPE PERAWATAN ----+ -->
+
+				<div class="text-overline mt-6">Tipe Perawatan</div>
+				<v-divider :thickness="3" class="mt-3 mb-6" />
+
+				<v-row dense>
 					<v-col cols="12">
 						<v-combobox
-						:items="type_key" 
-						label="Tipe Pajak Tujuan"
+						:items="morph_type_keys" 
+						label="Tipe Perawatan"
 						v-model="record.taxable_type_key"
-						@update:model-value="getItemList(record,this)"
 						:return-object="false"
 						></v-combobox>
 					</v-col>
 				</v-row>
 
-				<v-row dense>
-					<v-col cols="6">
-						<v-text-field
-							label="Nama Unit"
-							v-model="unit.name"
-							:readonly="true"					
-						></v-text-field>
-					</v-col>
+				<component 
+					:record="record" 
+					:data="this" 
+					:is="record.taxable_type_key"
+				/>
 
-					<v-col cols="6">
-						<v-combobox
-						:items="units_slug" 
-						label="Pilih Unit"
-						v-model="unit_slug"
-						@update:model-value="getItemUnit(record, units, this)"
-						></v-combobox>
-					</v-col>
-				</v-row>
+				<!-- ---------------------------------------- -->
+				<!-- +--- DEADLINE TIPE PERAWATAN MODEL ----+ -->
 
-				<v-row v-if="unit_slug != undefined" dense>
-					<v-col cols="12">
-						<v-combobox
-						:items="asset_types" 
-						label="Pilih Tipe Asset"
-						v-model="asset_type"
-						@update:model-value="getAssetList(record, this)"
-						></v-combobox>
-					</v-col>
-				</v-row>
+				<div v-if="$router.currentRoute._value.name == 'infrastructure-tax-create'">
 
-				<v-row v-if="unit_slug != undefined && asset_type != undefined" dense>
-					<v-col cols="6">
-						<v-text-field
-							label="Nama Asset"
-							v-model="item.asset.name"
-							:readonly="true"
-						></v-text-field>
-					</v-col>
-					<v-col cols="6">
-						<v-combobox
-						:items="assets_slugs_combos" 
-						label="Pilih Asset Slug"
-						v-model="item.asset.slug"
-						@update:model-value="getAsset(record, this)"
-						></v-combobox>
-					</v-col>
-				</v-row>
+					<div class="text-overline mt-6">Tujuan Perawatan</div>
+					<v-divider :thickness="3" class="mt-3 mb-6" />
 
-				
+					<v-row dense>
+						<v-col cols="12">
+							<v-combobox
+							:items="morph_target_keys" 
+							:return-object="false"
+							label="Perawatan Untuk"
+							v-model="record.targetable_type_key"		
+							@update:model-value="changeTargetType(record,this)"	
+							></v-combobox>
+						</v-col>
+					</v-row>
 
+					<component 
+						:record="record" 
+						:data="this" 
+						:is="record.targetable_type_key"
+					/>	
 
-				<!-- <v-row v-if="unit_slug != undefined && record.taxable_type_key == 'Asset' && items != undefined" dense>
-					<v-col cols="6">
-						<v-text-field
-							label="Nama Asset"
-							v-model="item.name"
-							:readonly="true"
-						></v-text-field>
-					</v-col>
-					<v-col cols="6">
-						<v-combobox
-						:items="items_slugs" 
-						label="Pilih Asset Slug"
-						v-model="item.slug"
-						@update:model-value="getAsset(record, this)"
-						></v-combobox>
-					</v-col>
-				</v-row> -->
+				</div>
 
 			</v-card-text>
 		</template>
@@ -97,139 +90,107 @@
 </template>
 
 <script>
+
+// TARGETABLE TYPE
+import Asset from "./create-part/asset";
+import Document from "./create-part/document";
+
+// taxable TYPE
+import Log from "./create-part/type_log.vue";
+import Periodic from "./create-part/type_periodic.vue";
+
 export default {
 	name: "infrastructure-tax-create",
-	data(){
+	components : {	
+		// TARGETABLE TYPE
+		Asset,
+		Document,
+		// taxable TYPE
+		Log,
+		Periodic,
+	},	
+	data(){	
 		return {
-			item : {
-				asset : {},
-				document : {},
-			},
-
-			unit : {},
-			unit_slug : undefined,
-
-			assets : undefined,
-			assets_slugs : undefined,
-			assets_slugs_combos : undefined,
-			
-			asset_type : undefined,
-			asset_types : undefined,
+			refUnit : undefined,
+			refAssetType : undefined,
+			refAsset : undefined,
+			refDocument : undefined,
 		}
 	},
 	methods : {
+		// methods
+		changeTargetType : function (record,data) {
+			// reset data ref prevent unwanted behaviour
+			data.refAsset = undefined;
+			data.refDocument = undefined;
 
-		checkRoute : function (name = "") {
-			// route_name
-			let route_name = this.$router.currentRoute._value.name;
-			let methods = ['show','delete','update','edit','create'];
+			// reset data from previous
+			if( record.asset != undefined ) {
+				record.asset = { 
+					assetable_type_key : record.asset.assetable_type_key 
+				};
+				
+				data.getRefAsset(record,data);
+			} else {
+				record.asset = {};
+			}
 
-			for ( let method of methods ) 
-				route_name = route_name.replaceAll('-' + method,'');
-			
-			return route_name == name;
+			record.document = {};
 		},
+		// get refrences
+		getRefUnit : function (record,data) {
+			if(data.refAssetType != undefined) return;
 
-		getItemUnit : function (record, units, data) {
-			data.unit = units[data.unit_slug];
+			// prevent loop call
+			data.refUnit = {};
 
-			// reset
-			data.item = {
-				asset : {},
-				document : {},
-			};
-
-			data.getItemList(record,data);
-
-		},
-
-		getItemList : function (record, data) {
-			const isUnitlugExist = data.unit_slug != undefined;
-			const isTaxKeyExist = data.taxable_type_key != undefined;
-
-			// prevent error
-			if( !isUnitlugExist && !isTaxKeyExist ) return;
-
-			// call items list based on the type of the record taxable
-			data.getAssetType(record,data);
-		},
-
-		getAssetType : function ( record, data ) {			
-			if ( data.asset_types ) 
-				return data.getAssetList( record, data );
-			
-			this.$http(`infrastructure/api/ref-asset/type`).then(
-				(response) => data.asset_types = response				
+			this.$http(`infrastructure/api/ref-unit/combos`).then(
+				(response) => { data.refUnit = response; }
 			);
 		},
+		getRefAssetType : function (record,data) {
+			if(data.refAssetType != undefined) return;
+			
+			// prevent loop call
+			data.refAssetType = [];
 
-		getAssetList : function (record, data) {
-			if ( data.asset_type == undefined || data.unit.id == undefined  )
+			this.$http(`infrastructure/api/ref-asset/type`).then(
+				(response) => { data.refAssetType = response; }
+			);
+		},
+		getRefAsset : function (record,data) {
+			// agar supaya nantinya tidak error
+			if ( record.unit == undefined || record.asset.assetable_type_key == undefined )
 				return;
 
-			this.$http(`infrastructure/api/ref-asset/${data.unit.id}/${data.asset_type}/asset`).then(
-				(response) => {
-					data.assets = response.assets;
-					data.assets_slugs = response.assets_slugs;
-					data.assets_slugs_combos = response.assets_slugs_combos;
-				}
-			)
+			// prevent error call
+			data.refAsset = [];
+
+			// ambil asset untuk list 
+			this.$http(`infrastructure/api/ref-asset/${record.unit.id}/${record.asset.assetable_type_key}/asset`).then(				
+				(response) => { data.refAsset = response }
+			);
 		},
+		getRefDocument : function (record,data,isConnectedToAsset) {
+			if ( isConnectedToAsset == undefined ) 
+				return;
 
-		getAsset : function (record, data) {	
-			data.item.asset = data.assets_slugs[ data.item.asset.slug ];
+			if ( isConnectedToAsset )
+				data.getRefDocumentAsset(record,data);
+
+			if ( !isConnectedToAsset )
+				data.getRefDocummentUnit(record,data);
 		},
-
-		getDocument : function (record,data) {
-
-		}
-		
-		// getAssetType : function ( record, units, data ) {			
-		// 	data.unit = units[data.asset.slug_unit];
-
-		// 	record.asset = {};
-
-		// 	if ( data.assets_types ) {
-		// 		data.getAssetList( record, data );
-		// 		return;
-		// 	}  
-			
-		// 	data.asset_list = undefined;
-		// 	data.assets_slugs = undefined;
-		// 	data.assets_slugs_combos = undefined;
-
-		// 	this.$http(`infrastructure/api/ref-asset/type`).then(
-		// 		(response) => {
-		// 			data.assets_types = response;
-		// 		}
-		// 	);
-		// },
-
-		// getAssetList : function ( record, data ) {
-		// 	record.asset = {};
-
-		// 	data.assets = undefined;
-		// 	data.assets_slugs = undefined;
-		// 	data.assets_slugs_combos = undefined;
-
-		// 	this.$http(`infrastructure/api/ref-asset/${data.unit.id}/${data.asset.asset_type_key}/asset`).then(
-		// 		(response) => {
-		// 			data.assets_slugs_combos = response.assets_slugs_combos;
-		// 			data.assets_slugs = response.assets_slugs;
-		// 			data.assets = response.assets;
-		// 		}
-		// 	)
-		// },
-
-		// getAsset : function (record, data) {
-		// 	data.asset = {
-		// 		...data.asset,
-		// 		...data.assets_slugs[data.asset.slug]
-		// 	};
-
-		// 	record.asset = data.asset;
-		// },
+		getRefDocummentUnit : function (record,data) {
+			this.$http(`infrastructure/api/ref-document/combos/unit/${record.unit.id}`).then(				
+				(response) => { data.refDocument = response }
+			);
+		},
+		getRefDocumentAsset : function (record,data) {
+			this.$http(`infrastructure/api/ref-document/combos/unit/${record.unit.id}/asset/${record.asset.id}`).then(
+				(response) => { data.refDocument = response }
+			);
+		},
 	}
-
 };
 </script>
