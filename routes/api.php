@@ -144,3 +144,11 @@ Route::post('unit/{unit}/document',[InfrastructureDocumentController::class, 'st
 
 Route::put('asset/{asset}/document/{document}',[InfrastructureDocumentController::class, 'updateFromAsset']);
 Route::put('unit/{unit}/asset/{asset}/document/{document}',[InfrastructureDocumentController::class, 'updateFromUnit']);
+
+// +-----------------------------------------------
+// +-- from resource module maintenance record
+
+
+
+// +-----------------------------------------------
+// +-- from resource module tax record
