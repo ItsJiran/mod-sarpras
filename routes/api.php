@@ -67,7 +67,6 @@ Route::resource('tax',InfrastructureTaxController::class)->parameters([
     'tax' => 'infrastructureTax'
 ]);
 
-
 Route::get('asset/{asset}/tax',[InfrastructureTaxController::class,'indexFromAsset']);
 Route::get('asset/{asset}/document/{document}/tax',[InfrastructureTaxController::class,'indexFromAssetDocument']);
 Route::get('document/{document}/tax',[InfrastructureTaxController::class,'indexFromDocument']);

@@ -119,8 +119,8 @@ class InfrastructureDocument extends Model
      */
     public function taxes()
     {
-        return InfrastructureTaxDocument::where('asset_id',$this->id)
-        ->join('infrastructure_taxes','infrastructure_taxes.id','=','infrastructure_tax_assets.tax_id');                
+        return InfrastructureTaxDocument::where('document_id',$this->id)
+        ->join('infrastructure_taxes','infrastructure_taxes.id','=','infrastructure_tax_documents.tax_id');                
     }
 
 

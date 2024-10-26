@@ -117,7 +117,6 @@ class InfrastructureTax extends Model
      * ====================================================
      */
     
-
     /**
      * The model map combos method
      *
