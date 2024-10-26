@@ -11,6 +11,13 @@ use Module\System\Traits\HasPageSetup;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
+use Module\Infrastructure\Models\InfrastructureAsset;
+use Module\Infrastructure\Models\InfrastructureDocument;
+use Module\Infrastructure\Models\InfrastructureUnit;
+use Module\Infrastructure\Models\InfrastructureTaxAsset;
+use Module\Infrastructure\Models\InfrastructureTaxDocument;
+use Module\Infrastructure\Models\InfrastructureTax;
+
 class InfrastructureTaxAsset extends Model
 {
     use Filterable;
@@ -31,14 +38,14 @@ class InfrastructureTaxAsset extends Model
      *
      * @var string
      */
-    protected $table = 'infrastructure_taxassets';
+    protected $table = 'infrastructure_tax_assets';
 
     /**
      * The roles variable
      *
      * @var array
      */
-    protected $roles = ['infrastructure-taxasset'];
+    protected $roles = ['infrastructure-tax-asset'];
 
     /**
      * The attributes that should be cast to native types.

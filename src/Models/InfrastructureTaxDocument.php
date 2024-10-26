@@ -11,6 +11,13 @@ use Module\System\Traits\HasPageSetup;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
+use Module\Infrastructure\Models\InfrastructureAsset;
+use Module\Infrastructure\Models\InfrastructureDocument;
+use Module\Infrastructure\Models\InfrastructureUnit;
+use Module\Infrastructure\Models\InfrastructureTaxAsset;
+use Module\Infrastructure\Models\InfrastructureTaxDocument;
+use Module\Infrastructure\Models\InfrastructureTax;
+
 class InfrastructureTaxDocument extends Model
 {
     use Filterable;
@@ -31,14 +38,14 @@ class InfrastructureTaxDocument extends Model
      *
      * @var string
      */
-    protected $table = 'infrastructure_taxdocuments';
+    protected $table = 'infrastructure_tax_documents';
 
     /**
      * The roles variable
      *
      * @var array
      */
-    protected $roles = ['infrastructure-taxdocument'];
+    protected $roles = ['infrastructure-tax-document'];
 
     /**
      * The attributes that should be cast to native types.
@@ -69,32 +76,146 @@ class InfrastructureTaxDocument extends Model
     protected $defaultOrder = 'name';
 
     /**
+     * ====================================================
+     * +-------------- MAP RELATIONSHIP ------------------+
+     * ====================================================
+     */
+
+     /**
+     * Get the model that the image belongs to.
+     */
+    public function tax(): BelongsTo
+    {
+        return $this->belongsTo(InfrastructureTax::class, 'tax_id');
+    } 
+
+     /**
+     * Get the model that the image belongs to.
+     */
+    public function unit(): BelongsTo
+    {
+        return $this->belongsTo(InfrastructureUnit::class, 'unit_id');
+    } 
+
+    /**
+     * Get the model that the image belongs to.
+     */
+    public function asset(): BelongsTo
+    {
+        return $this->belongsTo(InfrastructureAsset::class, 'asset_id');
+    }
+
+    /**
+     * Get the model that the image belongs to.
+     */
+    public function document(): BelongsTo
+    {
+        return $this->belongsTo(InfrastructureDocument::class, 'document_id');
+    }
+
+    /**
+     * ====================================================
+     * +-------------- MAP REQUEST ------------------+
+     * ====================================================
+     */
+
+     public static function mapStoreRequestValidation(Request $request) : array
+     {
+         $validation = [
+             'unit' => 'required|array',
+             'unit.id' => 'required|numeric|exists:human_units,id',
+ 
+             'document' => 'required|array',
+             'document.id' => 'required|numeric|exists:infrastructure_documents,id',
+ 
+             'jenis' => 'required|string',
+         ];
+ 
+         if ( $request->jenis == 'Iya' ) {
+             $validation = array_merge($validation, [
+                 'asset' => 'required|array',
+                 'asset.id' => 'required|numeric|exists:infrastructure_assets,id',
+             ]);
+         };
+ 
+         return $validation;
+     }
+ 
+     public static function mapUpdateRequestValidation(Request $request) : array
+     {
+         $validation = [
+             'unit' => 'required|array',
+             'unit.id' => 'required|numeric|exists:human_units,id',
+ 
+             'document' => 'required|array',
+             'document.id' => 'required|numeric|exists:infrastructure_documents,id',
+ 
+             'jenis' => 'required|string',
+         ];
+ 
+         if ( $request->jenis == 'Iya' ) {
+             $validation = array_merge($validation, [
+                 'asset' => 'required|array',
+                 'asset.id' => 'required|numeric|exists:infrastructure_assets,id',
+             ]);
+         };
+ 
+         return $validation;
+     }
+
+    /**
+     * The model map combos method
+     *
+     * @param [type] $model
+     * @return array
+     */
+    public static function mapResourceShow(Request $request, $model = null) : array 
+    {
+        $array = [
+            'id' => $model->id,
+            'unit' => $model->unit::class::mapResourceShow( $request, $model->unit ),
+            'document' => $model->document::class::mapResourceShow( $request, $model->document ),
+        ];
+
+        if ( !is_null($model->asset) ) {
+            $array['jenis'] = 'Iya';
+            $array['asset'] = $model->asset::class::mapResourceShow( $request, $model->asset );
+        } else {
+            $array['jenis'] = 'Tidak';
+        }
+
+       return $array;
+    }
+
+    /**
+     * Get the model that the image belongs to.
+     */
+    public static function mapJenis(Request $request) : array 
+    {
+        return [ 'Iya', 'Tidak' ];
+    }
+
+    /**
+     * ================================================
+     * +------------------ MAP CRUD ------------------+
+     * ================================================
+     */
+
+    /**
      * The model store method
      *
      * @param Request $request
      * @return void
      */
-    public static function storeRecord(Request $request)
+    public static function storeRecord(Request $request, InfrastructureTax $main_model) : InfrastructureTaxDocument
     {
         $model = new static();
-
-        DB::connection($model->connection)->beginTransaction();
-
-        try {
-            // ...
-            $model->save();
-
-            DB::connection($model->connection)->commit();
-
-            // return new TaxDocumentResource($model);
-        } catch (\Exception $e) {
-            DB::connection($model->connection)->rollBack();
-
-            return response()->json([
-                'success' => false,
-                'message' => $e->getMessage()
-            ], 500);
-        }
+        $model->tax_id = $main_model->id;
+        $model->unit_id = $request->unit->id;
+        $model->asset_id = $request->document->asset_id;
+        $model->document_id = $request->document->id;
+        $model->save();
+        return $model;
     }
 
     /**
@@ -104,25 +225,14 @@ class InfrastructureTaxDocument extends Model
      * @param [type] $model
      * @return void
      */
-    public static function updateRecord(Request $request, $model)
+    public static function updateRecord(Request $request,InfrastructureTax $main_model, $model = null) : InfrastructureTaxDocument
     {
-        DB::connection($model->connection)->beginTransaction();
-
-        try {
-            // ...
-            $model->save();
-
-            DB::connection($model->connection)->commit();
-
-            // return new TaxDocumentResource($model);
-        } catch (\Exception $e) {
-            DB::connection($model->connection)->rollBack();
-
-            return response()->json([
-                'success' => false,
-                'message' => $e->getMessage()
-            ], 500);
-        }
+        $model->tax_id = $main_model->id;   
+        $model->unit_id = $request->unit->id;
+        $model->asset_id = $request->document->asset_id;
+        $model->document_id = $request->document->id;
+        $model->save();
+        return $model;
     }
 
     /**

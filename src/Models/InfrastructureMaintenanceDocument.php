@@ -116,8 +116,6 @@ class InfrastructureMaintenanceDocument extends Model
         return $this->belongsTo(InfrastructureDocument::class, 'document_id');
     }
 
-
-
     /**
      * ====================================================
      * +-------------- MAP RELATIONSHIP ------------------+
