@@ -31,14 +31,14 @@ class InfrastructureTaxLog extends Model
      *
      * @var string
      */
-    protected $table = 'infrastructure_taxlogs';
+    protected $table = 'infrastructure_tax_logs';
 
     /**
      * The roles variable
      *
      * @var array
      */
-    protected $roles = ['infrastructure-taxlog'];
+    protected $roles = ['infrastructure-tax-log'];
 
     /**
      * The attributes that should be cast to native types.
@@ -66,32 +66,65 @@ class InfrastructureTaxLog extends Model
     protected $defaultOrder = 'name';
 
     /**
+     * ====================================================
+     * +------------------ MAP RESOURCE ------------------+
+     * ====================================================
+     */
+
+    /**
+     * The model map combos method
+     *
+     * @param [type] $model
+     * @return array
+     */
+    public static function mapResourceShow(Request $request, $model = null) : array 
+    {
+       return [
+       ];
+    }
+
+    /**
+     * The model store method
+     *
+     * @param Request $request
+     * @return array
+     */
+    public static function mapStoreRequestValidation(Request $request)
+    {
+        return [
+        ];
+    }
+
+    /**
+     * The model store method
+     *
+     * @param Request $request
+     * @return array
+     */
+    public static function mapUpdateRequestValidation(Request $request) : array
+    {
+        return [
+        ];
+    }
+
+    /**
+     * ====================================================
+     * +------------------ CRUD METHODS ------------------+
+     * ====================================================
+     */
+
+    /**
      * The model store method
      *
      * @param Request $request
      * @return void
      */
-    public static function storeRecord(Request $request)
+    public static function storeRecord(Request $request, InfrastructureTax $main_model) : InfrastructureTaxLog    
     {
         $model = new static();
-
-        DB::connection($model->connection)->beginTransaction();
-
-        try {
-            // ...
-            $model->save();
-
-            DB::connection($model->connection)->commit();
-
-            // return new TaxLogResource($model);
-        } catch (\Exception $e) {
-            DB::connection($model->connection)->rollBack();
-
-            return response()->json([
-                'success' => false,
-                'message' => $e->getMessage()
-            ], 500);
-        }
+        $model->tax_id = $main_model->id;
+        $model->save();
+        return $model;
     }
 
     /**
@@ -101,25 +134,11 @@ class InfrastructureTaxLog extends Model
      * @param [type] $model
      * @return void
      */
-    public static function updateRecord(Request $request, $model)
+    public static function updateRecord(Request $request,InfrastructureTax $main_model, $model = null) : InfrastructureTaxLog
     {
-        DB::connection($model->connection)->beginTransaction();
-
-        try {
-            // ...
-            $model->save();
-
-            DB::connection($model->connection)->commit();
-
-            // return new TaxLogResource($model);
-        } catch (\Exception $e) {
-            DB::connection($model->connection)->rollBack();
-
-            return response()->json([
-                'success' => false,
-                'message' => $e->getMessage()
-            ], 500);
-        }
+        $model->tax_id = $main_model->id;   
+        $model->save();
+        return $model;
     }
 
     /**

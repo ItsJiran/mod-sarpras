@@ -31,14 +31,14 @@ class InfrastructureTaxPeriodics extends Model
      *
      * @var string
      */
-    protected $table = 'infrastructure_taxperiodics';
+    protected $table = 'infrastructure_tax_periodics';
 
     /**
      * The roles variable
      *
      * @var array
      */
-    protected $roles = ['infrastructure-taxperiodics'];
+    protected $roles = ['infrastructure-tax-periodics'];
 
     /**
      * The attributes that should be cast to native types.
@@ -70,32 +70,95 @@ class InfrastructureTaxPeriodics extends Model
     protected $defaultOrder = 'name';
 
     /**
+     * ====================================================
+     * +------------------ MAP RELATION ------------------+
+     * ====================================================
+     */
+
+    /**
+     * ====================================================
+     * +------------------- MAP REQUEST ------------------+
+     * ====================================================
+     */
+
+    /**
+     * The model store method
+     *
+     * @param Request $request
+     * @return array
+     */
+    public static function mapStoreRequestValidation(Request $request)
+    {
+        return [
+            'duedate' => 'required|date',
+            'period_number_day' => 'required|numeric',
+            'period_number_month' => 'required|numeric',
+            'period_number_year' => 'required|numeric',
+        ];
+    }
+
+    /**
+     * The model store method
+     *
+     * @param Request $request
+     * @return array
+     */
+    public static function mapUpdateRequestValidation(Request $request) : array
+    {
+        return [
+            'duedate' => 'required|date',
+            'period_number_day' => 'required|numeric',
+            'period_number_month' => 'required|numeric',
+            'period_number_year' => 'required|numeric',
+        ];
+    }
+
+    /**
+     * ====================================================
+     * +------------------ MAP RESOURCE ------------------+
+     * ====================================================
+     */
+
+    /**
+     * The model store method
+     *
+     * @param Request $request
+     * @return array
+     */
+    public static function mapResourceShow(Request $request, $model = null) : array
+    {
+        return [
+            'duedate' => $model->duedate,
+            'period_number_day' => $model->period_number_day,
+            'period_number_month' => $model->period_number_month,
+            'period_number_year' => $model->period_number_year,
+        ];
+    }
+
+    /**
+     * =================================================
+     * +------------------ CRUD METHODS ---------------+
+     * =================================================
+     */
+
+    /**
      * The model store method
      *
      * @param Request $request
      * @return void
      */
-    public static function storeRecord(Request $request)
+    public static function storeRecord(Request $request, InfrastructureTax $main_model) : InfrastructureTaxPeriodic
     {
         $model = new static();
-
-        DB::connection($model->connection)->beginTransaction();
-
-        try {
-            // ...
-            $model->save();
-
-            DB::connection($model->connection)->commit();
-
-            // return new TaxPeriodicsResource($model);
-        } catch (\Exception $e) {
-            DB::connection($model->connection)->rollBack();
-
-            return response()->json([
-                'success' => false,
-                'message' => $e->getMessage()
-            ], 500);
-        }
+        
+        $model->tax_id = $main_model->id;        
+        $model->duedate = $request->duedate;        
+        $model->period_number_day = $request->period_number_day;        
+        $model->period_number_month = $request->period_number_month;        
+        $model->period_number_year = $request->period_number_year;       
+        $model->save();
+            
+        return $model;
     }
 
     /**
@@ -105,25 +168,15 @@ class InfrastructureTaxPeriodics extends Model
      * @param [type] $model
      * @return void
      */
-    public static function updateRecord(Request $request, $model)
+    public static function updateRecord(Request $request,InfrastructureTax $main_model, $model = null) : InfrastructureTaxPeriodic
     {
-        DB::connection($model->connection)->beginTransaction();
-
-        try {
-            // ...
-            $model->save();
-
-            DB::connection($model->connection)->commit();
-
-            // return new TaxPeriodicsResource($model);
-        } catch (\Exception $e) {
-            DB::connection($model->connection)->rollBack();
-
-            return response()->json([
-                'success' => false,
-                'message' => $e->getMessage()
-            ], 500);
-        }
+        $model->tax_id = $main_model->id;        
+        $model->duedate = $request->duedate;        
+        $model->period_number_day = $request->period_number_day;        
+        $model->period_number_month = $request->period_number_month;        
+        $model->period_number_year = $request->period_number_year; 
+        $model->save();
+        return $model;
     }
 
     /**
