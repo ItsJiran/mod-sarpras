@@ -886,5 +886,47 @@ export default {
 				},
 			]
 		},
+
+		{
+			path: "unit/:unit/document/:document/tax",
+			component: () =>
+				import(
+					/* webpackChunkName: "infrastructure" */ "@modules/infrastructure/frontend/pages/tax/index.vue"
+				),
+			children: [
+				{
+					path: "",
+					name: "infrastructure-unit-document-tax",
+					component: () =>
+						import(
+							/* webpackChunkName: "infrastructure" */ "@modules/infrastructure/frontend/pages/tax/crud/data.vue"
+						),
+				},
+				{
+					path: "create",
+					name: "infrastructure-unit-document-tax-create",
+					component: () =>
+						import(
+							/* webpackChunkName: "infrastructure" */ "@modules/infrastructure/frontend/pages/tax/crud/create.vue"
+						),
+				},
+				{
+					path: ":tax/show",
+					name: "infrastructure-unit-document-tax-show",
+					component: () =>
+						import(
+							/* webpackChunkName: "infrastructure" */ "@modules/infrastructure/frontend/pages/tax/crud/show.vue"
+						),
+				},		
+				{
+					path: ":tax/edit",
+					name: "infrastructure-unit-document-tax-edit",
+					component: () =>
+						import(
+							/* webpackChunkName: "infrastructure" */ "@modules/infrastructure/frontend/pages/tax/crud/edit.vue"
+						),
+				},
+			]
+		},
 	],
 };
