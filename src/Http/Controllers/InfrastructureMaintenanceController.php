@@ -15,6 +15,11 @@ use Module\Infrastructure\Models\InfrastructureUnit;
 
 class InfrastructureMaintenanceController extends Controller
 {
+
+    // +================================================
+    // +-------------------- INDEX METHODS
+    // +================================================
+
     /**
      * Display a listing of the resource.
      *
@@ -117,6 +122,10 @@ class InfrastructureMaintenanceController extends Controller
         return $this->indexFromDocument($request, $document);
     }
 
+    // +================================================
+    // +-------------------- STORE METHODS
+    // +================================================
+
     /**
      * Store a newly created resource in storage.
      *
@@ -211,6 +220,9 @@ class InfrastructureMaintenanceController extends Controller
         return $this->storeFromDocument($request, $document);
     }
 
+    // +================================================
+    // +-------------------- SHOW METHODS
+    // +================================================
 
     /**
      * Display the specified resource.
@@ -298,6 +310,9 @@ class InfrastructureMaintenanceController extends Controller
         return new MaintenanceShowResource($maintenance);
     }
 
+    // +================================================
+    // +-------------------- UPDATE METHODS
+    // +================================================
 
     /**
      * Update the specified resource in storage.
@@ -393,6 +408,10 @@ class InfrastructureMaintenanceController extends Controller
         return $this->update($request, $maintenance);
     }
 
+    // +================================================
+    // +-------------------- DESTROY METHODS
+    // +================================================
+
     /**
      * Remove the specified resource from storage.
      *
@@ -484,6 +503,10 @@ class InfrastructureMaintenanceController extends Controller
         return $this->destroy($maintenance);
     }
 
+    // +================================================
+    // +-------------------- RESTORE METHODS
+    // +================================================
+
     /**
      * Restore the specified resource from soft-delete.
      *
@@ -496,6 +519,10 @@ class InfrastructureMaintenanceController extends Controller
 
         return InfrastructureMaintenance::restoreRecord($infrastructureMaintenance);
     }
+
+    // +================================================
+    // +-------------------- FORCE DELETE METHODS
+    // +================================================
 
     /**
      * Force Delete the specified resource from soft-delete.

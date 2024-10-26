@@ -11,6 +11,10 @@ use Module\Infrastructure\Models\InfrastructureMaintenanceAsset;
 use Module\Infrastructure\Models\InfrastructureMaintenanceDocument;
 use Module\Infrastructure\Models\InfrastructureMaintenance;
 
+use Module\Infrastructure\Models\InfrastructureTaxAsset;
+use Module\Infrastructure\Models\InfrastructureTaxDocument;
+use Module\Infrastructure\Models\InfrastructureTax;
+
 class InfrastructureUnit extends Model
 {
     /**
@@ -19,7 +23,6 @@ class InfrastructureUnit extends Model
      * @var array
      */
     protected $roles = ['infrastructure-unit'];
-
 
     /**
      * ====================================================
@@ -34,7 +37,7 @@ class InfrastructureUnit extends Model
     {
         return $this->hasMany(InfrastructureAsset::class, 'unit_id');
     }
-    
+
     /**
      * Get the model that the image belongs to.
      */
@@ -59,6 +62,24 @@ class InfrastructureUnit extends Model
     {
         return InfrastructureMaintenanceDocuments::where('unit_id',$this->id)
         ->join('infrastructure_maintenances','infrastructure_maintenances.id','=','infrastructure_maintenance_documents.maintenance_id');                
+    }
+
+    /**
+     * Get the model that the image belongs to.
+     */
+    public function taxes_assets()
+    {
+        return InfrastructureTaxAsset::where('unit_id',$this->id)
+        ->join('infrastructure_taxes','infrastructure_taxes.id','=','infrastructure_tax_assets.tax_id');                
+    }
+
+    /**
+     * Get the model that the image belongs to.
+     */
+    public function taxes_documents()
+    {
+        return InfrastructureTaxDocuments::where('unit_id',$this->id)
+        ->join('infrastructure_taxes','infrastructure_taxes.id','=','infrastructure_tax_documents.tax_id');                
     }
 
     /**

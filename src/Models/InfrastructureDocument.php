@@ -16,10 +16,14 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 // relateds documents models type
+use Module\Infrastructure\Models\InfrastructureMaintenanceDocument;
 use Module\Infrastructure\Models\InfrastructureDocumentLandCertificate;
 use Module\Infrastructure\Models\InfrastructureUnit;
 use Module\Infrastructure\Models\InfrastructureAsset;
-use Module\Infrastructure\Models\InfrastructureMaintenanceDocument;
+
+use Module\Infrastructure\Models\InfrastructureTaxAsset;
+use Module\Infrastructure\Models\InfrastructureTaxDocument;
+use Module\Infrastructure\Models\InfrastructureTax;
 
 class InfrastructureDocument extends Model
 {
@@ -109,6 +113,16 @@ class InfrastructureDocument extends Model
     {
         return $this->belongsTo(InfrastructureAsset::class, 'asset_id');
     }
+
+    /**
+     * Get the model that the image belongs to.
+     */
+    public function taxes()
+    {
+        return InfrastructureTaxDocument::where('asset_id',$this->id)
+        ->join('infrastructure_taxes','infrastructure_taxes.id','=','infrastructure_tax_assets.tax_id');                
+    }
+
 
     /**
      * Get the model that the image belongs to.

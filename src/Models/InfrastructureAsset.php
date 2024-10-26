@@ -25,6 +25,10 @@ use Module\Infrastructure\Models\InfrastructureAssetElectronic;
 use Module\Infrastructure\Models\InfrastructureAssetLand;
 use Module\Infrastructure\Models\InfrastructureUnit;
 
+use Module\Infrastructure\Models\InfrastructureTaxAsset;
+use Module\Infrastructure\Models\InfrastructureTaxDocument;
+use Module\Infrastructure\Models\InfrastructureTax;
+
 class InfrastructureAsset extends Model
 {
     use Filterable;
@@ -147,6 +151,15 @@ class InfrastructureAsset extends Model
     public function documents(): HasMany 
     {
         return $this->hasMany(InfrastructureDocument::class, 'asset_id');
+    }
+
+    /**
+     * Get the model that the image belongs to.
+     */
+    public function taxes()
+    {
+        return InfrastructureTaxAsset::where('asset_id',$this->id)
+        ->join('infrastructure_taxes','infrastructure_taxes.id','=','infrastructure_tax_assets.tax_id');                
     }
 
     /**
