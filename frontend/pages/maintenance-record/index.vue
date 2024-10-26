@@ -1,6 +1,6 @@
 <template>
 	<page-crud
-		page-name="infrastructure-record"
+		page-name="infrastructure-maintenance-record"
 		page-key="record"
 		parent-name="infrastructure-maintenance"
 		parent-key="maintenance"
@@ -9,6 +9,6 @@
 
 <script>
 export default {
-	name: "infrastructure-record",
+	name: "infrastructure-maintenance-record",
 };
 </script>

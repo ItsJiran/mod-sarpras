@@ -1,6 +1,6 @@
 <template>
 	<page-crud
-		page-name="infrastructure-record"
+		page-name="infrastructure-tax-record"
 		page-key="record"
 		parent-name="infrastructure-tax"
 		parent-key="tax"
@@ -9,6 +9,6 @@
 
 <script>
 export default {
-	name: "infrastructure-record",
+	name: "infrastructure-tax-record",
 };
 </script>

@@ -342,6 +342,90 @@ export default {
 		},
 
 		{
+			path: "tax/:tax/record",
+			component: () =>
+				import(
+					/* webpackChunkName: "infrastructure" */ "@modules/infrastructure/frontend/pages/tax-record/index.vue"
+				),
+			children: [
+				{
+					path: "",
+					name: "infrastructure-tax-record",
+					component: () =>
+						import(
+							/* webpackChunkName: "infrastructure" */ "@modules/infrastructure/frontend/pages/tax-record/crud/data.vue"
+						),
+				},
+				{
+					path: "create",
+					name: "infrastructure-tax-record-create",
+					component: () =>
+						import(
+							/* webpackChunkName: "infrastructure" */ "@modules/infrastructure/frontend/pages/tax-record/crud/create.vue"
+						),
+				},
+				{
+					path: ":tax-record/show",
+					name: "infrastructure-tax-record-show",
+					component: () =>
+						import(
+							/* webpackChunkName: "infrastructure" */ "@modules/infrastructure/frontend/pages/tax-record/crud/show.vue"
+						),
+				},		
+				{
+					path: ":tax-record/edit",
+					name: "infrastructure-tax-record-edit",
+					component: () =>
+						import(
+							/* webpackChunkName: "infrastructure" */ "@modules/infrastructure/frontend/pages/tax-record/crud/edit.vue"
+						),
+				},			
+			]
+		},
+
+		{
+			path: "maintenance/:maintenance/record",
+			component: () =>
+				import(
+					/* webpackChunkName: "infrastructure" */ "@modules/infrastructure/frontend/pages/maintenance-record/index.vue"
+				),
+			children: [
+				{
+					path: "",
+					name: "infrastructure-maintenance-record",
+					component: () =>
+						import(
+							/* webpackChunkName: "infrastructure" */ "@modules/infrastructure/frontend/pages/maintenance-record/crud/data.vue"
+						),
+				},
+				{
+					path: "create",
+					name: "infrastructure-maintenance-record-create",
+					component: () =>
+						import(
+							/* webpackChunkName: "infrastructure" */ "@modules/infrastructure/frontend/pages/maintenance-record/crud/create.vue"
+						),
+				},
+				{
+					path: ":maintenance-record/show",
+					name: "infrastructure-maintenance-record-show",
+					component: () =>
+						import(
+							/* webpackChunkName: "infrastructure" */ "@modules/infrastructure/frontend/pages/maintenance-record/crud/show.vue"
+						),
+				},		
+				{
+					path: ":maintenance-record/edit",
+					name: "infrastructure-maintenance-record-edit",
+					component: () =>
+						import(
+							/* webpackChunkName: "infrastructure" */ "@modules/infrastructure/frontend/pages/maintenance-record/crud/edit.vue"
+						),
+				},			
+			]
+		},
+
+		{
 			path: "maintenance",
 			component: () =>
 				import(
