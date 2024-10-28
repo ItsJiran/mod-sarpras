@@ -148,6 +148,13 @@ class InfrastructureTaxRecord extends Model
 
         try {
 
+            if ( $tax->isTypeLog() ) {
+                $this->storeAsLog($request, $tax, $model);
+            }
+
+            if ( $tax->isTypePeriodic() ) {
+                $this->storeAsPeriodic($request, $tax, $model);        
+            }
 
             $model->save();
 
@@ -162,14 +169,20 @@ class InfrastructureTaxRecord extends Model
         }
     }
 
-    public static function storeAsLog(Request $request, $model) 
+    public static function storeAsLog(Request $request, InfrastructureTax $tax, $model) 
     {
-
+        $model->name = $request->name;
+        $model->description = $request->description;
+        $model->paydate = $request->paydate;
+        $model->proof_img_path = $request->proof_img_path;
     }
 
-    public static function storeAsPeriodic(Request $request, $model) 
+    public static function storeAsPeriodic(Request $request, InfrastructureTax $tax, $model) 
     {
-        
+        $model->name = $request->name;
+        $model->description = $request->description;
+        $model->paydate = $request->paydate;
+        $model->proof_img_path = $request->proof_img_path;
     }
 
     // +===============================================
@@ -181,7 +194,15 @@ class InfrastructureTaxRecord extends Model
         DB::connection($model->connection)->beginTransaction();
 
         try {
-            // ...
+            
+            if ( $tax->isTypeLog() ) {
+                // $this->storeAsLog($request, $model);
+            }
+
+            if ( $tax->isTypePeriodic() ) {
+                // $this->storeAsPeriodic($request, $model);        
+            }
+
             $model->save();
 
             DB::connection($model->connection)->commit();
@@ -195,6 +216,20 @@ class InfrastructureTaxRecord extends Model
                 'message' => $e->getMessage()
             ], 500);
         }
+    }
+
+    public static function updateAsLog(Request $request, InfrastructureTax $tax, $model) 
+    {
+        $model->name = $request->name;
+        $model->description = $request->description;
+        $model->paydate = $request->paydate;
+    }
+
+    public static function updateAsPeriodic(Request $request, InfrastructureTax $tax, $model) 
+    {
+        $model->name = $request->name;
+        $model->description = $request->description;
+        $model->paydate = $request->paydate;
     }
 
     // +===============================================

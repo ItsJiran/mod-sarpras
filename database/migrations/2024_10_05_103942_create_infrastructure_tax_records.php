@@ -28,7 +28,7 @@ return new class extends Migration
             // 1. pending
             // 2. approve | cancelled | unapprove
 
-            // pending -> approve | cancelled | unapprove
+            // pending -> approve | cancelled | unapprove |  draft
             $table->string('status')->default('pending');
 
             $table->jsonb('meta')->nullable();

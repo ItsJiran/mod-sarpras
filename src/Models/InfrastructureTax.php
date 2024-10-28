@@ -112,6 +112,49 @@ class InfrastructureTax extends Model
     }  
 
     /**
+     * Get the model that the image belongs to.
+     */
+    public function type_key()
+    {
+        return self::mapMorphTypeClass(true)[$this->taxable_type];
+    }
+
+    /**
+     * Get the model that the image belongs to.
+     */
+    public function target_key()
+    {
+        return self::mapMorphTargetClass(true)[$this->targetable_type];
+    }
+
+    /**
+     * ====================================================
+     * +---------------- STATUSES METHODS ----------------+
+     * ====================================================
+     */
+
+
+    public function isTypeLog()
+    {
+        return $this->type_key() == 'Log';
+    }
+
+    public function isTypePeriodic()
+    {
+        return $this->type_key() == 'Periodic';
+    }
+
+    public function isTargetAsset()
+    {
+        return $this->target_key() == 'Asset';
+    }
+
+    public function isTargetDocument()
+    {
+        return $this->target_key() == 'Document';
+    }
+
+    /**
      * ====================================================
      * +------------------- MAP REQUEST ------------------+
      * ====================================================
