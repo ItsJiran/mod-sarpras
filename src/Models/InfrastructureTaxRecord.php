@@ -171,6 +171,9 @@ class InfrastructureTaxRecord extends Model
 
     public static function storeAsLog(Request $request, InfrastructureTax $tax, $model) 
     {
+        $model->tax_id = $tax->id;
+        $model->user_id = $request->user->id;
+
         $model->name = $request->name;
         $model->description = $request->description;
         $model->paydate = $request->paydate;
@@ -179,6 +182,9 @@ class InfrastructureTaxRecord extends Model
 
     public static function storeAsPeriodic(Request $request, InfrastructureTax $tax, $model) 
     {
+        $model->tax_id = $tax->id;
+        $model->user_id = $request->user->id;        
+
         $model->name = $request->name;
         $model->description = $request->description;
         $model->paydate = $request->paydate;

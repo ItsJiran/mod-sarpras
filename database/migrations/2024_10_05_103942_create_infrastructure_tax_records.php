@@ -24,10 +24,6 @@ return new class extends Migration
             $table->timestamp('paydate')->nullable();
             $table->string('proof_img_path')->nullable();
 
-            // + -----
-            // 1. pending
-            // 2. approve | cancelled | unapprove
-
             // pending -> approve | cancelled | unapprove |  draft
             $table->string('status')->default('pending');
 
