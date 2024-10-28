@@ -60,11 +60,11 @@ class InfrastructureTaxRecord extends Model
     protected $fillable = [
         'tax_id',
         'user_id',
-        'slug_unit',
-        'slug_type',
-        'unit_id',
-        'assetable_id',
-        'assetable_type',
+        'name',
+        'paydate',
+        'description',
+        'proof_img_path',
+        'status',
     ];
 
     /**
@@ -134,6 +134,35 @@ class InfrastructureTaxRecord extends Model
     public static function mapUpdateRequestPeriodic(Request $request) 
     {
         // REQUEST UNTUK PERIODIK 
+    }
+
+    // +===============================================
+    // +--------------- STATUS METHODS
+    // +===============================================
+
+    public static function toPending(Request $request, InfrastructureTaxRecord $record)
+    {
+
+    }
+
+    public static function toCancelled(Request $request, InfrastructureTaxRecord $record)
+    {
+
+    }
+
+    public static function toDraft(Request $request, InfrastructureTaxRecord $record)
+    {
+
+    }
+
+    public static function toVerified(Request $request, InfrastructureTaxRecord $record)
+    {
+
+    }
+
+    public static function toUnverified(Request $request, InfrastructureTaxRecord $record)
+    {
+
     }
 
     // +===============================================
