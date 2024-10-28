@@ -11,6 +11,9 @@ use Module\System\Traits\HasPageSetup;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
+use Module\Infrastructure\Models\InfrastructureTax;
+use Module\Infrastructure\Models\InfrastructureUnit;
+
 class InfrastructureTaxRecord extends Model
 {
     use Filterable;
@@ -55,8 +58,8 @@ class InfrastructureTaxRecord extends Model
      * @var array<int, string>
      */
     protected $fillable = [
-        'name',
-        'slug',
+        'tax_id',
+        'user_id',
         'slug_unit',
         'slug_type',
         'unit_id',
@@ -71,25 +74,84 @@ class InfrastructureTaxRecord extends Model
      */
     protected $defaultOrder = 'name';
 
+    // +===============================================
+    // +--------------- RELATION METHODS
+    // +===============================================
+
     /**
-     * The model store method
-     *
-     * @param Request $request
-     * @return void
+     * Get the model that the image belongs to.
      */
-    public static function storeRecord(Request $request)
+    public function tax(): BelongsTo
+    {
+        return $this->belongsTo(InfrastructureTax::class, 'tax_id');
+    } 
+
+        /**
+     * Get the model that the image belongs to.
+     */
+    public function user(): BelongsTo
+    {
+        return $this->belongsTo(InfrastructureTax::class, 'user_id');
+    } 
+
+    // +===============================================
+    // +--------------- RELATION METHODS
+    // +===============================================
+
+    public static function mapStoreRequest(Request $request, InfrastructureTax $tax)
+    {
+        $array = [
+
+        ];
+
+        return $array;
+    }
+
+    public static function mapStoreRequestLog(Request $request) 
+    {
+        // REQUEST UNTUK LOG 
+    }
+
+    public static function mapStoreRequestPeriodic(Request $request) 
+    {
+        // REQUEST UNTUK PERIODIK 
+    }
+
+    public static function mapUpdateRequest(Request $request, InfrastructureTax $tax)
+    {
+        $array = [
+
+        ];
+
+        return $array;
+    }
+
+    public static function mapUpdateRequestLog(Request $request) 
+    {
+        // REQUEST UNTUK LOG 
+    }
+
+    public static function mapUpdateRequestPeriodic(Request $request) 
+    {
+        // REQUEST UNTUK PERIODIK 
+    }
+
+    // +===============================================
+    // +--------------- STORE METHODS
+    // +===============================================
+
+    public static function storeRecord(Request $request, InfrastructureTax $tax) 
     {
         $model = new static();
 
         DB::connection($model->connection)->beginTransaction();
 
         try {
-            // ...
+
+
             $model->save();
 
             DB::connection($model->connection)->commit();
-
-            // return new TaxRecordResource($model);
         } catch (\Exception $e) {
             DB::connection($model->connection)->rollBack();
 
@@ -100,13 +162,20 @@ class InfrastructureTaxRecord extends Model
         }
     }
 
-    /**
-     * The model update method
-     *
-     * @param Request $request
-     * @param [type] $model
-     * @return void
-     */
+    public static function storeAsLog(Request $request, $model) 
+    {
+
+    }
+
+    public static function storeAsPeriodic(Request $request, $model) 
+    {
+        
+    }
+
+    // +===============================================
+    // +--------------- UPDATE METHODS
+    // +===============================================
+
     public static function updateRecord(Request $request, $model)
     {
         DB::connection($model->connection)->beginTransaction();
@@ -127,6 +196,10 @@ class InfrastructureTaxRecord extends Model
             ], 500);
         }
     }
+
+    // +===============================================
+    // +--------------- DELETE METHODS
+    // +===============================================
 
     /**
      * The model delete method

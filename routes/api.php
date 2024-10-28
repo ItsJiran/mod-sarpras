@@ -4,7 +4,9 @@ use Illuminate\Support\Facades\Route;
 use Module\Infrastructure\Http\Controllers\DashboardController;
 use Module\Infrastructure\Http\Controllers\InfrastructureAssetController;
 use Module\Infrastructure\Http\Controllers\InfrastructureTaxController;
+use Module\Infrastructure\Http\Controllers\InfrastructureTaxRecordController;
 use Module\Infrastructure\Http\Controllers\InfrastructureMaintenanceController;
+use Module\Infrastructure\Http\Controllers\InfrastructureMaintenanceRecordController;
 use Module\Infrastructure\Http\Controllers\InfrastructureUnitController;
 use Module\Infrastructure\Http\Controllers\InfrastructureDocumentController;
 
@@ -125,6 +127,7 @@ Route::delete('unit/{unit}/asset/{asset}',[InfrastructureAssetController::class,
 Route::resource('document',InfrastructureDocumentController::class)->parameters([
     'document' => 'infrastructureDocument'
 ]);
+
 Route::get('ref-document/combos/unit/{unit}',[InfrastructureDocumentController::class,'mapCombosOnlyUnit']);
 Route::get('ref-document/combos/unit/{unit}/asset/{asset}',[InfrastructureDocumentController::class,'mapCombosOnlyAsset']);
 
@@ -147,8 +150,14 @@ Route::put('unit/{unit}/asset/{asset}/document/{document}',[InfrastructureDocume
 
 // +-----------------------------------------------
 // +-- from resource module maintenance record
-
-
+Route::resource('tax/{tax}/record',InfrastructureTaxRecordController::class)->parameters([
+    'tax' => 'infrastructureTax',
+    'record' => 'infrastructureTaxRecord',
+]);
 
 // +-----------------------------------------------
 // +-- from resource module tax record
+Route::resource('maintenance/{maintenance}/record',InfrastructureMaintenanceRecordController::class)->parameters([
+    'maintenance' => 'infrastructureMaintenance',
+    'record' => 'infrastructureMaintenanceRecord',
+]);

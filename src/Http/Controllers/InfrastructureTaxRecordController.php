@@ -9,6 +9,9 @@ use Module\Infrastructure\Models\InfrastructureTaxRecord;
 use Module\Infrastructure\Http\Resources\TaxRecordCollection;
 use Module\Infrastructure\Http\Resources\TaxRecordShowResource;
 
+use Module\Infrastructure\Models\InfrastructureTax;
+use Module\Infrastructure\Models\InfrastructureUnit;
+
 class InfrastructureTaxRecordController extends Controller
 {
     /**
@@ -35,13 +38,15 @@ class InfrastructureTaxRecordController extends Controller
      * @param  \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(Request $request, InfrastructureTax $tax)
     {
         Gate::authorize('create', InfrastructureTaxRecord::class);
 
-        $request->validate([]);
+        $request->validate(  
+            InfrastructureTaxRecord::mapStoreRequest($request, $tax)
+        );
 
-        return InfrastructureTaxRecord::storeRecord($request);
+        return InfrastructureTaxRecord::storeRecord($request, $tax);
     }
 
     /**
@@ -64,13 +69,15 @@ class InfrastructureTaxRecordController extends Controller
      * @param  \Module\Infrastructure\Models\InfrastructureTaxRecord $infrastructureTaxRecord
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, InfrastructureTaxRecord $infrastructureTaxRecord)
+    public function update(Request $request, InfrastructureTaxRecord $record, InfrastructureTax $tax)
     {
-        Gate::authorize('update', $infrastructureTaxRecord);
+        Gate::authorize('update', $record);
 
-        $request->validate([]);
+        $request->validate(  
+            InfrastructureTaxRecord::mapUpdateRequest($request, $tax)
+        );
 
-        return InfrastructureTaxRecord::updateRecord($request, $infrastructureTaxRecord);
+        return InfrastructureTaxRecord::updateRecord($request, $record, $tax);
     }
 
     /**
