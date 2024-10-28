@@ -48,7 +48,7 @@
 				</v-row>
 
 				<v-row dense>
-					<v-img 
+					<v-img v-if="blob_path != undefined && blob_path != ''"
 						:src="blob_path" 
 						aspect-ratio="16/9" 
 						cover 
@@ -70,9 +70,12 @@ export default {
 	},
 	methods: {
 		changeImg: (record, data) => {
-			const url = URL.createObjectURL(record.proof_img);
-			data.blob_path = url;
-			console.log(data.blob_path, url);
+			if(record.proof_img == '' || record.proof_img == undefined){
+				data.blob_path = '';				
+			} else {
+				const url = URL.createObjectURL(record.proof_img);			
+				data.blob_path = url;
+			}
 		}
 	}
 };

@@ -140,29 +140,59 @@ class InfrastructureTaxRecord extends Model
     // +--------------- STATUS METHODS
     // +===============================================
 
-    public static function toPending(Request $request, InfrastructureTaxRecord $record)
-    {
+    public static function changeStatuses(Request $request, InfrastructureTaxRecord $model, $callback) {
+        DB::connection($model->connection)->beginTransaction();
+        try {
+            $callback($request, $model);
 
+            DB::connection($model->connection)->commit();
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Berhasil mengubah status..'
+            ], 200);
+        } catch (\Exception $e) {
+            DB::rollback();
+            return response()->json([
+                'success' => false,
+                'message' => 'Gagal mengubah status..'
+            ], 500);
+        }
     }
 
-    public static function toCancelled(Request $request, InfrastructureTaxRecord $record)
+    public static function toPending(Request $request, InfrastructureTaxRecord $model)
     {
+        self::changeStatuses($request, $model, function( Request $request, InfrastructureTaxRecord $model ){
 
+        });
+    }
+
+    public static function toCancelled(Request $request, InfrastructureTaxRecord $model)
+    {
+        self::changeStatuses($request, $model, function( Request $request, InfrastructureTaxRecord $model ){
+            
+        });
     }
 
     public static function toDraft(Request $request, InfrastructureTaxRecord $record)
     {
-
+        self::changeStatuses($request, $model, function( Request $request, InfrastructureTaxRecord $model ){
+            
+        });
     }
 
     public static function toVerified(Request $request, InfrastructureTaxRecord $record)
     {
-
+        self::changeStatuses($request, $model, function( Request $request, InfrastructureTaxRecord $model ){
+            
+        });
     }
 
     public static function toUnverified(Request $request, InfrastructureTaxRecord $record)
     {
-
+        self::changeStatuses($request, $model, function( Request $request, InfrastructureTaxRecord $model ){
+            
+        });
     }
 
     // +===============================================

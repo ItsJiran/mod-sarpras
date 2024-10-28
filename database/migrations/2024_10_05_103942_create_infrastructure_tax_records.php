@@ -21,7 +21,7 @@ return new class extends Migration
             $table->text('description')->nullable();
 
             // tanggal pembayaran
-            $table->float64('payprice')->default(0);
+            $table->double('payprice')->default(0);
             $table->timestamp('paydate')->nullable();
             $table->string('proof_img_path')->nullable();
 
