@@ -149,13 +149,13 @@ class InfrastructureTaxRecord extends Model
         $array = [
             'name' => 'required',
             'description' => 'required',
-            'paydate' => 'required|numeric',            
+            'paydate' => 'required',            
             'status' => [
                 'required',
                 Rule::in( self::mapStatus($request) ),
             ],
             'payprice' => 'required|numeric',
-            'proof_img' => 'mimes:jpeg,jpg,png,gif|required|max:10000'
+            // 'proof_img' => 'mimes:jpeg,jpg,png,gif|required|max:10000'
         ];
 
         return $array;
@@ -184,7 +184,33 @@ class InfrastructureTaxRecord extends Model
 
     public static function mapStoreRequestPeriodic(Request $request, InfrastructureTax $tax) : Response | null
     {
+        if ( self::isOngoing($request, $tax) ) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Gagal menambahkan data karena ada pajak yang masih berjalan..'
+            ], 500);
+        }
+
         return null;
+    }
+
+    public static function isOngoing( Request $request, InfrastructureTax $tax ) : boolean
+    {
+        $wherePending = [
+            ['tax_id','=',$tax->id],
+            ['status','=','pending'],
+        ];
+
+        $whereDraft = [
+            ['tax_id','=',$tax->id],
+            ['status','=','draft'],
+        ];
+
+        $onGoingRecord = self::where($wherePending)
+        ->orWhere($whereDraft)
+        ->first();
+
+        return !is_null($onGoingRecord);
     }
 
     // +============= UPDATE
@@ -194,9 +220,9 @@ class InfrastructureTaxRecord extends Model
         $array = [
             'name' => 'required',
             'description' => 'required',
-            'paydate' => 'required|numeric',
+            'paydate' => 'required',
             'payprice' => 'required|numeric',
-            'proof_img' => 'mimes:jpeg,jpg,png,gif|required|max:10000'
+            // 'proof_img' => 'mimes:jpeg,jpg,png,gif|required|max:10000'
         ];
 
         return $array;
@@ -215,7 +241,7 @@ class InfrastructureTaxRecord extends Model
             return self::mapUpdateRequestLog($request, $tax);
 
         if ( $tax->isTypePeriodic() ) 
-            return self::mapUpdateRequestPeriodic($request, $tax);               
+            return self::mapUpdateRequestPeriodic($request, $tax); 
     }
 
     public static function mapUpdateRequestLog(Request $request) 
@@ -329,7 +355,7 @@ class InfrastructureTaxRecord extends Model
         $model->paydate = $request->paydate;
         $model->payprice = $request->payprice;
         $model->description = $request->description;
-        $model->proof_img_path = $request->proof_img_path;
+        $model->proof_img_path = 'temporary';
 
         // default
         $model->status = 'pending';
@@ -344,7 +370,7 @@ class InfrastructureTaxRecord extends Model
         $model->paydate = $request->paydate;
         $model->payprice = $request->payprice;
         $model->description = $request->description;
-        $model->proof_img_path = $request->proof_img_path;
+        $model->proof_img_path = 'temporary';
 
         // default
         $model->status = 'pending';
