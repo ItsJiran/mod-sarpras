@@ -55,7 +55,6 @@
 					</v-col>
 				</v-row>
 
-
 				<div class="text-overline mt-6">Bukti pembayaran :</div>
 				<v-divider :thickness="3" class="mt-3 mb-6" />
 
@@ -70,7 +69,7 @@
 				<div class="text-overline mt-6">Dibuat oleh :</div>
 				<v-divider :thickness="3" class="mt-3 mb-6" />
 
-				<v-row dense>
+				<v-row v-if="record.user != undefined" dense>
 					<v-col cols="12">
 						<v-text-field
 							label="Name"
