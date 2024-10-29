@@ -158,8 +158,6 @@ class InfrastructureTaxRecord extends Model
             'proof_img' => 'mimes:jpeg,jpg,png,gif|required|max:10000'
         ];
 
-        dd($request->user());
-
         return $array;
     }
 
