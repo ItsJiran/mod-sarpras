@@ -11,9 +11,11 @@ use Module\System\Traits\HasPageSetup;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Validation\Rule;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 use Module\Infrastructure\Models\InfrastructureTax;
 use Module\Infrastructure\Models\InfrastructureUnit;
+use Module\Infrastructure\Models\InfrastructureUser;
 
 use Illuminate\Support\Facades\Response;
 
@@ -95,7 +97,7 @@ class InfrastructureTaxRecord extends Model
      */
     public function user(): BelongsTo
     {
-        return $this->belongsTo(InfrastructureTax::class, 'user_id');
+        return $this->belongsTo(InfrastructureUser::class, 'user_id');
     } 
 
     // +===============================================
@@ -106,12 +108,12 @@ class InfrastructureTaxRecord extends Model
     {
         return [
             'id' => $model->id,
-            'name' => $model->name,
-            'user_id' => $model->user_id,            
-            'payprice' => $model->payprice,
+            'name' => $model->name, 
             'paydate' => $model->paydate,
+            'payprice' => $model->payprice,
             'description' => $model->description,
             'proof_img_path' => $model->proof_img_path,
+            'user' => $model->user::class::mapResourceShow($request,$model->user),
         ];
     }
 

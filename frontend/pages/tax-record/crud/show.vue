@@ -55,6 +55,10 @@
 					</v-col>
 				</v-row>
 
+
+				<div class="text-overline mt-6">Bukti pembayaran :</div>
+				<v-divider :thickness="3" class="mt-3 mb-6" />
+
 				<v-row dense>
 					<v-img
 						:src="record.proof_img_path" 
@@ -62,6 +66,18 @@
 						cover 
 					/>
 				</v-row>	
+
+				<div class="text-overline mt-6">Dibuat oleh :</div>
+				<v-divider :thickness="3" class="mt-3 mb-6" />
+
+				<v-row dense>
+					<v-col cols="12">
+						<v-text-field
+							label="Name"
+							v-model="record.user.name"
+						></v-text-field>
+					</v-col>
+				</v-row>
 				
 			</v-card-text>
 		</template>
