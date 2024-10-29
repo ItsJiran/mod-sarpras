@@ -101,10 +101,12 @@ class InfrastructureTaxRecord extends Model
     public static function mapStoreRequest(Request $request, InfrastructureTax $tax)
     {
         $array = [
-            
+            'name' => 'required',
+            'description' => 'required',
+            'paydate' => 'required|numeric',
+            'payprice' => 'required|numeric',
+            'proof_img' => 'mimes:jpeg,jpg,png,gif|required|max:10000'
         ];
-
-        dd($request->proof_img, $tax);
 
         return $array;
     }
@@ -122,7 +124,11 @@ class InfrastructureTaxRecord extends Model
     public static function mapUpdateRequest(Request $request, InfrastructureTax $tax)
     {
         $array = [
-
+            'name' => 'required',
+            'description' => 'required',
+            'paydate' => 'required|numeric',
+            'payprice' => 'required|numeric',
+            'proof_img' => 'mimes:jpeg,jpg,png,gif|required|max:10000'
         ];
 
         return $array;
