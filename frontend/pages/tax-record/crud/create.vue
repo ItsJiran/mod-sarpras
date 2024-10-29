@@ -70,7 +70,6 @@ export default {
 	},
 	methods: {
 		changeImg: (record, data) => {
-			console.log(record.proof_img);
 			if(record.proof_img == '' || record.proof_img == undefined){
 				data.blob_path = '';				
 			} else {

@@ -163,6 +163,13 @@ class InfrastructureTaxRecord extends Model
 
     public static function mapStoreRequestValid(Request $request, InfrastructureTax $tax) : Response | null
     {
+        if ( is_null($request->user) ) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Gagal menambahkan data karena user tidak ada..'
+            ], 500);
+        }
+
         if ( $tax->isTypeLog() ) 
             return self::mapStoreRequestLog($request, $tax);
 
@@ -172,22 +179,12 @@ class InfrastructureTaxRecord extends Model
 
     public static function mapStoreRequestLog(Request $request, InfrastructureTax $tax) : Response | null
     {
-        if ( is_null($request->user) ) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Gagal menambahkan data karena user tidak ada..'
-            ], 500);
-        }
-
-        if ( $request->status ) {
-
-        }
-
+        return null;
     }
 
     public static function mapStoreRequestPeriodic(Request $request, InfrastructureTax $tax) : Response | null
     {
-
+        return null;
     }
 
     // +============= UPDATE
@@ -205,14 +202,30 @@ class InfrastructureTaxRecord extends Model
         return $array;
     }
 
+    public static function mapUpdateRequestValid(Request $request, InfrastructureTax $tax) : Response | null
+    {
+        if ( is_null($request->user) ) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Gagal menambahkan data karena user tidak ada..'
+            ], 500);
+        }
+
+        if ( $tax->isTypeLog() ) 
+            return self::mapUpdateRequestLog($request, $tax);
+
+        if ( $tax->isTypePeriodic() ) 
+            return self::mapUpdateRequestPeriodic($request, $tax);               
+    }
+
     public static function mapUpdateRequestLog(Request $request) 
     {
-        // REQUEST UNTUK LOG 
+        return null;
     }
 
     public static function mapUpdateRequestPeriodic(Request $request) 
     {
-        // REQUEST UNTUK PERIODIK 
+        return null;
     }
 
     // +===============================================
