@@ -326,11 +326,11 @@ class InfrastructureTaxRecord extends Model
         try {
 
             if ( $tax->isTypeLog() ) {
-                $this->storeAsLog($request, $tax, $model);
+                self::storeAsLog($request, $tax, $model);
             }
 
             if ( $tax->isTypePeriodic() ) {
-                $this->storeAsPeriodic($request, $tax, $model);        
+                self::storeAsPeriodic($request, $tax, $model);        
             }
 
             $model->save();
@@ -358,7 +358,7 @@ class InfrastructureTaxRecord extends Model
         $model->proof_img_path = 'temporary';
 
         // default
-        $model->status = 'pending';
+        $model->status = $request->status;
     }
 
     public static function storeAsPeriodic(Request $request, InfrastructureTax $tax, $model) 
@@ -373,7 +373,7 @@ class InfrastructureTaxRecord extends Model
         $model->proof_img_path = 'temporary';
 
         // default
-        $model->status = 'pending';
+        $model->status = $request->status;
     }
 
     // +===============================================
@@ -387,11 +387,11 @@ class InfrastructureTaxRecord extends Model
         try {
             
             if ( $tax->isTypeLog() ) {
-                $this->updateAsLog($request, $model);
+                self::updateAsLog($request, $model);
             }
 
             if ( $tax->isTypePeriodic() ) {
-                $this->updateAsPeriodic($request, $model);        
+                self::updateAsPeriodic($request, $model);        
             }
 
             $model->save();
