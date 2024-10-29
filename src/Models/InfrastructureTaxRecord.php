@@ -116,18 +116,18 @@ class InfrastructureTaxRecord extends Model
     public static function mapStoreRequestValid(Request $request, InfrastructureTax $tax) : Response | null
     {
         if ( $tax->isTypeLog() ) 
-            self::mapStoreRequestLog($request, $tax);
+            return self::mapStoreRequestLog($request, $tax);
 
         if ( $tax->isTypePeriodic() ) 
-            self::mapStoreRequestPeriodic($request, $tax);               
+            return self::mapStoreRequestPeriodic($request, $tax);               
     }
 
-    public static function mapStoreRequestLog(Request $request, InfrastructureTax $tax) 
+    public static function mapStoreRequestLog(Request $request, InfrastructureTax $tax) : Response | null
     {
-        // REQUEST UNTUK LOG 
+        
     }
 
-    public static function mapStoreRequestPeriodic(Request $request, InfrastructureTax $tax) 
+    public static function mapStoreRequestPeriodic(Request $request, InfrastructureTax $tax) : Response | null
     {
         // REQUEST UNTUK PERIODIK 
     }
