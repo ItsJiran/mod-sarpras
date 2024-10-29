@@ -14,6 +14,8 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use Module\Infrastructure\Models\InfrastructureTax;
 use Module\Infrastructure\Models\InfrastructureUnit;
 
+use Illuminate\Support\Facades\Response;
+
 class InfrastructureTaxRecord extends Model
 {
     use Filterable;
@@ -111,15 +113,26 @@ class InfrastructureTaxRecord extends Model
         return $array;
     }
 
-    public static function mapStoreRequestLog(Request $request) 
+    public static function mapStoreRequestValid(Request $request, InfrastructureTax $tax) : Response | null
+    {
+        if ( $tax->isTypeLog() ) 
+            self::mapStoreRequestLog($request, $tax);
+
+        if ( $tax->isTypePeriodic() ) 
+            self::mapStoreRequestPeriodic($request, $tax);               
+    }
+
+    public static function mapStoreRequestLog(Request $request, InfrastructureTax $tax) 
     {
         // REQUEST UNTUK LOG 
     }
 
-    public static function mapStoreRequestPeriodic(Request $request) 
+    public static function mapStoreRequestPeriodic(Request $request, InfrastructureTax $tax) 
     {
         // REQUEST UNTUK PERIODIK 
     }
+
+    // +============= UPDATE
 
     public static function mapUpdateRequest(Request $request, InfrastructureTax $tax)
     {
