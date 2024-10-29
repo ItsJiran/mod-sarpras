@@ -101,8 +101,10 @@ class InfrastructureTaxRecord extends Model
     public static function mapStoreRequest(Request $request, InfrastructureTax $tax)
     {
         $array = [
-
+            
         ];
+
+        dd($request->proof_img, $tax);
 
         return $array;
     }
@@ -163,7 +165,7 @@ class InfrastructureTaxRecord extends Model
     public static function toPending(Request $request, InfrastructureTaxRecord $model)
     {
         self::changeStatuses($request, $model, function( Request $request, InfrastructureTaxRecord $model ){
-
+            
         });
     }
 
@@ -234,9 +236,13 @@ class InfrastructureTaxRecord extends Model
         $model->user_id = $request->user->id;
 
         $model->name = $request->name;
-        $model->description = $request->description;
         $model->paydate = $request->paydate;
+        $model->payprice = $request->payprice;
+        $model->description = $request->description;
         $model->proof_img_path = $request->proof_img_path;
+
+        // default
+        $model->status = 'pending';
     }
 
     public static function storeAsPeriodic(Request $request, InfrastructureTax $tax, $model) 
@@ -245,9 +251,13 @@ class InfrastructureTaxRecord extends Model
         $model->user_id = $request->user->id;        
 
         $model->name = $request->name;
-        $model->description = $request->description;
         $model->paydate = $request->paydate;
+        $model->payprice = $request->payprice;
+        $model->description = $request->description;
         $model->proof_img_path = $request->proof_img_path;
+
+        // default
+        $model->status = 'pending';
     }
 
     // +===============================================
@@ -261,11 +271,11 @@ class InfrastructureTaxRecord extends Model
         try {
             
             if ( $tax->isTypeLog() ) {
-                // $this->storeAsLog($request, $model);
+                $this->updateAsLog($request, $model);
             }
 
             if ( $tax->isTypePeriodic() ) {
-                // $this->storeAsPeriodic($request, $model);        
+                $this->updateAsPeriodic($request, $model);        
             }
 
             $model->save();
