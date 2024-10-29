@@ -365,7 +365,7 @@ export default {
 						),
 				},
 				{
-					path: ":tax-record/show",
+					path: ":record/show",
 					name: "infrastructure-tax-record-show",
 					component: () =>
 						import(
@@ -373,7 +373,7 @@ export default {
 						),
 				},		
 				{
-					path: ":tax-record/edit",
+					path: ":record/edit",
 					name: "infrastructure-tax-record-edit",
 					component: () =>
 						import(

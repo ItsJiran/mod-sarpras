@@ -5,10 +5,10 @@ namespace Module\Infrastructure\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Gate;
-use Module\Infrastructure\Models\InfrastructureTaxRecord;
 use Module\Infrastructure\Http\Resources\TaxRecordCollection;
 use Module\Infrastructure\Http\Resources\TaxRecordShowResource;
 
+use Module\Infrastructure\Models\InfrastructureTaxRecord;
 use Module\Infrastructure\Models\InfrastructureTax;
 use Module\Infrastructure\Models\InfrastructureUnit;
 
@@ -55,7 +55,7 @@ class InfrastructureTaxRecordController extends Controller
      * @param  \Module\Infrastructure\Models\InfrastructureTaxRecord $infrastructureTaxRecord
      * @return \Illuminate\Http\Response
      */
-    public function show(InfrastructureTaxRecord $infrastructureTaxRecord)
+    public function show(InfrastructureTax $tax, InfrastructureTaxRecord $infrastructureTaxRecord)
     {
         Gate::authorize('show', $infrastructureTaxRecord);
 

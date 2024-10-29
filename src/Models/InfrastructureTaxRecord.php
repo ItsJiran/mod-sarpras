@@ -64,6 +64,7 @@ class InfrastructureTaxRecord extends Model
         'tax_id',
         'user_id',
         'name',
+        'payprice',
         'paydate',
         'description',
         'proof_img_path',
@@ -96,6 +97,23 @@ class InfrastructureTaxRecord extends Model
     {
         return $this->belongsTo(InfrastructureTax::class, 'user_id');
     } 
+
+    // +===============================================
+    // +--------------- RESROUCE METHODS
+    // +===============================================
+
+    public static function mapResourceShow(Request $request, $model = null): array
+    {
+        return [
+            'id' => $model->id,
+            'name' => $model->name,
+            'user_id' => $model->user_id,            
+            'payprice' => $model->payprice,
+            'paydate' => $model->paydate,
+            'description' => $model->description,
+            'proof_img_path' => $model->proof_img_path,
+        ];
+    }
 
     // +===============================================
     // +--------------- RELATION METHODS
