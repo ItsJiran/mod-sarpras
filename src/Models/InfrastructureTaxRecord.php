@@ -111,6 +111,7 @@ class InfrastructureTaxRecord extends Model
     {
         return [            
             'statuses' => [
+                'regular' => self::mapStatus($request),
                 'store' => self::mapStoreStatus($request),
                 'update' => self::mapUpdateStatus($request),
             ]
@@ -349,7 +350,7 @@ class InfrastructureTaxRecord extends Model
     public static function storeAsLog(Request $request, InfrastructureTax $tax, $model) 
     {
         $model->tax_id = $tax->id;
-        $model->user_id = $request->user->id;
+        $model->user_id = $request->user()->id;
 
         $model->name = $request->name;
         $model->paydate = $request->paydate;
@@ -364,7 +365,7 @@ class InfrastructureTaxRecord extends Model
     public static function storeAsPeriodic(Request $request, InfrastructureTax $tax, $model) 
     {
         $model->tax_id = $tax->id;
-        $model->user_id = $request->user->id;        
+        $model->user_id = $request->user()->id;        
 
         $model->name = $request->name;
         $model->paydate = $request->paydate;
