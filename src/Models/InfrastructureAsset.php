@@ -221,7 +221,7 @@ class InfrastructureAsset extends Model
      */
     public static function mapCombos(Request $request, $model = null): array
     {
-        // temporary
+        // untuk sementara aja, udah ada units api buat combmos units nya.....
         $human = InfrastructureUnit::get(['id','name','slug']);
         
         // notes : assign units into properties

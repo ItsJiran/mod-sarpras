@@ -10,6 +10,7 @@ use Module\System\Traits\Searchable;
 use Module\System\Traits\HasPageSetup;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Validation\Rule;
 
 use Module\Infrastructure\Models\InfrastructureTax;
 use Module\Infrastructure\Models\InfrastructureUnit;
@@ -100,15 +101,64 @@ class InfrastructureTaxRecord extends Model
     // +--------------- RELATION METHODS
     // +===============================================
 
+        /**
+     * The model map combos method
+     *
+     * @param [type] $model
+     * @return void
+     */
+    public static function mapCombos(Request $request, $model = null): array
+    {
+        return [            
+            'statuses' => [
+                'store' => self::mapStoreStatus($request),
+                'update' => self::mapUpdateStatus($request),
+            ]
+        ];
+    }
+
+    public static function mapStatus(Request $request)
+    {
+        return [
+            'pending',
+            'draft',
+            'cancelled',
+            'unverified',
+            'verified',
+        ];
+    }
+
+    public static function mapStoreStatus(Request $request)
+    {
+        return [
+            'pending',
+            'draft',
+        ];
+    }
+
+    public static function mapUpdateStatus(Request $request)
+    {
+        return [
+            'pending',
+            'draft',
+        ];
+    }
+
     public static function mapStoreRequest(Request $request, InfrastructureTax $tax)
     {
         $array = [
             'name' => 'required',
             'description' => 'required',
-            'paydate' => 'required|numeric',
+            'paydate' => 'required|numeric',            
+            'status' => [
+                'required',
+                Rule::in( self::mapStatus($request) ),
+            ],
             'payprice' => 'required|numeric',
             'proof_img' => 'mimes:jpeg,jpg,png,gif|required|max:10000'
         ];
+
+        dd($request->user());
 
         return $array;
     }
@@ -124,12 +174,22 @@ class InfrastructureTaxRecord extends Model
 
     public static function mapStoreRequestLog(Request $request, InfrastructureTax $tax) : Response | null
     {
-        
+        if ( is_null($request->user) ) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Gagal menambahkan data karena user tidak ada..'
+            ], 500);
+        }
+
+        if ( $request->status ) {
+
+        }
+
     }
 
     public static function mapStoreRequestPeriodic(Request $request, InfrastructureTax $tax) : Response | null
     {
-        // REQUEST UNTUK PERIODIK 
+
     }
 
     // +============= UPDATE
