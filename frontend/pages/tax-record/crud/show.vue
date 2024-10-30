@@ -106,7 +106,7 @@
 
 		<template v-slot:helpdesk="{ theme, record, store }">
 
-				<v-btn v-if="record != undefined && record.status == 'pending'"
+				<v-btn v-if="record != undefined && record.status == 'pending' && record.status_step != 3"
 				class="mt-3"
 				:color="theme"
 				block
@@ -114,7 +114,31 @@
 				@click="convertToDraft(record,this)"
 				>Ubah Ke Draft</v-btn>			
 
-				<v-btn v-if="record != undefined && record.status == 'draft'"
+				<v-btn v-if="record != undefined && record.status_step != 3"
+				class="mt-3"
+				:color="theme"
+				block
+				variant="flat"
+				@click="convertToCancelled(record,this)"
+				>Ubah Ke Cancelled</v-btn>
+
+				<v-btn v-if="record != undefined && record.status_step != 3 && record.status_step == 2"
+				class="mt-3"
+				:color="theme"
+				block
+				variant="flat"
+				@click="convertToVerified(record,this)"
+				>Ubah Ke Verified</v-btn>
+
+				<v-btn v-if="record != undefined && record.status_step != 3 && record.status_step == 2"
+				class="mt-3"
+				:color="theme"
+				block
+				variant="flat"
+				@click="convertToUnVerified(record,this)"
+				>Ubah Ke UnVerified</v-btn>
+
+				<v-btn v-if="record != undefined && record.status == 'draft' && record.status_step != 3"
 				class="mt-3"
 				:color="theme"
 				block
@@ -136,15 +160,15 @@ export default {
 		convertToPending : function (record,data) {
 			console.log('pending is clicked');
 		},
+		convertToVerified : function (record,data) {
+			console.log('verified is clicked');
+		},
+		convertToUnVerified : function (record,data) {
+			console.log('unverified is clicked');
+		},
 		convertToCancelled : function (record,data) {
 			console.log('cancelled is clicked');
 		},
-		convertToVerified : function (record,data) {
-			console.log('cancelled is clicked');
-		},
-		convertToUnVerified : function (record,data) {
-			console.log('cancelled is clicked');
-		}
 	},
 };
 </script>

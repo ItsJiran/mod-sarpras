@@ -122,7 +122,7 @@ class InfrastructureTaxRecord extends Model
             'status_step' => self::mapStatusStep($request, $model),
             
             'is_admin' => $request->user()->id == 1,
-            'is_creator' => $request->user()->id == $user->id,
+            'is_creator' => $request->user()->id == $user['id'],
         ];
     }
 
