@@ -262,7 +262,15 @@ class InfrastructureTaxRecord extends Model
         }
 
         // kalau misalnya bukan user yang membuat dan bukan admin        
-        if ( $model->user_id == $request->user()->id ) {
+        if ( $model->user_id != $request->user()->id && $request->user()->id != 1 ) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Anda tidak berwenang!'
+            ], 500);
+        }
+
+        // kalau bkan draft dan bukan admin draft
+        if ( $model->status != 'draft' && $request->user()->id != 1 ) {
             return response()->json([
                 'success' => false,
                 'message' => 'Anda tidak berwenang!'

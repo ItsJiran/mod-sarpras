@@ -6,6 +6,9 @@
 			store, 
 			}">
 			<v-card-text>
+				<div v-if="record != undefined">
+					{ checkIsDraft(record,this) }
+				</div>
 
 				<v-row dense>
 					<v-col cols="12">
@@ -82,14 +85,19 @@ export default {
 		}
 	},
 	methods: {
-		changeImg: (record, data) => {
+		changeImg : (record, data) => {
 			if(record.proof_img == '' || record.proof_img == undefined){
 				record.proof_img_path = '';				
 			} else {
 				const url = URL.createObjectURL(record.proof_img);			
 				record.proof_img_path = url;
 			}
-		}
+		},
+		checkIsDraft : (record, data) => {
+			const current_route = this.$router.currentRoute._value;
+
+			console.log(current_route);
+		},
 	}
 };
 </script>
