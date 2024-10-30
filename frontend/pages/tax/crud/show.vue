@@ -97,7 +97,7 @@
 				block
 				variant="flat"
 				@click="redirectPage('record')"
-				>List Record</v-btn>
+			>List Record</v-btn>
 
 		</template>
 	</form-show>

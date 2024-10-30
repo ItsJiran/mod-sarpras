@@ -2,14 +2,6 @@
 	<form-show
 		with-helpdesk
 	>
-		<template v-slot:toolbar>
-			<v-btn icon>
-				<v-icon>
-					home
-				</v-icon>
-			</v-btn>
-		</template>
-
 		<template v-slot:default="{ 
 			combos: { statuses },
 			record,
@@ -112,28 +104,23 @@
 			</v-card-text>
 		</template>
 
-		<template v-slot:helpdesk="{ theme }">
+		<template v-slot:helpdesk="{ theme, record, store }">
 
-
-			<div v-if="record != undefined && record.status == 'pending'">
-				<v-btn 
+				<v-btn v-if="record != undefined && record.status == 'pending'"
 				class="mt-3"
 				:color="theme"
 				block
 				variant="flat"
 				@click="convertToDraft(record,this)"
-				>Ubah Ke Draft</v-btn>
-			</div>
+				>Ubah Ke Draft</v-btn>			
 
-			<div v-if="record != undefined && record.status == 'draft'">
-				<v-btn 
-					class="mt-3"
-					:color="theme"
-					block
-					variant="flat"
-					@click="convertToPending(record,this)"
+				<v-btn v-if="record != undefined && record.status == 'draft'"
+				class="mt-3"
+				:color="theme"
+				block
+				variant="flat"
+				@click="convertToPending(record,this)"
 				>Ubah Ke Pending</v-btn>
-			</div>
 
 		</template>
 	</form-show>
@@ -144,10 +131,10 @@ export default {
 	name: "infrastructure-record-show",
 	methods : {
 		convertToPending : function (record,data) {
-
+			console.log('pending is clicked');
 		},
 		convertToDraft : function (record,data) {
-
+			console.log('draft is clicked');
 		}
 	},
 };

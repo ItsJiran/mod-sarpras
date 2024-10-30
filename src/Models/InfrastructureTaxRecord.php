@@ -125,12 +125,12 @@ class InfrastructureTaxRecord extends Model
     public static function mapStatusStep(Request $request, $model) 
     {
         if ( $model->status == 'draft' ) 
-            return 1;
+            return '1';
 
         if ( $model->status == 'pending' ) 
-            return 2;
+            return '2';
 
-        return 3;
+        return '3';
     }
 
     // +===============================================
