@@ -151,6 +151,7 @@ Route::put('unit/{unit}/asset/{asset}/document/{document}',[InfrastructureDocume
 // +-----------------------------------------------
 // +-- from resource module maintenance record
 
+// tax - record
 Route::get('tax/{tax}/record',[InfrastructureTaxRecordController::class, 'index']);
 Route::get('tax/{tax}/record/{record}',[InfrastructureTaxRecordController::class, 'show']);
 Route::post('tax/{tax}/record',[InfrastructureTaxRecordController::class, 'store']);

@@ -6,8 +6,8 @@
 			store, 
 			}">
 			<v-card-text>
-				<div v-if="record != undefined">
-					{ checkIsDraft(record,this) }
+				<div v-if="record != undefined && !init">
+					{{ checkIsDraft(record, this) }}					
 				</div>
 
 				<v-row dense>
@@ -56,6 +56,9 @@
 					</v-col>
 				</v-row>
 
+				<div class="text-overline mt-6">Bukti pembayaran :</div>
+				<v-divider :thickness="3" class="mt-3 mb-6" />
+
 				<v-row dense>
 					<v-file-input 
 						label="Gambar Bukti" 
@@ -70,7 +73,20 @@
 						aspect-ratio="16/9" 
 						cover 
 					/>
-				</v-row>				
+				</v-row>			
+				
+				<div class="text-overline mt-6">Dibuat oleh :</div>
+				<v-divider :thickness="3" class="mt-3 mb-6" />
+
+				<v-row v-if="record.user != undefined" dense>
+					<v-col cols="12">
+						<v-text-field
+							label="Name"
+							v-model="record.user.name"
+							:readonly="true"
+						></v-text-field>
+					</v-col>
+				</v-row>
 
 			</v-card-text>
 		</template>
@@ -82,6 +98,7 @@ export default {
 	name: "infrastructure-record-edit",
 	data: () => {
 		return {
+			init : false,
 		}
 	},
 	methods: {
@@ -93,10 +110,10 @@ export default {
 				record.proof_img_path = url;
 			}
 		},
-		checkIsDraft : (record, data) => {
+		checkIsDraft : function (record, data) {
 			const current_route = this.$router.currentRoute._value;
-
-			console.log(current_route);
+			data.init = true;
+			console.log(current_route, this);
 		},
 	}
 };
