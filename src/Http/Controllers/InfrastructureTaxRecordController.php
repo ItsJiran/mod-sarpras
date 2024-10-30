@@ -46,6 +46,12 @@ class InfrastructureTaxRecordController extends Controller
             InfrastructureTaxRecord::mapStoreRequest($request, $tax)
         );
 
+        $isResponseValid = InfrastructureTaxRecord::mapStoreRequestValid($request, $tax);
+
+        if ( !is_null($isResponseValid) ) {
+            return $isResponseValid;   
+        }
+
         return InfrastructureTaxRecord::storeRecord($request, $tax);
     }
 
@@ -55,11 +61,11 @@ class InfrastructureTaxRecordController extends Controller
      * @param  \Module\Infrastructure\Models\InfrastructureTaxRecord $infrastructureTaxRecord
      * @return \Illuminate\Http\Response
      */
-    public function show(InfrastructureTax $tax, InfrastructureTaxRecord $infrastructureTaxRecord)
+    public function show(InfrastructureTax $tax, InfrastructureTaxRecord $record)
     {
-        Gate::authorize('show', $infrastructureTaxRecord);
+        Gate::authorize('show', $record);
 
-        return new TaxRecordShowResource($infrastructureTaxRecord);
+        return new TaxRecordShowResource($record);
     }
 
     /**
@@ -69,7 +75,7 @@ class InfrastructureTaxRecordController extends Controller
      * @param  \Module\Infrastructure\Models\InfrastructureTaxRecord $infrastructureTaxRecord
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, InfrastructureTaxRecord $record, InfrastructureTax $tax)
+    public function update(Request $request, InfrastructureTax $tax, InfrastructureTaxRecord $record)
     {
         Gate::authorize('update', $record);
 
@@ -77,7 +83,13 @@ class InfrastructureTaxRecordController extends Controller
             InfrastructureTaxRecord::mapUpdateRequest($request, $tax)
         );
 
-        return InfrastructureTaxRecord::updateRecord($request, $record, $tax);
+        $isResponseValid = InfrastructureTaxRecord::mapUpdateRequestValid($request, $tax, $record);
+
+        if ( !is_null($isResponseValid) ) {
+            return $isResponseValid;   
+        }
+
+        return InfrastructureTaxRecord::updateRecord($request, $tax, $record);
     }
 
     /**

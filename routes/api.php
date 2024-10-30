@@ -150,10 +150,12 @@ Route::put('unit/{unit}/asset/{asset}/document/{document}',[InfrastructureDocume
 
 // +-----------------------------------------------
 // +-- from resource module maintenance record
-Route::resource('tax/{tax}/record',InfrastructureTaxRecordController::class)->parameters([
-    'tax' => 'infrastructureTax',
-    'record' => 'infrastructureTaxRecord',
-]);
+
+Route::get('tax/{tax}/record',[InfrastructureTaxRecordController::class, 'index']);
+Route::get('tax/{tax}/record/{record}',[InfrastructureTaxRecordController::class, 'show']);
+Route::post('tax/{tax}/record',[InfrastructureTaxRecordController::class, 'store']);
+Route::put('tax/{tax}/record/{record}',[InfrastructureTaxRecordController::class, 'update']);
+Route::delete('tax/{tax}/record/{record}',[InfrastructureTaxRecordController::class, 'destroy']);
 
 // +-----------------------------------------------
 // +-- from resource module tax record

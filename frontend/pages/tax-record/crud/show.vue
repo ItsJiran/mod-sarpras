@@ -14,6 +14,7 @@
 						<v-text-field 
 							label="Name" 
 							v-model="record.name"
+							:readonly="true"
 						></v-text-field>
 					</v-col>
 				</v-row>
@@ -23,6 +24,7 @@
 						<v-textarea 
 							label="Rincian" 
 							v-model="record.description"
+							:readonly="true"
 						></v-textarea>
 					</v-col>
 				</v-row>
@@ -34,6 +36,7 @@
 					:return-object="false"
 					label="Status"
 					v-model="record.status"			
+					:readonly="true"
 					></v-combobox>
 				</v-row>
 
@@ -42,6 +45,7 @@
 						<v-currency-field
 							label="Harga Pembayaran"
 							v-model="record.payprice"
+							:readonly="true"
 						></v-currency-field>
 					</v-col>
 				</v-row>
@@ -51,6 +55,7 @@
 						<v-date-input
 							label="Tanggal Pembayaran"
 							v-model="record.paydate"
+							:readonly="true"
 						></v-date-input>
 					</v-col>
 				</v-row>
@@ -74,6 +79,7 @@
 						<v-text-field
 							label="Name"
 							v-model="record.user.name"
+							:readonly="true"
 						></v-text-field>
 					</v-col>
 				</v-row>

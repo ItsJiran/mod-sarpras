@@ -109,6 +109,7 @@ class InfrastructureTaxRecord extends Model
         return [
             'id' => $model->id,
             'name' => $model->name, 
+            'status' => $model->status,
             'paydate' => $model->paydate,
             'payprice' => $model->payprice,
             'description' => $model->description,
@@ -249,7 +250,7 @@ class InfrastructureTaxRecord extends Model
         return $array;
     }
 
-    public static function mapUpdateRequestValid(Request $request, InfrastructureTax $tax) : Response | null
+    public static function mapUpdateRequestValid(Request $request, InfrastructureTax $tax, $model) : Response | null
     {
         if ( is_null($request->user) ) {
             return response()->json([
@@ -258,19 +259,27 @@ class InfrastructureTaxRecord extends Model
             ], 500);
         }
 
+        // kalau misalnya bukan user yang membuat dan bukan admin        
+        if ( $model->user_id == $request->user()->id ) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Anda tidak berwenang!'
+            ], 500);
+        }
+
         if ( $tax->isTypeLog() ) 
-            return self::mapUpdateRequestLog($request, $tax);
+            return self::mapUpdateRequestLog($request, $tax, $model);
 
         if ( $tax->isTypePeriodic() ) 
-            return self::mapUpdateRequestPeriodic($request, $tax); 
+            return self::mapUpdateRequestPeriodic($request, $tax, $model); 
     }
 
-    public static function mapUpdateRequestLog(Request $request) 
+    public static function mapUpdateRequestLog(Request $request, InfrastructureTax $tax, $model) 
     {
         return null;
     }
 
-    public static function mapUpdateRequestPeriodic(Request $request) 
+    public static function mapUpdateRequestPeriodic(Request $request, InfrastructureTax $tax, $model) 
     {
         return null;
     }
@@ -401,18 +410,18 @@ class InfrastructureTaxRecord extends Model
     // +--------------- UPDATE METHODS
     // +===============================================
 
-    public static function updateRecord(Request $request, $model)
+    public static function updateRecord(Request $request, InfrastructureTax $tax, $model)
     {
         DB::connection($model->connection)->beginTransaction();
 
         try {
             
             if ( $tax->isTypeLog() ) {
-                self::updateAsLog($request, $model);
+                self::updateAsLog($request, $tax, $model);
             }
 
             if ( $tax->isTypePeriodic() ) {
-                self::updateAsPeriodic($request, $model);        
+                self::updateAsPeriodic($request, $tax, $model);        
             }
 
             $model->save();
@@ -432,16 +441,30 @@ class InfrastructureTaxRecord extends Model
 
     public static function updateAsLog(Request $request, InfrastructureTax $tax, $model) 
     {
+        $model->tax_id = $tax->id;      
+
         $model->name = $request->name;
-        $model->description = $request->description;
         $model->paydate = $request->paydate;
+        $model->payprice = $request->payprice;
+        $model->description = $request->description;
+        $model->proof_img_path = 'temporary';
+
+        // default
+        $model->status = $request->status;
     }
 
     public static function updateAsPeriodic(Request $request, InfrastructureTax $tax, $model) 
     {
+        $model->tax_id = $tax->id;      
+
         $model->name = $request->name;
-        $model->description = $request->description;
         $model->paydate = $request->paydate;
+        $model->payprice = $request->payprice;
+        $model->description = $request->description;
+        $model->proof_img_path = 'temporary';
+
+        // default
+        $model->status = $request->status;
     }
 
     // +===============================================
