@@ -167,10 +167,14 @@ class InfrastructureTaxRecordController extends Controller
      * @param  \Module\Infrastructure\Models\InfrastructureTaxRecord $infrastructureTaxRecord
      * @return \Illuminate\Http\Response
      */
-    public function changeToCanceled(Request $request, InfrastructureTax $tax, InfrastructureTaxRecord $record)
+    public function changeToCancelled(Request $request, InfrastructureTax $tax, InfrastructureTaxRecord $record)
     {
         Gate::authorize('update', $record);
+
+        $isResponseValid = InfrastructureTaxRecord::mapUpdateToCancelled($request, $tax, $record);
+        if ( !is_null($isResponseValid) ) return $isResponseValid;   
         
+        return InfrastructureTaxRecord::changeToCancelled($request, $tax, $record);
     }
 
     /**
