@@ -103,6 +103,10 @@ class InfrastructureTaxRecordController extends Controller
     {
         Gate::authorize('update', $record);
 
+        $isResponseValid = InfrastructureTaxRecord::mapUpdateToPending($request, $tax, $record);
+        if ( !is_null($isResponseValid) ) return $isResponseValid;   
+        
+        return InfrastructureTaxRecord::changeToPending($request, $tax, $record);
     }
 
     /**
@@ -115,7 +119,11 @@ class InfrastructureTaxRecordController extends Controller
     public function changeToDraft(Request $request, InfrastructureTax $tax, InfrastructureTaxRecord $record)
     {
         Gate::authorize('update', $record);
+
+        $isResponseValid = InfrastructureTaxRecord::mapUpdateToDraft($request, $tax, $record);
+        if ( !is_null($isResponseValid) ) return $isResponseValid;   
         
+        return InfrastructureTaxRecord::changeToDraft($request, $tax, $record);
     }
 
     /**
@@ -128,7 +136,11 @@ class InfrastructureTaxRecordController extends Controller
     public function changeToVerified(Request $request, InfrastructureTax $tax, InfrastructureTaxRecord $record)
     {
         Gate::authorize('update', $record);
+
+        $isResponseValid = InfrastructureTaxRecord::mapUpdateToVerified($request, $tax, $record);
+        if ( !is_null($isResponseValid) ) return $isResponseValid;   
         
+        return InfrastructureTaxRecord::changeToVerified($request, $tax, $record);
     }
 
         /**
@@ -141,7 +153,11 @@ class InfrastructureTaxRecordController extends Controller
     public function changeToUnVerified(Request $request, InfrastructureTax $tax, InfrastructureTaxRecord $record)
     {
         Gate::authorize('update', $record);
+
+        $isResponseValid = InfrastructureTaxRecord::mapUpdateToUnVerified($request, $tax, $record);
+        if ( !is_null($isResponseValid) ) return $isResponseValid;   
         
+        return InfrastructureTaxRecord::changeToUnVerified($request, $tax, $record);
     }
 
     /**
