@@ -137,7 +137,7 @@ class InfrastructureTaxRecord extends Model
     // +--------------- RELATION METHODS
     // +===============================================
 
-        /**
+    /**
      * The model map combos method
      *
      * @param [type] $model
@@ -282,7 +282,7 @@ class InfrastructureTaxRecord extends Model
             ], 500);
         }
 
-        // kalau bkan draft dan bukan admin draft
+        // kalau bukan draft dan bukan admin
         if ( $model->status != 'draft' && $request->user()->id != 1 ) {
             return response()->json([
                 'success' => false,
