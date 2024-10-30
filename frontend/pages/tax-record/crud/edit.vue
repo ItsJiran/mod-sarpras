@@ -62,8 +62,8 @@
 				</v-row>
 
 				<v-row dense>
-					<v-img v-if="blob_path != undefined && blob_path != ''"
-						:src="blob_path" 
+					<v-img v-if="record.proof_img_path != undefined && record.proof_img_path != ''"
+						:src="record.proof_img_path" 
 						aspect-ratio="16/9" 
 						cover 
 					/>
@@ -79,16 +79,15 @@ export default {
 	name: "infrastructure-record-edit",
 	data: () => {
 		return {
-			blob_path: '',
 		}
 	},
 	methods: {
 		changeImg: (record, data) => {
 			if(record.proof_img == '' || record.proof_img == undefined){
-				data.blob_path = '';				
+				record.proof_img_path = '';				
 			} else {
 				const url = URL.createObjectURL(record.proof_img);			
-				data.blob_path = url;
+				record.proof_img_path = url;
 			}
 		}
 	}
