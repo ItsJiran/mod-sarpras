@@ -93,6 +93,71 @@ class InfrastructureTaxRecordController extends Controller
     }
 
     /**
+     * Update the specified resource in storage.
+     *
+     * @param  \Illuminate\Http\Request $request
+     * @param  \Module\Infrastructure\Models\InfrastructureTaxRecord $infrastructureTaxRecord
+     * @return \Illuminate\Http\Response
+     */
+    public function changeToPending(Request $request, InfrastructureTax $tax, InfrastructureTaxRecord $record)
+    {
+        Gate::authorize('update', $record);
+
+    }
+
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param  \Illuminate\Http\Request $request
+     * @param  \Module\Infrastructure\Models\InfrastructureTaxRecord $infrastructureTaxRecord
+     * @return \Illuminate\Http\Response
+     */
+    public function changeToDraft(Request $request, InfrastructureTax $tax, InfrastructureTaxRecord $record)
+    {
+        Gate::authorize('update', $record);
+        
+    }
+
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param  \Illuminate\Http\Request $request
+     * @param  \Module\Infrastructure\Models\InfrastructureTaxRecord $infrastructureTaxRecord
+     * @return \Illuminate\Http\Response
+     */
+    public function changeToVerified(Request $request, InfrastructureTax $tax, InfrastructureTaxRecord $record)
+    {
+        Gate::authorize('update', $record);
+        
+    }
+
+        /**
+     * Update the specified resource in storage.
+     *
+     * @param  \Illuminate\Http\Request $request
+     * @param  \Module\Infrastructure\Models\InfrastructureTaxRecord $infrastructureTaxRecord
+     * @return \Illuminate\Http\Response
+     */
+    public function changeToUnVerified(Request $request, InfrastructureTax $tax, InfrastructureTaxRecord $record)
+    {
+        Gate::authorize('update', $record);
+        
+    }
+
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param  \Illuminate\Http\Request $request
+     * @param  \Module\Infrastructure\Models\InfrastructureTaxRecord $infrastructureTaxRecord
+     * @return \Illuminate\Http\Response
+     */
+    public function changeToCanceled(Request $request, InfrastructureTax $tax, InfrastructureTaxRecord $record)
+    {
+        Gate::authorize('update', $record);
+        
+    }
+
+    /**
      * Remove the specified resource from storage.
      *
      * @param  \Module\Infrastructure\Models\InfrastructureTaxRecord $infrastructureTaxRecord

@@ -108,17 +108,21 @@ class InfrastructureTaxRecord extends Model
 
     public static function mapResourceShow(Request $request, $model = null): array
     {
+        $user = $model->user::class::mapResourceShow($request,$model->user);
         return [
             'id' => $model->id,
             'name' => $model->name, 
-            'status' => $model->status,
-            'status_step' => self::mapStatusStep($request, $model),
             'paydate' => $model->paydate,
             'payprice' => $model->payprice,
             'description' => $model->description,
             'proof_img_path' => $model->proof_img_path,
-            'user' => $model->user::class::mapResourceShow($request,$model->user),
+
+            'user' => $user,
+            'status' => $model->status,
+            'status_step' => self::mapStatusStep($request, $model),
+            
             'is_admin' => $request->user()->id == 1,
+            'is_creator' => $request->user()->id == $user->id,
         ];
     }
 
@@ -265,6 +269,32 @@ class InfrastructureTaxRecord extends Model
         return $array;
     }
 
+    public static function mapUpdateToDraft(Request $request, InfrastructureTax $tax, $model) : JsonResponse | null
+    {
+        // kalau bukan draft dan bukan admin
+        if ( $model->status != 'pending' && $request->user()->id != 1 ) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Anda tidak berwenang!'
+            ], 500);
+        }
+
+        return null;
+    }
+
+    public static function mapUpdateToPending(Request $request, InfrastructureTax $tax, $model) : JsonResponse | null
+    {
+        // kalau bukan draft dan bukan admin
+        if ( $model->status != 'draft' && $request->user()->id != 1 ) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Anda tidak berwenang!'
+            ], 500);
+        }
+
+        return null;
+    }
+
     public static function mapUpdateRequestValid(Request $request, InfrastructureTax $tax, $model) : JsonResponse | null
     {
         if ( is_null($request->user) ) {
@@ -290,10 +320,10 @@ class InfrastructureTaxRecord extends Model
             ], 500);
         }
 
-        if ( $tax->isTypeLog() ) 
+        if ( $tax->isTypeLog() )
             return self::mapUpdateRequestLog($request, $tax, $model);
 
-        if ( $tax->isTypePeriodic() ) 
+        if ( $tax->isTypePeriodic() )
             return self::mapUpdateRequestPeriodic($request, $tax, $model); 
     }
 
@@ -333,35 +363,35 @@ class InfrastructureTaxRecord extends Model
 
     public static function toPending(Request $request, InfrastructureTaxRecord $model)
     {
-        self::changeStatuses($request, $model, function( Request $request, InfrastructureTaxRecord $model ){
+        return self::changeStatuses($request, $model, function( Request $request, InfrastructureTaxRecord $model ){
             
         });
     }
 
     public static function toCancelled(Request $request, InfrastructureTaxRecord $model)
     {
-        self::changeStatuses($request, $model, function( Request $request, InfrastructureTaxRecord $model ){
+        return self::changeStatuses($request, $model, function( Request $request, InfrastructureTaxRecord $model ){
             
         });
     }
 
     public static function toDraft(Request $request, InfrastructureTaxRecord $record)
     {
-        self::changeStatuses($request, $model, function( Request $request, InfrastructureTaxRecord $model ){
+        return self::changeStatuses($request, $model, function( Request $request, InfrastructureTaxRecord $model ){
             
         });
     }
 
     public static function toVerified(Request $request, InfrastructureTaxRecord $record)
     {
-        self::changeStatuses($request, $model, function( Request $request, InfrastructureTaxRecord $model ){
+        return self::changeStatuses($request, $model, function( Request $request, InfrastructureTaxRecord $model ){
             
         });
     }
 
     public static function toUnverified(Request $request, InfrastructureTaxRecord $record)
     {
-        self::changeStatuses($request, $model, function( Request $request, InfrastructureTaxRecord $model ){
+        return self::changeStatuses($request, $model, function( Request $request, InfrastructureTaxRecord $model ){
             
         });
     }

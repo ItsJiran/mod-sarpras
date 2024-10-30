@@ -158,6 +158,10 @@ Route::post('tax/{tax}/record',[InfrastructureTaxRecordController::class, 'store
 Route::put('tax/{tax}/record/{record}',[InfrastructureTaxRecordController::class, 'update']);
 Route::delete('tax/{tax}/record/{record}',[InfrastructureTaxRecordController::class, 'destroy']);
 
+// change statuses 
+Route::post('tax/{tax}/record/{record}/pending',[InfrastructureTaxRecordController::class, 'changeToPending']);
+Route::post('tax/{tax}/record/{record}/draft',[InfrastructureTaxRecordController::class, 'changeToDraft']);
+
 // +-----------------------------------------------
 // +-- from resource module tax record
 Route::resource('maintenance/{maintenance}/record',InfrastructureMaintenanceRecordController::class)->parameters([

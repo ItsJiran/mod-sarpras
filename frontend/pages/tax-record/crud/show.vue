@@ -130,11 +130,20 @@
 export default {
 	name: "infrastructure-record-show",
 	methods : {
+		convertToDraft : function (record,data) {
+			console.log('draft is clicked');
+		},
 		convertToPending : function (record,data) {
 			console.log('pending is clicked');
 		},
-		convertToDraft : function (record,data) {
-			console.log('draft is clicked');
+		convertToCancelled : function (record,data) {
+			console.log('cancelled is clicked');
+		},
+		convertToVerified : function (record,data) {
+			console.log('cancelled is clicked');
+		},
+		convertToUnVerified : function (record,data) {
+			console.log('cancelled is clicked');
 		}
 	},
 };
