@@ -2,12 +2,37 @@
 	<form-show
 		with-helpdesk
 	>
+		<template v-slot:toolbar>
+			<v-btn icon>
+				<v-icon>
+					home
+				</v-icon>
+			</v-btn>
+		</template>
+
 		<template v-slot:default="{ 
 			combos: { statuses },
 			record,
 			store, 
 			}">
 			<v-card-text>
+
+				<v-stepper v-if="record != undefined && record.status_step != undefined" :model-value="record.status_step" class="mb-6" alt-labels>
+					<v-stepper-header>
+						<v-stepper-item title="Draft" value="1"></v-stepper-item>
+
+						<v-divider></v-divider>
+
+						<v-stepper-item title="Pending" value="2"></v-stepper-item>
+
+						<v-divider></v-divider>
+
+						<v-stepper-item :title="record.status_step == 3 ? record.status : 'Confirmed'" value="3"></v-stepper-item>
+					</v-stepper-header>
+				</v-stepper>
+
+				<div class="text-overline mt-6">Data :</div>
+				<v-divider :thickness="3" class="mt-3 mb-6" />
 
 				<v-row dense>
 					<v-col cols="12">
@@ -29,7 +54,7 @@
 					</v-col>
 				</v-row>
 
-				<v-row dense>
+				<!-- <v-row v-if="record != undefined && record.is_admin == true" dense>
 					<v-combobox
 					v-if="statuses != undefined"
 					:items="statuses.store" 
@@ -38,7 +63,7 @@
 					v-model="record.status"			
 					:readonly="true"
 					></v-combobox>
-				</v-row>
+				</v-row> -->
 
 				<v-row dense>
 					<v-col cols="12">
@@ -87,12 +112,43 @@
 			</v-card-text>
 		</template>
 
-		<template v-slot:helpdesk></template>
+		<template v-slot:helpdesk="{ theme }">
+
+
+			<div v-if="record != undefined && record.status == 'pending'">
+				<v-btn 
+				class="mt-3"
+				:color="theme"
+				block
+				variant="flat"
+				@click="convertToDraft(record,this)"
+				>Ubah Ke Draft</v-btn>
+			</div>
+
+			<div v-if="record != undefined && record.status == 'draft'">
+				<v-btn 
+					class="mt-3"
+					:color="theme"
+					block
+					variant="flat"
+					@click="convertToPending(record,this)"
+				>Ubah Ke Pending</v-btn>
+			</div>
+
+		</template>
 	</form-show>
 </template>
 
 <script>
 export default {
 	name: "infrastructure-record-show",
+	methods : {
+		convertToPending : function (record,data) {
+
+		},
+		convertToDraft : function (record,data) {
+
+		}
+	},
 };
 </script>

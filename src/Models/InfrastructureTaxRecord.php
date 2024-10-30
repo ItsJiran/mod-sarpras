@@ -112,12 +112,25 @@ class InfrastructureTaxRecord extends Model
             'id' => $model->id,
             'name' => $model->name, 
             'status' => $model->status,
+            'status_step' => self::mapStatusStep($request, $model),
             'paydate' => $model->paydate,
             'payprice' => $model->payprice,
             'description' => $model->description,
             'proof_img_path' => $model->proof_img_path,
             'user' => $model->user::class::mapResourceShow($request,$model->user),
+            'is_admin' => $request->user()->id == 1,
         ];
+    }
+
+    public static function mapStatusStep(Request $request, $model) 
+    {
+        if ( $model->status == 'draft' ) 
+            return 1;
+
+        if ( $model->status == 'pending' ) 
+            return 2;
+
+        return 3;
     }
 
     // +===============================================
@@ -132,7 +145,7 @@ class InfrastructureTaxRecord extends Model
      */
     public static function mapCombos(Request $request, $model = null): array
     {
-        return [            
+        return [
             'statuses' => [
                 'regular' => self::mapStatus($request),
                 'store' => self::mapStoreStatus($request),
