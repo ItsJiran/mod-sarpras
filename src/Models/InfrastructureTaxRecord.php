@@ -17,6 +17,8 @@ use Module\Infrastructure\Models\InfrastructureTax;
 use Module\Infrastructure\Models\InfrastructureUnit;
 use Module\Infrastructure\Models\InfrastructureUser;
 
+
+use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Response;
 
 class InfrastructureTaxRecord extends Model
@@ -183,7 +185,7 @@ class InfrastructureTaxRecord extends Model
         return $array;
     }
 
-    public static function mapStoreRequestValid(Request $request, InfrastructureTax $tax) : Response | null
+    public static function mapStoreRequestValid(Request $request, InfrastructureTax $tax) : JsonJson
     {
         if ( is_null($request->user) ) {
             return response()->json([
@@ -199,12 +201,12 @@ class InfrastructureTaxRecord extends Model
             return self::mapStoreRequestPeriodic($request, $tax);               
     }
 
-    public static function mapStoreRequestLog(Request $request, InfrastructureTax $tax) : Response | null
+    public static function mapStoreRequestLog(Request $request, InfrastructureTax $tax) : JsonResponse | null
     {
         return null;
     }
 
-    public static function mapStoreRequestPeriodic(Request $request, InfrastructureTax $tax) : Response | null
+    public static function mapStoreRequestPeriodic(Request $request, InfrastructureTax $tax) : JsonResponse | null
     {
         if ( self::isOngoing($request, $tax) ) {
             return response()->json([
@@ -250,7 +252,7 @@ class InfrastructureTaxRecord extends Model
         return $array;
     }
 
-    public static function mapUpdateRequestValid(Request $request, InfrastructureTax $tax, $model) : Response | null
+    public static function mapUpdateRequestValid(Request $request, InfrastructureTax $tax, $model) : JsonResponse | null
     {
         if ( is_null($request->user) ) {
             return response()->json([
@@ -274,12 +276,12 @@ class InfrastructureTaxRecord extends Model
             return self::mapUpdateRequestPeriodic($request, $tax, $model); 
     }
 
-    public static function mapUpdateRequestLog(Request $request, InfrastructureTax $tax, $model) 
+    public static function mapUpdateRequestLog(Request $request, InfrastructureTax $tax, $model) : JsonResponse | null
     {
         return null;
     }
 
-    public static function mapUpdateRequestPeriodic(Request $request, InfrastructureTax $tax, $model) 
+    public static function mapUpdateRequestPeriodic(Request $request, InfrastructureTax $tax, $model) : JsonResponse | null
     {
         return null;
     }
