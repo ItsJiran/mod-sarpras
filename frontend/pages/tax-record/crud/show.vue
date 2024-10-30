@@ -114,14 +114,6 @@
 				@click="convertToDraft(record,this)"
 				>Ubah Ke Draft</v-btn>			
 
-				<v-btn v-if="record != undefined && record.status_step != 3"
-				class="mt-3"
-				:color="theme"
-				block
-				variant="flat"
-				@click="convertToCancelled(record,this)"
-				>Ubah Ke Cancelled</v-btn>
-
 				<v-btn v-if="record != undefined && record.status_step != 3 && record.status_step == 2"
 				class="mt-3"
 				:color="theme"
@@ -145,6 +137,15 @@
 				variant="flat"
 				@click="convertToPending(record,this)"
 				>Ubah Ke Pending</v-btn>
+
+				<v-btn v-if="record != undefined && record.status_step != 3"
+				class="mt-3"
+				:color="theme"
+				block
+				variant="flat"
+				@click="convertToCancelled(record,this)"
+				>Ubah Ke Cancelled</v-btn>
+
 
 		</template>
 	</form-show>

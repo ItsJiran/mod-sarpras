@@ -94,7 +94,7 @@ class InfrastructureTaxRecord extends Model
         return $this->belongsTo(InfrastructureTax::class, 'tax_id');
     } 
 
-        /**
+    /**
      * Get the model that the image belongs to.
      */
     public function user(): BelongsTo
