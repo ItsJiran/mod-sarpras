@@ -123,7 +123,7 @@ class InfrastructureTaxRecordController extends Controller
         $isResponseValid = InfrastructureTaxRecord::mapUpdateToDraft($request, $tax, $record);
         if ( !is_null($isResponseValid) ) return $isResponseValid;   
         
-        return InfrastructureTaxRecord::changeToDraft($request, $tax, $record);
+        return InfrastructureTaxRecord::toDraft($request, $tax, $record);
     }
 
     /**
@@ -140,7 +140,7 @@ class InfrastructureTaxRecordController extends Controller
         $isResponseValid = InfrastructureTaxRecord::mapUpdateToVerified($request, $tax, $record);
         if ( !is_null($isResponseValid) ) return $isResponseValid;   
         
-        return InfrastructureTaxRecord::changeToVerified($request, $tax, $record);
+        return InfrastructureTaxRecord::toVerified($request, $tax, $record);
     }
 
         /**
@@ -157,7 +157,7 @@ class InfrastructureTaxRecordController extends Controller
         $isResponseValid = InfrastructureTaxRecord::mapUpdateToUnVerified($request, $tax, $record);
         if ( !is_null($isResponseValid) ) return $isResponseValid;   
         
-        return InfrastructureTaxRecord::changeToUnVerified($request, $tax, $record);
+        return InfrastructureTaxRecord::toUnVerified($request, $tax, $record);
     }
 
     /**
@@ -174,7 +174,7 @@ class InfrastructureTaxRecordController extends Controller
         $isResponseValid = InfrastructureTaxRecord::mapUpdateToCancelled($request, $tax, $record);
         if ( !is_null($isResponseValid) ) return $isResponseValid;   
         
-        return InfrastructureTaxRecord::changeToCancelled($request, $tax, $record);
+        return InfrastructureTaxRecord::toCancelled($request, $tax, $record);
     }
 
     /**
