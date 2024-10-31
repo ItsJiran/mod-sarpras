@@ -272,7 +272,7 @@ class InfrastructureTaxRecord extends Model
     public static function mapUpdateToCancelled(Request $request, InfrastructureTax $tax, $model) : JsonResponse | null
     {
         // kalau bukan draft dan bukan admin
-        if ( $model->status_step != '3' ) {
+        if ( $model->status_step == '3' ) {
             return response()->json([
                 'success' => false,
                 'message' => 'Data sudah selesai!'
@@ -285,7 +285,7 @@ class InfrastructureTaxRecord extends Model
     public static function mapUpdateToVerified(Request $request, InfrastructureTax $tax, $model) : JsonResponse | null
     {
         // kalau bukan draft dan bukan admin
-        if ( $model->status_step != '3' ) {
+        if ( $model->status_step == '3' ) {
             return response()->json([
                 'success' => false,
                 'message' => 'Data sudah selesai!'
@@ -298,7 +298,7 @@ class InfrastructureTaxRecord extends Model
     public static function mapUpdateToUnVerified(Request $request, InfrastructureTax $tax, $model) : JsonResponse | null
     {
         // kalau bukan draft dan bukan admin
-        if ( $model->status_step != '3' ) {
+        if ( $model->status_step == '3' ) {
             return response()->json([
                 'success' => false,
                 'message' => 'Data sudah selesai!'
