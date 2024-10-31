@@ -202,9 +202,9 @@ class InfrastructureTaxRecord extends Model
         return $array;
     }
 
-    public static function mapStoreRequestValid(Request $request, InfrastructureTax $tax) : JsonJson
+    public static function mapStoreRequestValid(Request $request, InfrastructureTax $tax) : JsonResponse | null
     {
-        if ( is_null($request->user) ) {
+        if ( is_null($request->user()) ) {
             return response()->json([
                 'success' => false,
                 'message' => 'Gagal menambahkan data karena user tidak ada..'
@@ -297,7 +297,7 @@ class InfrastructureTaxRecord extends Model
 
     public static function mapUpdateRequestValid(Request $request, InfrastructureTax $tax, $model) : JsonResponse | null
     {
-        if ( is_null($request->user) ) {
+        if ( is_null($request->user()) ) {
             return response()->json([
                 'success' => false,
                 'message' => 'Gagal menambahkan data karena user tidak ada..'
@@ -341,58 +341,84 @@ class InfrastructureTaxRecord extends Model
     // +--------------- STATUS METHODS
     // +===============================================
 
-    public static function changeStatuses(Request $request, InfrastructureTaxRecord $model, $callback) {
-        DB::connection($model->connection)->beginTransaction();
+    public static function changeStatuses(Request $request, InfrastructureTax $tax, InfrastructureTaxRecord $record, $callback) {
+        DB::connection($record->connection)->beginTransaction();
         try {
-            $callback($request, $model);
+            $callback($request, $tax, $record);
+            $record->save();
 
-            DB::connection($model->connection)->commit();
+            DB::connection($record->connection)->commit();
 
             return response()->json([
                 'success' => true,
-                'message' => 'Berhasil mengubah status..'
+                'message' => 'Berhasil mengubah status..',
+                'record' => self::mapResourceShow($request, $record),                
             ], 200);
         } catch (\Exception $e) {
             DB::rollback();
             return response()->json([
                 'success' => false,
-                'message' => 'Gagal mengubah status..'
+                'message' => $e->getMessage(),
             ], 500);
         }
     }
 
-    public static function toPending(Request $request, InfrastructureTaxRecord $model)
+    public static function toPending(Request $request, InfrastructureTax $tax, InfrastructureTaxRecord $record)
     {
-        return self::changeStatuses($request, $model, function( Request $request, InfrastructureTaxRecord $model ){
+        return self::changeStatuses($request, $tax, $record, function( Request $request, InfrastructureTax $tax, InfrastructureTaxRecord $record ){
+            if($record->status != 'pending' && $record->status != 'draft') {
+                throw new \Exception('Data sudah selesai');         
+            }
             
+            $record->status = 'pending';
         });
     }
 
-    public static function toCancelled(Request $request, InfrastructureTaxRecord $model)
+    public static function toCancelled(Request $request, InfrastructureTax $tax, InfrastructureTaxRecord $record)
     {
-        return self::changeStatuses($request, $model, function( Request $request, InfrastructureTaxRecord $model ){
-            
+        return self::changeStatuses($request, $tax, $record, function( Request $request, InfrastructureTax $tax, InfrastructureTaxRecord $record ){            
+            if($record->status != 'pending' && $record->status != 'draft') {
+                throw new \Exception('Data sudah selesai');         
+            }
+
+            if($record->status == 'cancelled') {
+                throw new \Exception('Data sudah tercancel');         
+            }
+
+            $record->status = 'cancelled';
         });
     }
 
-    public static function toDraft(Request $request, InfrastructureTaxRecord $record)
+    public static function toDraft(Request $request, InfrastructureTax $tax, InfrastructureTaxRecord $record)
     {
-        return self::changeStatuses($request, $model, function( Request $request, InfrastructureTaxRecord $model ){
+        return self::changeStatuses($request, $tax, $record, function( Request $request, InfrastructureTax $tax, InfrastructureTaxRecord $record ){
+            if($record->status != 'pending' && $record->status != 'draft') {
+                throw new \Exception('Data sudah selesai');         
+            }
             
+            $record->status = 'draft';
         });
     }
 
-    public static function toVerified(Request $request, InfrastructureTaxRecord $record)
+    public static function toVerified(Request $request, InfrastructureTax $tax, InfrastructureTaxRecord $record)
     {
-        return self::changeStatuses($request, $model, function( Request $request, InfrastructureTaxRecord $model ){
+        return self::changeStatuses($request, $tax, $record, function( Request $request, InfrastructureTax $tax, InfrastructureTaxRecord $record ){
+            if($record->status != 'pending') {
+                throw new \Exception('Data tidak sedang pending');         
+            }
             
+            $record->status = 'verified';
         });
     }
 
-    public static function toUnverified(Request $request, InfrastructureTaxRecord $record)
+    public static function toUnverified(Request $request, InfrastructureTax $tax, InfrastructureTaxRecord $record)
     {
-        return self::changeStatuses($request, $model, function( Request $request, InfrastructureTaxRecord $model ){
+        return self::changeStatuses($request, $tax, $record, function( Request $request, InfrastructureTax $tax, InfrastructureTaxRecord $record ){
+            if($record->status != 'pending') {
+                throw new \Exception('Data tidak sedang pending');         
+            }
             
+            $record->status = 'unverified';
         });
     }
 
