@@ -14,7 +14,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
-class InfrastructureTaxPeriodics extends Model
+class InfrastructureTaxPeriodic extends Model
 {
     use Filterable;
     use HasMeta;

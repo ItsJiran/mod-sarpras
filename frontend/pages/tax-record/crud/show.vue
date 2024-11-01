@@ -146,6 +146,14 @@
 				@click="convertToCancelled(record,this)"
 				>Ubah Ke Cancelled</v-btn>
 
+				<v-btn
+				class="mt-3"
+				:color="theme"
+				block
+				variant="flat"
+				@click="redirectPage('used')"
+				>Lihat Yang Digunakan</v-btn>
+
 
 		</template>
 	</form-show>
@@ -155,20 +163,88 @@
 export default {
 	name: "infrastructure-record-show",
 	methods : {
+		redirectPage : function ( name = '' ) {
+			const current_route = this.$router.currentRoute._value;
+			const current_route_name = current_route.name;
+			
+			let target_methods = ['show','create','delete','update'];
+			let current_route_name_clean = current_route_name;
+
+			for ( let method of target_methods )
+				current_route_name_clean = current_route_name_clean.replaceAll(method,'');
+			
+			let redirect_to = current_route_name_clean + name;
+			return this.$router.push({ name : redirect_to });
+		},
 		convertToDraft : function (record,data) {
 			console.log('draft is clicked');
+			const route_params = this.$router.currentRoute._value.params;
+			console.log(route_params);
+
+			this.$http(`infrastructure/api/tax/`+route_params['tax']+'/record/'+route_params['record']+'/draft', {
+                method: "POST",
+            }).then((response) => {
+                if(response.success && response.record){					
+					record.status = response.record.status;
+					record.status_step = response.record.status_step;
+				}
+            });	
+			
 		},
 		convertToPending : function (record,data) {
 			console.log('pending is clicked');
+			const route_params = this.$router.currentRoute._value.params;
+			console.log(route_params);
+
+			this.$http(`infrastructure/api/tax/`+route_params['tax']+'/record/'+route_params['record']+'/pending', {
+                method: "POST",
+            }).then((response) => {
+                if(response.success && response.record){
+					record.status = response.record.status;
+					record.status_step = response.record.status_step;
+				}
+            });
 		},
 		convertToVerified : function (record,data) {
 			console.log('verified is clicked');
+			const route_params = this.$router.currentRoute._value.params;
+
+			this.$http(`infrastructure/api/tax/`+route_params['tax']+'/record/'+route_params['record']+'/verified', {
+                method: "POST",
+            }).then((response) => {
+                if(response.success && response.record){
+					record.status = response.record.status;
+					record.status_step = response.record.status_step;
+				}
+            });
+
 		},
 		convertToUnVerified : function (record,data) {
 			console.log('unverified is clicked');
+			const route_params = this.$router.currentRoute._value.params;
+
+			this.$http(`infrastructure/api/tax/`+route_params['tax']+'/record/'+route_params['record']+'/unverified', {
+                method: "POST",
+            }).then((response) => {
+                if(response.success && response.record){
+					record.status = response.record.status;
+					record.status_step = response.record.status_step;
+				}
+            });
 		},
 		convertToCancelled : function (record,data) {
 			console.log('cancelled is clicked');
+			const route_params = this.$router.currentRoute._value.params;
+
+			this.$http(`infrastructure/api/tax/`+route_params['tax']+'/record/'+route_params['record']+'/cancelled', {
+                method: "POST",
+            }).then((response) => {
+                if(response.success && response.record){
+					record.status = response.record.status;
+					record.status_step = response.record.status_step;
+				}
+            });
+
 		},
 	},
 };

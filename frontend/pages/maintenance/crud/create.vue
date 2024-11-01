@@ -119,7 +119,7 @@ export default {
 	},
 	methods : {
 		// methods
-		changeMaintenaceType : function (record,data) {
+		changeMaintenanceType : function (record,data) {
 
 		},
 		changeTargetType : function (record,data) {
@@ -182,9 +182,9 @@ export default {
 				data.getRefDocumentAsset(record,data);
 
 			if ( !isConnectedToAsset )
-				data.getRefDocummentUnit(record,data);
+				data.getRefDocumentUnit(record,data);
 		},
-		getRefDocummentUnit : function (record,data) {
+		getRefDocumentUnit : function (record,data) {
 			this.$http(`infrastructure/api/ref-document/combos/unit/${record.unit.id}`).then(				
 				(response) => { data.refDocument = response }
 			);

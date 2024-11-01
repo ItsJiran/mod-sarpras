@@ -26,6 +26,7 @@ use Module\Infrastructure\Models\InfrastructureTaxPeriodic;
 
 // type of the target tax
 use Module\Infrastructure\Models\InfrastructureTaxAsset;
+use Module\Infrastructure\Models\InfrastructureTaxRecord;
 use Module\Infrastructure\Models\InfrastructureTaxDocument;
 
 class InfrastructureTax extends Model
@@ -110,6 +111,15 @@ class InfrastructureTax extends Model
     {
         return $this->morphTo(__FUNCTION__, 'targetable_type', 'targetable_id');
     }  
+/**
+     * Get all of the records for the InfrastructureTax
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function records(): HasMany
+    {
+        return $this->hasMany(InfrastructureTaxRecord::class, 'tax_id', 'id');
+    }
 
     /**
      * Get the model that the image belongs to.

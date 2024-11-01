@@ -17,6 +17,7 @@ use Module\Infrastructure\Models\InfrastructureTax;
 use Module\Infrastructure\Models\InfrastructureUnit;
 use Module\Infrastructure\Models\InfrastructureUser;
 
+use Carbon\Carbon;
 
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Response;
@@ -235,7 +236,7 @@ class InfrastructureTaxRecord extends Model
         return null;
     }
 
-    public static function isOngoing( Request $request, InfrastructureTax $tax ) : boolean
+    public static function isOngoing( Request $request, InfrastructureTax $tax ) : bool
     {
         $wherePending = [
             ['tax_id','=',$tax->id],
@@ -383,8 +384,7 @@ class InfrastructureTaxRecord extends Model
     public static function changeStatuses(Request $request, InfrastructureTax $tax, InfrastructureTaxRecord $record, $callback) {
         DB::connection($record->connection)->beginTransaction();
         try {
-            $callback($request, $tax, $record);
-            $record->save();
+            $callback($request, $tax, $record);            
 
             DB::connection($record->connection)->commit();
 
@@ -410,6 +410,7 @@ class InfrastructureTaxRecord extends Model
             }
             
             $record->status = 'pending';
+            $record->save();
         });
     }
 
@@ -425,6 +426,7 @@ class InfrastructureTaxRecord extends Model
             }
 
             $record->status = 'cancelled';
+            $record->save();
         });
     }
 
@@ -436,6 +438,7 @@ class InfrastructureTaxRecord extends Model
             }
             
             $record->status = 'draft';
+            $record->save();
         });
     }
 
@@ -446,7 +449,19 @@ class InfrastructureTaxRecord extends Model
                 throw new \Exception('Data tidak sedang pending');         
             }
             
+            if ( $tax->isTypePeriodic() ) {
+                $now = Carbon::now();
+                $now->addDays($tax->taxable->period_number_day);
+                $now->addMonths($tax->taxable->period_number_month);
+                $now->addYear($tax->taxable->period_number_year);
+
+                $tax->taxable->duedate = $now;
+                $tax->taxable->save();
+                $tax->save();
+            }
+
             $record->status = 'verified';
+            $record->save();
         });
     }
 
@@ -458,6 +473,7 @@ class InfrastructureTaxRecord extends Model
             }
             
             $record->status = 'unverified';
+            $record->save();
         });
     }
 

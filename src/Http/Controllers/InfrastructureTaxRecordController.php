@@ -19,12 +19,12 @@ class InfrastructureTaxRecordController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index(Request $request)
+    public function index(Request $request, InfrastructureTax $tax)
     {
         Gate::authorize('view', InfrastructureTaxRecord::class);
 
         return new TaxRecordCollection(
-            InfrastructureTaxRecord::applyMode($request->mode)
+            $tax->records()
                 ->filter($request->filters)
                 ->search($request->findBy)
                 ->sortBy($request->sortBy)
@@ -106,7 +106,7 @@ class InfrastructureTaxRecordController extends Controller
         $isResponseValid = InfrastructureTaxRecord::mapUpdateToPending($request, $tax, $record);
         if ( !is_null($isResponseValid) ) return $isResponseValid;   
         
-        return InfrastructureTaxRecord::changeToPending($request, $tax, $record);
+        return InfrastructureTaxRecord::toPending($request, $tax, $record);
     }
 
     /**
