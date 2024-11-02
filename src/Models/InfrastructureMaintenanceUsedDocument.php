@@ -31,14 +31,14 @@ class InfrastructureMaintenanceUsedDocument extends Model
      *
      * @var string
      */
-    protected $table = 'infrastructure_maintenanceuseddocuments';
+    protected $table = 'infrastructure_maintenance_used_documents';
 
     /**
      * The roles variable
      *
      * @var array
      */
-    protected $roles = ['infrastructure-maintenanceuseddocument'];
+    protected $roles = ['infrastructure-maintenance-used-document'];
 
     /**
      * The attributes that should be cast to native types.

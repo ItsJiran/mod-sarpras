@@ -31,14 +31,14 @@ class InfrastructureTaxUsedAsset extends Model
      *
      * @var string
      */
-    protected $table = 'infrastructure_taxusedassets';
+    protected $table = 'infrastructure_tax_used_assets';
 
     /**
      * The roles variable
      *
      * @var array
      */
-    protected $roles = ['infrastructure-taxusedasset'];
+    protected $roles = ['infrastructure-tax-used-asset'];
 
     /**
      * The attributes that should be cast to native types.
