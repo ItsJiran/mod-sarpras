@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('infrastructure_tax_used_assets', function (Blueprint $table) {
             $table->id();
-            // for relatition use
+            // for relation use
             $table->foreignId('tax_used_id');
             $table->foreignId('unit_id');
             $table->foreignId('asset_id');

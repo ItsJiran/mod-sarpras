@@ -16,6 +16,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Module\Infrastructure\Models\InfrastructureTax;
 use Module\Infrastructure\Models\InfrastructureUnit;
 use Module\Infrastructure\Models\InfrastructureUser;
+use Module\Infrastructure\Models\InfrastructureTaxRecordUsed;
 
 use Carbon\Carbon;
 
@@ -102,6 +103,14 @@ class InfrastructureTaxRecord extends Model
     {
         return $this->belongsTo(InfrastructureUser::class, 'user_id');
     } 
+
+    /**
+     * Get the model that the image belongs to.
+     */
+    public function uses(): HasMany 
+    {
+        return $this->hasMany(InfrastructureTaxRecordUsed::class, 'asset_id');
+    }
 
     // +===============================================
     // +--------------- RESROUCE METHODS

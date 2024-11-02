@@ -146,14 +146,15 @@
 				@click="convertToCancelled(record,this)"
 				>Ubah Ke Cancelled</v-btn>
 
+				<v-spacer></v-spacer>
+
 				<v-btn
 				class="mt-3"
 				:color="theme"
 				block
 				variant="flat"
 				@click="redirectPage('used')"
-				>Lihat Yang Digunakan</v-btn>
-
+				>Lihat Yang Asset/Dokumen Digunakan</v-btn>
 
 		</template>
 	</form-show>
