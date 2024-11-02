@@ -384,42 +384,84 @@ export default {
 		},
 
 		{
-			path: "tax/:tax/record/:record/used",
+			path: "tax/:tax/record/:record/used-asset",
 			component: () =>
 				import(
-					/* webpackChunkName: "infrastructure" */ "@modules/infrastructure/frontend/pages/tax-record-used/index.vue"
+					/* webpackChunkName: "infrastructure" */ "@modules/infrastructure/frontend/pages/tax-record-used-asset/index.vue"
 				),
 			children: [
 				{
 					path: "",
-					name: "infrastructure-tax-record-used",
+					name: "infrastructure-tax-record-used-asset",
 					component: () =>
 						import(
-							/* webpackChunkName: "infrastructure" */ "@modules/infrastructure/frontend/pages/tax-record-used/crud/data.vue"
+							/* webpackChunkName: "infrastructure" */ "@modules/infrastructure/frontend/pages/tax-record-used-asset/crud/data.vue"
 						),
 				},
 				{
 					path: "create",
-					name: "infrastructure-tax-record-used-create",
+					name: "infrastructure-tax-record-used-asset-create",
 					component: () =>
 						import(
-							/* webpackChunkName: "infrastructure" */ "@modules/infrastructure/frontend/pages/tax-record-used/crud/create.vue"
+							/* webpackChunkName: "infrastructure" */ "@modules/infrastructure/frontend/pages/tax-record-used-asset/crud/create.vue"
 						),
 				},
 				{
 					path: ":record/show",
-					name: "infrastructure-tax-record-used-show",
+					name: "infrastructure-tax-record-used-asset-show",
 					component: () =>
 						import(
-							/* webpackChunkName: "infrastructure" */ "@modules/infrastructure/frontend/pages/tax-record-used/crud/show.vue"
+							/* webpackChunkName: "infrastructure" */ "@modules/infrastructure/frontend/pages/tax-record-used-asset/crud/show.vue"
 						),
 				},		
 				{
 					path: ":record/edit",
-					name: "infrastructure-tax-record-used-edit",
+					name: "infrastructure-tax-record-used-asset-edit",
 					component: () =>
 						import(
-							/* webpackChunkName: "infrastructure" */ "@modules/infrastructure/frontend/pages/tax-record-used/crud/edit.vue"
+							/* webpackChunkName: "infrastructure" */ "@modules/infrastructure/frontend/pages/tax-record-used-asset/crud/edit.vue"
+						),
+				},			
+			]
+		},
+
+		{
+			path: "tax/:tax/record/:record/used-document",
+			component: () =>
+				import(
+					/* webpackChunkName: "infrastructure" */ "@modules/infrastructure/frontend/pages/tax-record-used-document/index.vue"
+				),
+			children: [
+				{
+					path: "",
+					name: "infrastructure-tax-record-used-document",
+					component: () =>
+						import(
+							/* webpackChunkName: "infrastructure" */ "@modules/infrastructure/frontend/pages/tax-record-used-document/crud/data.vue"
+						),
+				},
+				{
+					path: "create",
+					name: "infrastructure-tax-record-used-document-create",
+					component: () =>
+						import(
+							/* webpackChunkName: "infrastructure" */ "@modules/infrastructure/frontend/pages/tax-record-used-document/crud/create.vue"
+						),
+				},
+				{
+					path: ":record/show",
+					name: "infrastructure-tax-record-used-document-show",
+					component: () =>
+						import(
+							/* webpackChunkName: "infrastructure" */ "@modules/infrastructure/frontend/pages/tax-record-used-document/crud/show.vue"
+						),
+				},		
+				{
+					path: ":record/edit",
+					name: "infrastructure-tax-record-used-document-edit",
+					component: () =>
+						import(
+							/* webpackChunkName: "infrastructure" */ "@modules/infrastructure/frontend/pages/tax-record-used-document/crud/edit.vue"
 						),
 				},			
 			]

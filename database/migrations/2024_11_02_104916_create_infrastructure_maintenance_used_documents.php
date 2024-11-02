@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('infrastructure_maintenance_used_documents', function (Blueprint $table) {
             $table->id();
             // for relation
-            $table->foreignId('tax_used_id');
+            $table->foreignId('maintenance_record_id');
             $table->foreignId('unit_id');
             $table->foreignId('asset_id')->nullable();
             $table->foreignId('document_id');

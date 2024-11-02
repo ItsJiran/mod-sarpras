@@ -153,8 +153,16 @@
 				:color="theme"
 				block
 				variant="flat"
-				@click="redirectPage('used')"
-				>Lihat Yang Asset/Dokumen Digunakan</v-btn>
+				@click="redirectPage('used-asset')"
+				>Lihat Asset Digunakan</v-btn>
+
+				<v-btn
+				class="mt-3"
+				:color="theme"
+				block
+				variant="flat"
+				@click="redirectPage('used-document')"
+				>Lihat Dokumen Digunakan</v-btn>
 
 		</template>
 	</form-show>

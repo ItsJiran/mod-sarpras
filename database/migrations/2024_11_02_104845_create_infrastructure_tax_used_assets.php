@@ -14,9 +14,10 @@ return new class extends Migration
         Schema::create('infrastructure_tax_used_assets', function (Blueprint $table) {
             $table->id();
             // for relation use
-            $table->foreignId('tax_used_id');
+            $table->foreignId('tax_record_id');            
             $table->foreignId('unit_id');
             $table->foreignId('asset_id');
+            $table->boolean('is_freeze')->default(false);
             // timestamps
             $table->jsonb('meta')->nullable();
             $table->softDeletes();

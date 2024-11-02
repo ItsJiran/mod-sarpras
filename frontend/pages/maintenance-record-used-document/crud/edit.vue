@@ -17,6 +17,6 @@
 
 <script>
 export default {
-	name: "infrastructure-maintenance-record-used-edit",
+	name: "infrastructure-maintenance-record-used-document-edit",
 };
 </script>
