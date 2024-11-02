@@ -32,7 +32,8 @@
 	</v-row>
 
 	<!-- APABILA HUBUNGAN DOKUMEN TERHUBUNG DENGAN ASSET -->
-	<div v-if="jenis == 'Iya'">
+	<div v-if="record.jenis == 'Iya'">
+
 		<!-- PILIH TIPE ASSETS -->
 		<v-row v-if="data.refAssetType != undefined" dense>
 			<v-col cols="12">
@@ -165,6 +166,8 @@ export default {
 			
 			// prevent error
 			record.document = {};
+
+			console.log(record.jenis,data.refAssetType);
 			
 			// apabila jenis hubungan tidak.. maka langsung panggil refDocument
 			if ( record.jenis == 'Tidak' ) {

@@ -384,48 +384,6 @@ export default {
 		},
 
 		{
-			path: "tax/:tax/record/:record/used",
-			component: () =>
-				import(
-					/* webpackChunkName: "infrastructure" */ "@modules/infrastructure/frontend/pages/tax-record-used/index.vue"
-				),
-			children: [
-				{
-					path: "",
-					name: "infrastructure-tax-record-used",
-					component: () =>
-						import(
-							/* webpackChunkName: "infrastructure" */ "@modules/infrastructure/frontend/pages/tax-record-used/crud/data.vue"
-						),
-				},
-				{
-					path: "create",
-					name: "infrastructure-tax-record-used-create",
-					component: () =>
-						import(
-							/* webpackChunkName: "infrastructure" */ "@modules/infrastructure/frontend/pages/tax-record-used/crud/create.vue"
-						),
-				},
-				{
-					path: ":used/show",
-					name: "infrastructure-tax-record-used-show",
-					component: () =>
-						import(
-							/* webpackChunkName: "infrastructure" */ "@modules/infrastructure/frontend/pages/tax-record-used/crud/show.vue"
-						),
-				},		
-				{
-					path: ":used/edit",
-					name: "infrastructure-tax-record-used-edit",
-					component: () =>
-						import(
-							/* webpackChunkName: "infrastructure" */ "@modules/infrastructure/frontend/pages/tax-record-used/crud/edit.vue"
-						),
-				},			
-			]
-		},
-
-		{
 			path: "maintenance/:maintenance/record",
 			component: () =>
 				import(
