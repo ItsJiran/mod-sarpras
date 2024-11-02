@@ -13,9 +13,9 @@ return new class extends Migration
     {
         Schema::create('infrastructure_tax_record_useds', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('tax_record_id')->index();
             $table->morphs('useable');
-            $table->boolean('freeze_target')->default(false);
+            $table->foreignId('tax_record_id')->index();
+            $table->boolean('is_freeze')->default(false);
             $table->jsonb('meta')->nullable();
             $table->softDeletes();
             $table->timestamps();
