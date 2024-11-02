@@ -5,9 +5,13 @@ namespace Module\Infrastructure\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Gate;
-use Module\Infrastructure\Models\InfrastructureTaxRecordUsed;
 use Module\Infrastructure\Http\Resources\TaxRecordUsedCollection;
 use Module\Infrastructure\Http\Resources\TaxRecordUsedShowResource;
+
+use Module\Infrastructure\Models\InfrastructureUnit;
+use Module\Infrastructure\Models\InfrastructureTaxRecordUsed;
+use Module\Infrastructure\Models\InfrastructureTaxRecord;
+use Module\Infrastructure\Models\InfrastructureTax;
 
 class InfrastructureTaxRecordUsedController extends Controller
 {
@@ -16,7 +20,7 @@ class InfrastructureTaxRecordUsedController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index(Request $request)
+    public function index(Request $request, InfrastructureTax $tax, InfrastructureTaxRecord $record)
     {
         Gate::authorize('view', InfrastructureTaxRecordUsed::class);
 

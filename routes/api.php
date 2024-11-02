@@ -5,6 +5,7 @@ use Module\Infrastructure\Http\Controllers\DashboardController;
 use Module\Infrastructure\Http\Controllers\InfrastructureAssetController;
 use Module\Infrastructure\Http\Controllers\InfrastructureTaxController;
 use Module\Infrastructure\Http\Controllers\InfrastructureTaxRecordController;
+use Module\Infrastructure\Http\Controllers\InfrastructureTaxRecordUsedController;
 use Module\Infrastructure\Http\Controllers\InfrastructureMaintenanceController;
 use Module\Infrastructure\Http\Controllers\InfrastructureMaintenanceRecordController;
 use Module\Infrastructure\Http\Controllers\InfrastructureUnitController;
@@ -164,6 +165,16 @@ Route::post('tax/{tax}/record/{record}/draft',[InfrastructureTaxRecordController
 Route::post('tax/{tax}/record/{record}/verified',[InfrastructureTaxRecordController::class, 'changeToVerified']);
 Route::post('tax/{tax}/record/{record}/unverified',[InfrastructureTaxRecordController::class, 'changeToUnverified']);
 Route::post('tax/{tax}/record/{record}/cancelled',[InfrastructureTaxRecordController::class, 'changeToCancelled']);
+
+// +-----------------------------------------------
+// +-- from resource module tax record used
+
+// tax - record - used
+Route::get('tax/{tax}/record/{record}/used',[InfrastructureTaxRecordUsedController::class, 'index']);
+Route::post('tax/{tax}/record/{record}/used',[InfrastructureTaxRecordUsedController::class, 'store']);
+Route::get('tax/{tax}/record/{record}/used/{used}',[InfrastructureTaxRecordUsedController::class, 'show']);
+Route::put('tax/{tax}/record/{record}/used/{used}',[InfrastructureTaxRecordUsedController::class, 'update']);
+Route::delete('tax/{tax}/record/{record}/used/{used}',[InfrastructureTaxRecordUsedController::class, 'destroy']);
 
 // +-----------------------------------------------
 // +-- from resource module tax record
