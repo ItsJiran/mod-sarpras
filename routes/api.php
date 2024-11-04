@@ -5,8 +5,7 @@ use Module\Infrastructure\Http\Controllers\DashboardController;
 use Module\Infrastructure\Http\Controllers\InfrastructureAssetController;
 use Module\Infrastructure\Http\Controllers\InfrastructureTaxController;
 use Module\Infrastructure\Http\Controllers\InfrastructureTaxRecordController;
-use Module\Infrastructure\Http\Controllers\InfrastructureTaxUsedAssetController;
-use Module\Infrastructure\Http\Controllers\InfrastructureTaxUsedDocumentController;
+use Module\Infrastructure\Http\Controllers\InfrastructureTaxRecordUsedController;
 use Module\Infrastructure\Http\Controllers\InfrastructureMaintenanceController;
 use Module\Infrastructure\Http\Controllers\InfrastructureMaintenanceRecordController;
 use Module\Infrastructure\Http\Controllers\InfrastructureUnitController;
@@ -171,21 +170,11 @@ Route::post('tax/{tax}/record/{record}/cancelled',[InfrastructureTaxRecordContro
 // +-- from resource module tax record used
 
 // tax - record - used - asset
-Route::get('tax/{tax}/record/{record}/used-asset/',[InfrastructureTaxUsedAssetController::class, 'index']);
-Route::post('tax/{tax}/record/{record}/used-asset',[InfrastructureTaxUsedAssetController::class, 'store']);
-Route::get('tax/{tax}/record/{record}/used-asset/{used-asset}',[InfrastructureTaxUsedAssetController::class, 'show']);
-Route::put('tax/{tax}/record/{record}/used-asset/{used-asset}',[InfrastructureTaxUsedAssetController::class, 'update']);
-Route::delete('tax/{tax}/record/{record}/used-asset/{used-asset}',[InfrastructureTaxUsedAssetController::class, 'destroy']);
-
-// +-----------------------------------------------
-// +-- from resource module tax record used
-
-// tax - record - used - document
-Route::get('tax/{tax}/record/{record}/used-document/',[InfrastructureTaxUsedDocumentController::class, 'index']);
-Route::post('tax/{tax}/record/{record}/used-document',[InfrastructureTaxUsedDocumentController::class, 'store']);
-Route::get('tax/{tax}/record/{record}/used-document/{used-document}',[InfrastructureTaxUsedDocumentController::class, 'show']);
-Route::put('tax/{tax}/record/{record}/used-document/{used-document}',[InfrastructureTaxUsedDocumentController::class, 'update']);
-Route::delete('tax/{tax}/record/{record}/used-document/{used-document}',[InfrastructureTaxUsedDocumentController::class, 'destroy']);
+Route::get('tax/{tax}/record/{record}/used/',[InfrastructureTaxRecordUsedController::class, 'index']);
+Route::post('tax/{tax}/record/{record}/used',[InfrastructureTaxRecordUsedController::class, 'store']);
+Route::get('tax/{tax}/record/{record}/used/{used}',[InfrastructureTaxRecordUsedController::class, 'show']);
+Route::put('tax/{tax}/record/{record}/used/{used}',[InfrastructureTaxRecordUsedController::class, 'update']);
+Route::delete('tax/{tax}/record/{record}/used/{used}',[InfrastructureTaxRecordUsedController::class, 'destroy']);
 
 // +-----------------------------------------------
 // +-- from resource module tax record
