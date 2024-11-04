@@ -17,6 +17,6 @@
 
 <script>
 export default {
-	name: "infrastructure-maintenance-record-used-asset-create",
+	name: "infrastructure-maintenance-record-used-create",
 };
 </script>

@@ -11,15 +11,15 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('infrastructure_tax_used_documents', function (Blueprint $table) {
+        Schema::create('infrastructure_maintenance_record_useds', function (Blueprint $table) {
             $table->id();
-            // for relation
-            $table->foreignId('tax_record_id');
+            // for relation use
+            $table->foreignId('maintenance_record_id');            
             $table->foreignId('unit_id');
-            $table->foreignId('asset_id')->nullable();
-            $table->foreignId('document_id');
+            $table->foreignId('target_id');
+            $table->text('type');
             $table->boolean('is_freeze')->default(false);
-            // for meta
+            // timestamps
             $table->jsonb('meta')->nullable();
             $table->softDeletes();
             $table->timestamps();
@@ -31,6 +31,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('infrastructure_tax_used_documents');
+        Schema::dropIfExists('infrastructure_maintenance_record_useds');
     }
 };

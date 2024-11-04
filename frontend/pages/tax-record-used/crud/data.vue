@@ -10,6 +10,6 @@
 
 <script>
 export default {
-	name: "infrastructure-maintenance-record-used-asset-data",
+	name: "infrastructure-tax-record-used-data",
 };
 </script>

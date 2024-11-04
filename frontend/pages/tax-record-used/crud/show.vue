@@ -22,6 +22,6 @@
 
 <script>
 export default {
-	name: "infrastructure-tax-record-used-asset-show",
+	name: "infrastructure-tax-record-used-show",
 };
 </script>

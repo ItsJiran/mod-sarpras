@@ -10,17 +10,6 @@ use Module\System\Traits\Searchable;
 use Module\System\Traits\HasPageSetup;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use Illuminate\Validation\Rule;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
-
-use Module\Infrastructure\Models\InfrastructureTax;
-use Module\Infrastructure\Models\InfrastructureUnit;
-use Module\Infrastructure\Models\InfrastructureUser;
-
-use Carbon\Carbon;
-
-use Illuminate\Http\JsonResponse;
-use Illuminate\Support\Facades\Response;
 
 class InfrastructureMaintenanceRecordUsed extends Model
 {
@@ -42,14 +31,14 @@ class InfrastructureMaintenanceRecordUsed extends Model
      *
      * @var string
      */
-    protected $table = 'infrastructure_maintenance_record_useds';
+    protected $table = 'infrastructure_maintenancerecorduseds';
 
     /**
      * The roles variable
      *
      * @var array
      */
-    protected $roles = ['infrastructure-maintenance-record-used'];
+    protected $roles = ['infrastructure-maintenancerecordused'];
 
     /**
      * The attributes that should be cast to native types.
@@ -60,52 +49,12 @@ class InfrastructureMaintenanceRecordUsed extends Model
         'meta' => 'array'
     ];
 
-        /**
-     * The attributes that are mass assignable.
-     *
-     * @var array<int, string>
-     */
-    protected $fillable = [
-        'tax_record_id',
-        'is_freeze',        
-        'useable_id',
-        'useable_type',
-    ];
-
     /**
      * The default key for the order.
      *
      * @var string
      */
     protected $defaultOrder = 'name';
-
-    /**
-     * ====================================================
-     * +---------------- RELATION METHODS ----------------+
-     * ====================================================
-     */
-
-    public function record(): BelongsTo
-    {
-        return $this->belongsTo(InfrastructureTaxRecord::class, 'tax_record_id');
-    } 
-
-    public function useable(): MorphTo
-    {
-        return $this->morphTo(__FUNCTION__, 'useable_type', 'useable_id');
-    }  
-
-    /** 
-    * +===============================================
-    * +--------------- RESROUCE METHODS
-    * +===============================================
-    */
-
-    /**
-     * ====================================================
-     * +---------------- CRUD METHODS --------------------+
-     * ====================================================
-     */
 
     /**
      * The model store method

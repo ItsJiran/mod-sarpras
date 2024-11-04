@@ -17,6 +17,6 @@
 
 <script>
 export default {
-	name: "infrastructure-maintenance-record-used-document-create",
+	name: "infrastructure-tax-record-used-create",
 };
 </script>
