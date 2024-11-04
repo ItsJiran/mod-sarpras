@@ -31,14 +31,14 @@ class InfrastructureMaintenanceRecordUsed extends Model
      *
      * @var string
      */
-    protected $table = 'infrastructure_maintenancerecorduseds';
+    protected $table = 'infrastructure_maintenance_record_useds';
 
     /**
      * The roles variable
      *
      * @var array
      */
-    protected $roles = ['infrastructure-maintenancerecordused'];
+    protected $roles = ['infrastructure-maintenance-record-used'];
 
     /**
      * The attributes that should be cast to native types.
