@@ -5,9 +5,14 @@ namespace Module\Infrastructure\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Gate;
-use Module\Infrastructure\Models\InfrastructureRecord;
 use Module\Infrastructure\Http\Resources\RecordCollection;
 use Module\Infrastructure\Http\Resources\RecordShowResource;
+
+use Module\Infrastructure\Models\InfrastructureDocument;
+use Module\Infrastructure\Models\InfrastructureAsset;
+use Module\Infrastructure\Models\InfrastructureUnit;
+use Module\Infrastructure\Models\InfrastructureRecord;
+use Module\Infrastructure\Models\InfrastructureRecordNote;
 
 class InfrastructureRecordController extends Controller
 {

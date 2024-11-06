@@ -17,7 +17,7 @@ return new class extends Migration
             $table->foreignId('record_id');
             $table->boolean('dibekukan')->default(false);
             // target morph
-            $table->morph('targetable');
+            $table->morphs('targetable');
             // timestamps
             $table->jsonb('meta')->nullable();
             $table->softDeletes();

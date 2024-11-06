@@ -31,14 +31,14 @@ class InfrastructureRecordLog extends Model
      *
      * @var string
      */
-    protected $table = 'infrastructure_record_logs';
+    protected $table = 'infrastructure_recordlogs';
 
     /**
      * The roles variable
      *
      * @var array
      */
-    protected $roles = ['infrastructure-record-log'];
+    protected $roles = ['infrastructure-recordlog'];
 
     /**
      * The attributes that should be cast to native types.

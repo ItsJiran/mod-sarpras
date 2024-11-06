@@ -57,6 +57,22 @@ class InfrastructureRecord extends Model
     protected $defaultOrder = 'name';
 
     /**
+     * The attributes that are mass assignable.
+     *
+     * @var array<int, string>
+     */
+    protected $fillable = [
+        'name',
+        'description',
+        
+        'targetable_id',
+        'targetable_type',
+
+        'recordable_id',
+        'recordable_type',
+    ];
+
+    /**
      * The model store method
      *
      * @param Request $request

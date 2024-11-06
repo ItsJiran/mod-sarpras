@@ -17,9 +17,10 @@ return new class extends Migration
             // properties
             $table->string('name')->default('Record');
             $table->text('description')->nullable();
+            $table->string('type')->nullable();
             
             // morphs eaither assets or maintenance
-            $table->morphs('typeable');
+            $table->morphs('recordable');
             $table->morphs('targetable');
 
             $table->jsonb('meta')->nullable();

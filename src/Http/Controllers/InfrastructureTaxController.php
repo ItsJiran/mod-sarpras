@@ -5,13 +5,13 @@ namespace Module\Infrastructure\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Gate;
-use Module\Infrastructure\Http\Resources\TaxCollection;
-use Module\Infrastructure\Http\Resources\TaxShowResource;
+use Module\Infrastructure\Http\Resources\RecordCollection;
+use Module\Infrastructure\Http\Resources\RecordShowResource;
 
 use Module\Infrastructure\Models\InfrastructureDocument;
 use Module\Infrastructure\Models\InfrastructureAsset;
 use Module\Infrastructure\Models\InfrastructureUnit;
-use Module\Infrastructure\Models\InfrastructureTax;
+use Module\Infrastructure\Models\InfrastructureRecord;
 
 class InfrastructureTaxController extends Controller
 {
@@ -27,10 +27,10 @@ class InfrastructureTaxController extends Controller
      */
     public function index(Request $request)
     {
-        Gate::authorize('view', InfrastructureTax::class);
+        Gate::authorize('view', InfrastructureRecord::class);
 
-        return new TaxCollection(
-            InfrastructureTax::applyMode($request->mode)
+        return new RecordCollection(
+            InfrastructureRecord::applyMode($request->mode)
                 ->filter($request->filters)
                 ->search($request->findBy)
                 ->sortBy($request->sortBy)
@@ -234,7 +234,7 @@ class InfrastructureTaxController extends Controller
     {
         Gate::authorize('show', $infrastructureTax);
 
-        return new TaxShowResource($infrastructureTax);
+        return new RecordShowResource($infrastructureTax);
     }
 
     /**
@@ -246,7 +246,7 @@ class InfrastructureTaxController extends Controller
     public function showFromDocument(InfrastructureDocument $document, InfrastructureTax $tax)
     {
         Gate::authorize('show', $tax);
-        return new TaxShowResource($tax);
+        return new RecordShowResource($tax);
     }
 
     /**
@@ -258,7 +258,7 @@ class InfrastructureTaxController extends Controller
     public function showFromUnitDocument(InfrastructureUnit $unit, InfrastructureDocument $document, InfrastructureTax $tax)
     {
         Gate::authorize('show', $tax);
-        return new TaxShowResource($tax);
+        return new RecordShowResource($tax);
     }
 
     /**
@@ -270,7 +270,7 @@ class InfrastructureTaxController extends Controller
     public function showFromAsset(InfrastructureAsset $asset, InfrastructureTax $tax)
     {
         Gate::authorize('show', $tax);
-        return new TaxShowResource($tax);
+        return new RecordShowResource($tax);
     }
 
     /**
@@ -282,7 +282,7 @@ class InfrastructureTaxController extends Controller
     public function showFromAssetDocument(InfrastructureAsset $asset, InfrastructureDocument $document, InfrastructureTax $tax)
     {
         Gate::authorize('show', $tax);
-        return new TaxShowResource($tax);
+        return new RecordShowResource($tax);
     }
 
     /**
@@ -294,7 +294,7 @@ class InfrastructureTaxController extends Controller
     public function showFromUnitAsset(InfrastructureUnit $unit, InfrastructureAsset $asset, InfrastructureTax $tax)
     {
         Gate::authorize('show', $tax);
-        return new TaxShowResource($tax);
+        return new RecordShowResource($tax);
     }
 
     /**
@@ -306,7 +306,7 @@ class InfrastructureTaxController extends Controller
     public function showFromUnitAssetDocument(InfrastructureUnit $unit, InfrastructureAsset $asset, InfrastructureDocument $document, InfrastructureTax $tax)
     {
         Gate::authorize('show', $tax);
-        return new TaxShowResource($tax);
+        return new RecordShowResource($tax);
     }
 
     // +================================================

@@ -31,14 +31,14 @@ class InfrastructureRecordPeriodic extends Model
      *
      * @var string
      */
-    protected $table = 'infrastructure_record_periodics';
+    protected $table = 'infrastructure_recordperiodics';
 
     /**
      * The roles variable
      *
      * @var array
      */
-    protected $roles = ['infrastructure-record-periodic'];
+    protected $roles = ['infrastructure-recordperiodic'];
 
     /**
      * The attributes that should be cast to native types.
