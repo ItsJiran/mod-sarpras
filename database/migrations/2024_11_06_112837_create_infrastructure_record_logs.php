@@ -11,14 +11,8 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('infrastructure_maintenance_record_useds', function (Blueprint $table) {
+        Schema::create('infrastructure_record_logs', function (Blueprint $table) {
             $table->id();
-            // for relation use
-            $table->foreignId('maintenance_record_id');
-            $table->foreignId('target_id');
-            $table->string('type');
-            $table->boolean('is_freeze')->default(false);
-            // timestamps
             $table->jsonb('meta')->nullable();
             $table->softDeletes();
             $table->timestamps();
@@ -30,6 +24,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('infrastructure_maintenance_record_useds');
+        Schema::dropIfExists('infrastructure_record_logs');
     }
 };

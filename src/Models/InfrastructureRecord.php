@@ -3,21 +3,15 @@
 namespace Module\Infrastructure\Models;
 
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\SoftDeletes;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
-
 use Module\System\Traits\HasMeta;
+use Illuminate\Support\Facades\DB;
 use Module\System\Traits\Filterable;
 use Module\System\Traits\Searchable;
 use Module\System\Traits\HasPageSetup;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
-use Module\Infrastructure\Models\InfrastructureTax;
-use Module\Infrastructure\Models\InfrastructureTaxRecord;
-use Module\Infrastructure\Models\InfrastructureTaxRecordUsed;
-
-class InfrastructureMaintenanceRecordUsed extends Model
+class InfrastructureRecord extends Model
 {
     use Filterable;
     use HasMeta;
@@ -37,14 +31,14 @@ class InfrastructureMaintenanceRecordUsed extends Model
      *
      * @var string
      */
-    protected $table = 'infrastructure_maintenance_record_useds';
+    protected $table = 'infrastructure_records';
 
     /**
      * The roles variable
      *
      * @var array
      */
-    protected $roles = ['infrastructure-maintenance-record-used'];
+    protected $roles = ['infrastructure-record'];
 
     /**
      * The attributes that should be cast to native types.
@@ -61,88 +55,6 @@ class InfrastructureMaintenanceRecordUsed extends Model
      * @var string
      */
     protected $defaultOrder = 'name';
-
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var array<int, string>
-     */
-    protected $fillable = [
-        'maintenance_record_id',
-        'target_id',
-        'type',
-        'is_freeze',
-    ];
-
-    /**
-     * ====================================================
-     * +---------------- RELATION METHODS ----------------+
-     * ====================================================
-     */
-
-    /**
-     * Get the model that the image belongs to.
-     */
-    public function record(): BelongsTo
-    {
-        return $this->belongsTo(InfrastructureTaxRecord::class, 'tax_record_id');
-    } 
-
-    /**
-     * ====================================================
-     * +---------------- MAP RESOURCE METHODS ------------+
-     * ====================================================
-     */
-
-    public static function mapResourceShow(Request $request, $model = null): array
-    {
-        return [];
-    }
-
-    // +===============================================
-    // +--------------- MAP OBJECT
-    // +===============================================
-
-    /**
-     * The model map combos method
-     *
-     * @param [type] $model
-     * @return array
-     */
-    public static function mapCombos(Request $request, $model = null) : array 
-    {
-        return [            
-            'types' => self::mapTypes(),
-        ];
-    }   
-
-    // map request
-    public static function mapStoreRequest(Request $request, InfrastructureTax $tax, InfrastructureTaxRecord $record)
-    {
-        $array = [
-
-        ];
-
-        return $array;
-    }
-
-    // +===============================================
-    // +--------------- MAP OBJECT
-    // +===============================================
-
-    public static function mapTypes(Request $request) : array
-    {
-        return [
-            'asset',
-            'document',
-        ];
-    }
-
-    /**
-     * ====================================================
-     * +---------------- STATUSES METHODS ----------------+
-     * ====================================================
-     */
 
     /**
      * The model store method
@@ -162,7 +74,7 @@ class InfrastructureMaintenanceRecordUsed extends Model
 
             DB::connection($model->connection)->commit();
 
-            // return new MaintenanceRecordUsedResource($model);
+            // return new RecordResource($model);
         } catch (\Exception $e) {
             DB::connection($model->connection)->rollBack();
 
@@ -190,7 +102,7 @@ class InfrastructureMaintenanceRecordUsed extends Model
 
             DB::connection($model->connection)->commit();
 
-            // return new MaintenanceRecordUsedResource($model);
+            // return new RecordResource($model);
         } catch (\Exception $e) {
             DB::connection($model->connection)->rollBack();
 

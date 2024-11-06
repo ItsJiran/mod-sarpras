@@ -93,6 +93,9 @@ export default {
 		},
 		changeAssetType:function(record,data){			
 			data.getRefAsset(record,data);
+			record.asset = {
+				assetable_type_key : record.asset.assetable_type_key,
+			};
 		},
 		changeAsset:function(record,data){
 			record.asset = { 

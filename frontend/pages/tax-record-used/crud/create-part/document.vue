@@ -182,8 +182,13 @@ export default {
 		changeAssetType:function(record,data){		
 			// mengrefresh list documnet setiap pergantian tipe document
 			data.refDocument = undefined;
-			
+
 			data.getRefAsset(record,data);
+
+			if(record.asset != undefined && record.asset.assetable_type_key != undefined)
+				record.asset = { type : record.asset.assetable_type_key };
+			else 
+				record.asset = {};
 		},
 		changeAsset:function(record,data,componentData){
 			record.asset = { 

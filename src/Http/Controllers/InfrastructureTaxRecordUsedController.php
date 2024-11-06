@@ -25,11 +25,7 @@ class InfrastructureTaxRecordUsedController extends Controller
         Gate::authorize('view', InfrastructureTaxRecordUsed::class);
 
         return new TaxRecordUsedCollection(
-            InfrastructureTaxRecordUsed::applyMode($request->mode)
-                ->filter($request->filters)
-                ->search($request->findBy)
-                ->sortBy($request->sortBy)
-                ->paginate($request->itemsPerPage)
+            InfrastructureTaxRecordUsed::index( $request, $tax, $record )
         );
     }
 
@@ -39,13 +35,15 @@ class InfrastructureTaxRecordUsedController extends Controller
      * @param  \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(Request $request, InfrastructureTax $tax, InfrastructureTaxRecord $record)
     {
         Gate::authorize('create', InfrastructureTaxRecordUsed::class);
 
-        $request->validate([]);
+        $request->validate( 
+            InfrastructureTaxRecordUsed::mapStoreRequest($request, $tax, $record) 
+        );
 
-        return InfrastructureTaxRecordUsed::storeRecord($request);
+        return InfrastructureTaxRecordUsed::storeRecord($request, $tax, $record);
     }
 
     /**
@@ -54,11 +52,11 @@ class InfrastructureTaxRecordUsedController extends Controller
      * @param  \Module\Infrastructure\Models\InfrastructureTaxRecordUsed $infrastructureTaxRecordUsed
      * @return \Illuminate\Http\Response
      */
-    public function show(InfrastructureTaxRecordUsed $infrastructureTaxRecordUsed)
+    public function show(Request $request, InfrastructureTax $tax, InfrastructureTaxRecord $record, InfrastructureTaxRecordUsed $used)
     {
-        Gate::authorize('show', $infrastructureTaxRecordUsed);
+        Gate::authorize('show', $used);
 
-        return new TaxRecordUsedShowResource($infrastructureTaxRecordUsed);
+        return new TaxRecordUsedShowResource($request, $used);
     }
 
     /**
@@ -68,13 +66,15 @@ class InfrastructureTaxRecordUsedController extends Controller
      * @param  \Module\Infrastructure\Models\InfrastructureTaxRecordUsed $infrastructureTaxRecordUsed
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, InfrastructureTaxRecordUsed $infrastructureTaxRecordUsed)
+    public function update(Request $request, InfrastructureTax $tax, InfrastructureTaxRecord $record, InfrastructureTaxRecordUsed $model)
     {
         Gate::authorize('update', $infrastructureTaxRecordUsed);
 
-        $request->validate([]);
+        $request->validate(
+            InfrastructureTaxRecordUsed::mapUpdateRequest($request, $tax, $record) 
+        );
 
-        return InfrastructureTaxRecordUsed::updateRecord($request, $infrastructureTaxRecordUsed);
+        return InfrastructureTaxRecordUsed::updateRecord($request, $model);
     }
 
     /**

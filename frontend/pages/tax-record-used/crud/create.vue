@@ -12,6 +12,7 @@
 						label="Tipe Yang Digunakan"
 						v-model="record.type"
 						:return-object="false"
+						@update:model-value="changeTargetType(record,this)"
 						></v-combobox>
 					</v-col>
 				</v-row>
@@ -87,7 +88,9 @@ export default {
 			data.refAssetType = [];
 
 			this.$http(`infrastructure/api/ref-asset/type`).then(
-				(response) => { data.refAssetType = response; }
+				(response) => { 
+					data.refAssetType = response; 
+				}
 			);
 		},
 		getRefAsset : function (record,data) {
