@@ -32,6 +32,63 @@ class InfrastructureRecordController extends Controller
         );
     }
 
+    public function indexFromUnit(Request $request, InfrastructureUnit $unit)
+    {        
+        Gate::authorize('view', InfrastructureRecord::class);
+        $request = $this->determineRouteType($request);
+        return new RecordCollection(
+            $unit->taxes()
+            ->applyMode($request->mode)
+            ->filter($request->filters)
+            ->search($request->findBy)
+            ->sortBy($request->sortBy)
+            ->paginate($request->itemsPerPage)
+        );
+    }
+
+    public function indexFromAsset(Request $request, InfrastructureAsset $asset)
+    {        
+        Gate::authorize('view', InfrastructureRecord::class);
+        $request = $this->determineRouteType($request);
+        return new RecordCollection(
+            $asset->taxes()
+            ->applyMode($request->mode)
+            ->filter($request->filters)
+            ->search($request->findBy)
+            ->sortBy($request->sortBy)
+            ->paginate($request->itemsPerPage)
+        );
+    }
+
+    public function indexFromDocument(Request $request, InfrastructureDocument $document){                
+        Gate::authorize('view', InfrastructureRecord::class);
+        $request = $this->determineRouteType($request);
+        return new RecordCollection(
+            $document->taxes()
+            ->applyMode($request->mode)
+            ->filter($request->filters)
+            ->search($request->findBy)
+            ->sortBy($request->sortBy)
+            ->paginate($request->itemsPerPage)
+        );
+    }
+
+    public function indexFromUnitAsset(Request $request, InfrastructureUnit $unit, InfrastructureAsset $asset){
+        return $this->indexFromAsset($request, $asset);
+    }
+
+    public function indexFromAssetDocument(Request $request, InfrastructureAsset $asset, InfrastructureDocument $document){
+        return $this->indexFromDocument($request, $document);
+    }
+
+    public function indexFromUnitDocument(Request $request, InfrastructureUnit $unit, InfrastructureDocument $document){
+        return $this->indexFromDocument($request, $document);
+    }
+
+    public function indexFromUnitAssetDocument(Request $request, InfrastructureUnit $unit, InfrastructureAsset $asset, InfrastructureDocument $document){
+        return $this->indexFromDocument($request, $document);
+    }
+
     // + ===================================
     // + ----------- STORE METHODS
     // + ===================================
