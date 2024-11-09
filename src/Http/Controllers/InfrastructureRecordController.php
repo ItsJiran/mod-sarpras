@@ -239,7 +239,6 @@ class InfrastructureRecordController extends Controller
     }
 
 
-
     // + ===================================
     // + ----------- DESTROY METHODS
     // + ===================================
@@ -250,6 +249,41 @@ class InfrastructureRecordController extends Controller
         return InfrastructureRecord::deleteRecord($infrastructureRecord);
     }
 
+    public function destroyFromAsset(Request $request, InfrastructureAsset $asset, InfrastructureRecord $record)    
+    {   
+        Gate::authorize('delete', $record);
+        return $this->destroy($record);
+    }
+
+    public function destroyFromAssetDocument(Request $request, InfrastructureAsset $asset, InfrastructureDocument $document, InfrastructureRecord $record)    
+    {   
+        Gate::authorize('delete', $record);
+        return $this->destroy($record);
+    }
+
+    public function destroyFromDocument(Request $request, InfrastructureDocument $document, InfrastructureRecord $record)    
+    {   
+        Gate::authorize('delete', $record);
+        return $this->destroy($record);
+    }
+
+    public function destroyFromUnitAsset(Request $request, InfrastructureUnit $unit, InfrastructureAsset $asset, InfrastructureRecord $record)    
+    {   
+        Gate::authorize('delete', $record);
+        return $this->destroy($record);
+    }
+
+    public function destroyFromUnitAssetDocument(Request $request, InfrastructureUnit $unit, InfrastructureAsset $asset, InfrastructureDocument $document, InfrastructureRecord $record)    
+    {   
+        Gate::authorize('delete', $record);
+        return $this->destroy($record);
+    }
+
+    public function destroyFromUnitDocument(Request $request, InfrastructureUnit $unit, InfrastructureDocument $document, InfrastructureRecord $record)    
+    {   
+        Gate::authorize('delete', $record);
+        return $this->destroy($record);
+    }
 
     // + ===================================
     // + ----------- DESTROY METHODS
