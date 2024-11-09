@@ -10,6 +10,7 @@ use Module\System\Traits\Searchable;
 use Module\System\Traits\HasPageSetup;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Validation\Rule;
 
 use Module\Infrastructure\Models\InfrastructureRecordNote;
 
@@ -252,7 +253,8 @@ class InfrastructureRecord extends Model
     // + ======================
     // + -------- STORE
     // + ======================
-    public static function mapStoreRequestValidation(Request $request, $model = null):array
+
+    public static function mapStoreRequestValidation(Request $request):array
     {
         // convert 
         $request            = self::mapDefaultObject($request);
@@ -262,19 +264,12 @@ class InfrastructureRecord extends Model
         // mendapatkan request validasi dari morph nya..        
         $validation = array_merge( 
             $default_validation, 
-            $morph_class['recordable']::mapStoreRequestValidation($request),
-            $morph_class['targetable']::mapStoreRequestValidation($request),            
+            $morph_class['recordable']::mapStoreRequestValidation($request),       
         );
 
         return $validation;
     }
 
-    /**
-     * The model map combos method
-     *
-     * @param [type] $model
-     * @return array
-     */
     public static function mapUpdateRequestValidation(Request $request, $model = null):array
     {
         // convert 
@@ -285,7 +280,6 @@ class InfrastructureRecord extends Model
         $validation = array_merge( 
             $default_validation, 
             $morph_class['recordable']::mapUpdateRequestValidation($request),
-            $morph_class['targetable']::mapUpdateRequestValidation($request),
         );
 
         return $validation;

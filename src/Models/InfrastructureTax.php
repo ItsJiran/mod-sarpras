@@ -111,7 +111,8 @@ class InfrastructureTax extends Model
     {
         return $this->morphTo(__FUNCTION__, 'targetable_type', 'targetable_id');
     }  
-/**
+
+    /**
      * Get all of the records for the InfrastructureTax
      *
      * @return \Illuminate\Database\Eloquent\Relations\HasMany

@@ -96,7 +96,9 @@ class InfrastructureRecordController extends Controller
     {
         Gate::authorize('create', InfrastructureRecord::class);
         $request = $this->determineRouteType($request);
-        $request->validate([]);
+        $request->validate( 
+            InfrastructureRecord::mapStoreRequestValidation($request)
+        );
         return InfrastructureRecord::storeRecord($request);
     }
     
