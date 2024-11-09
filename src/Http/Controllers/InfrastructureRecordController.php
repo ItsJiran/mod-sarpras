@@ -208,6 +208,12 @@ class InfrastructureRecordController extends Controller
         return $this->update($request, $infrastructureRecord);
     }
 
+    public function updateFromDocument(Request $request, InfrastructureDocument $document, InfrastructureRecord $infrastructureRecord)    
+    {   
+        Gate::authorize('update', $infrastructureRecord);
+        return $this->update($request, $infrastructureRecord);
+    }
+
     public function updateFromAssetDocument(Request $request, InfrastructureAsset $asset, InfrastructureDocument $document, InfrastructureRecord $infrastructureRecord)    
     {   
         Gate::authorize('update', $infrastructureRecord);
@@ -221,6 +227,12 @@ class InfrastructureRecordController extends Controller
     }
 
     public function updateFromUnitAssetDocument(Request $request, InfrastructureUnit $unit, InfrastructureAsset $asset, InfrastructureDocument $document, InfrastructureRecord $infrastructureRecord)    
+    {   
+        Gate::authorize('update', $infrastructureRecord);
+        return $this->update($request, $infrastructureRecord);
+    }
+
+    public function updateFromUnitDocument(Request $request, InfrastructureUnit $unit, InfrastructureDocument $document, InfrastructureRecord $infrastructureRecord)    
     {   
         Gate::authorize('update', $infrastructureRecord);
         return $this->update($request, $infrastructureRecord);
