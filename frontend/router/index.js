@@ -303,7 +303,7 @@ export default {
 			path: "tax",
 			component: () =>
 				import(
-					/* webpackChunkName: "infrastructure" */ "@modules/infrastructure/frontend/pages/tax/index.vue"
+					/* webpackChunkName: "infrastructure" */ "@modules/infrastructure/frontend/pages/record/index.vue"
 				),
 			children: [
 				{
@@ -311,7 +311,7 @@ export default {
 					name: "infrastructure-tax",
 					component: () =>
 						import(
-							/* webpackChunkName: "infrastructure" */ "@modules/infrastructure/frontend/pages/tax/crud/data.vue"
+							/* webpackChunkName: "infrastructure" */ "@modules/infrastructure/frontend/pages/record/crud/data.vue"
 						),
 				},
 				{
@@ -319,7 +319,7 @@ export default {
 					name: "infrastructure-tax-create",
 					component: () =>
 						import(
-							/* webpackChunkName: "infrastructure" */ "@modules/infrastructure/frontend/pages/tax/crud/create.vue"
+							/* webpackChunkName: "infrastructure" */ "@modules/infrastructure/frontend/pages/record/crud/create.vue"
 						),
 				},
 				{
@@ -327,7 +327,7 @@ export default {
 					name: "infrastructure-tax-show",
 					component: () =>
 						import(
-							/* webpackChunkName: "infrastructure" */ "@modules/infrastructure/frontend/pages/tax/crud/show.vue"
+							/* webpackChunkName: "infrastructure" */ "@modules/infrastructure/frontend/pages/record/crud/show.vue"
 						),
 				},		
 				{
@@ -335,7 +335,7 @@ export default {
 					name: "infrastructure-tax-edit",
 					component: () =>
 						import(
-							/* webpackChunkName: "infrastructure" */ "@modules/infrastructure/frontend/pages/tax/crud/edit.vue"
+							/* webpackChunkName: "infrastructure" */ "@modules/infrastructure/frontend/pages/record/crud/edit.vue"
 						),
 				},			
 			]

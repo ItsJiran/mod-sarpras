@@ -44,7 +44,7 @@ class InfrastructureTaxController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function indexFromUnit(Request $request, InfrastructureUnit $unit){        
-        return new TaxCollection(
+        return new RecordCollection(
             $unit->taxes()
             ->applyMode($request->mode)
             ->filter($request->filters)
@@ -60,7 +60,7 @@ class InfrastructureTaxController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function indexFromAsset(Request $request, InfrastructureAsset $asset){        
-        return new TaxCollection(
+        return new RecordCollection(
             $asset->taxes()
             ->applyMode($request->mode)
             ->filter($request->filters)
@@ -85,7 +85,7 @@ class InfrastructureTaxController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function indexFromDocument(Request $request, InfrastructureDocument $document){        
-        return new TaxCollection(
+        return new RecordCollection(
             $document->taxes()
             ->applyMode($request->mode)
             ->filter($request->filters)
@@ -134,8 +134,9 @@ class InfrastructureTaxController extends Controller
      */
     public function store(Request $request)
     {
-        Gate::authorize('create', InfrastructureTax::class);
+        Gate::authorize('create', InfrastructureRecord::class);
 
+        $request = InfrastructureRecord::mergeRequestTax($request);
         $request->validate( InfrastructureTax::mapStoreRequestValidation($request) );        
 
         return InfrastructureTax::storeRecord($request);
@@ -149,11 +150,11 @@ class InfrastructureTaxController extends Controller
      */
     public function storeFromAsset(Request $request, InfrastructureAsset $asset)
     {
-        Gate::authorize('create', InfrastructureTax::class);
+        Gate::authorize('create', InfrastructureRecord::class);
 
-        $request = InfrastructureTax::mergeRequestAsset($request, $asset);
+        $request = InfrastructureRecord::mergeRequestAsset($request, $asset);
 
-        return InfrastructureTax::storeRecord($request);
+        return InfrastructureRecord::storeRecord($request);
     }
 
     /**
@@ -164,7 +165,7 @@ class InfrastructureTaxController extends Controller
      */
     public function storeFromUnitAsset(Request $request, InfrastructureUnit $unit, InfrastructureAsset $asset)
     {
-        Gate::authorize('create', InfrastructureTax::class);
+        Gate::authorize('create', InfrastructureRecord::class);
         return $this->storeFromAsset($request, $asset);
     }
 
@@ -176,7 +177,7 @@ class InfrastructureTaxController extends Controller
      */
     public function storeFromAssetDocument(Request $request, InfrastructureAsset $asset, InfrastructureDocument $document)
     {
-        Gate::authorize('create', InfrastructureTax::class);
+        Gate::authorize('create', InfrastructureRecord::class);
         return $this->storeFromDocument($request, $document);
     }
 
@@ -188,7 +189,7 @@ class InfrastructureTaxController extends Controller
      */
     public function storeFromUnitAssetDocument(Request $request, InfrastructureUnit $unit, InfrastructureAsset $asset, InfrastructureDocument $document)
     {
-        Gate::authorize('create', InfrastructureTax::class);
+        Gate::authorize('create', InfrastructureRecord::class);
         return $this->storeFromDocument($request, $document);
     }
 
@@ -200,11 +201,11 @@ class InfrastructureTaxController extends Controller
      */
     public function storeFromDocument(Request $request, InfrastructureDocument $document)
     {
-        Gate::authorize('create', InfrastructureTax::class);
+        Gate::authorize('create', InfrastructureRecord::class);
 
-        $request = InfrastructureTax::mergeRequestDocument($request, $document);
+        $request = InfrastructureRecord::mergeRequestDocument($request, $document);
 
-        return InfrastructureTax::storeRecord($request);
+        return InfrastructureRecord::storeRecord($request);
     }
 
     /**
@@ -215,7 +216,7 @@ class InfrastructureTaxController extends Controller
      */
     public function storeFromUnitDocument(Request $request, InfrastructureUnit $unit, InfrastructureDocument $document)
     {
-        Gate::authorize('create', InfrastructureTax::class);
+        Gate::authorize('create', InfrastructureRecord::class);
 
         return $this->storeFromDocument($request, $document);
     }
@@ -227,14 +228,14 @@ class InfrastructureTaxController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \Module\Infrastructure\Models\InfrastructureTax $infrastructureTax
+     * @param  \Module\Infrastructure\Models\InfrastructureRecord $infrastructureRecord
      * @return \Illuminate\Http\Response
      */
-    public function show(InfrastructureTax $infrastructureTax)
+    public function show(InfrastructureRecord $infrastructureRecord)
     {
-        Gate::authorize('show', $infrastructureTax);
+        Gate::authorize('show', $infrastructureRecord);
 
-        return new RecordShowResource($infrastructureTax);
+        return new RecordShowResource($infrastructureRecord);
     }
 
     /**
@@ -243,10 +244,10 @@ class InfrastructureTaxController extends Controller
      * @param  \Module\Infrastructure\Models\InfrastructureMaintenance $infrastructureMaintenance
      * @return \Illuminate\Http\Response
      */
-    public function showFromDocument(InfrastructureDocument $document, InfrastructureTax $tax)
+    public function showFromDocument(InfrastructureDocument $document, InfrastructureRecord $record)
     {
-        Gate::authorize('show', $tax);
-        return new RecordShowResource($tax);
+        Gate::authorize('show', $record);
+        return new RecordShowResource($record);
     }
 
     /**
@@ -255,10 +256,10 @@ class InfrastructureTaxController extends Controller
      * @param  \Module\Infrastructure\Models\InfrastructureMaintenance $infrastructureMaintenance
      * @return \Illuminate\Http\Response
      */
-    public function showFromUnitDocument(InfrastructureUnit $unit, InfrastructureDocument $document, InfrastructureTax $tax)
+    public function showFromUnitDocument(InfrastructureUnit $unit, InfrastructureDocument $document, InfrastructureRecord $record)
     {
-        Gate::authorize('show', $tax);
-        return new RecordShowResource($tax);
+        Gate::authorize('show', $record);
+        return new RecordShowResource($record);
     }
 
     /**
@@ -267,19 +268,7 @@ class InfrastructureTaxController extends Controller
      * @param  \Module\Infrastructure\Models\InfrastructureMaintenance $infrastructureMaintenance
      * @return \Illuminate\Http\Response
      */
-    public function showFromAsset(InfrastructureAsset $asset, InfrastructureTax $tax)
-    {
-        Gate::authorize('show', $tax);
-        return new RecordShowResource($tax);
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  \Module\Infrastructure\Models\InfrastructureMaintenance $infrastructureMaintenance
-     * @return \Illuminate\Http\Response
-     */
-    public function showFromAssetDocument(InfrastructureAsset $asset, InfrastructureDocument $document, InfrastructureTax $tax)
+    public function showFromAsset(InfrastructureAsset $asset, InfrastructureRecord $tax)
     {
         Gate::authorize('show', $tax);
         return new RecordShowResource($tax);
@@ -291,7 +280,7 @@ class InfrastructureTaxController extends Controller
      * @param  \Module\Infrastructure\Models\InfrastructureMaintenance $infrastructureMaintenance
      * @return \Illuminate\Http\Response
      */
-    public function showFromUnitAsset(InfrastructureUnit $unit, InfrastructureAsset $asset, InfrastructureTax $tax)
+    public function showFromAssetDocument(InfrastructureAsset $asset, InfrastructureDocument $document, InfrastructureRecord $tax)
     {
         Gate::authorize('show', $tax);
         return new RecordShowResource($tax);
@@ -303,7 +292,19 @@ class InfrastructureTaxController extends Controller
      * @param  \Module\Infrastructure\Models\InfrastructureMaintenance $infrastructureMaintenance
      * @return \Illuminate\Http\Response
      */
-    public function showFromUnitAssetDocument(InfrastructureUnit $unit, InfrastructureAsset $asset, InfrastructureDocument $document, InfrastructureTax $tax)
+    public function showFromUnitAsset(InfrastructureUnit $unit, InfrastructureAsset $asset, InfrastructureRecord $tax)
+    {
+        Gate::authorize('show', $tax);
+        return new RecordShowResource($tax);
+    }
+
+    /**
+     * Display the specified resource.
+     *
+     * @param  \Module\Infrastructure\Models\InfrastructureMaintenance $infrastructureMaintenance
+     * @return \Illuminate\Http\Response
+     */
+    public function showFromUnitAssetDocument(InfrastructureUnit $unit, InfrastructureAsset $asset, InfrastructureDocument $document, InfrastructureRecord $tax)
     {
         Gate::authorize('show', $tax);
         return new RecordShowResource($tax);
@@ -317,16 +318,16 @@ class InfrastructureTaxController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request $request
-     * @param  \Module\Infrastructure\Models\InfrastructureTax $infrastructureTax
+     * @param  \Module\Infrastructure\Models\InfrastructureRecord $infrastructureRecord
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, InfrastructureTax $infrastructureTax)
+    public function update(Request $request, InfrastructureRecord $infrastructureRecord)
     {
-        Gate::authorize('update', $infrastructureTax);
+        Gate::authorize('update', $infrastructureRecord);
 
-        $request->validate( InfrastructureTax::mapUpdateRequestValidation($request) );        
+        $request->validate( InfrastructureRecord::mapUpdateRequestValidation($request) );        
 
-        return InfrastructureTax::updateRecord($request, $infrastructureTax);
+        return InfrastructureRecord::updateRecord($request, $infrastructureRecord);
     }
 
     /**
@@ -336,7 +337,7 @@ class InfrastructureTaxController extends Controller
      * @param  \Module\Infrastructure\Models\InfrastructureMaintenance $infrastructureMaintenance
      * @return \Illuminate\Http\Response
      */
-    public function updateFromAsset(Request $request, InfrastructureAsset $asset, InfrastructureTax $tax)    
+    public function updateFromAsset(Request $request, InfrastructureAsset $asset, InfrastructureRecord $tax)    
     {   
         Gate::authorize('update', $tax);
         return $this->update($request, $tax);
@@ -349,7 +350,7 @@ class InfrastructureTaxController extends Controller
      * @param  \Module\Infrastructure\Models\InfrastructureMaintenance $infrastructureMaintenance
      * @return \Illuminate\Http\Response
      */
-    public function updateFromUnitAsset(Request $request, InfrastructureUnit $unit, InfrastructureAsset $asset, InfrastructureTax $tax)    
+    public function updateFromUnitAsset(Request $request, InfrastructureUnit $unit, InfrastructureAsset $asset, InfrastructureRecord $tax)    
     {   
         Gate::authorize('update', $tax);
         return $this->update($request, $tax);
@@ -362,7 +363,7 @@ class InfrastructureTaxController extends Controller
      * @param  \Module\Infrastructure\Models\InfrastructureMaintenance $infrastructureMaintenance
      * @return \Illuminate\Http\Response
      */
-    public function updateFromUnitAssetDocument(Request $request, InfrastructureUnit $unit, InfrastructureAsset $asset, InfrastructureDocument $document, InfrastructureTax $tax)    
+    public function updateFromUnitAssetDocument(Request $request, InfrastructureUnit $unit, InfrastructureAsset $asset, InfrastructureDocument $document, InfrastructureRecord $tax)    
     {   
         Gate::authorize('update', $tax);
         return $this->update($request, $tax);
@@ -375,7 +376,7 @@ class InfrastructureTaxController extends Controller
      * @param  \Module\Infrastructure\Models\InfrastructureMaintenance $infrastructureMaintenance
      * @return \Illuminate\Http\Response
      */
-    public function updateFromAssetDocument(Request $request, InfrastructureAsset $asset, InfrastructureDocument $document, InfrastructureTax $tax)    
+    public function updateFromAssetDocument(Request $request, InfrastructureAsset $asset, InfrastructureDocument $document, InfrastructureRecord $tax)    
     {   
         Gate::authorize('update', $tax);
         return $this->update($request, $tax);
@@ -388,7 +389,7 @@ class InfrastructureTaxController extends Controller
      * @param  \Module\Infrastructure\Models\InfrastructureMaintenance $infrastructureMaintenance
      * @return \Illuminate\Http\Response
      */
-    public function updateFromDocument(Request $request, InfrastructureDocument $document, InfrastructureTax $tax)    
+    public function updateFromDocument(Request $request, InfrastructureDocument $document, InfrastructureRecord $tax)    
     {   
         Gate::authorize('update', $tax);
         return $this->update($request, $tax);
@@ -401,10 +402,10 @@ class InfrastructureTaxController extends Controller
      * @param  \Module\Infrastructure\Models\InfrastructureMaintenance $infrastructureMaintenance
      * @return \Illuminate\Http\Response
      */
-    public function updateFromUnitDocument(Request $request, InfrastructureUnit $unit, InfrastructureDocument $document, InfrastructureTax $tax)    
+    public function updateFromUnitDocument(Request $request, InfrastructureUnit $unit, InfrastructureDocument $document, InfrastructureRecord $record)    
     {   
-        Gate::authorize('update', $tax);
-        return $this->update($request, $tax);
+        Gate::authorize('update', $record);
+        return $this->update($request, $record);
     }
 
     // +================================================
@@ -414,14 +415,14 @@ class InfrastructureTaxController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \Module\Infrastructure\Models\InfrastructureTax $infrastructureTax
+     * @param  \Module\Infrastructure\Models\InfrastructureRecord $infrastructureRecord
      * @return \Illuminate\Http\Response
      */
-    public function destroy(InfrastructureTax $infrastructureTax)
+    public function destroy(InfrastructureRecord $infrastructureRecord)
     {
-        Gate::authorize('delete', $infrastructureTax);
+        Gate::authorize('delete', $infrastructureRecord);
 
-        return InfrastructureTax::deleteRecord($infrastructureTax);
+        return InfrastructureRecord::deleteRecord($infrastructureRecord);
     }
 
     /**
@@ -431,10 +432,10 @@ class InfrastructureTaxController extends Controller
      * @param  \Module\Infrastructure\Models\InfrastructureMaintenance $infrastructureMaintenance
      * @return \Illuminate\Http\Response
      */
-    public function destroyFromAsset(Request $request, InfrastructureAsset $asset, InfrastructureTax $tax)    
+    public function destroyFromAsset(Request $request, InfrastructureAsset $asset, InfrastructureRecord $record)    
     {   
-        Gate::authorize('delete', $tax);
-        return $this->destroy($tax);
+        Gate::authorize('delete', $record);
+        return $this->destroy($record);
     }
 
     /**
@@ -444,10 +445,10 @@ class InfrastructureTaxController extends Controller
      * @param  \Module\Infrastructure\Models\InfrastructureMaintenance $infrastructureMaintenance
      * @return \Illuminate\Http\Response
      */
-    public function destroyFromUnitAsset(Request $request, InfrastructureUnit $unit, InfrastructureAsset $asset, InfrastructureTax $tax)    
+    public function destroyFromUnitAsset(Request $request, InfrastructureUnit $unit, InfrastructureAsset $asset, InfrastructureRecord $record)    
     {   
-        Gate::authorize('delete', $tax);
-        return $this->destroy($tax);
+        Gate::authorize('delete', $record);
+        return $this->destroy($record);
     }
 
     /**
@@ -457,10 +458,10 @@ class InfrastructureTaxController extends Controller
      * @param  \Module\Infrastructure\Models\InfrastructureMaintenance $infrastructureMaintenance
      * @return \Illuminate\Http\Response
      */
-    public function destroyFromUnitAssetDocument(Request $request, InfrastructureUnit $unit, InfrastructureAsset $asset, InfrastructureDocument $document, InfrastructureTax $tax)    
+    public function destroyFromUnitAssetDocument(Request $request, InfrastructureUnit $unit, InfrastructureAsset $asset, InfrastructureDocument $document, InfrastructureRecord $record)    
     {   
-        Gate::authorize('delete', $tax);
-        return $this->destroy($tax);
+        Gate::authorize('delete', $record);
+        return $this->destroy($record);
     }
 
     /**
@@ -470,10 +471,10 @@ class InfrastructureTaxController extends Controller
      * @param  \Module\Infrastructure\Models\InfrastructureMaintenance $infrastructureMaintenance
      * @return \Illuminate\Http\Response
      */
-    public function destroyFromAssetDocument(Request $request, InfrastructureAsset $asset, InfrastructureDocument $document, InfrastructureTax $tax)    
+    public function destroyFromAssetDocument(Request $request, InfrastructureAsset $asset, InfrastructureDocument $document, InfrastructureRecord $record)    
     {   
-        Gate::authorize('delete', $tax);
-        return $this->destroy($tax);
+        Gate::authorize('delete', $record);
+        return $this->destroy($record);
     }
 
     /**
@@ -483,10 +484,10 @@ class InfrastructureTaxController extends Controller
      * @param  \Module\Infrastructure\Models\InfrastructureMaintenance $infrastructureMaintenance
      * @return \Illuminate\Http\Response
      */
-    public function destroyFromDocument(Request $request, InfrastructureDocument $document, InfrastructureTax $tax)    
+    public function destroyFromDocument(Request $request, InfrastructureDocument $document, InfrastructureRecord $record)    
     {   
-        Gate::authorize('delete', $tax);
-        return $this->destroy($tax);
+        Gate::authorize('delete', $record);
+        return $this->destroy($record);
     }
 
     /**
@@ -496,10 +497,10 @@ class InfrastructureTaxController extends Controller
      * @param  \Module\Infrastructure\Models\InfrastructureMaintenance $infrastructureMaintenance
      * @return \Illuminate\Http\Response
      */
-    public function destroyFromUnitDocument(Request $request, InfrastructureUnit $unit, InfrastructureDocument $document, InfrastructureTax $tax)    
+    public function destroyFromUnitDocument(Request $request, InfrastructureUnit $unit, InfrastructureDocument $document, InfrastructureRecord $record)    
     {   
-        Gate::authorize('delete', $tax);
-        return $this->destroy($tax);
+        Gate::authorize('delete', $record);
+        return $this->destroy($record);
     }
 
     // +================================================
@@ -509,7 +510,7 @@ class InfrastructureTaxController extends Controller
     /**
      * Restore the specified resource from soft-delete.
      *
-     * @param  \Module\Infrastructure\Models\InfrastructureTax $infrastructureTax
+     * @param  \Module\Infrastructure\Models\InfrastructureRecord $infrastructureRecord
      * @return \Illuminate\Http\Response
      */
     public function restore(InfrastructureTax $infrastructureTax)

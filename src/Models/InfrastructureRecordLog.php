@@ -31,14 +31,14 @@ class InfrastructureRecordLog extends Model
      *
      * @var string
      */
-    protected $table = 'infrastructure_recordlogs';
+    protected $table = 'infrastructure_record_logs';
 
     /**
      * The roles variable
      *
      * @var array
      */
-    protected $roles = ['infrastructure-recordlog'];
+    protected $roles = ['infrastructure-record-log'];
 
     /**
      * The attributes that should be cast to native types.
@@ -57,32 +57,64 @@ class InfrastructureRecordLog extends Model
     protected $defaultOrder = 'name';
 
     /**
+     * ====================================================
+     * +------------------ MAP RESOURCE ------------------+
+     * ====================================================
+     */
+
+    /**
+     * The model map combos method
+     *
+     * @param [type] $model
+     * @return array
+     */
+    public static function mapResourceShow(Request $request, $model = null) : array 
+    {
+       return [
+       ];
+    }
+
+    /**
+     * The model store method
+     *
+     * @param Request $request
+     * @return array
+     */
+    public static function mapStoreRequestValidation(Request $request)
+    {
+        return [
+        ];
+    }
+
+    /**
+     * The model store method
+     *
+     * @param Request $request
+     * @return array
+     */
+    public static function mapUpdateRequestValidation(Request $request) : array
+    {
+        return [
+        ];
+    }
+
+    /**
+     * ====================================================
+     * +------------------ CRUD METHODS ------------------+
+     * ====================================================
+     */
+
+    /**
      * The model store method
      *
      * @param Request $request
      * @return void
      */
-    public static function storeRecord(Request $request)
+    public static function storeRecord(Request $request) : InfrastructureRecordLog 
     {
         $model = new static();
-
-        DB::connection($model->connection)->beginTransaction();
-
-        try {
-            // ...
-            $model->save();
-
-            DB::connection($model->connection)->commit();
-
-            // return new RecordLogResource($model);
-        } catch (\Exception $e) {
-            DB::connection($model->connection)->rollBack();
-
-            return response()->json([
-                'success' => false,
-                'message' => $e->getMessage()
-            ], 500);
-        }
+        $model->save();
+        return $model;
     }
 
     /**
@@ -92,25 +124,10 @@ class InfrastructureRecordLog extends Model
      * @param [type] $model
      * @return void
      */
-    public static function updateRecord(Request $request, $model)
+    public static function updateRecord(Request $request, $model = null) : InfrastructureRecordLog
     {
-        DB::connection($model->connection)->beginTransaction();
-
-        try {
-            // ...
-            $model->save();
-
-            DB::connection($model->connection)->commit();
-
-            // return new RecordLogResource($model);
-        } catch (\Exception $e) {
-            DB::connection($model->connection)->rollBack();
-
-            return response()->json([
-                'success' => false,
-                'message' => $e->getMessage()
-            ], 500);
-        }
+        $model->save();
+        return $model;   
     }
 
     /**
@@ -121,22 +138,7 @@ class InfrastructureRecordLog extends Model
      */
     public static function deleteRecord($model)
     {
-        DB::connection($model->connection)->beginTransaction();
-
-        try {
-            $model->delete();
-
-            DB::connection($model->connection)->commit();
-
-            return response()->json(['success' => true]);
-        } catch (\Exception $e) {
-            DB::connection($model->connection)->rollBack();
-
-            return response()->json([
-                'success' => false,
-                'message' => $e->getMessage()
-            ], 500);
-        }
+       $model->delete();
     }
 
     /**
@@ -147,22 +149,7 @@ class InfrastructureRecordLog extends Model
      */
     public static function restoreRecord($model)
     {
-        DB::connection($model->connection)->beginTransaction();
-
-        try {
-            $model->restore();
-
-            DB::connection($model->connection)->commit();
-
-            return response()->json(['success' => true]);
-        } catch (\Exception $e) {
-            DB::connection($model->connection)->rollBack();
-
-            return response()->json([
-                'success' => false,
-                'message' => $e->getMessage()
-            ], 500);
-        }
+        $model->restore();
     }
 
     /**
@@ -173,21 +160,6 @@ class InfrastructureRecordLog extends Model
      */
     public static function destroyRecord($model)
     {
-        DB::connection($model->connection)->beginTransaction();
-
-        try {
-            $model->forceDelete();
-
-            DB::connection($model->connection)->commit();
-
-            return response()->json(['success' => true]);
-        } catch (\Exception $e) {
-            DB::connection($model->connection)->rollBack();
-
-            return response()->json([
-                'success' => false,
-                'message' => $e->getMessage()
-            ], 500);
-        }
+        $model->forceDelete();
     }
 }
