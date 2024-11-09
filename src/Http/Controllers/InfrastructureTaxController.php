@@ -189,85 +189,40 @@ class InfrastructureTaxController extends Controller
     // +-------------------- SHOW METHODS
     // +================================================
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \Module\Infrastructure\Models\InfrastructureRecord $infrastructureRecord
-     * @return \Illuminate\Http\Response
-     */
-    public function show(InfrastructureRecord $infrastructureRecord)
-    {
-        Gate::authorize('show', $infrastructureRecord);
 
-        return new RecordShowResource($infrastructureRecord);
-    }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \Module\Infrastructure\Models\InfrastructureMaintenance $infrastructureMaintenance
-     * @return \Illuminate\Http\Response
-     */
+
+
     public function showFromDocument(InfrastructureDocument $document, InfrastructureRecord $record)
     {
         Gate::authorize('show', $record);
         return new RecordShowResource($record);
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \Module\Infrastructure\Models\InfrastructureMaintenance $infrastructureMaintenance
-     * @return \Illuminate\Http\Response
-     */
     public function showFromUnitDocument(InfrastructureUnit $unit, InfrastructureDocument $document, InfrastructureRecord $record)
     {
         Gate::authorize('show', $record);
         return new RecordShowResource($record);
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \Module\Infrastructure\Models\InfrastructureMaintenance $infrastructureMaintenance
-     * @return \Illuminate\Http\Response
-     */
     public function showFromAsset(InfrastructureAsset $asset, InfrastructureRecord $tax)
     {
         Gate::authorize('show', $tax);
         return new RecordShowResource($tax);
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \Module\Infrastructure\Models\InfrastructureMaintenance $infrastructureMaintenance
-     * @return \Illuminate\Http\Response
-     */
     public function showFromAssetDocument(InfrastructureAsset $asset, InfrastructureDocument $document, InfrastructureRecord $tax)
     {
         Gate::authorize('show', $tax);
         return new RecordShowResource($tax);
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \Module\Infrastructure\Models\InfrastructureMaintenance $infrastructureMaintenance
-     * @return \Illuminate\Http\Response
-     */
     public function showFromUnitAsset(InfrastructureUnit $unit, InfrastructureAsset $asset, InfrastructureRecord $tax)
     {
         Gate::authorize('show', $tax);
         return new RecordShowResource($tax);
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \Module\Infrastructure\Models\InfrastructureMaintenance $infrastructureMaintenance
-     * @return \Illuminate\Http\Response
-     */
     public function showFromUnitAssetDocument(InfrastructureUnit $unit, InfrastructureAsset $asset, InfrastructureDocument $document, InfrastructureRecord $tax)
     {
         Gate::authorize('show', $tax);

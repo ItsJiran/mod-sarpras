@@ -155,6 +155,42 @@ class InfrastructureRecordController extends Controller
         return new RecordShowResource($infrastructureRecord);
     }
 
+    public function showFromAsset(InfrastructureAsset $asset, InfrastructureRecord $infrastructureRecord)
+    {
+        Gate::authorize('show', $infrastructureRecord);
+        return new RecordShowResource($infrastructureRecord);
+    }  
+
+    public function showFromUnitAsset(InfrastructureUnit $unit, InfrastructureAsset $asset, InfrastructureRecord $infrastructureRecord)
+    {
+        Gate::authorize('show', $infrastructureRecord);
+        return new RecordShowResource($infrastructureRecord);
+    }
+
+    public function showFromUnitAssetDocument(InfrastructureUnit $unit, InfrastructureAsset $asset, InfrastructureDocument $document, InfrastructureRecord $infrastructureRecord)
+    {
+        Gate::authorize('show', $infrastructureRecord);
+        return new RecordShowResource($infrastructureRecord);
+    }
+
+    public function showFromAssetDocument(InfrastructureAsset $asset, InfrastructureDocument $document, InfrastructureRecord $infrastructureRecord)
+    {
+        Gate::authorize('show', $infrastructureRecord);
+        return new RecordShowResource($infrastructureRecord);
+    }
+    
+    public function showFromDocument(InfrastructureDocument $document, InfrastructureRecord $infrastructureRecord)
+    {
+        Gate::authorize('show', $infrastructureRecord);
+        return new RecordShowResource($infrastructureRecord);
+    }
+
+    public function showFromUnitDocument(InfrastructureUnit $unit, InfrastructureDocument $document, InfrastructureRecord $infrastructureRecord)
+    {
+        Gate::authorize('show', $infrastructureRecord);
+        return new RecordShowResource($infrastructureRecord);
+    }
+
     // + ===================================
     // + ----------- UPDATE METHODS
     // + ===================================
