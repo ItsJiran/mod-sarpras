@@ -136,26 +136,20 @@ class InfrastructureRecord extends Model
      */
 
     
-    public static function mergeRequestTax($request) : Request
+    public static function mergeRequestTax(Request $request) : Request
     {
         return $request->merge([ 
             'type' => 'tax'
         ]);
     }
 
-    public static function mergeRequestMaintenance($request) : Request
+    public static function mergeRequestMaintenance(Request $request) : Request
     {
         return $request->merge([ 
             'type' => 'maintenance'
         ]);
     }
 
-    /**
-     * The model map combos method
-     *
-     * @param [type] $model
-     * @return array
-     */
     public static function mergeRequestAsset(Request $request, InfrastructureAsset $asset) : Request 
     {
         return $request->merge([ 
@@ -165,12 +159,6 @@ class InfrastructureRecord extends Model
         ]);
     }
 
-    /**
-     * The model map combos method
-     *
-     * @param [type] $model
-     * @return array
-     */
     public static function mergeRequestDocument(Request $request, InfrastructureDocument $document) : Request 
     {
         return $request->merge([ 
@@ -182,11 +170,11 @@ class InfrastructureRecord extends Model
     }
 
     /**
-     * The model map combos method
-     *
-     * @param [type] $model
-     * @return array
+     * ====================================================
+     * +----------------- MAP RESOURCES ------------------+
+     * ====================================================
      */
+
     public static function mapResourceShow(Request $request, $model = null) : array 
     {
         $properties = [

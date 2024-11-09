@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use Module\Infrastructure\Http\Controllers\DashboardController;
 use Module\Infrastructure\Http\Controllers\InfrastructureAssetController;
+use Module\Infrastructure\Http\Controllers\InfrastructureRecordController;
 use Module\Infrastructure\Http\Controllers\InfrastructureTaxController;
 use Module\Infrastructure\Http\Controllers\InfrastructureTaxRecordController;
 use Module\Infrastructure\Http\Controllers\InfrastructureTaxRecordUsedController;
@@ -28,6 +29,10 @@ Route::get('ref-unit/combos',[InfrastructureUnitController::class, 'refCombos'])
 Route::resource('maintenance',InfrastructureMaintenanceController::class)->parameters([
     'maintenance' => 'infrastructureMaintenance'
 ]);
+
+Route::controller(InfrastructureRecordController::class)->group(function () {
+
+});
 
 Route::get('asset/{asset}/maintenance',[InfrastructureMaintenanceController::class,'indexFromAsset']);
 Route::get('asset/{asset}/document/{document}/maintenance',[InfrastructureMaintenanceController::class,'indexFromAssetDocument']);
@@ -66,44 +71,48 @@ Route::delete('unit/{unit}/asset/{asset}/document/{document}/maintenance/{mainte
 
 // +-----------------------------------
 // +-- from resource module maintenance
-Route::resource('tax',InfrastructureTaxController::class)->parameters([
-    'tax' => 'infrastructureTax'
-]);
+Route::controller(InfrastructureRecordController::class)->group(function () {
+    Route::group(['as' => 'tax::'], function(){
+        Route::resource('tax',InfrastructureRecordController::class)->parameters([
+            'tax' => 'infrastructureRecord'
+        ]);
 
-Route::get('asset/{asset}/tax',[InfrastructureTaxController::class,'indexFromAsset']);
-Route::get('asset/{asset}/document/{document}/tax',[InfrastructureTaxController::class,'indexFromAssetDocument']);
-Route::get('document/{document}/tax',[InfrastructureTaxController::class,'indexFromDocument']);
-Route::get('unit/{unit}/asset/{asset}/tax',[InfrastructureTaxController::class, 'indexFromUnitAsset']);
-Route::get('unit/{unit}/document/{document}/tax',[InfrastructureTaxController::class, 'indexFromUnitDocument']);
-Route::get('unit/{unit}/asset/{asset}/document/{document}/tax',[InfrastructureTaxController::class, 'indexFromUnitAssetDocument']);
-
-Route::post('asset/{asset}/tax',[InfrastructureTaxController::class, 'storeFromAsset']);
-Route::post('asset/{asset}/document/{document}/tax',[InfrastructureTaxController::class, 'storeFromAssetDocument']);
-Route::post('document/{document}/tax',[InfrastructureTaxController::class, 'storeFromDocument']);
-Route::post('unit/{unit}/asset/{asset}/tax',[InfrastructureTaxController::class, 'storeFromUnitAsset']);
-Route::post('unit/{unit}/document/{document}/tax',[InfrastructureTaxController::class, 'storeFromUnitDocument']);
-Route::post('unit/{unit}/asset/{asset}/document/{document}/tax',[InfrastructureTaxController::class, 'storeFromUnitAssetDocument']);
-
-Route::get('asset/{asset}/tax/{tax}',[InfrastructureTaxController::class, 'showFromAsset']);
-Route::get('asset/{asset}/document/{document}/tax/{tax}',[InfrastructureTaxController::class, 'showFromAssetDocument']);
-Route::get('document/{document}/tax/{tax}',[InfrastructureTaxController::class, 'showFromDocument']);
-Route::get('unit/{unit}/asset/{asset}/tax/{tax}',[InfrastructureTaxController::class, 'showFromUnitAsset']);
-Route::get('unit/{unit}/document/{document}/tax/{tax}',[InfrastructureTaxController::class, 'showFromUnitDocument']);
-Route::get('unit/{unit}/asset/{asset}/document/{document}/tax/{tax}',[InfrastructureTaxController::class, 'showFromUnitAssetDocument']);
-
-Route::put('asset/{asset}/tax/{tax}',[InfrastructureTaxController::class, 'updateFromAsset']);
-Route::put('asset/{asset}/document/{document}/tax/{tax}',[InfrastructureTaxController::class, 'updateFromAssetDocument']);
-Route::put('document/{document}/tax/{tax}',[InfrastructureTaxController::class, 'updateFromDocument']);
-Route::put('unit/{unit}/asset/{asset}/tax/{tax}',[InfrastructureTaxController::class, 'updateFromUnitAsset']);
-Route::put('unit/{unit}/document/{document}/tax/{tax}',[InfrastructureTaxController::class, 'updateFromUnitDocument']);
-Route::put('unit/{unit}/asset/{asset}/document/{document}/tax/{tax}',[InfrastructureTaxController::class, 'updateFromUnitAssetDocument']);
-
-Route::delete('asset/{asset}/tax/{tax}',[InfrastructureTaxController::class, 'destroyFromAsset']);
-Route::delete('asset/{asset}/document/{document}/tax/{tax}',[InfrastructureTaxController::class, 'destroyFromAssetDocument']);
-Route::delete('document/{document}/tax/{tax}',[InfrastructureTaxController::class, 'destroyFromDocument']);
-Route::delete('unit/{unit}/asset/{asset}/tax/{tax}',[InfrastructureTaxController::class, 'destroyFromUnitAsset']);
-Route::delete('unit/{unit}/document/{document}/tax/{tax}',[InfrastructureTaxController::class, 'destroyFromUnitDocument']);
-Route::delete('unit/{unit}/asset/{asset}/document/{document}/tax/{tax}',[InfrastructureTaxController::class, 'destroyFromUnitAssetDocument']);
+        Route::get('asset/{asset}/tax','indexFromAsset');
+        Route::get('asset/{asset}/document/{document}/tax','indexFromAssetDocument');
+        Route::get('document/{document}/tax','indexFromDocument');
+        Route::get('unit/{unit}/asset/{asset}/tax','indexFromUnitAsset');
+        Route::get('unit/{unit}/document/{document}/tax','indexFromUnitDocument');
+        Route::get('unit/{unit}/asset/{asset}/document/{document}/tax','indexFromUnitAssetDocument');
+    
+        Route::post('asset/{asset}/tax','storeFromAsset');
+        Route::post('asset/{asset}/document/{document}/tax','storeFromAssetDocument');
+        Route::post('document/{document}/tax','storeFromDocument');
+        Route::post('unit/{unit}/asset/{asset}/tax','storeFromUnitAsset');
+        Route::post('unit/{unit}/document/{document}/tax','storeFromUnitDocument');
+        Route::post('unit/{unit}/asset/{asset}/document/{document}/tax','storeFromUnitAssetDocument');
+        
+        Route::get('asset/{asset}/tax/{tax}','showFromAsset');
+        Route::get('asset/{asset}/document/{document}/tax/{tax}','showFromAssetDocument');
+        Route::get('document/{document}/tax/{tax}','showFromDocument');
+        Route::get('unit/{unit}/asset/{asset}/tax/{tax}','showFromUnitAsset');
+        Route::get('unit/{unit}/document/{document}/tax/{tax}','showFromUnitDocument');
+        Route::get('unit/{unit}/asset/{asset}/document/{document}/tax/{tax}','showFromUnitAssetDocument');
+        
+        Route::put('asset/{asset}/tax/{tax}','updateFromAsset');
+        Route::put('asset/{asset}/document/{document}/tax/{tax}','updateFromAssetDocument');
+        Route::put('document/{document}/tax/{tax}','updateFromDocument');
+        Route::put('unit/{unit}/asset/{asset}/tax/{tax}','updateFromUnitAsset');
+        Route::put('unit/{unit}/document/{document}/tax/{tax}','updateFromUnitDocument');
+        Route::put('unit/{unit}/asset/{asset}/document/{document}/tax/{tax}','updateFromUnitAssetDocument');
+        
+        Route::delete('asset/{asset}/tax/{tax}','destroyFromAsset');
+        Route::delete('asset/{asset}/document/{document}/tax/{tax}','destroyFromAssetDocument');
+        Route::delete('document/{document}/tax/{tax}','destroyFromDocument');
+        Route::delete('unit/{unit}/asset/{asset}/tax/{tax}','destroyFromUnitAsset');
+        Route::delete('unit/{unit}/document/{document}/tax/{tax}','destroyFromUnitDocument');
+        Route::delete('unit/{unit}/asset/{asset}/document/{document}/tax/{tax}','destroyFromUnitAssetDocument');
+    });
+});
 
 
 // +-----------------------------------

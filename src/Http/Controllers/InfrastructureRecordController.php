@@ -16,15 +16,13 @@ use Module\Infrastructure\Models\InfrastructureRecordNote;
 
 class InfrastructureRecordController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+    // + ===================================
+    // + ----------- INDEX METHODS
+    // + ===================================
     public function index(Request $request)
     {
         Gate::authorize('view', InfrastructureRecord::class);
-
+        $request = $this->determineRouteType($request);
         return new RecordCollection(
             InfrastructureRecord::applyMode($request->mode)
                 ->filter($request->filters)
@@ -34,86 +32,129 @@ class InfrastructureRecordController extends Controller
         );
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request $request
-     * @return \Illuminate\Http\Response
-     */
+    // + ===================================
+    // + ----------- STORE METHODS
+    // + ===================================
     public function store(Request $request)
     {
         Gate::authorize('create', InfrastructureRecord::class);
-
+        $request = $this->determineRouteType($request);
         $request->validate([]);
+        return InfrastructureRecord::storeRecord($request);
+    }
+    
+    public function storeFromAsset(Request $request, InfrastructureAsset $asset)
+    {
+        Gate::authorize('create', InfrastructureRecord::class);
+        $request = $this->determineRouteType($request);
+        return $this->store($request);
+    }
 
+    public function storeFromDocument(Request $request, InfrastructureDocument $document)
+    {
+        Gate::authorize('create', InfrastructureRecord::class);
+        $request = $this->determineRouteType($request);
+        $request = InfrastructureRecord::mergeRequestDocument($request, $document);
         return InfrastructureRecord::storeRecord($request);
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \Module\Infrastructure\Models\InfrastructureRecord $infrastructureRecord
-     * @return \Illuminate\Http\Response
-     */
+    public function storeFromAssetDocument(Request $request, InfrastructureAsset $asset, InfrastructureDocument $document)
+    {
+        Gate::authorize('create', InfrastructureRecord::class);
+        $request = $this->determineRouteType($request);
+        return $this->storeFromDocument($request, $document);
+    }
+
+    public function storeFromUnitAsset(Request $request, InfrastructureUnit $unit, InfrastructureAsset $asset)
+    {
+        Gate::authorize('create', InfrastructureRecord::class);
+        $request = $this->determineRouteType($request);
+        return $this->storeFromAsset($request, $asset);
+    }
+
+    public function storeFromUnitAssetDocument(Request $request, InfrastructureUnit $unit, InfrastructureAsset $asset, InfrastructureDocument $document)
+    {
+        Gate::authorize('create', InfrastructureRecord::class);
+        $request = $this->determineRouteType($request);
+        return $this->storeFromDocument($request, $document);
+    }
+
+    public function storeFromUnitDocument(Request $request, InfrastructureUnit $unit, InfrastructureDocument $document)
+    {
+        Gate::authorize('create', InfrastructureRecord::class);
+        $request = $this->determineRouteType($request);
+        return $this->storeFromDocument($request, $document);
+    }
+
+    // + ===================================
+    // + ----------- SHOW METHODS
+    // + ===================================
     public function show(InfrastructureRecord $infrastructureRecord)
     {
         Gate::authorize('show', $infrastructureRecord);
-
+        $request = $this->determineRouteType($request);
         return new RecordShowResource($infrastructureRecord);
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request $request
-     * @param  \Module\Infrastructure\Models\InfrastructureRecord $infrastructureRecord
-     * @return \Illuminate\Http\Response
-     */
+    // + ===================================
+    // + ----------- UPDATE METHODS
+    // + ===================================
     public function update(Request $request, InfrastructureRecord $infrastructureRecord)
     {
         Gate::authorize('update', $infrastructureRecord);
-
+        $request = $this->determineRouteType($request);
         $request->validate([]);
-
         return InfrastructureRecord::updateRecord($request, $infrastructureRecord);
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \Module\Infrastructure\Models\InfrastructureRecord $infrastructureRecord
-     * @return \Illuminate\Http\Response
-     */
+    // + ===================================
+    // + ----------- DESTROY METHODS
+    // + ===================================
     public function destroy(InfrastructureRecord $infrastructureRecord)
     {
         Gate::authorize('delete', $infrastructureRecord);
-
+        $request = $this->determineRouteType($request);
         return InfrastructureRecord::deleteRecord($infrastructureRecord);
     }
 
-    /**
-     * Restore the specified resource from soft-delete.
-     *
-     * @param  \Module\Infrastructure\Models\InfrastructureRecord $infrastructureRecord
-     * @return \Illuminate\Http\Response
-     */
+
+    // + ===================================
+    // + ----------- DESTROY METHODS
+    // + ===================================
     public function restore(InfrastructureRecord $infrastructureRecord)
     {
         Gate::authorize('restore', $infrastructureRecord);
-
+        $request = $this->determineRouteType($request);
         return InfrastructureRecord::restoreRecord($infrastructureRecord);
     }
 
-    /**
-     * Force Delete the specified resource from soft-delete.
-     *
-     * @param  \Module\Infrastructure\Models\InfrastructureRecord $infrastructureRecord
-     * @return \Illuminate\Http\Response
-     */
+    // + ===================================
+    // + ----------- FORCE DESTROY METHODS
+    // + ===================================
     public function forceDelete(InfrastructureRecord $infrastructureRecord)
     {
         Gate::authorize('destroy', $infrastructureRecord);
-
+        $request = $this->determineRouteType($request);
         return InfrastructureRecord::destroyRecord($infrastructureRecord);
     }
+
+    // + ===================================
+    // + ----------- UTILITIES
+    // + ===================================
+    public function determineRouteType(Request $request) : Request
+    {
+        if ( $this->determineRouteName() == 'tax' )
+            $request = InfrastructureRecord::mergeRequestTax($request);
+        
+        if ( $this->determineRouteName() == 'maintenance' ) 
+            $request = InfrastructureRecord::mergeRequestMaintenance($request);
+
+        return $request;
+    }
+    public function determineRouteName()
+    {   
+        $routeName = \Illuminate\Support\Facades\Route::current()->getName();
+        return explode('::',$routeName)[0];
+    }
+    
 }

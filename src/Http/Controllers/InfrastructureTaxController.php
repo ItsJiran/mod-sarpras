@@ -126,12 +126,7 @@ class InfrastructureTaxController extends Controller
     // +-------------------- STORE METHODS
     // +================================================
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request $request
-     * @return \Illuminate\Http\Response
-     */
+
     public function store(Request $request)
     {
         Gate::authorize('create', InfrastructureRecord::class);
@@ -142,12 +137,6 @@ class InfrastructureTaxController extends Controller
         return InfrastructureTax::storeRecord($request);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request $request
-     * @return \Illuminate\Http\Response
-     */
     public function storeFromAsset(Request $request, InfrastructureAsset $asset)
     {
         Gate::authorize('create', InfrastructureRecord::class);
@@ -157,54 +146,29 @@ class InfrastructureTaxController extends Controller
         return InfrastructureRecord::storeRecord($request);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request $request
-     * @return \Illuminate\Http\Response
-     */
-    public function storeFromUnitAsset(Request $request, InfrastructureUnit $unit, InfrastructureAsset $asset)
-    {
-        Gate::authorize('create', InfrastructureRecord::class);
-        return $this->storeFromAsset($request, $asset);
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request $request
-     * @return \Illuminate\Http\Response
-     */
     public function storeFromAssetDocument(Request $request, InfrastructureAsset $asset, InfrastructureDocument $document)
     {
         Gate::authorize('create', InfrastructureRecord::class);
         return $this->storeFromDocument($request, $document);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request $request
-     * @return \Illuminate\Http\Response
-     */
     public function storeFromUnitAssetDocument(Request $request, InfrastructureUnit $unit, InfrastructureAsset $asset, InfrastructureDocument $document)
     {
         Gate::authorize('create', InfrastructureRecord::class);
         return $this->storeFromDocument($request, $document);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request $request
-     * @return \Illuminate\Http\Response
-     */
+    public function storeFromUnitAsset(Request $request, InfrastructureUnit $unit, InfrastructureAsset $asset)
+    {
+        Gate::authorize('create', InfrastructureRecord::class);
+        return $this->storeFromAsset($request, $asset);
+    }
+
+
     public function storeFromDocument(Request $request, InfrastructureDocument $document)
     {
         Gate::authorize('create', InfrastructureRecord::class);
-
         $request = InfrastructureRecord::mergeRequestDocument($request, $document);
-
         return InfrastructureRecord::storeRecord($request);
     }
 
