@@ -198,9 +198,35 @@ class InfrastructureRecordController extends Controller
     {
         Gate::authorize('update', $infrastructureRecord);
         $request = $this->determineRouteType($request);
-        $request->validate([]);
+        $request->validate( InfrastructureRecord::mapUpdateRequestValidation($request, $infrastructureRecord) );
         return InfrastructureRecord::updateRecord($request, $infrastructureRecord);
     }
+
+    public function updateFromAsset(Request $request, InfrastructureAsset $asset, InfrastructureRecord $infrastructureRecord)    
+    {   
+        Gate::authorize('update', $infrastructureRecord);
+        return $this->update($request, $infrastructureRecord);
+    }
+
+    public function updateFromAssetDocument(Request $request, InfrastructureAsset $asset, InfrastructureDocument $document, InfrastructureRecord $infrastructureRecord)    
+    {   
+        Gate::authorize('update', $infrastructureRecord);
+        return $this->update($request, $infrastructureRecord);
+    }
+
+    public function updateFromUnitAsset(Request $request, InfrastructureUnit $unit, InfrastructureAsset $asset, InfrastructureRecord $infrastructureRecord)    
+    {   
+        Gate::authorize('update', $infrastructureRecord);
+        return $this->update($request, $infrastructureRecord);
+    }
+
+    public function updateFromUnitAssetDocument(Request $request, InfrastructureUnit $unit, InfrastructureAsset $asset, InfrastructureDocument $document, InfrastructureRecord $infrastructureRecord)    
+    {   
+        Gate::authorize('update', $infrastructureRecord);
+        return $this->update($request, $infrastructureRecord);
+    }
+
+
 
     // + ===================================
     // + ----------- DESTROY METHODS
