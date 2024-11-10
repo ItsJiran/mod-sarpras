@@ -78,25 +78,16 @@ class InfrastructureRecordNote extends Model
     // +--------------- RELATION METHODS
     // +===============================================
 
-    /**
-     * Get the model that the image belongs to.
-     */
     public function record(): BelongsTo
     {
         return $this->belongsTo(InfrastructureRecord::class, 'record_id');
     } 
 
-    /**
-     * Get the model that the image belongs to.
-     */
     public function user(): BelongsTo
     {
         return $this->belongsTo(InfrastructureUser::class, 'user_id');
     } 
 
-    /**
-     * Get the model that the image belongs to.
-     */
     public function uses(): HasMany 
     {
         return $this->hasMany(InfrastructureTaxRecordUsed::class, 'asset_id');
@@ -180,7 +171,7 @@ class InfrastructureRecordNote extends Model
     }
 
     // +------------------------------
-    // +------------ STORE REQUEST
+    // +--------- STORE REQUEST
 
     public static function mapStoreRequest(Request $request, InfrastructureTax $tax)
     {
