@@ -25,10 +25,10 @@ class InfrastructureRecordController extends Controller
         $request = $this->determineRouteType($request);
         return new RecordCollection(
             InfrastructureRecord::applyMode($request->mode)
-                ->filter($request->filters)
-                ->search($request->findBy)
-                ->sortBy($request->sortBy)
-                ->paginate($request->itemsPerPage)
+            ->filter($request->filters)
+            ->search($request->findBy)
+            ->sortBy($request->sortBy)
+            ->paginate($request->itemsPerPage)
         );
     }
 
@@ -148,46 +148,52 @@ class InfrastructureRecordController extends Controller
     // + ===================================
     // + ----------- SHOW METHODS
     // + ===================================
-    public function show(InfrastructureRecord $infrastructureRecord)
+    public function show(Request $request, InfrastructureRecord $infrastructureRecord)
     {
         Gate::authorize('show', $infrastructureRecord);
         $request = $this->determineRouteType($request);
         return new RecordShowResource($infrastructureRecord);
     }
 
-    public function showFromAsset(InfrastructureAsset $asset, InfrastructureRecord $infrastructureRecord)
+    public function showFromAsset(Request $request, InfrastructureAsset $asset, InfrastructureRecord $infrastructureRecord)
     {
         Gate::authorize('show', $infrastructureRecord);
+        $request = $this->determineRouteType($request);
         return new RecordShowResource($infrastructureRecord);
     }  
 
-    public function showFromUnitAsset(InfrastructureUnit $unit, InfrastructureAsset $asset, InfrastructureRecord $infrastructureRecord)
+    public function showFromUnitAsset(Request $request, InfrastructureUnit $unit, InfrastructureAsset $asset, InfrastructureRecord $infrastructureRecord)
     {
         Gate::authorize('show', $infrastructureRecord);
+        $request = $this->determineRouteType($request);
         return new RecordShowResource($infrastructureRecord);
     }
 
-    public function showFromUnitAssetDocument(InfrastructureUnit $unit, InfrastructureAsset $asset, InfrastructureDocument $document, InfrastructureRecord $infrastructureRecord)
+    public function showFromUnitAssetDocument(Request $request, InfrastructureUnit $unit, InfrastructureAsset $asset, InfrastructureDocument $document, InfrastructureRecord $infrastructureRecord)
     {
         Gate::authorize('show', $infrastructureRecord);
+        $request = $this->determineRouteType($request);
         return new RecordShowResource($infrastructureRecord);
     }
 
-    public function showFromAssetDocument(InfrastructureAsset $asset, InfrastructureDocument $document, InfrastructureRecord $infrastructureRecord)
+    public function showFromAssetDocument(Request $request, InfrastructureAsset $asset, InfrastructureDocument $document, InfrastructureRecord $infrastructureRecord)
     {
         Gate::authorize('show', $infrastructureRecord);
+        $request = $this->determineRouteType($request);
         return new RecordShowResource($infrastructureRecord);
     }
     
-    public function showFromDocument(InfrastructureDocument $document, InfrastructureRecord $infrastructureRecord)
+    public function showFromDocument(Request $request, InfrastructureDocument $document, InfrastructureRecord $infrastructureRecord)
     {
         Gate::authorize('show', $infrastructureRecord);
+        $request = $this->determineRouteType($request);
         return new RecordShowResource($infrastructureRecord);
     }
 
-    public function showFromUnitDocument(InfrastructureUnit $unit, InfrastructureDocument $document, InfrastructureRecord $infrastructureRecord)
+    public function showFromUnitDocument(Request $request, InfrastructureUnit $unit, InfrastructureDocument $document, InfrastructureRecord $infrastructureRecord)
     {
         Gate::authorize('show', $infrastructureRecord);
+        $request = $this->determineRouteType($request);
         return new RecordShowResource($infrastructureRecord);
     }
 
