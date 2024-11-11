@@ -19,7 +19,7 @@ class InfrastructureRecordNoteUsedController extends Controller
     // + ------------------ INDEX METHODS ----------------------
     // + =======================================================
 
-    public function index(Request $request)
+    public function index(Request $request, InfrastructureRecord $record, InfrastructureRecordNote $note)
     {
         Gate::authorize('view', InfrastructureRecordNoteUsed::class);
 

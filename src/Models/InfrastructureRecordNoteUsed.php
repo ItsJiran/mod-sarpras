@@ -12,6 +12,13 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Validation\Rule;
 
+use Module\Infrastructure\Models\InfrastructureRecord;
+use Module\Infrastructure\Models\InfrastructureRecordNote;
+
+use Module\Infrastructure\Models\InfrastructureUnit;
+use Module\Infrastructure\Models\InfrastructureAsset;
+use Module\Infrastructure\Models\InfrastructureDocument;
+
 class InfrastructureRecordNoteUsed extends Model
 {
     use Filterable;
@@ -58,6 +65,34 @@ class InfrastructureRecordNoteUsed extends Model
     protected $defaultOrder = 'name';
 
     /**
+     * The attributes that are mass assignable.
+     *
+     * @var array<int, string>
+     */
+    protected $fillable = [
+        'name',
+        'tax_record_id',
+        'target_id',
+        'type',
+        'is_freeze',
+    ];
+
+    /**
+     * ====================================================
+     * +---------------- RELATION METHODS ----------------+
+     * ====================================================
+     */
+
+
+
+    /**
+     * =================================================
+     * +---------------- STORE METHODS ----------------+
+     * =================================================
+     */
+
+
+    /**
      * The model store method
      *
      * @param Request $request
@@ -87,12 +122,12 @@ class InfrastructureRecordNoteUsed extends Model
     }
 
     /**
-     * The model update method
-     *
-     * @param Request $request
-     * @param [type] $model
-     * @return void
+     * ==================================================
+     * +---------------- UPDATE METHODS ----------------+
+     * ==================================================
      */
+
+
     public static function updateRecord(Request $request, $model)
     {
         DB::connection($model->connection)->beginTransaction();
@@ -115,11 +150,11 @@ class InfrastructureRecordNoteUsed extends Model
     }
 
     /**
-     * The model delete method
-     *
-     * @param [type] $model
-     * @return void
+     * ==================================================
+     * +---------------- DELETE METHODS ----------------+
+     * ==================================================
      */
+
     public static function deleteRecord($model)
     {
         DB::connection($model->connection)->beginTransaction();
@@ -141,11 +176,11 @@ class InfrastructureRecordNoteUsed extends Model
     }
 
     /**
-     * The model restore method
-     *
-     * @param [type] $model
-     * @return void
+     * ===================================================
+     * +---------------- RESTORE METHODS ----------------+
+     * ===================================================
      */
+
     public static function restoreRecord($model)
     {
         DB::connection($model->connection)->beginTransaction();
@@ -167,11 +202,11 @@ class InfrastructureRecordNoteUsed extends Model
     }
 
     /**
-     * The model destroy method
-     *
-     * @param [type] $model
-     * @return void
+     * ===================================================
+     * +---------------- DESTROY METHODS ----------------+
+     * ===================================================
      */
+
     public static function destroyRecord($model)
     {
         DB::connection($model->connection)->beginTransaction();

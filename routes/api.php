@@ -175,14 +175,11 @@ Route::controller(InfrastructureRecordNoteController::class)->group(function () 
     Route::post('record/{record}/note/{note}/cancelled','changeToCancelled');
 
     Route::group(['as' => 'tax::'], function(){
-
-        // crud methods
         Route::get('tax/{record}/note','index');
         Route::post('tax/{record}/note','store');
         Route::get('tax/{record}/note/{note}','show');
         Route::put('tax/{record}/note/{note}','update');
         Route::delete('tax/{record}/note/{note}','destroy');
-        
     });
 });
 
@@ -191,11 +188,21 @@ Route::controller(InfrastructureRecordNoteController::class)->group(function () 
 
 // tax - record - used - asset
 Route::controller(InfrastructureRecordNoteController::class)->group(function () {
-    Route::get('tax/{tax}/record/{record}/used/',[InfrastructureTaxRecordUsedController::class, 'index']);
-    Route::post('tax/{tax}/record/{record}/used',[InfrastructureTaxRecordUsedController::class, 'store']);
-    Route::get('tax/{tax}/record/{record}/used/{used}',[InfrastructureTaxRecordUsedController::class, 'show']);
-    Route::put('tax/{tax}/record/{record}/used/{used}',[InfrastructureTaxRecordUsedController::class, 'update']);
-    Route::delete('tax/{tax}/record/{record}/used/{used}',[InfrastructureTaxRecordUsedController::class, 'destroy']);
+    Route::group(['as' => 'tax::'], function(){
+        Route::get( 'tax/{record}/note/{note}/used/', 'index' );
+        Route::post( 'tax/{record}/note/{note}/used', 'store' );
+        Route::get( 'tax/{record}/note/{note}/used/{used}', 'show' );
+        Route::put( 'tax/{record}/note/{note}/used/{used}', 'update' );
+        Route::delete( 'tax/{record}/note/{note}/used/{used}', 'destroy' );
+    });
+
+    Route::group(['as' => 'maintenance::'], function(){
+        Route::get( 'maintenance/{record}/note/{note}/used/', 'index' );
+        Route::post( 'maintenance/{record}/note/{note}/used', 'store' );
+        Route::get( 'maintenance/{record}/note/{note}/used/{used}', 'show' );
+        Route::put( 'maintenance/{record}/note/{note}/used/{used}', 'update' );
+        Route::delete( 'maintenance/{record}/note/{note}/used/{used}', 'destroy' );
+    });
 });
 // +-----------------------------------------------
 // +-- from resource module tax record
