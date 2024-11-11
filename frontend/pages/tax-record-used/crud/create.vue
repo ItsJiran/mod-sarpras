@@ -5,6 +5,19 @@
 			record, }">
 			<v-card-text>
 				
+				<v-row>
+					<v-col cols="6">
+						<h1>Apakah dibekukan?</h1>
+					</v-col>
+					<v-col cols="6">
+						<v-switch
+						:model-value="record.dibekukan"						
+						color="primary"
+						label="Dibekukan"
+						></v-switch>
+					</v-col>
+				</v-row>
+
 				<v-row dense>
 					<v-col cols="12">
 						<v-combobox

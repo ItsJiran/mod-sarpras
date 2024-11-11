@@ -217,13 +217,13 @@ class InfrastructureRecordNoteUsed extends Model
             $model->note_id = $note->id;
 
             if ($request['type'] == 'asset') {                
-                $model->target_id = $request['asset']['id'];
+                $model->targetable_id = $request['asset']['id'];
                 $model->targetable_type = InfrastructureAsset::class;
                 $model->dibekukan = false;
             }   
 
             if ($request['type'] == 'document') {
-                $model->target_id = $request['document']['id'];
+                $model->targetable_id = $request['document']['id'];
                 $model->targetable_type = InfrastructureDocument::class;
                 $model->dibekukan = false;
             }

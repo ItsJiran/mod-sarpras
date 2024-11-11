@@ -45,7 +45,7 @@ class InfrastructureRecordNoteUsedController extends Controller
             InfrastructureRecordNoteUsed::mapStoreRequest($request, $record, $note) 
         );
 
-        return InfrastructureRecordNoteUsed::storeRecord($request);
+        return InfrastructureRecordNoteUsed::storeRecord($request, $record, $note);
     }
 
     // + =======================================================
