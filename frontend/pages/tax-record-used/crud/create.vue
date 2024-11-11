@@ -23,7 +23,6 @@
 					:is="record.type"
 				/>
 
-
 			</v-card-text>
 		</template>
 	</form-create>

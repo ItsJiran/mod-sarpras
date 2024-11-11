@@ -384,42 +384,42 @@ export default {
 		},
 
 		{
-			path: "tax/:record/record/:record/used",
+			path: "tax/:record/note/:note/used",
 			component: () =>
 				import(
-					/* webpackChunkName: "infrastructure" */ "@modules/infrastructure/frontend/pages/tax-record-used/index.vue"
+					/* webpackChunkName: "infrastructure" */ "@modules/infrastructure/frontend/pages/record-note-used/index.vue"
 				),
 			children: [
 				{
 					path: "",
-					name: "infrastructure-tax-record-used",
+					name: "infrastructure-tax-note-used",
 					component: () =>
 						import(
-							/* webpackChunkName: "infrastructure" */ "@modules/infrastructure/frontend/pages/tax-record-used/crud/data.vue"
+							/* webpackChunkName: "infrastructure" */ "@modules/infrastructure/frontend/pages/record-note-used/crud/data.vue"
 						),
 				},
 				{
 					path: "create",
-					name: "infrastructure-tax-record-used-create",
+					name: "infrastructure-tax-note-used-create",
 					component: () =>
 						import(
-							/* webpackChunkName: "infrastructure" */ "@modules/infrastructure/frontend/pages/tax-record-used/crud/create.vue"
+							/* webpackChunkName: "infrastructure" */ "@modules/infrastructure/frontend/pages/record-note-used/crud/create.vue"
 						),
 				},
 				{
-					path: ":record/show",
-					name: "infrastructure-tax-record-used-show",
+					path: ":used/show",
+					name: "infrastructure-tax-note-used-show",
 					component: () =>
 						import(
-							/* webpackChunkName: "infrastructure" */ "@modules/infrastructure/frontend/pages/tax-record-used/crud/show.vue"
+							/* webpackChunkName: "infrastructure" */ "@modules/infrastructure/frontend/pages/record-note-used/crud/show.vue"
 						),
 				},		
 				{
-					path: ":record/edit",
-					name: "infrastructure-tax-record-used-edit",
+					path: ":used/edit",
+					name: "infrastructure-tax-note-used-edit",
 					component: () =>
 						import(
-							/* webpackChunkName: "infrastructure" */ "@modules/infrastructure/frontend/pages/tax-record-used/crud/edit.vue"
+							/* webpackChunkName: "infrastructure" */ "@modules/infrastructure/frontend/pages/record-note-used/crud/edit.vue"
 						),
 				},			
 			]
