@@ -37,11 +37,13 @@ class InfrastructureRecordNoteUsedController extends Controller
     // + ------------------ STORE METHODS ----------------------
     // + =======================================================
 
-    public function store(Request $request)
+    public function store(Request $request, InfrastructureRecord $record, InfrastructureRecordNote $note)
     {
         Gate::authorize('create', InfrastructureRecordNoteUsed::class);
 
-        $request->validate([]);
+        $request->validate( 
+            InfrastructureRecordNoteUsed::mapStoreRequest($request, $record, $note) 
+        );
 
         return InfrastructureRecordNoteUsed::storeRecord($request);
     }
@@ -50,11 +52,10 @@ class InfrastructureRecordNoteUsedController extends Controller
     // + ------------------ SHOW METHODS ----------------------
     // + =======================================================
 
-    public function show(InfrastructureRecordNoteUsed $infrastructureRecordNoteUsed)
+    public function show(Request $request, InfrastructureRecord $record, InfrastructureRecordNote $note, InfrastructureRecordNoteUsed $used)
     {
-        Gate::authorize('show', $infrastructureRecordNoteUsed);
-
-        return new RecordNoteUsedShowResource($infrastructureRecordNoteUsed);
+        Gate::authorize('show', $used);
+        return new RecordNoteUsedShowResource($used);
     }
 
     // + =======================================================
