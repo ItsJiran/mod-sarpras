@@ -122,12 +122,6 @@ class InfrastructureTaxPeriodic extends Model
      * ====================================================
      */
 
-    /**
-     * The model store method
-     *
-     * @param Request $request
-     * @return array
-     */
     public static function mapResourceShow(Request $request, $model = null) : array
     {
         return [
