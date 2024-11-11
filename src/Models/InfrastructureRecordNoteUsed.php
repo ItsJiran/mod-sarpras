@@ -121,25 +121,33 @@ class InfrastructureRecordNoteUsed extends Model
 
      public static function mapResourceShow(Request $request, $model = null) : array 
      {
+        $properties = [
+            'id' => $model->id,
+            'name' => $model->target->name,
+        ];
+
+        $additional = [];
+
+        if ( !is_null($model->target->unit) ) {
+            $additional['unit'] = InfrastructureUnit::mapResourceShow($request, $model->target->unit);
+        }
+
         if ($model->isAsset()) {
-            return [
-                'id' => $model->id,
-                'name' => $model->target->name,
-                'asset' => $model->targetable_type::mapResourceShow($request, $model->target),
-                'unit' => InfrastructureUnit::mapResourceShow($request, $model->target->unit),
-                'type' => 'asset',
-            ];
+            $additional['asset'] = $model->targetable_type::mapResourceShow($request, $model->target);
+            $additional['type'] = 'asset';
         }
-        
+
         if ($model->isDocument()) {
-            return [
-                'id' => $model->id,
-                'name' => $model->target->name,
-                'document' => $model->targetable_type::mapResourceShow($request, $model->target),
-                'unit' => InfrastructureUnit::mapResourceShow($request, $model->target->unit),
-                'type' => 'asset',
-            ];
+            $additional['document'] = $model->targetable_type::mapResourceShow($request, $model->target);
+            $additional['type'] = 'document';
+
+            if ( !is_null($model->target->asset) ) {
+                $additional['asset'] = InfrastructureAsset::mapResourceShow($request, $model->target->asset);
+                $additional['jenis'] = 'iya';
+            }
         }
+
+        return array_merge($properties, $additional);
      }
 
      public static function mapCombos(Request $request, $model = null) : array 

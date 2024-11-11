@@ -66,12 +66,12 @@ class InfrastructureRecordNoteController extends Controller
         );
 
         $isResponseValid = InfrastructureRecordNote::mapUpdateRequestValid($request, $record, $record);
-
+        
         if ( !is_null($isResponseValid) ) {
             return $isResponseValid;   
         }
 
-        return InfrastructureRecordNote::updateRecord($request, $note);
+        return InfrastructureRecordNote::updateRecord($request, $record, $note);
     }
 
     // + ================================================== +

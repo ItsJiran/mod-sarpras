@@ -16,6 +16,9 @@ use Illuminate\Database\Eloquent\Relations\MorphTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
+use Illuminate\Http\JsonResponse;
+use Carbon\Carbon;
+
 use Module\Infrastructure\Models\InfrastructureRecord;
 use Module\Infrastructure\Models\InfrastructureUser;
 
@@ -339,7 +342,7 @@ class InfrastructureRecordNote extends Model
         }
 
         // kalau misalnya bukan user yang membuat dan bukan admin        
-        if ( $model->user_id != $request->user()->id && $request->user()->id != 1 ) {
+        if ( $model->user_id != $request->user()->id ) {
             return response()->json([
                 'success' => false,
                 'message' => 'Anda tidak berwenang!'
@@ -347,7 +350,7 @@ class InfrastructureRecordNote extends Model
         }
 
         // kalau bukan draft dan bukan admin
-        if ( $model->status != 'draft' && $request->user()->id != 1 ) {
+        if ( $model->status != 'draft' ) {
             return response()->json([
                 'success' => false,
                 'message' => 'Anda tidak berwenang!'
@@ -441,12 +444,12 @@ class InfrastructureRecordNote extends Model
             
             if ( $record->isRecordPeriodic() ) {
                 $now = Carbon::now();
-                $now->addDays($record->typeable->period_number_day);
-                $now->addMonths($record->typeable->period_number_month);
-                $now->addYear($record->typeable->period_number_year);
+                $now->addDays($record->recordable->period_number_day);
+                $now->addMonths($record->recordable->period_number_month);
+                $now->addYear($record->recordable->period_number_year);
 
-                $record->typeable->duedate = $now;
-                $record->typeable->save();
+                $record->recordable->duedate = $now;
+                $record->recordable->save();
                 $record->save();
             }
 

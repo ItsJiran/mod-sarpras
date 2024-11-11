@@ -213,7 +213,7 @@ class InfrastructureRecord extends Model
 
         return array_merge(
             $properties,
-            // $model->recordable_type::mapResourceShow($request, $model->recordable),
+            $model->recordable_type::mapResourceShow($request, $model->recordable),
             // $model->targetable_type::mapResourceShow($request, $model->targetable),
         );
     }
