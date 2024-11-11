@@ -71,10 +71,9 @@ class InfrastructureRecordNoteUsed extends Model
      */
     protected $fillable = [
         'name',
-        'tax_record_id',
-        'target_id',
-        'type',
-        'is_freeze',
+        'record_id',
+        'target_id',        
+        'dibekukan',
     ];
 
     /**
@@ -83,7 +82,41 @@ class InfrastructureRecordNoteUsed extends Model
      * ====================================================
      */
 
+     public function record(): BelongsTo
+     {
+         return $this->belongsTo(InfrastructureTaxRecord::class, 'record_id');
+     } 
 
+     public function target(): BelongsTo
+     {
+         if($this->isAsset())
+             return $this->belongsTo(InfrastructureAsset::class, 'target_id');
+ 
+         if($this->isDocument())
+             return $this->belongsTo(InfrastructureDocument::class, 'target_id');
+     }
+
+    /**
+     * ================================================
+     * +---------------- MAP STATUSES ----------------+
+     * ================================================
+     */
+
+     public function isAsset() : bool
+     {
+        return $this->targetable_type == InfrastructureAsset::class;
+     }
+
+     public function isDocument() : bool
+     {
+        return $this->targetable_type == InfrastructureDocument::class;
+     }
+
+    /**
+     * ===============================================
+     * +---------------- MAP METHODS ----------------+
+     * ===============================================
+     */
 
     /**
      * =================================================

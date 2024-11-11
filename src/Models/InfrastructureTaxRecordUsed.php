@@ -250,26 +250,6 @@ class InfrastructureTaxRecordUsed extends Model
         );
 
         return $query->paginate(15);
-        // $join_asset = self::where('infrastructure_tax_record_useds.type', '=', 'asset')
-        // ->join('infrastructure_assets', 'infrastructure_assets.id', '=', 'infrastructure_tax_record_useds.target_id')
-        // ->where($where_queries)
-        // ->applyMode($request->mode)
-        // ->filter($request->filters)
-        // ->search($request->findBy)
-        // ->sortBy($request->sortBy)
-        // ->paginate($request->itemsPerPage);        
-
-        // $join_document = self::where('infrastructure_tax_record_useds.type', '=', 'document')
-        // ->join('infrastructure_documents', 'infrastructure_documents.id', '=', 'infrastructure_tax_record_useds.target_id')
-        // ->where($where_queries)
-        // ->applyMode($request->mode)
-        // ->filter($request->filters)
-        // ->search($request->findBy)
-        // ->sortBy($request->sortBy)
-        // ->paginate($request->itemsPerPage);        
-
-        return $query->where($where_queries)->paginate(15);
-        // return $join_asset->merge($join_document);
     }
 
     /**
