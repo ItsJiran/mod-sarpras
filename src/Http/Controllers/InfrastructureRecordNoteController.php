@@ -22,7 +22,7 @@ class InfrastructureRecordNoteController extends Controller
         Gate::authorize('view', InfrastructureRecordNote::class);
 
         return new RecordNoteCollection(
-            $tax->records()
+            $record->notes()
                 ->applyMode($request->mode)
                 ->filter($request->filters)
                 ->search($request->findBy)
@@ -34,6 +34,8 @@ class InfrastructureRecordNoteController extends Controller
     public function store(Request $request, InfrastructureRecord $record)
     {
         Gate::authorize('create', InfrastructureRecordNote::class);
+
+        dd($record);
 
         $request->validate( InfrastructureRecordNote::mapStoreRequest($request, $record) );
         $isResponseValid = InfrastructureRecordNote::mapStoreRequestValid($request, $record);

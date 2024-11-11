@@ -323,7 +323,7 @@ export default {
 						),
 				},
 				{
-					path: ":tax/show",
+					path: ":record/show",
 					name: "infrastructure-tax-show",
 					component: () =>
 						import(
@@ -331,7 +331,7 @@ export default {
 						),
 				},		
 				{
-					path: ":tax/edit",
+					path: ":record/edit",
 					name: "infrastructure-tax-edit",
 					component: () =>
 						import(
@@ -342,49 +342,49 @@ export default {
 		},
 
 		{
-			path: "tax/:tax/record",
+			path: "tax/:record/note",
 			component: () =>
 				import(
-					/* webpackChunkName: "infrastructure" */ "@modules/infrastructure/frontend/pages/tax-record/index.vue"
+					/* webpackChunkName: "infrastructure" */ "@modules/infrastructure/frontend/pages/record-note/index.vue"
 				),
 			children: [
 				{
 					path: "",
-					name: "infrastructure-tax-record",
+					name: "infrastructure-tax-note",
 					component: () =>
 						import(
-							/* webpackChunkName: "infrastructure" */ "@modules/infrastructure/frontend/pages/tax-record/crud/data.vue"
+							/* webpackChunkName: "infrastructure" */ "@modules/infrastructure/frontend/pages/record-note/crud/data.vue"
 						),
 				},
 				{
 					path: "create",
-					name: "infrastructure-tax-record-create",
+					name: "infrastructure-tax-note-create",
 					component: () =>
 						import(
-							/* webpackChunkName: "infrastructure" */ "@modules/infrastructure/frontend/pages/tax-record/crud/create.vue"
+							/* webpackChunkName: "infrastructure" */ "@modules/infrastructure/frontend/pages/record-note/crud/create.vue"
 						),
 				},
 				{
-					path: ":record/show",
-					name: "infrastructure-tax-record-show",
+					path: ":note/show",
+					name: "infrastructure-tax-note-show",
 					component: () =>
 						import(
-							/* webpackChunkName: "infrastructure" */ "@modules/infrastructure/frontend/pages/tax-record/crud/show.vue"
+							/* webpackChunkName: "infrastructure" */ "@modules/infrastructure/frontend/pages/record-note/crud/show.vue"
 						),
 				},		
 				{
-					path: ":record/edit",
-					name: "infrastructure-tax-record-edit",
+					path: ":note/edit",
+					name: "infrastructure-tax-note-edit",
 					component: () =>
 						import(
-							/* webpackChunkName: "infrastructure" */ "@modules/infrastructure/frontend/pages/tax-record/crud/edit.vue"
+							/* webpackChunkName: "infrastructure" */ "@modules/infrastructure/frontend/pages/record-note/crud/edit.vue"
 						),
 				},			
 			]
 		},
 
 		{
-			path: "tax/:tax/record/:record/used",
+			path: "tax/:record/record/:record/used",
 			component: () =>
 				import(
 					/* webpackChunkName: "infrastructure" */ "@modules/infrastructure/frontend/pages/tax-record-used/index.vue"

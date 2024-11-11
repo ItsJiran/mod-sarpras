@@ -166,19 +166,19 @@ Route::controller(InfrastructureRecordNoteController::class)->group(function () 
     Route::group(['as' => 'tax::'], function(){
 
         // crud methods
-        Route::get('tax/{tax}/record','index');
-        Route::post('tax/{tax}/record','store');
-        Route::get('tax/{tax}/record/{record}','show');
-        Route::put('tax/{tax}/record/{record}','update');
-        Route::delete('tax/{tax}/record/{record}','destroy');
+        Route::get('tax/{record}/note','index');
+        Route::post('tax/{record}/note','store');
+        Route::get('tax/{record}/note/{note}','show');
+        Route::put('tax/{record}/note/{note}','update');
+        Route::delete('tax/{record}/note/{note}','destroy');
 
         // change statuses 
-        Route::post('tax/{tax}/record/{record}/pending','changeToPending');
-        Route::post('tax/{tax}/record/{record}/draft','changeToDraft');
-        Route::post('tax/{tax}/record/{record}/verified','changeToVerified');
-        Route::post('tax/{tax}/record/{record}/unverified','changeToUnverified');
-        Route::post('tax/{tax}/record/{record}/cancelled','changeToCancelled');
-        
+        Route::post('tax/{record}/note/{note}/draft','changeToDraft');
+        Route::post('tax/{record}/note/{note}/pending','changeToPending');
+        Route::post('tax/{record}/note/{note}/verified','changeToVerified');
+        Route::post('tax/{record}/note/{note}/unverified','changeToUnverified');
+        Route::post('tax/{record}/note/{note}/cancelled','changeToCancelled');
+
     });
 });
 

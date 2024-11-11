@@ -10,6 +10,7 @@ use Module\System\Traits\Searchable;
 use Module\System\Traits\HasPageSetup;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Validation\Rule;
 
 use Module\Infrastructure\Models\InfrastructureRecord;
 
@@ -199,11 +200,11 @@ class InfrastructureRecordNote extends Model
             ], 500);
         }
 
-        if ( $tax->isTypeLog() ) 
-            return self::mapStoreRequestLog($request, $tax);
+        if ( $record->isRecordLog() ) 
+            return self::mapStoreRequestLog($request, $record);
 
-        if ( $tax->isTypePeriodic() ) 
-            return self::mapStoreRequestPeriodic($request, $tax);               
+        if ( $record->isRecordPeriodic() ) 
+            return self::mapStoreRequestPeriodic($request, $record);               
     }
 
     public static function mapStoreRequestLog(Request $request, InfrastructureRecord $record) : JsonResponse | null
@@ -213,7 +214,7 @@ class InfrastructureRecordNote extends Model
 
     public static function mapStoreRequestPeriodic(Request $request, InfrastructureRecord $record) : JsonResponse | null
     {
-        if ( self::isOngoing($request, $tax) ) {
+        if ( self::isOngoing($request, $record) ) {
             return response()->json([
                 'success' => false,
                 'message' => 'Gagal menambahkan data karena ada pajak yang masih berjalan..'
@@ -226,12 +227,12 @@ class InfrastructureRecordNote extends Model
     public static function isOngoing( Request $request, InfrastructureRecord $record ) : bool
     {
         $wherePending = [
-            ['record_id','=',$tax->id],
+            ['record_id','=',$record->id],
             ['status','=','pending'],
         ];
 
         $whereDraft = [
-            ['record_id','=',$tax->id],
+            ['record_id','=',$record->id],
             ['status','=','draft'],
         ];
 
@@ -348,10 +349,10 @@ class InfrastructureRecordNote extends Model
             ], 500);
         }
 
-        if ( $record->isTypeLog() )
+        if ( $record->isRecordLog() )
             return self::mapUpdateRequestLog($request, $record, $model);
 
-        if ( $record->isTypePeriodic() )
+        if ( $record->isRecordPeriodic() )
             return self::mapUpdateRequestPeriodic($request, $record, $model); 
     }
 
@@ -433,7 +434,7 @@ class InfrastructureRecordNote extends Model
             if($note->status != 'pending')
                 throw new \Exception('Data tidak sedang pending');
             
-            if ( $record->isTypePeriodic() ) {
+            if ( $record->isRecordPeriodic() ) {
                 $now = Carbon::now();
                 $now->addDays($record->typeable->period_number_day);
                 $now->addMonths($record->typeable->period_number_month);
@@ -472,10 +473,10 @@ class InfrastructureRecordNote extends Model
         DB::connection($model->connection)->beginTransaction();
 
         try {            
-            if ( $record->isTypeLog() ) {
+            if ( $record->isRecordLog() ) {
                 self::storeAsLog($request, $record, $model);
             }
-            if ( $record->isTypePeriodic() ) {
+            if ( $record->isRecordPeriodic() ) {
                 self::storeAsPeriodic($request, $record, $model);        
             }
 
@@ -534,11 +535,11 @@ class InfrastructureRecordNote extends Model
 
         try {
             
-            if ( $record->isTypeLog() ) {
+            if ( $record->isRecordLog() ) {
                 self::updateAsLog($request, $record, $model);
             }
 
-            if ( $record->isTypePeriodic() ) {
+            if ( $record->isRecordPeriodic() ) {
                 self::updateAsPeriodic($request, $record, $model);        
             }
 

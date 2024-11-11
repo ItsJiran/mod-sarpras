@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Module\Human\Models\HumanUnit As Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Validation\Rule;
 
 use Module\Infrastructure\Models\InfrastructureMaintenanceAsset;
 use Module\Infrastructure\Models\InfrastructureMaintenanceDocument;
