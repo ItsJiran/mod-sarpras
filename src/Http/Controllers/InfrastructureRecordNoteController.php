@@ -2,26 +2,28 @@
 
 namespace Module\Infrastructure\Http\Controllers;
 
-use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
-use Module\Infrastructure\Models\InfrastructureRecordNote;
+
 use Module\Infrastructure\Http\Resources\RecordNoteCollection;
 use Module\Infrastructure\Http\Resources\RecordNoteShowResource;
 
+use Module\Infrastructure\Models\InfrastructureRecordNote;
+use Module\Infrastructure\Models\InfrastructureRecord;
+use Module\Infrastructure\Models\InfrastructureUnit;
+
 class InfrastructureRecordNoteController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index(Request $request)
+ 
+    public function index(Request $request, InfrastructureRecord $record)
     {
         Gate::authorize('view', InfrastructureRecordNote::class);
 
         return new RecordNoteCollection(
-            InfrastructureRecordNote::applyMode($request->mode)
+            $tax->records()
+                ->applyMode($request->mode)
                 ->filter($request->filters)
                 ->search($request->findBy)
                 ->sortBy($request->sortBy)
@@ -29,27 +31,17 @@ class InfrastructureRecordNoteController extends Controller
         );
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
+    public function store(Request $request, InfrastructureRecord $record)
     {
         Gate::authorize('create', InfrastructureRecordNote::class);
 
-        $request->validate([]);
-
-        return InfrastructureRecordNote::storeRecord($request);
+        $request->validate( InfrastructureRecordNote::mapStoreRequest($request, $record) );
+        $isResponseValid = InfrastructureRecordNote::mapStoreRequestValid($request, $record);
+        
+        if ( !is_null($isResponseValid) ) return $isResponseValid;
+        return InfrastructureRecordNote::storeRecord($request, $record);
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \Module\Infrastructure\Models\InfrastructureRecordNote $infrastructureRecordNote
-     * @return \Illuminate\Http\Response
-     */
     public function show(InfrastructureRecordNote $infrastructureRecordNote)
     {
         Gate::authorize('show', $infrastructureRecordNote);
@@ -57,13 +49,6 @@ class InfrastructureRecordNoteController extends Controller
         return new RecordNoteShowResource($infrastructureRecordNote);
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request $request
-     * @param  \Module\Infrastructure\Models\InfrastructureRecordNote $infrastructureRecordNote
-     * @return \Illuminate\Http\Response
-     */
     public function update(Request $request, InfrastructureRecordNote $infrastructureRecordNote)
     {
         Gate::authorize('update', $infrastructureRecordNote);
@@ -73,12 +58,6 @@ class InfrastructureRecordNoteController extends Controller
         return InfrastructureRecordNote::updateRecord($request, $infrastructureRecordNote);
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \Module\Infrastructure\Models\InfrastructureRecordNote $infrastructureRecordNote
-     * @return \Illuminate\Http\Response
-     */
     public function destroy(InfrastructureRecordNote $infrastructureRecordNote)
     {
         Gate::authorize('delete', $infrastructureRecordNote);
@@ -86,12 +65,6 @@ class InfrastructureRecordNoteController extends Controller
         return InfrastructureRecordNote::deleteRecord($infrastructureRecordNote);
     }
 
-    /**
-     * Restore the specified resource from soft-delete.
-     *
-     * @param  \Module\Infrastructure\Models\InfrastructureRecordNote $infrastructureRecordNote
-     * @return \Illuminate\Http\Response
-     */
     public function restore(InfrastructureRecordNote $infrastructureRecordNote)
     {
         Gate::authorize('restore', $infrastructureRecordNote);
@@ -99,16 +72,31 @@ class InfrastructureRecordNoteController extends Controller
         return InfrastructureRecordNote::restoreRecord($infrastructureRecordNote);
     }
 
-    /**
-     * Force Delete the specified resource from soft-delete.
-     *
-     * @param  \Module\Infrastructure\Models\InfrastructureRecordNote $infrastructureRecordNote
-     * @return \Illuminate\Http\Response
-     */
     public function forceDelete(InfrastructureRecordNote $infrastructureRecordNote)
     {
         Gate::authorize('destroy', $infrastructureRecordNote);
 
         return InfrastructureRecordNote::destroyRecord($infrastructureRecordNote);
+    }
+
+
+    // + ===================================
+    // + ----------- UTILITIES
+    // + ===================================
+    public function determineRouteType(Request $request) : Request
+    {
+        if ( $this->determineRouteName() == 'tax' )
+            $request = InfrastructureRecord::mergeRequestTax($request);
+        
+        if ( $this->determineRouteName() == 'maintenance' ) 
+            $request = InfrastructureRecord::mergeRequestMaintenance($request);
+
+        return $request;
+    }
+    
+    public function determineRouteName()
+    {   
+        $routeName = \Illuminate\Support\Facades\Route::current()->getName();
+        return explode('::',$routeName)[0];
     }
 }

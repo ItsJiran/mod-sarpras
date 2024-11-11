@@ -162,18 +162,25 @@ Route::put('unit/{unit}/asset/{asset}/document/{document}',[InfrastructureDocume
 // +-- from resource module maintenance record
 
 // tax - record
-Route::get('tax/{tax}/record',[InfrastructureTaxRecordController::class, 'index']);
-Route::post('tax/{tax}/record',[InfrastructureTaxRecordController::class, 'store']);
-Route::get('tax/{tax}/record/{record}',[InfrastructureTaxRecordController::class, 'show']);
-Route::put('tax/{tax}/record/{record}',[InfrastructureTaxRecordController::class, 'update']);
-Route::delete('tax/{tax}/record/{record}',[InfrastructureTaxRecordController::class, 'destroy']);
+Route::controller(InfrastructureRecordNoteController::class)->group(function () {
+    Route::group(['as' => 'tax::'], function(){
 
-// change statuses 
-Route::post('tax/{tax}/record/{record}/pending',[InfrastructureTaxRecordController::class, 'changeToPending']);
-Route::post('tax/{tax}/record/{record}/draft',[InfrastructureTaxRecordController::class, 'changeToDraft']);
-Route::post('tax/{tax}/record/{record}/verified',[InfrastructureTaxRecordController::class, 'changeToVerified']);
-Route::post('tax/{tax}/record/{record}/unverified',[InfrastructureTaxRecordController::class, 'changeToUnverified']);
-Route::post('tax/{tax}/record/{record}/cancelled',[InfrastructureTaxRecordController::class, 'changeToCancelled']);
+        // crud methods
+        Route::get('tax/{tax}/record','index');
+        Route::post('tax/{tax}/record','store');
+        Route::get('tax/{tax}/record/{record}','show');
+        Route::put('tax/{tax}/record/{record}','update');
+        Route::delete('tax/{tax}/record/{record}','destroy');
+
+        // change statuses 
+        Route::post('tax/{tax}/record/{record}/pending','changeToPending');
+        Route::post('tax/{tax}/record/{record}/draft','changeToDraft');
+        Route::post('tax/{tax}/record/{record}/verified','changeToVerified');
+        Route::post('tax/{tax}/record/{record}/unverified','changeToUnverified');
+        Route::post('tax/{tax}/record/{record}/cancelled','changeToCancelled');
+        
+    });
+});
 
 // +-----------------------------------------------
 // +-- from resource module tax record used

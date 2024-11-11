@@ -19,7 +19,7 @@ class InfrastructureRecordController extends Controller
     // + ===================================
     // + ----------- INDEX METHODS
     // + ===================================
-    
+
     public function index(Request $request)
     {
         Gate::authorize('view', InfrastructureRecord::class);
@@ -325,6 +325,7 @@ class InfrastructureRecordController extends Controller
 
         return $request;
     }
+    
     public function determineRouteName()
     {   
         $routeName = \Illuminate\Support\Facades\Route::current()->getName();

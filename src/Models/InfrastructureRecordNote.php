@@ -81,12 +81,12 @@ class InfrastructureRecordNote extends Model
     public function record(): BelongsTo
     {
         return $this->belongsTo(InfrastructureRecord::class, 'record_id');
-    } 
+    }
 
     public function user(): BelongsTo
     {
         return $this->belongsTo(InfrastructureUser::class, 'user_id');
-    } 
+    }
 
     public function uses(): HasMany 
     {
@@ -173,7 +173,7 @@ class InfrastructureRecordNote extends Model
     // +------------------------------
     // +--------- STORE REQUEST
 
-    public static function mapStoreRequest(Request $request, InfrastructureTax $tax)
+    public static function mapStoreRequest(Request $request, InfrastructureRecord $record)
     {
         $array = [
             'name' => 'required',
@@ -190,7 +190,7 @@ class InfrastructureRecordNote extends Model
         return $array;
     }
 
-    public static function mapStoreRequestValid(Request $request, InfrastructureTax $tax) : JsonResponse | null
+    public static function mapStoreRequestValid(Request $request, InfrastructureRecord $record) : JsonResponse | null
     {
         if ( is_null($request->user()) ) {
             return response()->json([
@@ -206,12 +206,12 @@ class InfrastructureRecordNote extends Model
             return self::mapStoreRequestPeriodic($request, $tax);               
     }
 
-    public static function mapStoreRequestLog(Request $request, InfrastructureTax $tax) : JsonResponse | null
+    public static function mapStoreRequestLog(Request $request, InfrastructureRecord $record) : JsonResponse | null
     {
         return null;
     }
 
-    public static function mapStoreRequestPeriodic(Request $request, InfrastructureTax $tax) : JsonResponse | null
+    public static function mapStoreRequestPeriodic(Request $request, InfrastructureRecord $record) : JsonResponse | null
     {
         if ( self::isOngoing($request, $tax) ) {
             return response()->json([
@@ -464,12 +464,7 @@ class InfrastructureRecordNote extends Model
     // +--------------- RELATION METHODS
     // +===============================================
 
-    /**
-     * The model store method
-     *
-     * @param Request $request
-     * @return void
-     */
+
     public static function storeRecord(Request $request, InfrastructureRecord $record)
     {
         $model = new static();
