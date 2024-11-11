@@ -56,6 +56,32 @@ class InfrastructureRecordPeriodic extends Model
      */
     protected $defaultOrder = 'name';
 
+    /**
+     * ====================================================
+     * +------------------- MAP REQUEST ------------------+
+     * ====================================================
+     */
+
+    public static function mapStoreRequestValidation(Request $request)
+    {
+        return [
+            'duedate' => 'required|date',
+            'period_number_day' => 'required|numeric',
+            'period_number_month' => 'required|numeric',
+            'period_number_year' => 'required|numeric',
+        ];
+    }
+
+    public static function mapUpdateRequestValidation(Request $request) : array
+    {
+        return [
+            'duedate' => 'required|date',
+            'period_number_day' => 'required|numeric',
+            'period_number_month' => 'required|numeric',
+            'period_number_year' => 'required|numeric',
+        ];
+    }
+
     // + ====================================================
     // + ----------------- STORE RECORD
     // + ====================================================
