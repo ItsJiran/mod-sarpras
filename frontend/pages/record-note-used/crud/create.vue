@@ -6,7 +6,7 @@
 			<v-card-text>
 
 				<v-row dense>
-					<v-col cols="12">
+					<v-col cols="10">
 						<v-combobox
 						:items="types" 
 						label="Tipe Yang Digunakan"
@@ -14,6 +14,13 @@
 						:return-object="false"
 						@update:model-value="changeTargetType(record,this)"
 						></v-combobox>
+					</v-col>
+					<v-col cols="2">
+						<v-switch
+						v-model="record.dibekukan"						
+						color="primary"
+						label="Dibekukan"
+						></v-switch>
 					</v-col>
 				</v-row>
 
