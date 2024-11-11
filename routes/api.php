@@ -4,6 +4,10 @@ use Illuminate\Support\Facades\Route;
 use Module\Infrastructure\Http\Controllers\DashboardController;
 use Module\Infrastructure\Http\Controllers\InfrastructureAssetController;
 use Module\Infrastructure\Http\Controllers\InfrastructureRecordController;
+use Module\Infrastructure\Http\Controllers\InfrastructureRecordNoteController;
+use Module\Infrastructure\Http\Controllers\InfrastructureRecordNoteUsedController;
+
+
 use Module\Infrastructure\Http\Controllers\InfrastructureTaxController;
 use Module\Infrastructure\Http\Controllers\InfrastructureTaxRecordController;
 use Module\Infrastructure\Http\Controllers\InfrastructureTaxRecordUsedController;
@@ -186,12 +190,13 @@ Route::controller(InfrastructureRecordNoteController::class)->group(function () 
 // +-- from resource module tax record used
 
 // tax - record - used - asset
-Route::get('tax/{tax}/record/{record}/used/',[InfrastructureTaxRecordUsedController::class, 'index']);
-Route::post('tax/{tax}/record/{record}/used',[InfrastructureTaxRecordUsedController::class, 'store']);
-Route::get('tax/{tax}/record/{record}/used/{used}',[InfrastructureTaxRecordUsedController::class, 'show']);
-Route::put('tax/{tax}/record/{record}/used/{used}',[InfrastructureTaxRecordUsedController::class, 'update']);
-Route::delete('tax/{tax}/record/{record}/used/{used}',[InfrastructureTaxRecordUsedController::class, 'destroy']);
-
+Route::controller(InfrastructureRecordNoteController::class)->group(function () {
+    Route::get('tax/{tax}/record/{record}/used/',[InfrastructureTaxRecordUsedController::class, 'index']);
+    Route::post('tax/{tax}/record/{record}/used',[InfrastructureTaxRecordUsedController::class, 'store']);
+    Route::get('tax/{tax}/record/{record}/used/{used}',[InfrastructureTaxRecordUsedController::class, 'show']);
+    Route::put('tax/{tax}/record/{record}/used/{used}',[InfrastructureTaxRecordUsedController::class, 'update']);
+    Route::delete('tax/{tax}/record/{record}/used/{used}',[InfrastructureTaxRecordUsedController::class, 'destroy']);
+});
 // +-----------------------------------------------
 // +-- from resource module tax record
 Route::resource('maintenance/{maintenance}/record',InfrastructureMaintenanceRecordController::class)->parameters([
