@@ -106,7 +106,7 @@ class InfrastructureRecordLog extends Model
      * +------------------ CRUD METHODS ------------------+
      * ====================================================
      */
-    
+
     public static function storeRecord(Request $request) : InfrastructureRecordLog 
     {
         $model = new static();

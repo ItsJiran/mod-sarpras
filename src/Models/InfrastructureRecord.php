@@ -488,8 +488,7 @@ class InfrastructureRecord extends Model
 
     public static function updateRecordable( Request $request, $model )
     {
-        $recordable_class = self::mapMorphRecordClass()[$request->recordable_type_key];
-        $recordable_model = $recordable_class::updateRecord($request, $model);
+        $recordable_class = self::mapMorphRecordClass()[$request->recordable_type_key];        
 
         if ( $recordable_class == $model->recordable_type ) {
             $recordable_class::updateRecord($request, $model, $model->recordable);
@@ -514,7 +513,7 @@ class InfrastructureRecord extends Model
         
         if ( $request->targetable_type_key == 'Asset' ) 
             $model->targetable_id = $request->asset->id; 
-        
+
         if ( $request->targetable_type_key == 'Document' ) 
             $model->targetable_id = $request->document->id;  
         
