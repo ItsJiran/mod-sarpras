@@ -24,11 +24,12 @@ class InfrastructureRecordNoteUsedController extends Controller
         Gate::authorize('view', InfrastructureRecordNoteUsed::class);
 
         return new RecordNoteUsedCollection(
-            InfrastructureRecordNoteUsed::applyMode($request->mode)
-                ->filter($request->filters)
-                ->search($request->findBy)
-                ->sortBy($request->sortBy)
-                ->paginate($request->itemsPerPage)
+            InfrastructureRecordNoteUsed::index( $request, $record, $note ),
+            // InfrastructureRecordNoteUsed::applyMode($request->mode)
+            //     ->filter($request->filters)
+            //     ->search($request->findBy)
+            //     ->sortBy($request->sortBy)
+            //     ->paginate($request->itemsPerPage)
         );
     }
 

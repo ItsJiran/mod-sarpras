@@ -187,7 +187,7 @@ Route::controller(InfrastructureRecordNoteController::class)->group(function () 
 // +-- from resource module tax record used
 
 // tax - record - used - asset
-Route::controller(InfrastructureRecordNoteController::class)->group(function () {
+Route::controller(InfrastructureRecordNoteUsedController::class)->group(function () {
     Route::group(['as' => 'tax::'], function(){
         Route::get( 'tax/{record}/note/{note}/used/', 'index' );
         Route::post( 'tax/{record}/note/{note}/used', 'store' );

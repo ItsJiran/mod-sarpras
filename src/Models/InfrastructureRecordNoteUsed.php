@@ -118,6 +118,45 @@ class InfrastructureRecordNoteUsed extends Model
      * ===============================================
      */
 
+     public static function mapCombos(Request $request, $model = null) : array 
+     {
+         return [            
+             'types' => self::mapTypes()
+         ];
+     }   
+
+     public static function mapStoreRequest(Request $request, InfrastructureRecord $record, InfrastructureRecordNote $note)
+     {
+         $array = [
+             'type' => [
+                 'required',
+                 Rule::in( self::mapTypes() ),
+             ]
+         ];
+ 
+         if ( $request->type == 'asset' ) {
+             $array = array_merge($array, [
+                 'asset.id' => 'required|exists:infrastructure_assets,id',                
+             ]);
+         }
+ 
+         if ( $request->type == 'document' ) {
+             $array = array_merge($array, [
+                 'document.id' => 'required|exists:infrastructure_documents,id',                
+             ]);
+         }
+ 
+         return $array;
+     }
+
+     public static function mapTypes() : array
+     {
+         return [
+             'asset',
+             'document',
+         ];
+     }
+
     /**
      * =================================================
      * +---------------- INDEX METHODS ----------------+
@@ -182,19 +221,19 @@ class InfrastructureRecordNoteUsed extends Model
 
             if ($request['type'] == 'asset') {                
                 $model->target_id = $request['asset']['id'];
+                $model->targetable_type = InfrastructureAsset::class;
                 $model->dibekukan = false;
             }   
 
             if ($request['type'] == 'document') {
                 $model->target_id = $request['document']['id'];
+                $model->targetable_type = InfrastructureDocument::class;
                 $model->dibekukan = false;
             }
 
             $model->save();
 
             DB::connection($model->connection)->commit();
-
-            // return new TaxRecordUsedResource($model);
          } catch (\Exception $e) {
             DB::connection($model->connection)->rollBack();
 
