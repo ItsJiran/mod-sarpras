@@ -398,7 +398,7 @@ class InfrastructureRecordNote extends Model
 
     public static function toPending(Request $request, InfrastructureRecord $record, InfrastructureRecordNote $note)
     {
-        return self::changeStatuses($request, $recrod, $note, function( Request $request, InfrastructureRecord $record, InfrastructureRecordNote $note ){
+        return self::changeStatuses($request, $record, $note, function( Request $request, InfrastructureRecord $record, InfrastructureRecordNote $note ){
             if($note->status != 'pending' && $note->status != 'draft') {
                 throw new \Exception('Data sudah selesai');         
             }
