@@ -31,6 +31,9 @@ class InfrastructureRecordNoteController extends Controller
         );
     }
 
+    // + ================================================ +
+    // + -------------- SHOW METHODS -------------------- +
+
     public function store(Request $request, InfrastructureRecord $record)
     {
         Gate::authorize('create', InfrastructureRecordNote::class);
@@ -42,41 +45,56 @@ class InfrastructureRecordNoteController extends Controller
         return InfrastructureRecordNote::storeRecord($request, $record);
     }
 
-    public function show(InfrastructureRecordNote $infrastructureRecordNote)
-    {
-        Gate::authorize('show', $infrastructureRecordNote);
+    // + ================================================ +
+    // + -------------- SHOW METHODS -------------------- +
 
-        return new RecordNoteShowResource($infrastructureRecordNote);
+    public function show(InfrastructureRecord $record, InfrastructureRecordNote $note)
+    {
+        Gate::authorize('show', $note);
+        return new RecordNoteShowResource($note);
     }
 
-    public function update(Request $request, InfrastructureRecordNote $infrastructureRecordNote)
+    // + ================================================== +
+    // + -------------- UPDATE METHODS -------------------- +
+
+    public function update(Request $request, InfrastructureRecordNote $note)
     {
-        Gate::authorize('update', $infrastructureRecordNote);
+        Gate::authorize('update', $note);
 
         $request->validate([]);
 
-        return InfrastructureRecordNote::updateRecord($request, $infrastructureRecordNote);
+        return InfrastructureRecordNote::updateRecord($request, $note);
     }
 
-    public function destroy(InfrastructureRecordNote $infrastructureRecordNote)
-    {
-        Gate::authorize('delete', $infrastructureRecordNote);
+    // + ================================================== +
+    // + -------------- DESTROY METHODS -------------------- +
 
-        return InfrastructureRecordNote::deleteRecord($infrastructureRecordNote);
+    public function destroy(InfrastructureRecordNote $note)
+    {
+        Gate::authorize('delete', $note);
+
+        return InfrastructureRecordNote::deleteRecord($note);
     }
 
-    public function restore(InfrastructureRecordNote $infrastructureRecordNote)
-    {
-        Gate::authorize('restore', $infrastructureRecordNote);
+    // + ================================================== +
+    // + -------------- RETORE METHODS -------------------- +
 
-        return InfrastructureRecordNote::restoreRecord($infrastructureRecordNote);
+    public function restore(InfrastructureRecordNote $note)
+    {
+        Gate::authorize('restore', $note);
+
+        return InfrastructureRecordNote::restoreRecord($note);
     }
 
-    public function forceDelete(InfrastructureRecordNote $infrastructureRecordNote)
-    {
-        Gate::authorize('destroy', $infrastructureRecordNote);
+    // + ================================================== +
+    // + -------------- FORCEDDEL METHODS -------------------- +
 
-        return InfrastructureRecordNote::destroyRecord($infrastructureRecordNote);
+
+    public function forceDelete(InfrastructureRecordNote $note)
+    {
+        Gate::authorize('destroy', $note);
+
+        return InfrastructureRecordNote::destroyRecord($note);
     }
 
 

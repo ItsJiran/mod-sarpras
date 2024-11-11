@@ -12,7 +12,12 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Validation\Rule;
 
+use Illuminate\Database\Eloquent\Relations\MorphTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+
 use Module\Infrastructure\Models\InfrastructureRecord;
+use Module\Infrastructure\Models\InfrastructureUser;
 
 class InfrastructureRecordNote extends Model
 {
@@ -100,7 +105,8 @@ class InfrastructureRecordNote extends Model
 
     public static function mapResourceShow(Request $request, $model = null): array
     {
-        $user = $model->user::class::mapResourceShow($request,$model->user);
+        dd($model);
+        $user = InfrastructureUser::mapResourceShow($request,$model->user);
         return [
             'id' => $model->id,
             'name' => $model->name, 
