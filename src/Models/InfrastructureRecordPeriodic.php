@@ -56,69 +56,43 @@ class InfrastructureRecordPeriodic extends Model
      */
     protected $defaultOrder = 'name';
 
-    /**
-     * The model store method
-     *
-     * @param Request $request
-     * @return void
-     */
-    public static function storeRecord(Request $request)
+    // + ====================================================
+    // + ----------------- STORE RECORD
+    // + ====================================================
+
+    public static function storeRecord(Request $request, InfrastructureRecord $main_model) : InfrastructureRecordPeriodic
     {
         $model = new static();
-
-        DB::connection($model->connection)->beginTransaction();
-
-        try {
-            // ...
-            $model->save();
-
-            DB::connection($model->connection)->commit();
-
-            // return new RecordPeriodicResource($model);
-        } catch (\Exception $e) {
-            DB::connection($model->connection)->rollBack();
-
-            return response()->json([
-                'success' => false,
-                'message' => $e->getMessage()
-            ], 500);
-        }
+        
+        $model->record_id = $main_model->id;        
+        $model->duedate = $request->duedate;        
+        $model->period_number_day = $request->period_number_day;        
+        $model->period_number_month = $request->period_number_month;        
+        $model->period_number_year = $request->period_number_year;       
+        $model->save();
+            
+        return $model;
     }
 
-    /**
-     * The model update method
-     *
-     * @param Request $request
-     * @param [type] $model
-     * @return void
-     */
-    public static function updateRecord(Request $request, $model)
+    // + ====================================================
+    // + ----------------- UPDATE RECORD
+    // + ====================================================
+
+    public static function updateRecord(Request $request, InfrastructureRecord $main_model, $model = null) : InfrastructureRecordPeriodic
     {
-        DB::connection($model->connection)->beginTransaction();
-
-        try {
-            // ...
-            $model->save();
-
-            DB::connection($model->connection)->commit();
-
-            // return new RecordPeriodicResource($model);
-        } catch (\Exception $e) {
-            DB::connection($model->connection)->rollBack();
-
-            return response()->json([
-                'success' => false,
-                'message' => $e->getMessage()
-            ], 500);
-        }
+        $model->tax_id = $main_model->id;        
+        $model->duedate = $request->duedate;        
+        $model->period_number_day = $request->period_number_day;        
+        $model->period_number_month = $request->period_number_month;        
+        $model->period_number_year = $request->period_number_year; 
+        $model->save();
+        return $model;
     }
 
-    /**
-     * The model delete method
-     *
-     * @param [type] $model
-     * @return void
-     */
+    // + ====================================================
+    // + ----------------- DELETE RECORD
+    // + ====================================================
+
     public static function deleteRecord($model)
     {
         DB::connection($model->connection)->beginTransaction();
@@ -139,12 +113,10 @@ class InfrastructureRecordPeriodic extends Model
         }
     }
 
-    /**
-     * The model restore method
-     *
-     * @param [type] $model
-     * @return void
-     */
+    // + ====================================================
+    // + ----------------- RESTORE RECORD
+    // + ====================================================
+
     public static function restoreRecord($model)
     {
         DB::connection($model->connection)->beginTransaction();
@@ -165,12 +137,10 @@ class InfrastructureRecordPeriodic extends Model
         }
     }
 
-    /**
-     * The model destroy method
-     *
-     * @param [type] $model
-     * @return void
-     */
+    // + ====================================================
+    // + ----------------- DESTROY RECORD
+    // + ====================================================
+
     public static function destroyRecord($model)
     {
         DB::connection($model->connection)->beginTransaction();

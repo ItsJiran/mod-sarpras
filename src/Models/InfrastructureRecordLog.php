@@ -11,6 +11,9 @@ use Module\System\Traits\HasPageSetup;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+
 class InfrastructureRecordLog extends Model
 {
     use Filterable;
@@ -103,13 +106,7 @@ class InfrastructureRecordLog extends Model
      * +------------------ CRUD METHODS ------------------+
      * ====================================================
      */
-
-    /**
-     * The model store method
-     *
-     * @param Request $request
-     * @return void
-     */
+    
     public static function storeRecord(Request $request) : InfrastructureRecordLog 
     {
         $model = new static();
@@ -117,47 +114,22 @@ class InfrastructureRecordLog extends Model
         return $model;
     }
 
-    /**
-     * The model update method
-     *
-     * @param Request $request
-     * @param [type] $model
-     * @return void
-     */
-    public static function updateRecord(Request $request, $model = null) : InfrastructureRecordLog
+    public static function updateRecord(Request $request, InfrastructureRecord $main_model, $model = null) : InfrastructureRecordLog
     {
         $model->save();
         return $model;   
     }
 
-    /**
-     * The model delete method
-     *
-     * @param [type] $model
-     * @return void
-     */
     public static function deleteRecord($model)
     {
        $model->delete();
     }
 
-    /**
-     * The model restore method
-     *
-     * @param [type] $model
-     * @return void
-     */
     public static function restoreRecord($model)
     {
         $model->restore();
     }
 
-    /**
-     * The model destroy method
-     *
-     * @param [type] $model
-     * @return void
-     */
     public static function destroyRecord($model)
     {
         $model->forceDelete();

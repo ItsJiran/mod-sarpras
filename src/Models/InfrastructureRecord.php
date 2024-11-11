@@ -12,6 +12,8 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Validation\Rule;
 
+use Illuminate\Database\Eloquent\Relations\MorphTo;
+
 use Module\Infrastructure\Models\InfrastructureRecordNote;
 
 class InfrastructureRecord extends Model
@@ -180,7 +182,7 @@ class InfrastructureRecord extends Model
     {
         $properties = [
             'name' => $model->name,
-            'description' => $model->description,
+            'description' => $model->description,                        
              
             'recordable_id' => $model->recordable_id,
             'recordable_type' => $model->recordable_type,
@@ -191,10 +193,25 @@ class InfrastructureRecord extends Model
             'targetable_type_key' => self::mapMorphTargetClass(true)[$model->targetable_type],
         ];
 
+        if( $properties['targetable_type_key'] == 'Asset' ){
+            $properties = array_merge($properties,[
+                'unit' => InfrastructureUnit::mapResourceShow($request, $model->targetable->unit),
+                'asset' => InfrastructureAsset::mapResourceShow($request, $model->targetable),
+            ]);                   
+        } 
+
+        if( self::mapMorphTargetClass(true)[$model->targetable_type] == 'Document' ){
+            $properties = array_merge($properties,[
+                'unit' => InfrastructureUnit::mapResourceShow($request, $model->targetable->unit),
+                'asset' => InfrastructureAsset::mapResourceShow($request, $model->targetable->asset),
+                'document' => InfrastructureDocument::mapResourceShow($request, $model->targetable),
+            ]);
+        } 
+
         return array_merge(
             $properties,
-            $model->taxable_type::mapResourceShow($request, $model->taxable),
-            $model->targetable_type::mapResourceShow($request, $model->targetable),
+            // $model->recordable_type::mapResourceShow($request, $model->recordable),
+            // $model->targetable_type::mapResourceShow($request, $model->targetable),
         );
     }
 
@@ -440,12 +457,20 @@ class InfrastructureRecord extends Model
     // +-------------------------------
     // +--------- UPDATE METHODS
     // +-------------------------------
+
     public static function updateRecord(Request $request, $model)
     {
         DB::connection($model->connection)->beginTransaction();
 
         try {
-            // ...
+            // update
+            $model->name = $request->name;
+            $model->type = $request->type;
+            $model->description = $request->description;
+
+            self::updateRecordable($request, $model);
+            self::updateTargetable($request, $model);
+
             $model->save();
 
             DB::connection($model->connection)->commit();
@@ -460,6 +485,44 @@ class InfrastructureRecord extends Model
             ], 500);
         }
     }
+
+    public static function updateRecordable( Request $request, $model )
+    {
+        $recordable_class = self::mapMorphRecordClass()[$request->recordable_type_key];
+        $recordable_model = $recordable_class::updateRecord($request, $model);
+
+        if ( $recordable_class == $model->recordable_type ) {
+            $recordable_class::updateRecord($request, $model, $model->recordable);
+        } else {
+            // kalau ganti tipe maka delete dan buat record baru di type yang baru
+            $new_recordable_model = $recordable_class::storeRecord($request, $model);
+
+            // detroy record di maintenance type yang lama
+            $model->recordable_type::destroyRecord( $model->recordable );
+
+            // update maintenace dengan property yang baru
+            $model->recordable_id = $new_recordable_model->id;
+            $model->recordable_type = $new_recordable_model::class;
+        }
+    }
+
+    public static function updateTargetable( Request $request, $model )
+    {
+        // set up morph target 
+        $targetable_class = self::mapMorphTargetClass()[$request->targetable_type_key];
+        $model->targetable_type = $targetable_class;
+        
+        if ( $request->targetable_type_key == 'Asset' ) 
+            $model->targetable_id = $request->asset->id; 
+        
+        if ( $request->targetable_type_key == 'Document' ) 
+            $model->targetable_id = $request->document->id;  
+        
+    }
+
+    // +-------------------------------
+    // +--------- DELETE METHODS
+    // +-------------------------------
 
     /**
      * The model delete method
