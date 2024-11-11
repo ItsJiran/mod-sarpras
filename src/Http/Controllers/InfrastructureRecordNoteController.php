@@ -35,8 +35,6 @@ class InfrastructureRecordNoteController extends Controller
     {
         Gate::authorize('create', InfrastructureRecordNote::class);
 
-        dd($record);
-
         $request->validate( InfrastructureRecordNote::mapStoreRequest($request, $record) );
         $isResponseValid = InfrastructureRecordNote::mapStoreRequestValid($request, $record);
         
