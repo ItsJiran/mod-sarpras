@@ -119,14 +119,17 @@ class InfrastructureRecord extends Model
     {
         return $this->record_key() == 'Log';
     }
+    
     public function isRecordPeriodic()
     {
         return $this->record_key() == 'Periodic';
     }
+    
     public function isTargetAsset()
     {
         return $this->target_key() == 'Asset';
     }
+
     public function isTargetDocument()
     {
         return $this->target_key() == 'Document';
@@ -138,7 +141,6 @@ class InfrastructureRecord extends Model
      * ====================================================
      */
 
-    
     public static function mergeRequestTax(Request $request) : Request
     {
         return $request->merge([ 
