@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('infrastructure_record_note_useds', function (Blueprint $table) {
             $table->id();
             // for relation use
-            $table->foreignId('record_id');
+            $table->foreignId('note_id');
             $table->boolean('dibekukan')->default(false);
             // target morph
             $table->morphs('targetable');

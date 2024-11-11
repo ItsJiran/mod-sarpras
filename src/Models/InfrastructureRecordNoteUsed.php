@@ -71,7 +71,7 @@ class InfrastructureRecordNoteUsed extends Model
      */
     protected $fillable = [
         'name',
-        'record_id',
+        'note_id',
         'target_id',        
         'dibekukan',
     ];
@@ -82,9 +82,9 @@ class InfrastructureRecordNoteUsed extends Model
      * ====================================================
      */
 
-     public function record(): BelongsTo
+     public function note(): BelongsTo
      {
-         return $this->belongsTo(InfrastructureTaxRecord::class, 'record_id');
+         return $this->belongsTo(InfrastructureRecordNote::class, 'note_id');
      } 
 
      public function target(): BelongsTo
@@ -120,10 +120,56 @@ class InfrastructureRecordNoteUsed extends Model
 
     /**
      * =================================================
-     * +---------------- STORE METHODS ----------------+
+     * +---------------- INDEX METHODS ----------------+
      * =================================================
      */
 
+     public static function index(Request $request, InfrastructureRecord $record, InfrastructureRecordNote $note)
+     {   
+         $where_queries = [
+             ['infrastructure_record_note_useds.note_id','=',$note->id]
+         ];  
+ 
+         $query = DB::table('infrastructure_record_note_useds');
+ 
+         // Conditionally join based on the user_type column
+         $query->leftJoin('infrastructure_assets', function($join) {
+             $join
+             ->on('infrastructure_record_note_useds.target_id', '=', 'infrastructure_assets.id')
+             ->where('infrastructure_record_note_useds.targetable_type', '=', InfrastructureAsset::class);
+         });        
+ 
+         // Conditionally join based on the user_type column
+         $query->leftJoin('infrastructure_documents', function($join) {
+             $join
+             ->on('infrastructure_record_note_useds.target_id', '=', 'infrastructure_documents.id')
+             ->where('infrastructure_record_note_useds.targetable_type', '=', InfrastructureDocument::class);             
+         });
+ 
+         // Select columns from users, employees, and ceo
+         $query->select(
+             'infrastructure_record_note_useds.*', 
+             \DB::raw("
+                 CASE
+                     WHEN infrastructure_record_note_useds.targetable_type = '" 
+                     . InfrastructureAsset::class ."' 
+                     THEN infrastructure_assets.name
+                     
+                     WHEN infrastructure_record_note_useds.targetable_type = '" 
+                     . InfrastructureDocument::class ."' 
+                     THEN infrastructure_documents.name                    
+                 END AS name
+             ")
+         );
+ 
+         return $query->paginate(15);
+     }
+
+    /**
+     * =================================================
+     * +---------------- STORE METHODS ----------------+
+     * =================================================
+     */
 
     /**
      * The model store method
