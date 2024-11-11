@@ -7,6 +7,7 @@
 	<page-crud v-if="checkRoute('infrastructure-tax-note')"
 		page-name="infrastructure-tax-note"
 		page-key="note"
+		
 		parent-name="infrastructure-tax"
 		parent-key="record"
 	></page-crud>
@@ -14,13 +15,15 @@
 	<page-crud v-if=" checkRoute('infrastructure-asset-tax-note') "	
 		page-name="infrastructure-asset-tax-note"
 		page-key="note"
-		parent-name="infrastructure-asset"
-		parent-key="asset"
+		
+		parent-name="infrastructure-asset-tax"
+		parent-key="record"
 	></page-crud>
 
 	<page-crud v-if=" checkRoute('infrastructure-asset-document-tax-note') "	
 		page-name="infrastructure-asset-document-tax-note"
 		page-key="note"
+
 		parent-name="infrastructure-asset"
 		parent-key="record"
 	></page-crud>
@@ -28,6 +31,7 @@
 	<page-crud v-if=" checkRoute('infrastructure-document-tax-note') "	
 		page-name="infrastructure-document-tax-note"
 		page-key="note"
+
 		parent-name="infrastructure-document"
 		parent-key="record"
 	></page-crud>
@@ -35,6 +39,7 @@
 	<page-crud v-if=" checkRoute('infrastructure-unit-asset-tax-note') "	
 		page-name="infrastructure-unit-asset-tax-note"
 		page-key="note"
+
 		parent-name="infrastructure-unit-asset"
 		parent-key="record"
 	></page-crud>
@@ -42,6 +47,7 @@
 	<page-crud v-if=" checkRoute('infrastructure-unit-asset-document-tax-note') "	
 		page-name="infrastructure-unit-asset-document-tax-note"
 		page-key="note"
+
 		parent-name="infrastructure-unit-asset-document"
 		parent-key="record"
 	></page-crud>
@@ -49,6 +55,7 @@
 	<page-crud v-if=" checkRoute('infrastructure-unit-document-tax-note') "	
 		page-name="infrastructure-unit-document-tax-note"
 		page-key="note"
+
 		parent-name="infrastructure-unit-document"
 		parent-key="record"
 	></page-crud>
