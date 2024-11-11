@@ -72,7 +72,8 @@ class InfrastructureRecordNoteUsed extends Model
     protected $fillable = [
         'name',
         'note_id',
-        'target_id',        
+        'targetable_id',        
+        'targetable_type',        
         'dibekukan',
     ];
 
@@ -87,13 +88,13 @@ class InfrastructureRecordNoteUsed extends Model
          return $this->belongsTo(InfrastructureRecordNote::class, 'note_id');
      } 
 
-     public function target(): BelongsTo
+     public function target(): MorphTo
      {
          if($this->isAsset())
-             return $this->belongsTo(InfrastructureAsset::class, 'target_id');
+             return $this->morphTo(__FUNCTION__, 'targetable_type', 'targetable_id');
  
          if($this->isDocument())
-             return $this->belongsTo(InfrastructureDocument::class, 'target_id');
+             return $this->morphTo(__FUNCTION__, 'targetable_type', 'targetable_id');
      }
 
     /**
@@ -174,14 +175,14 @@ class InfrastructureRecordNoteUsed extends Model
          // Conditionally join based on the user_type column
          $query->leftJoin('infrastructure_assets', function($join) {
              $join
-             ->on('infrastructure_record_note_useds.target_id', '=', 'infrastructure_assets.id')
+             ->on('infrastructure_record_note_useds.targetable_id', '=', 'infrastructure_assets.id')
              ->where('infrastructure_record_note_useds.targetable_type', '=', InfrastructureAsset::class);
          });        
  
          // Conditionally join based on the user_type column
          $query->leftJoin('infrastructure_documents', function($join) {
              $join
-             ->on('infrastructure_record_note_useds.target_id', '=', 'infrastructure_documents.id')
+             ->on('infrastructure_record_note_useds.targetable_id', '=', 'infrastructure_documents.id')
              ->where('infrastructure_record_note_useds.targetable_type', '=', InfrastructureDocument::class);             
          });
  
