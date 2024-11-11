@@ -22,7 +22,7 @@ class InfrastructureRecordNoteUsedController extends Controller
     public function index(Request $request, InfrastructureRecord $record, InfrastructureRecordNote $note)
     {
         Gate::authorize('view', InfrastructureRecordNoteUsed::class);
-
+    
         return new RecordNoteUsedCollection(
             InfrastructureRecordNoteUsed::index( $request, $record, $note ),
             // InfrastructureRecordNoteUsed::applyMode($request->mode)

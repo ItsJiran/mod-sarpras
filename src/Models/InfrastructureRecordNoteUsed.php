@@ -90,11 +90,7 @@ class InfrastructureRecordNoteUsed extends Model
 
      public function target(): MorphTo
      {
-         if($this->isAsset())
-             return $this->morphTo(__FUNCTION__, 'targetable_type', 'targetable_id');
- 
-         if($this->isDocument())
-             return $this->morphTo(__FUNCTION__, 'targetable_type', 'targetable_id');
+        return $this->morphTo(__FUNCTION__, 'targetable_type', 'targetable_id');
      }
 
     /**

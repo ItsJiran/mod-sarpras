@@ -55,7 +55,7 @@
 	<page-crud v-if=" checkRoute('infrastructure-unit-document-tax-note-used') "	
 		page-name="infrastructure-unit-document-tax-note-used"
 		page-key="used"
-		
+
 		parent-name="infrastructure-unit-document-tax-note"
 		parent-key="note"
 	></page-crud>
