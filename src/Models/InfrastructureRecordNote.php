@@ -90,7 +90,7 @@ class InfrastructureRecordNote extends Model
 
     public function uses(): HasMany 
     {
-        return $this->hasMany(InfrastructureTaxRecordUsed::class, 'asset_id');
+        return $this->hasMany(InfrastructureRecordUsed::class, 'asset_id');
     }
 
     // +===============================================

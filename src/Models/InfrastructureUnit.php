@@ -30,52 +30,35 @@ class InfrastructureUnit extends Model
      * ====================================================
      */
 
-    /**
-     * Get the model that the image belongs to.
-     */
     public function assets(): HasMany
     {
         return $this->hasMany(InfrastructureAsset::class, 'unit_id');
     }
 
-    /**
-     * Get the model that the image belongs to.
-     */
     public function documents(): HasMany
     {
         return $this->hasMany(InfrastructureDocument::class, 'unit_id');
     }
 
-    /**
-     * Get the model that the image belongs to.
-     */
     public function maintenances_assets()
     {
         return InfrastructureMaintenanceAsset::where('unit_id',$this->id)
         ->join('infrastructure_maintenances','infrastructure_maintenances.id','=','infrastructure_maintenance_assets.maintenance_id');                
     }
 
-    /**
-     * Get the model that the image belongs to.
-     */
     public function maintenances_documents()
     {
         return InfrastructureMaintenanceDocuments::where('unit_id',$this->id)
         ->join('infrastructure_maintenances','infrastructure_maintenances.id','=','infrastructure_maintenance_documents.maintenance_id');                
     }
 
-    /**
-     * Get the model that the image belongs to.
-     */
     public function taxes_assets()
     {
         return InfrastructureTaxAsset::where('unit_id',$this->id)
         ->join('infrastructure_taxes','infrastructure_taxes.id','=','infrastructure_tax_assets.tax_id');                
     }
 
-    /**
-     * Get the model that the image belongs to.
-     */
+
     public function taxes_documents()
     {
         return InfrastructureTaxDocuments::where('unit_id',$this->id)

@@ -19,6 +19,7 @@ class InfrastructureRecordController extends Controller
     // + ===================================
     // + ----------- INDEX METHODS
     // + ===================================
+    
     public function index(Request $request)
     {
         Gate::authorize('view', InfrastructureRecord::class);
