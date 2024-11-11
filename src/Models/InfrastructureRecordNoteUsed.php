@@ -130,6 +130,7 @@ class InfrastructureRecordNoteUsed extends Model
                 'type' => 'asset',
             ];
         }
+        
         if ($model->isDocument()) {
             return [
                 'id' => $model->id,
