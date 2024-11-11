@@ -7,7 +7,7 @@
 	<page-crud v-if="checkRoute('infrastructure-tax-note')"
 		page-name="infrastructure-tax-note"
 		page-key="note"
-		
+
 		parent-name="infrastructure-tax"
 		parent-key="record"
 	></page-crud>
@@ -24,7 +24,7 @@
 		page-name="infrastructure-asset-document-tax-note"
 		page-key="note"
 
-		parent-name="infrastructure-asset"
+		parent-name="infrastructure-asset-tax"
 		parent-key="record"
 	></page-crud>
 
@@ -32,7 +32,7 @@
 		page-name="infrastructure-document-tax-note"
 		page-key="note"
 
-		parent-name="infrastructure-document"
+		parent-name="infrastructure-document-tax"
 		parent-key="record"
 	></page-crud>
 
@@ -40,7 +40,7 @@
 		page-name="infrastructure-unit-asset-tax-note"
 		page-key="note"
 
-		parent-name="infrastructure-unit-asset"
+		parent-name="infrastructure-unit-asset-tax"
 		parent-key="record"
 	></page-crud>
 
@@ -56,7 +56,7 @@
 		page-name="infrastructure-unit-document-tax-note"
 		page-key="note"
 
-		parent-name="infrastructure-unit-document"
+		parent-name="infrastructure-unit-document-tax"
 		parent-key="record"
 	></page-crud>
 </template>
