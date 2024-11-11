@@ -171,34 +171,39 @@ class InfrastructureRecordNoteUsed extends Model
      * =================================================
      */
 
-    /**
-     * The model store method
-     *
-     * @param Request $request
-     * @return void
-     */
-    public static function storeRecord(Request $request)
-    {
-        $model = new static();
+     public static function storeRecord(Request $request, InfrastructureRecord $record, InfrastructureRecordNote $note)
+     {
+         $model = new static();
+ 
+         DB::connection($model->connection)->beginTransaction();
+         
+         try {
+            $model->note_id = $note->id;
 
-        DB::connection($model->connection)->beginTransaction();
+            if ($request['type'] == 'asset') {                
+                $model->target_id = $request['asset']['id'];
+                $model->dibekukan = false;
+            }   
 
-        try {
-            // ...
+            if ($request['type'] == 'document') {
+                $model->target_id = $request['document']['id'];
+                $model->dibekukan = false;
+            }
+
             $model->save();
 
             DB::connection($model->connection)->commit();
 
-            // return new RecordNoteUsedResource($model);
-        } catch (\Exception $e) {
+            // return new TaxRecordUsedResource($model);
+         } catch (\Exception $e) {
             DB::connection($model->connection)->rollBack();
 
             return response()->json([
                 'success' => false,
                 'message' => $e->getMessage()
             ], 500);
-        }
-    }
+         }
+     }
 
     /**
      * ==================================================
