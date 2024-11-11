@@ -86,7 +86,7 @@ class InfrastructureTaxRecordController extends Controller
         $isResponseValid = InfrastructureTaxRecord::mapUpdateRequestValid($request, $tax, $record);
 
         if ( !is_null($isResponseValid) ) {
-            return $isResponseValid;   
+            return $isResponseValid;
         }
 
         return InfrastructureTaxRecord::updateRecord($request, $tax, $record);

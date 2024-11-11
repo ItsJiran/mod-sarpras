@@ -18,7 +18,7 @@
 
 				<v-row dense>
 					<v-col cols="12">
-						<v-textarea 
+						<v-textarea x
 							label="Rincian" 
 							v-model="record.description"
 						></v-textarea>

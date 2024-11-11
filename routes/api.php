@@ -163,6 +163,13 @@ Route::put('unit/{unit}/asset/{asset}/document/{document}',[InfrastructureDocume
 
 // tax - record
 Route::controller(InfrastructureRecordNoteController::class)->group(function () {
+    // change statuses 
+    Route::post('record/{record}/note/{note}/draft','changeToDraft');
+    Route::post('record/{record}/note/{note}/pending','changeToPending');
+    Route::post('record/{record}/note/{note}/verified','changeToVerified');
+    Route::post('record/{record}/note/{note}/unverified','changeToUnverified');
+    Route::post('record/{record}/note/{note}/cancelled','changeToCancelled');
+
     Route::group(['as' => 'tax::'], function(){
 
         // crud methods
@@ -171,14 +178,7 @@ Route::controller(InfrastructureRecordNoteController::class)->group(function () 
         Route::get('tax/{record}/note/{note}','show');
         Route::put('tax/{record}/note/{note}','update');
         Route::delete('tax/{record}/note/{note}','destroy');
-
-        // change statuses 
-        Route::post('tax/{record}/note/{note}/draft','changeToDraft');
-        Route::post('tax/{record}/note/{note}/pending','changeToPending');
-        Route::post('tax/{record}/note/{note}/verified','changeToVerified');
-        Route::post('tax/{record}/note/{note}/unverified','changeToUnverified');
-        Route::post('tax/{record}/note/{note}/cancelled','changeToCancelled');
-
+        
     });
 });
 

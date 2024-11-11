@@ -57,11 +57,19 @@ class InfrastructureRecordNoteController extends Controller
     // + ================================================== +
     // + -------------- UPDATE METHODS -------------------- +
 
-    public function update(Request $request, InfrastructureRecordNote $note)
+    public function update(Request $request, InfrastructureRecord $record, InfrastructureRecordNote $note)
     {
         Gate::authorize('update', $note);
 
-        $request->validate([]);
+        $request->validate(  
+            InfrastructureRecordNote::mapUpdateRequest($request, $record)
+        );
+
+        $isResponseValid = InfrastructureRecordNote::mapUpdateRequestValid($request, $record, $record);
+
+        if ( !is_null($isResponseValid) ) {
+            return $isResponseValid;   
+        }
 
         return InfrastructureRecordNote::updateRecord($request, $note);
     }
@@ -116,5 +124,61 @@ class InfrastructureRecordNoteController extends Controller
     {   
         $routeName = \Illuminate\Support\Facades\Route::current()->getName();
         return explode('::',$routeName)[0];
+    }
+
+    // + ===================================
+    // + ----------- CHANGE
+    // + ===================================
+
+    public function changeToPending(Request $request, InfrastructureRecord $record, InfrastructureRecordNote $note)
+    {
+        Gate::authorize('update', $note);
+
+        $isResponseValid = InfrastructureRecordNote::mapUpdateToPending($request, $record, $note);
+        if ( !is_null($isResponseValid) ) return $isResponseValid;   
+        
+        return InfrastructureRecordNote::toPending($request, $record, $note);
+    }
+
+
+    public function changeToDraft(Request $request, InfrastructureRecord $record, InfrastructureRecordNote $note)
+    {
+        Gate::authorize('update', $note);
+
+        $isResponseValid = InfrastructureRecordNote::mapUpdateToDraft($request, $record, $note);
+        if ( !is_null($isResponseValid) ) return $isResponseValid;   
+        
+        return InfrastructureRecordNote::toDraft($request, $record, $note);
+    }
+
+
+    public function changeToVerified(Request $request, InfrastructureRecord $record, InfrastructureRecordNote $note)
+    {
+        Gate::authorize('update', $note);
+
+        $isResponseValid = InfrastructureRecordNote::mapUpdateToVerified($request, $record, $note);
+        if ( !is_null($isResponseValid) ) return $isResponseValid;   
+        
+        return InfrastructureRecordNote::toVerified($request, $record, $note);
+    }
+
+    public function changeToUnVerified(Request $request, InfrastructureRecord $record, InfrastructureRecordNote $note)
+    {
+        Gate::authorize('update', $note);
+
+        $isResponseValid = InfrastructureRecordNote::mapUpdateToUnVerified($request, $record, $note);
+        if ( !is_null($isResponseValid) ) return $isResponseValid;   
+        
+        return InfrastructureRecordNote::toUnVerified($request, $record, $note);
+    }
+
+    public function changeToCancelled(Request $request, InfrastructureRecord $record, InfrastructureRecordNote $note)
+    {
+        Gate::authorize('update', $note);
+
+        $isResponseValid = InfrastructureRecordNote::mapUpdateToCancelled($request, $record, $note);
+        if ( !is_null($isResponseValid) ) return $isResponseValid;   
+        
+        return InfrastructureRecordNote::toCancelled($request, $record, $note);
     }
 }

@@ -106,55 +106,55 @@
 
 		<template v-slot:helpdesk="{ theme, record, store }">
 
-				<v-btn v-if="record != undefined && record.status == 'pending' && record.status_step != 3"
-				class="mt-3"
-				:color="theme"
-				block
-				variant="flat"
-				@click="convertToDraft(record,this)"
-				>Ubah Ke Draft</v-btn>			
+			<v-btn v-if="record != undefined && record.status == 'pending' && record.status_step != 3"
+			class="mt-3"
+			:color="theme"
+			block
+			variant="flat"
+			@click="convertToDraft(record,this)"
+			>Ubah Ke Draft</v-btn>			
 
-				<v-btn v-if="record != undefined && record.status_step != 3 && record.status_step == 2"
-				class="mt-3"
-				:color="theme"
-				block
-				variant="flat"
-				@click="convertToVerified(record,this)"
-				>Ubah Ke Verified</v-btn>
+			<v-btn v-if="record != undefined && record.status_step != 3 && record.status_step == 2"
+			class="mt-3"
+			:color="theme"
+			block
+			variant="flat"
+			@click="convertToVerified(record,this)"
+			>Ubah Ke Verified</v-btn>
 
-				<v-btn v-if="record != undefined && record.status_step != 3 && record.status_step == 2"
-				class="mt-3"
-				:color="theme"
-				block
-				variant="flat"
-				@click="convertToUnVerified(record,this)"
-				>Ubah Ke UnVerified</v-btn>
+			<v-btn v-if="record != undefined && record.status_step != 3 && record.status_step == 2"
+			class="mt-3"
+			:color="theme"
+			block
+			variant="flat"
+			@click="convertToUnVerified(record,this)"
+			>Ubah Ke UnVerified</v-btn>
 
-				<v-btn v-if="record != undefined && record.status == 'draft' && record.status_step != 3"
-				class="mt-3"
-				:color="theme"
-				block
-				variant="flat"
-				@click="convertToPending(record,this)"
-				>Ubah Ke Pending</v-btn>
+			<v-btn v-if="record != undefined && record.status == 'draft' && record.status_step != 3"
+			class="mt-3"
+			:color="theme"
+			block
+			variant="flat"
+			@click="convertToPending(record,this)"
+			>Ubah Ke Pending</v-btn>
 
-				<v-btn v-if="record != undefined && record.status_step != 3"
-				class="mt-3"
-				:color="theme"
-				block
-				variant="flat"
-				@click="convertToCancelled(record,this)"
-				>Ubah Ke Cancelled</v-btn>
+			<v-btn v-if="record != undefined && record.status_step != 3"
+			class="mt-3"
+			:color="theme"
+			block
+			variant="flat"
+			@click="convertToCancelled(record,this)"
+			>Ubah Ke Cancelled</v-btn>
 
-				<v-spacer></v-spacer>
+			<v-spacer></v-spacer>
 
-				<v-btn
-				class="mt-3"
-				:color="theme"
-				block
-				variant="flat"
-				@click="redirectPage('used')"
-				>Lihat Yang Digunakan</v-btn>
+			<v-btn
+			class="mt-3"
+			:color="theme"
+			block
+			variant="flat"
+			@click="redirectPage('used')"
+			>Lihat Yang Digunakan</v-btn>
 
 		</template>
 	</form-show>
@@ -182,7 +182,7 @@ export default {
 			const route_params = this.$router.currentRoute._value.params;
 			console.log(route_params);
 
-			this.$http(`infrastructure/api/tax/`+route_params['tax']+'/record/'+route_params['record']+'/draft', {
+			this.$http(`infrastructure/api/record/`+route_params['record']+'/note/'+route_params['note']+'/draft', {
                 method: "POST",
             }).then((response) => {
                 if(response.success && response.record){					
@@ -197,7 +197,7 @@ export default {
 			const route_params = this.$router.currentRoute._value.params;
 			console.log(route_params);
 
-			this.$http(`infrastructure/api/tax/`+route_params['tax']+'/record/'+route_params['record']+'/pending', {
+			this.$http(`infrastructure/api/record/`+route_params['record']+'/note/'+route_params['note']+'/pending', {
                 method: "POST",
             }).then((response) => {
                 if(response.success && response.record){
@@ -210,7 +210,7 @@ export default {
 			console.log('verified is clicked');
 			const route_params = this.$router.currentRoute._value.params;
 
-			this.$http(`infrastructure/api/tax/`+route_params['tax']+'/record/'+route_params['record']+'/verified', {
+			this.$http(`infrastructure/api/record/`+route_params['record']+'/note/'+route_params['note']+'/verified', {
                 method: "POST",
             }).then((response) => {
                 if(response.success && response.record){
@@ -224,7 +224,7 @@ export default {
 			console.log('unverified is clicked');
 			const route_params = this.$router.currentRoute._value.params;
 
-			this.$http(`infrastructure/api/tax/`+route_params['tax']+'/record/'+route_params['record']+'/unverified', {
+			this.$http(`infrastructure/api/record/`+route_params['record']+'/note/'+route_params['note']+'/unverified', {
                 method: "POST",
             }).then((response) => {
                 if(response.success && response.record){
@@ -237,7 +237,7 @@ export default {
 			console.log('cancelled is clicked');
 			const route_params = this.$router.currentRoute._value.params;
 
-			this.$http(`infrastructure/api/tax/`+route_params['tax']+'/record/'+route_params['record']+'/cancelled', {
+			this.$http(`infrastructure/api/record/`+route_params['record']+'/note/'+route_params['note']+'/cancelled', {
                 method: "POST",
             }).then((response) => {
                 if(response.success && response.record){

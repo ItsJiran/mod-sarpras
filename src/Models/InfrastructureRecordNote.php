@@ -105,7 +105,6 @@ class InfrastructureRecordNote extends Model
 
     public static function mapResourceShow(Request $request, $model = null): array
     {
-        dd($model);
         $user = InfrastructureUser::mapResourceShow($request,$model->user);
         return [
             'id' => $model->id,
