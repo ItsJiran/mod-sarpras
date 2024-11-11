@@ -13,11 +13,21 @@ return new class extends Migration
     {
         Schema::create('infrastructure_asset_furnitures', function (Blueprint $table) {
             $table->id();
+            
+            $table->string('brand')->default('-');                        
+            $table->string('spesifikasi')->default('-');                        
+
             $table->timestamp('receive_date')->nullable();
             $table->double('receive_price')->default(0);
+
+            $table->double('sale_price')->default(0);
             $table->string('last_location')->nullable();
+
+            $table->integer('jumlah')->unsigned()->default(1);
+
             $table->string('status')->default('tersedia');                        
             $table->jsonb('meta')->nullable();
+
             $table->softDeletes();
             $table->timestamps();
         });

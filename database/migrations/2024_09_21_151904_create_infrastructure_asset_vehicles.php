@@ -13,10 +13,18 @@ return new class extends Migration
     {
         Schema::create('infrastructure_asset_vehicles', function (Blueprint $table) {
             $table->id();
+            
+            $table->string('pic');
             $table->string('brand');
-            $table->timestamp('receive_date')->nullable();
-            $table->double('receive_price')->default(0);
+            $table->string('no_pol');
             $table->string('last_location')->nullable();
+
+            $table->timestamp('production_date')->nullable();
+            $table->timestamp('receive_date')->nullable();
+
+            $table->double('receive_price')->default(0);
+            $table->double('sale_price')->default(0);
+
             $table->string('status')->default('tersedia');
             $table->jsonb('meta')->nullable();
             $table->softDeletes();
