@@ -12,12 +12,16 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Validation\Rule;
 
+use Illuminate\Database\Eloquent\Relations\MorphTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+
 use Module\Infrastructure\Models\InfrastructureRecord;
 use Module\Infrastructure\Models\InfrastructureRecordNote;
-
 use Module\Infrastructure\Models\InfrastructureUnit;
 use Module\Infrastructure\Models\InfrastructureAsset;
 use Module\Infrastructure\Models\InfrastructureDocument;
+
 
 class InfrastructureRecordNoteUsed extends Model
 {
@@ -85,7 +89,7 @@ class InfrastructureRecordNoteUsed extends Model
 
      public function note(): BelongsTo
      {
-         return $this->belongsTo(InfrastructureRecordNote::class, 'note_id');
+        return $this->belongsTo(InfrastructureRecordNote::class, 'note_id');
      } 
 
      public function target(): MorphTo
@@ -114,6 +118,28 @@ class InfrastructureRecordNoteUsed extends Model
      * +---------------- MAP METHODS ----------------+
      * ===============================================
      */
+
+     public static function mapResourceShow(Request $request, $model = null) : array 
+     {
+        if ($model->isAsset()) {
+            return [
+                'id' => $model->id,
+                'name' => $model->target->name,
+                'asset' => $model->targetable_type::mapResourceShow($request, $model->target),
+                'unit' => InfrastructureUnit::mapResourceShow($request, $model->target->unit),
+                'type' => 'asset',
+            ];
+        }
+        if ($model->isDocument()) {
+            return [
+                'id' => $model->id,
+                'name' => $model->target->name,
+                'document' => $model->targetable_type::mapResourceShow($request, $model->target),
+                'unit' => InfrastructureUnit::mapResourceShow($request, $model->target->unit),
+                'type' => 'asset',
+            ];
+        }
+     }
 
      public static function mapCombos(Request $request, $model = null) : array 
      {
@@ -215,7 +241,7 @@ class InfrastructureRecordNoteUsed extends Model
          
          try {
             $model->note_id = $note->id;
-            
+
             if(!is_null($request->dibekukan))            
                 $model->dibekukan = $request->dibekukan;
 

@@ -8,7 +8,7 @@
 		page-name="infrastructure-tax-note-used"
 		page-key="used"
 		
-		parent-name="infrastructure-tax-note-used"
+		parent-name="infrastructure-tax-note"
 		parent-key="note"
 	></page-crud>
 
