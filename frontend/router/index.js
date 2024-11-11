@@ -323,7 +323,7 @@ export default {
 						),
 				},
 				{
-					path: ":record/show",
+					path: ":tax/show",
 					name: "infrastructure-tax-show",
 					component: () =>
 						import(
@@ -331,7 +331,7 @@ export default {
 						),
 				},		
 				{
-					path: ":record/edit",
+					path: ":tax/edit",
 					name: "infrastructure-tax-edit",
 					component: () =>
 						import(
@@ -342,7 +342,7 @@ export default {
 		},
 
 		{
-			path: "tax/:record/note",
+			path: "tax/:tax/note",
 			component: () =>
 				import(
 					/* webpackChunkName: "infrastructure" */ "@modules/infrastructure/frontend/pages/record-note/index.vue"

@@ -96,7 +96,7 @@
 				:color="theme"
 				block
 				variant="flat"
-				@click="redirectPage('record')"
+				@click="redirectPage('note')"
 			>List Record</v-btn>
 
 		</template>
