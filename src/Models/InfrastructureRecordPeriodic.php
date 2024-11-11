@@ -82,6 +82,21 @@ class InfrastructureRecordPeriodic extends Model
         ];
     }
 
+    /**
+     * ====================================================
+     * +------------------ MAP RESOURCE ------------------+
+     * ====================================================
+     */
+    public static function mapResourceShow(Request $request, $model = null) : array
+    {
+        return [
+            'duedate' => $model->duedate,
+            'period_number_day' => $model->period_number_day,
+            'period_number_month' => $model->period_number_month,
+            'period_number_year' => $model->period_number_year,
+        ];
+    }
+
     // + ====================================================
     // + ----------------- STORE RECORD
     // + ====================================================
