@@ -37,8 +37,8 @@
 					</v-col>
 				</v-row>
 
-				<!-- ------------------------- -->
-				<!-- +--- TIPE PERAWATAN ----+ -->
+				<!-- + ----------------------- + -->
+				<!-- + --- TIPE PERAWATAN ---- + -->
 
 				<div class="text-overline mt-6">Tipe Perawatan</div>
 				<v-divider :thickness="3" class="mt-3 mb-6" />
