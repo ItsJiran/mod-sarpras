@@ -44,6 +44,16 @@
 	<v-row dense>
 		<v-col cols="12">
 			<v-text-field
+				label="Lokasi Terakhir"
+				v-model="record.last_location"
+				:readonly="true"
+			></v-text-field>
+		</v-col>
+	</v-row>
+
+	<v-row dense>
+		<v-col cols="12">
+			<v-text-field
 				label="Spesifikasi"
 				v-model="record.spesifikasi"
 				:readonly="true"

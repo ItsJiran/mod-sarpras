@@ -179,11 +179,12 @@ class InfrastructureAssetFurniture extends Model
         try {
             $model->jumlah = $request->jumlah;
             $model->sale_price = $request->sale_price;
-            $model->spesifikasi = $request->spesifikasi;
             $model->receive_date = $request->receive_date;
             $model->receive_price = $request->receive_price;
             $model->last_location = $request->last_location;
+            $model->spesifikasi = $request->spesifikasi;
             $model->status = $request->status;
+
             $model->save();
 
             return $model;
