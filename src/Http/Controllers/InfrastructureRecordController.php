@@ -23,9 +23,17 @@ class InfrastructureRecordController extends Controller
     public function index(Request $request)
     {
         Gate::authorize('view', InfrastructureRecord::class);
+
         $request = $this->determineRouteType($request);
+
+        if($request->type == 'tax')
+            $eloqueint = InfrastructureRecord::indexTax($request);
+    
+        if($request->type == 'maintenance')
+            $eloqueint = InfrastructureRecord::indexMaintenance($request);
+
         return new RecordCollection(
-            InfrastructureRecord::applyMode($request->mode)
+            $eloqueint->applyMode($request->mode)
             ->filter($request->filters)
             ->search($request->findBy)
             ->sortBy($request->sortBy)

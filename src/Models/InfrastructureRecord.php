@@ -110,6 +110,7 @@ class InfrastructureRecord extends Model
         return self::mapMorphTargetClass(true)[$this->targetable_type];
     }
 
+
     /**
      * ====================================================
      * +---------------- STATUSES METHODS ----------------+
@@ -398,6 +399,20 @@ class InfrastructureRecord extends Model
      * +------------------ CRUD METHODS ------------------+
      * ====================================================
      */
+
+    // +-------------------------------
+    // +--------- INDEX METHODS
+    // +-------------------------------     
+    public static function indexTax(Request $request) 
+    {   
+        return self::where('type','tax');
+    }
+
+    public static function indexMaintenance(Request $request) 
+    {   
+        return self::where('type','maintenance');
+    }
+
 
     // +-------------------------------
     // +--------- STORE METHODS

@@ -66,6 +66,29 @@ class InfrastructureUnit extends Model
         ->join('infrastructure_taxes','infrastructure_taxes.id','=','infrastructure_tax_documents.tax_id');                
     }
 
+        /**
+     * Get the model that the image belongs to.
+     */
+    public function taxes()
+    {
+        // return InfrastructureRecord::
+        // join('infrastructure_records','infrastructure_records.targetable_id','=','infrastructure_assets.id')
+        // ->join('infrastructure_units','infrastructure_records.targetable_id','=','infrastructure_assets.id')
+        // ->where('infrastructure_records.targetable_type',self::class)
+        // ->where('infrastructure_records.type','tax');
+    }
+
+    /**
+     * Get the model that the image belongs to.
+     */
+    public function maintenances()
+    {
+        // return InfrastructureRecord::
+        // join('infrastructure_records','infrastructure_records.targetable_id','=','infrastructure_assets.id')
+        // ->where('infrastructure_records.targetable_type',self::class)
+        // ->where('infrastructure_records.type','maintenance');            
+    }
+
     /**
      * ====================================================
      * +------------------ MAP RESOURCE ------------------+
