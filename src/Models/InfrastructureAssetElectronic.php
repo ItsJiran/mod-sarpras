@@ -177,6 +177,7 @@ class InfrastructureAssetElectronic extends Model
     {
         $model = new static();
         try {     
+            $model->asset_id = $asset_model->id;
             $model->jumlah = $request->jumlah;
             $model->sale_price = $request->sale_price;
             $model->spesifikasi = $request->spesifikasi;
