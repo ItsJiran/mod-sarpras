@@ -203,6 +203,9 @@ class InfrastructureAssetFurniture extends Model
     public static function updateRecord(Request $request, $model)
     {
         try {
+            $model->jumlah = $request->jumlah;
+            $model->sale_price = $request->sale_price;
+            $model->spesifikasi = $request->spesifikasi;
             $model->receive_date = $request->receive_date;
             $model->receive_price = $request->receive_price;
             $model->last_location = $request->last_location;
