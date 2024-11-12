@@ -42,7 +42,6 @@ Route::controller(InfrastructureRecordController::class)->group(function () {
 // +-- from resource module maintenance
 Route::controller(InfrastructureRecordController::class)->group(function () {
     Route::group(['as' => 'maintenance::'], function(){
-
         Route::resource('maintenance',InfrastructureRecordController::class)->parameters([
             'maintenance' => 'infrastructureRecord'
         ]);
@@ -81,7 +80,6 @@ Route::controller(InfrastructureRecordController::class)->group(function () {
         Route::delete('unit/{unit}/asset/{asset}/maintenance/{maintenance}', 'destroyFromUnitAsset');
         Route::delete('unit/{unit}/document/{document}/maintenance/{maintenance}', 'destroyFromUnitDocument');
         Route::delete('unit/{unit}/asset/{asset}/document/{document}/maintenance/{maintenance}', 'destroyFromUnitAssetDocument');
-
     });
 
     Route::group(['as' => 'tax::'], function(){
@@ -126,7 +124,6 @@ Route::controller(InfrastructureRecordController::class)->group(function () {
 
     });
 });
-
 
 // +-----------------------------------
 // +-- from resource module asset
@@ -206,6 +203,7 @@ Route::controller(InfrastructureRecordNoteController::class)->group(function () 
 // tax - record - used - asset
 Route::controller(InfrastructureRecordNoteUsedController::class)->group(function () {
     Route::group(['as' => 'tax::'], function(){
+        // tax - record - note
         Route::get( 'tax/{record}/note/{note}/used/', 'index' );
         Route::post( 'tax/{record}/note/{note}/used', 'store' );
         Route::get( 'tax/{record}/note/{note}/used/{used}', 'show' );
