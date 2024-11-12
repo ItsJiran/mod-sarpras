@@ -16,6 +16,7 @@ use Illuminate\Database\Eloquent\Relations\MorphTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
 use Module\Infrastructure\Models\InfrastructureRecordNote;
+use Module\Infrastructure\Models\InfrastructureRecordPeriodic;
 
 class InfrastructureRecord extends Model
 {
@@ -109,7 +110,6 @@ class InfrastructureRecord extends Model
     {
         return self::mapMorphTargetClass(true)[$this->targetable_type];
     }
-
 
     /**
      * ====================================================
@@ -411,6 +411,11 @@ class InfrastructureRecord extends Model
     public static function indexMaintenance(Request $request) 
     {   
         return self::where('type','maintenance');
+    }
+
+    public static function indexDeadline(Request $request) 
+    {   
+        return self::where('recordable_type',InfrastructureRecordPeriodic::class);
     }
 
 

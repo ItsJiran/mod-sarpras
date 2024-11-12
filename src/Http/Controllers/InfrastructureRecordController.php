@@ -20,6 +20,19 @@ class InfrastructureRecordController extends Controller
     // + ----------- INDEX METHODS
     // + ===================================
 
+    public function indexDeadline(Request $request)
+    {
+        Gate::authorize('view', InfrastructureRecord::class);
+
+        return new RecordCollection(
+            $eloqueint->applyMode($request->mode)
+            ->filter($request->filters)
+            ->search($request->findBy)
+            ->sortBy($request->sortBy)
+            ->paginate($request->itemsPerPage)
+        );        
+    }
+
     public function index(Request $request)
     {
         Gate::authorize('view', InfrastructureRecord::class);
@@ -28,7 +41,7 @@ class InfrastructureRecordController extends Controller
 
         if($request->type == 'tax')
             $eloqueint = InfrastructureRecord::indexTax($request);
-    
+
         if($request->type == 'maintenance')
             $eloqueint = InfrastructureRecord::indexMaintenance($request);
 
