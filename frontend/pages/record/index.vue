@@ -4,6 +4,11 @@
 		page-key="record"
 	></page-crud>
 
+	<page-crud v-if=" checkRoute('infrastructure-deadline') "
+		page-name="infrastructure-deadline"
+		page-key="record"
+	></page-crud>
+
 	<!-- +=================================================+ -->
 	<!-- +------------------MAINTENANCE--------------------+ -->
 	<!-- +=================================================+ -->

@@ -4,6 +4,11 @@
 		page-key="used"
 	></page-crud>
 
+	<page-crud v-if="checkRoute('infrastructure-deadline-note-used')"
+		page-name="infrastructure-deadline-note-used"
+		page-key="used"
+	></page-crud>
+
 	<!-- +===================================================+ -->
 
 	<page-crud v-if="checkRoute('infrastructure-tax-note-used')"

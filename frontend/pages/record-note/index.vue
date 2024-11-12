@@ -4,6 +4,11 @@
 		page-key="note"
 	></page-crud>
 
+	<page-crud v-if="checkRoute('infrastructure-deadline-note')"
+		page-name="infrastructure-deadline-note"
+		page-key="note"
+	></page-crud>
+
 	<!-- +=================================================+ -->
 	<!-- +---------------------TAX-------------------------+ -->
 	<!-- +=================================================+ -->
