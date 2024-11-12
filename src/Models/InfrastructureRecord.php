@@ -12,6 +12,8 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Validation\Rule;
 
+use Carbon\Carbon;
+
 use Illuminate\Database\Eloquent\Relations\MorphTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
@@ -418,8 +420,8 @@ class InfrastructureRecord extends Model
         $deadline = Carbon::today()->addMonth(3);
 
         $deadline_queries = [
-            ['recordable_type','=',InfrastructureRecordPeriodic::class],
-            ['recordable_type','=',InfrastructureRecordPeriodic::class],
+            ['infrastructure_records.recordable_type','=',InfrastructureRecordPeriodic::class],
+            ['infrastructure_record_periodics.duedate','<=',$deadline],
         
         ];
 
