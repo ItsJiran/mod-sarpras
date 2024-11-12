@@ -448,12 +448,14 @@ class InfrastructureRecordNote extends Model
                 throw new \Exception('Data tidak sedang pending');
             
             if ( $record->isRecordPeriodic() ) {
-                $now = Carbon::now();
-                $now->addDays($record->recordable->period_number_day);
-                $now->addMonths($record->recordable->period_number_month);
-                $now->addYear($record->recordable->period_number_year);
+                $duedate = Carbon::parse($note->duedate);
 
-                $record->recordable->duedate = $now;
+
+                $dudate->addDays($record->recordable->period_number_day);
+                $dudate->addMonths($record->recordable->period_number_month);
+                $dudate->addYear($record->recordable->period_number_year);
+
+                $record->recordable->duedate = $dudate;
                 $record->recordable->save();
                 $record->save();
             }
