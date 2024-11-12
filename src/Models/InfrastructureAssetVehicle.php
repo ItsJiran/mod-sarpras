@@ -70,6 +70,12 @@ class InfrastructureAssetVehicle extends Model
         'receive_date',
         'receive_price',
         'last_location',
+
+        'pic',
+        'no_pol',
+        'production_date',
+        'sale_price',
+
         'status',
     ];
 
@@ -92,6 +98,10 @@ class InfrastructureAssetVehicle extends Model
             'receive_date' => $model->receive_date,
             'receive_price' => $model->receive_price,
             'last_location' => $model->last_location,
+            'pic' => $model->pic,
+            'no_pol' => $model->no_pol,
+            'production_date' => $model->production_date,
+            'sale_price' => $model->sale_price,
             'status' => $model->status,
         ]);
     }
@@ -124,7 +134,13 @@ class InfrastructureAssetVehicle extends Model
             'brand' => 'required',
             'receive_date' => 'required',
             'receive_price' => 'required',         
-            'last_location' => 'required',         
+            'last_location' => 'required',     
+            
+            'pic' => 'required',            
+            'no_pol' => 'required',
+            'production_date' => 'required',
+            'sale_price' => 'required',
+
             'status' => [
                 'required',
                 Rule::in( self::mapStatus() ),
@@ -144,7 +160,13 @@ class InfrastructureAssetVehicle extends Model
             'brand' => 'required',
             'receive_date' => 'required',
             'receive_price' => 'required',         
-            'last_location' => 'required',         
+            'last_location' => 'required',   
+
+            'pic' => 'required',            
+            'no_pol' => 'required',
+            'production_date' => 'required',
+            'sale_price' => 'required',
+            
             'status' => [
                 'required',
                 Rule::in( self::mapStatus() ),
@@ -174,6 +196,12 @@ class InfrastructureAssetVehicle extends Model
             $model->receive_date = $request->receive_date;
             $model->receive_price = $request->receive_price;
             $model->last_location = $request->last_location;
+
+            $model->pic = $request->pic;
+            $model->no_pol = $request->no_pol;
+            $model->production_date = $request->production_date;
+            $model->sale_price = $request->sale_price;
+
             $model->status = $request->status;
             $model->save();
 
