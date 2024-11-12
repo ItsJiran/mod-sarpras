@@ -198,8 +198,11 @@ class InfrastructureRecordNoteUsed extends Model
      public static function index(Request $request, InfrastructureRecord $record, InfrastructureRecordNote $note)
      {   
          $where_queries = [
-             ['infrastructure_record_note_useds.note_id','=',$note->id]
+             ['infrastructure_record_note_useds.note_id','=',$note->id]             
          ];  
+
+         if ( is_null($request->type) )
+            $where_queries = array_merge($where_queries, [['type','=',$request->type]]);
  
          $query = DB::table('infrastructure_record_note_useds');
  

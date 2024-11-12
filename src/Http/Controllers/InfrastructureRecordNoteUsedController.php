@@ -22,7 +22,7 @@ class InfrastructureRecordNoteUsedController extends Controller
     public function index(Request $request, InfrastructureRecord $record, InfrastructureRecordNote $note)
     {
         Gate::authorize('view', InfrastructureRecordNoteUsed::class);
-    
+        $request = $this->determineRouteType($request);
         return new RecordNoteUsedCollection(
             InfrastructureRecordNoteUsed::index( $request, $record, $note ),
             // InfrastructureRecordNoteUsed::applyMode($request->mode)
@@ -54,7 +54,8 @@ class InfrastructureRecordNoteUsedController extends Controller
 
     public function show(Request $request, InfrastructureRecord $record, InfrastructureRecordNote $note, InfrastructureRecordNoteUsed $used)
     {
-        Gate::authorize('show', $used);
+        Gate::authorize('show', InfrastructureRecordNoteUsed::class);
+        
         return new RecordNoteUsedShowResource($used);
     }
 
@@ -66,7 +67,9 @@ class InfrastructureRecordNoteUsedController extends Controller
     {
         Gate::authorize('update', $infrastructureRecordNoteUsed);
 
-        $request->validate([]);
+        $request->validate( 
+            InfrastructureRecordNoteUsed::mapUpdateRequest($request, $record, $note) 
+        );
 
         return InfrastructureRecordNoteUsed::updateRecord($request, $infrastructureRecordNoteUsed);
     }
@@ -102,5 +105,25 @@ class InfrastructureRecordNoteUsedController extends Controller
         Gate::authorize('destroy', $infrastructureRecordNoteUsed);
 
         return InfrastructureRecordNoteUsed::destroyRecord($infrastructureRecordNoteUsed);
+    }
+
+        // + ===================================
+    // + ----------- UTILITIES
+    // + ===================================
+    public function determineRouteType(Request $request) : Request
+    {
+        if ( $this->determineRouteName() == 'tax' )
+            $request = InfrastructureRecord::mergeRequestTax($request);
+        
+        if ( $this->determineRouteName() == 'maintenance' ) 
+            $request = InfrastructureRecord::mergeRequestMaintenance($request);
+
+        return $request;
+    }
+    
+    public function determineRouteName()
+    {   
+        $routeName = \Illuminate\Support\Facades\Route::current()->getName();
+        return explode('::',$routeName)[0];
     }
 }

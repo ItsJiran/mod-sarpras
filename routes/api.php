@@ -203,16 +203,15 @@ Route::controller(InfrastructureRecordNoteController::class)->group(function () 
 // tax - record - used - asset
 Route::controller(InfrastructureRecordNoteUsedController::class)->group(function () {
     Route::group(['as' => 'tax::'], function(){
-        // tax - record - note
-        Route::get( 'tax/{record}/note/{note}/used/', 'index' );
+        Route::get( 'tax/{record}/note/{note}/used', 'index' );
         Route::post( 'tax/{record}/note/{note}/used', 'store' );
         Route::get( 'tax/{record}/note/{note}/used/{used}', 'show' );
         Route::put( 'tax/{record}/note/{note}/used/{used}', 'update' );
         Route::delete( 'tax/{record}/note/{note}/used/{used}', 'destroy' );
     });
-
+    
     Route::group(['as' => 'maintenance::'], function(){
-        Route::get( 'maintenance/{record}/note/{note}/used/', 'index' );
+        Route::get( 'maintenance/{record}/note/{note}/used', 'index' );
         Route::post( 'maintenance/{record}/note/{note}/used', 'store' );
         Route::get( 'maintenance/{record}/note/{note}/used/{used}', 'show' );
         Route::put( 'maintenance/{record}/note/{note}/used/{used}', 'update' );

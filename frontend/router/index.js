@@ -850,7 +850,7 @@ export default {
 						),
 				},
 				{
-					path: ":record/show",
+					path: ":used/show",
 					name: "infrastructure-maintenance-note-used-show",
 					component: () =>
 						import(
@@ -858,7 +858,7 @@ export default {
 						),
 				},		
 				{
-					path: ":record/edit",
+					path: ":used/edit",
 					name: "infrastructure-maintenance-note-used-edit",
 					component: () =>
 						import(
