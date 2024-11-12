@@ -25,7 +25,8 @@ class InfrastructureRecordController extends Controller
         Gate::authorize('view', InfrastructureRecord::class);
 
         return new RecordCollection(
-            $eloqueint->applyMode($request->mode)
+            InfrastructureRecord::indexDeadline($request)
+            ->applyMode($request->mode)
             ->filter($request->filters)
             ->search($request->findBy)
             ->sortBy($request->sortBy)
