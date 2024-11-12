@@ -70,6 +70,10 @@ class InfrastructureAssetElectronic extends Model
         'receive_price',
         'last_location',
         'status',
+
+        'spesifikasi',
+        'sale_price',
+        'jumlah',
     ];
 
     /**
@@ -87,6 +91,9 @@ class InfrastructureAssetElectronic extends Model
     public static function mapResourceShow(Request $request, $model = null): array
     {
         return array_merge([
+            'jumlah' => $model->jumlah,
+            'sale_price' => $model->sale_price,
+            'spesifikasi' => $model->spesifikasi,
             'receive_date' => $model->receive_date,
             'receive_price' => $model->receive_price,
             'last_location' => $model->last_location,
@@ -119,6 +126,9 @@ class InfrastructureAssetElectronic extends Model
     public static function mapStoreValidation()
     {
         return [
+            'spesifikasi' => 'required',
+            'sale_price' => 'required',
+            'jumlah' => 'required',
             'receive_date' => 'required',
             'receive_price' => 'required',
             'last_location' => 'required',            
@@ -138,9 +148,12 @@ class InfrastructureAssetElectronic extends Model
     public static function mapUpdateValidation()
     {
         return [
+            'jumlah' => 'required',
+            'spesifikasi' => 'required',
+            'sale_price' => 'required',
             'receive_date' => 'required',
             'receive_price' => 'required',
-            'last_location' => 'required',            
+            'last_location' => 'required',
             'status' => [
                 'required',
                 Rule::in( self::mapStatus() ),
@@ -164,6 +177,9 @@ class InfrastructureAssetElectronic extends Model
     {
         $model = new static();
         try {     
+            $model->jumlah = $request->jumlah;
+            $model->sale_price = $request->sale_price;
+            $model->spesifikasi = $request->spesifikasi;
             $model->receive_date = $request->receive_date;
             $model->receive_price = $request->receive_price;
             $model->last_location = $request->last_location;
@@ -186,6 +202,9 @@ class InfrastructureAssetElectronic extends Model
     public static function updateRecord(Request $request, $model)
     {
         try {
+            $model->jumlah = $request->jumlah;
+            $model->sale_price = $request->sale_price;
+            $model->spesifikasi = $request->spesifikasi;
             $model->receive_date = $request->receive_date;
             $model->receive_price = $request->receive_price;
             $model->last_location = $request->last_location;
