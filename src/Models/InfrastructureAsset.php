@@ -181,12 +181,7 @@ class InfrastructureAsset extends Model
      * ====================================================
      */
 
-    /**
-     * The model map combos method
-     *
-     * @param [type] $model
-     * @return void
-     */
+
     public static function mapResourceShow(Request $request, $model = null): array
     {
         // asset key type
