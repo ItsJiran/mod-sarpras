@@ -109,7 +109,7 @@ export default {
 
 			// ambil asset untuk list 
 			this.$http(`infrastructure/api/ref-asset/${record.unit.id}/${record.asset.assetable_type_key}/asset`).then(				
-				(response) => { data.refAsset = response }
+				(response) => { data.refAsset = response; console.log(data) }
 			);
 		},
 		getRefDocument : function (record,data,isConnectedToAsset) {
