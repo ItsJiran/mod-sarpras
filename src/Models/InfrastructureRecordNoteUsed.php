@@ -200,11 +200,9 @@ class InfrastructureRecordNoteUsed extends Model
          $where_queries = [
              ['infrastructure_record_note_useds.note_id','=',$note->id]             
          ];  
-
-         if ( is_null($request->type) )
-            $where_queries = array_merge($where_queries, [['type','=',$request->type]]);
  
-         $query = DB::table('infrastructure_record_note_useds');
+         $query = DB::table('infrastructure_record_note_useds')
+         ->where($where_queries);
  
          // Conditionally join based on the user_type column
          $query->leftJoin('infrastructure_assets', function($join) {
