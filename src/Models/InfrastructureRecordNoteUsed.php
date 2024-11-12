@@ -194,13 +194,13 @@ class InfrastructureRecordNoteUsed extends Model
 
      public static function mapStoreRequestValid(Request $request, InfrastructureRecord $record, InfrastructureRecordNote $note) : JsonResponse | null
      {
-        // buat validasi kalau misalnya asset sama atau kalau misalnya sudah ada dinsii..
+        // buat validasi kalau misalnya asset sama atau kalau misalnya sudah ada disini..
         return null;
      }
 
     public static function mapUpdateRequestValid(Request $request, InfrastructureRecord $record, InfrastructureRecordNote $note, $model) : JsonResponse | null
     {
-        // buat validasi kalau misalnya asset sama atau kalau misalnya sudah ada dinsii..
+        // buat validasi kalau misalnya asset sama atau kalau misalnya sudah ada disini..
         return null;
     }
 
