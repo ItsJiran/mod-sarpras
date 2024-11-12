@@ -21,8 +21,7 @@ use Module\Infrastructure\Models\InfrastructureDocumentLandCertificate;
 use Module\Infrastructure\Models\InfrastructureUnit;
 use Module\Infrastructure\Models\InfrastructureAsset;
 
-use Module\Infrastructure\Models\InfrastructureTaxAsset;
-use Module\Infrastructure\Models\InfrastructureTaxDocument;
+use Module\Infrastructure\Models\InfrastructureRecord;
 use Module\Infrastructure\Models\InfrastructureTax;
 
 class InfrastructureDocument extends Model
@@ -119,18 +118,23 @@ class InfrastructureDocument extends Model
      */
     public function taxes()
     {
-        return InfrastructureTaxDocument::where('document_id',$this->id)
-        ->join('infrastructure_taxes','infrastructure_taxes.id','=','infrastructure_tax_documents.tax_id');                
+        return InfrastructureRecord::where('targetable_id',$this->id)
+        ->join('infrastructure_documents','infrastructure_documents.id', '=', 'infrastructure_records.targetable_id')
+        ->where('infrastructure_records.targetable_type',self::class)
+        ->where('infrastructure_records.type','tax')
+        ->select('infrastructure_records.*');
     }
-
 
     /**
      * Get the model that the image belongs to.
      */
     public function maintenances()
     {
-        return InfrastructureMaintenanceDocument::where('document_id',$this->id)
-        ->join('infrastructure_maintenances','infrastructure_maintenances.id','=','infrastructure_maintenance_documents.maintenance_id');                
+        return InfrastructureRecord::where('targetable_id',$this->id)
+        ->join('infrastructure_documents','infrastructure_documents.id', '=', 'infrastructure_records.targetable_id')        
+        ->where('infrastructure_records.targetable_type',self::class)
+        ->where('infrastructure_records.type','maintenance')           
+        ->select('infrastructure_records.*');
     }
 
     /**

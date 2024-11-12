@@ -425,7 +425,7 @@ class InfrastructureRecord extends Model
         
         ];
 
-        $eloquent = self::leftJoin('infrastructure_record_periodcs', function($join) {
+        $eloquent = self::leftJoin('infrastructure_record_periodics', function($join) {
             $join
             ->on('infrastructure_records.recordable_id', '=', 'infrastructure_record_periodics.id')
             ->where('infrastructure_records.recordable_type', '=', InfrastructureRecordPeriodic::class);

@@ -159,9 +159,10 @@ class InfrastructureAsset extends Model
     public function taxes()
     {
         return InfrastructureRecord::where('targetable_id',$this->id)
-        ->join('infrastructure_records','infrastructure_records.targetable_id','=','infrastructure_assets.id')
+        ->join('infrastructure_assets','infrastructure_assets.id', '=', 'infrastructure_records.targetable_id')
         ->where('infrastructure_records.targetable_type',self::class)
-        ->where('infrastructure_records.type','tax');
+        ->where('infrastructure_records.type','tax')
+        ->select('infrastructure_records.*');
     }
 
     /**
@@ -170,9 +171,10 @@ class InfrastructureAsset extends Model
     public function maintenances()
     {
         return InfrastructureRecord::where('targetable_id',$this->id)
-        ->join('infrastructure_records','infrastructure_records.targetable_id','=','infrastructure_assets.id')
+        ->join('infrastructure_assets','infrastructure_assets.id', '=', 'infrastructure_records.targetable_id')        
         ->where('infrastructure_records.targetable_type',self::class)
-        ->where('infrastructure_records.type','maintenance');            
+        ->where('infrastructure_records.type','maintenance')           
+        ->select('infrastructure_records.*');
     }
 
     /**
