@@ -191,8 +191,8 @@ class InfrastructureAssetVehicle extends Model
         $model = new static();
 
         try {
-            $model->asset_id = $asset_model->id;
             $model->brand = $request->brand;
+            $model->asset_id = $asset_model->id;
             $model->receive_date = $request->receive_date;
             $model->receive_price = $request->receive_price;
             $model->last_location = $request->last_location;
@@ -226,6 +226,12 @@ class InfrastructureAssetVehicle extends Model
             $model->receive_price = $request->receive_price;
             $model->last_location = $request->last_location;
             $model->status = $request->status;
+
+            $model->pic = $request->pic;
+            $model->no_pol = $request->no_pol;
+            $model->production_date = $request->production_date;
+            $model->sale_price = $request->sale_price;
+
             $model->save();
         } catch (\Exception $e) {
             throw $e;
