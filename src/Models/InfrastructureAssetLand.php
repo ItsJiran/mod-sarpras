@@ -69,6 +69,14 @@ class InfrastructureAssetLand extends Model
         'receive_date',
         'receive_price',
         'status',
+        'atas_nama',
+        'nop',
+        'luas_bumi',
+        'luas_bangunan',
+        'njop_bumi',
+        'njop_bangunan',
+        'alamat_wajib_pajak',
+        'alamat_objek_pajak',
     ];
 
     /**
@@ -162,6 +170,16 @@ class InfrastructureAssetLand extends Model
             $model->receive_date = $request->receive_date;
             $model->receive_price = $request->receive_price;
             $model->status = $request->status;
+
+            $model->atas_nama = $request->atas_nama;
+            $model->nop = $request->nop;
+            $model->luas_bumi = $request->luas_bumi;
+            $model->luas_bangunan = $request->luas_bangunan;
+            $model->njop_bumi = $request->njop_bumi;
+            $model->njop_bangunan = $request->njop_bangunan;
+            $model->alamat_wajib_pajak = $request->alamat_wajib_pajak;
+            $model->alamat_objek_pajak = $request->alamat_objek_pajak;
+
             $model->save();
 
             return $model;
@@ -183,6 +201,16 @@ class InfrastructureAssetLand extends Model
             $model->receive_date = $request->receive_date;
             $model->receive_price = $request->receive_price;
             $model->status = $request->status;
+
+            $model->atas_nama = $request->atas_nama;
+            $model->nop = $request->nop;
+            $model->luas_bumi = $request->luas_bumi;
+            $model->luas_bangunan = $request->luas_bangunan;
+            $model->njop_bumi = $request->njop_bumi;
+            $model->njop_bangunan = $request->njop_bangunan;
+            $model->alamat_wajib_pajak = $request->alamat_wajib_pajak;
+            $model->alamat_objek_pajak = $request->alamat_objek_pajak;
+            
             $model->save();
         } catch (\Exception $e) {
             throw $e;
