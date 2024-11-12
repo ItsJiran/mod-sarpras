@@ -793,7 +793,7 @@ export default {
 			children: [
 				{
 					path: "",
-					name: "infrastructure-maintenance-record",
+					name: "infrastructure-maintenance-note",
 					component: () =>
 						import(
 							/* webpackChunkName: "infrastructure" */ "@modules/infrastructure/frontend/pages/record-note/crud/data.vue"
@@ -801,7 +801,7 @@ export default {
 				},
 				{
 					path: "create",
-					name: "infrastructure-maintenance-record-create",
+					name: "infrastructure-maintenance-note-create",
 					component: () =>
 						import(
 							/* webpackChunkName: "infrastructure" */ "@modules/infrastructure/frontend/pages/record-note/crud/create.vue"
@@ -809,7 +809,7 @@ export default {
 				},
 				{
 					path: ":note/show",
-					name: "infrastructure-maintenance-record-show",
+					name: "infrastructure-maintenance-note-show",
 					component: () =>
 						import(
 							/* webpackChunkName: "infrastructure" */ "@modules/infrastructure/frontend/pages/record-note/crud/show.vue"
@@ -817,7 +817,7 @@ export default {
 				},		
 				{
 					path: ":note/edit",
-					name: "infrastructure-maintenance-record-edit",
+					name: "infrastructure-maintenance-note-edit",
 					component: () =>
 						import(
 							/* webpackChunkName: "infrastructure" */ "@modules/infrastructure/frontend/pages/record-note/crud/edit.vue"
@@ -835,7 +835,7 @@ export default {
 			children: [
 				{
 					path: "",
-					name: "infrastructure-maintenance-record-used",
+					name: "infrastructure-maintenance-note-used",
 					component: () =>
 						import(
 							/* webpackChunkName: "infrastructure" */ "@modules/infrastructure/frontend/pages/record-note-used/crud/data.vue"
@@ -843,7 +843,7 @@ export default {
 				},
 				{
 					path: "create",
-					name: "infrastructure-maintenance-record-used-create",
+					name: "infrastructure-maintenance-note-used-create",
 					component: () =>
 						import(
 							/* webpackChunkName: "infrastructure" */ "@modules/infrastructure/frontend/pages/record-note-used/crud/create.vue"
@@ -851,7 +851,7 @@ export default {
 				},
 				{
 					path: ":record/show",
-					name: "infrastructure-maintenance-record-used-show",
+					name: "infrastructure-maintenance-note-used-show",
 					component: () =>
 						import(
 							/* webpackChunkName: "infrastructure" */ "@modules/infrastructure/frontend/pages/record-note-used/crud/show.vue"
@@ -859,7 +859,7 @@ export default {
 				},		
 				{
 					path: ":record/edit",
-					name: "infrastructure-maintenance-record-used-edit",
+					name: "infrastructure-maintenance-note-used-edit",
 					component: () =>
 						import(
 							/* webpackChunkName: "infrastructure" */ "@modules/infrastructure/frontend/pages/record-note-used/crud/edit.vue"
