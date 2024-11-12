@@ -414,8 +414,22 @@ class InfrastructureRecord extends Model
     }
 
     public static function indexDeadline(Request $request) 
-    {   
-        return self::where('recordable_type',InfrastructureRecordPeriodic::class);
+    {          
+        $deadline = Carbon::today()->addMonth(3);
+
+        $deadline_queries = [
+            ['recordable_type','=',InfrastructureRecordPeriodic::class],
+            ['recordable_type','=',InfrastructureRecordPeriodic::class],
+        
+        ];
+
+        $eloquent = self::leftJoin('infrastructure_record_periodcs', function($join) {
+            $join
+            ->on('infrastructure_records.recordable_id', '=', 'infrastructure_record_periodics.id')
+            ->where('infrastructure_records.recordable_type', '=', InfrastructureRecordPeriodic::class);
+        })->where($deadline_queries);
+
+        return $eloquent;
     }
 
 
