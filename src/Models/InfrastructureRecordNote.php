@@ -342,7 +342,7 @@ class InfrastructureRecordNote extends Model
         }
 
         // kalau misalnya bukan user yang membuat dan bukan admin        
-        if ( $model->user_id != $request->user()->id && $request->user()-id != 1 ) {
+        if ( $model->user_id != $request->user()->id && $request->user()->id != 1 ) {
             return response()->json([
                 'success' => false,
                 'message' => 'Anda tidak berwenang!'
@@ -350,7 +350,7 @@ class InfrastructureRecordNote extends Model
         }
 
         // kalau bukan draft dan bukan admin
-        if ( $model->status != 'draft' && $request->user()-id != 1 ) {
+        if ( $model->status != 'draft' && $request->user()->id != 1 ) {
             return response()->json([
                 'success' => false,
                 'message' => 'Anda tidak berwenang!'

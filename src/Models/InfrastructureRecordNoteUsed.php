@@ -16,6 +16,9 @@ use Illuminate\Database\Eloquent\Relations\MorphTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
+use Illuminate\Http\JsonResponse;
+use Carbon\Carbon;
+
 use Module\Infrastructure\Models\InfrastructureRecord;
 use Module\Infrastructure\Models\InfrastructureRecordNote;
 use Module\Infrastructure\Models\InfrastructureUnit;
@@ -188,6 +191,16 @@ class InfrastructureRecordNoteUsed extends Model
              'document',
          ];
      }
+
+     public static function mapStoreRequestValid(Request $request, InfrastructureRecord $record, InfrastructureRecordNote $note) : JsonResponse | null
+     {
+           
+     }
+
+    public static function mapUpdateRequestValid(Request $request, InfrastructureRecord $record, InfrastructureRecordNote $note, $model) : JsonResponse | null
+    {
+        return null;
+    }
 
     /**
      * =================================================
