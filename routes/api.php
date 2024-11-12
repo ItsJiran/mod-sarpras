@@ -31,17 +31,12 @@ Route::get('ref-unit/combos',[InfrastructureUnitController::class, 'refCombos'])
 // +-----------------------------------
 // +-- from resource module tax
 
-
 Route::controller(InfrastructureRecordController::class)->group(function () {
 
-});
+    Route::get('deadline','indexDeadline');
 
-
-
-// +-----------------------------------
-// +-- from resource module maintenance
-Route::controller(InfrastructureRecordController::class)->group(function () {
     Route::group(['as' => 'maintenance::'], function(){
+
         Route::resource('maintenance',InfrastructureRecordController::class)->parameters([
             'maintenance' => 'infrastructureRecord'
         ]);
@@ -180,6 +175,12 @@ Route::controller(InfrastructureRecordNoteController::class)->group(function () 
     Route::post('record/{record}/note/{note}/unverified','changeToUnverified');
     Route::post('record/{record}/note/{note}/cancelled','changeToCancelled');
 
+    Route::get('deadline/{record}/note','index');
+    Route::post('deadline/{record}/note','store');
+    Route::get('deadline/{record}/note/{note}','show');
+    Route::put('deadline/{record}/note/{note}','update');
+    Route::delete('deadline/{record}/note/{note}','destroy');
+
     Route::group(['as' => 'tax::'], function(){
         Route::get('tax/{record}/note','index');
         Route::post('tax/{record}/note','store');
@@ -202,6 +203,12 @@ Route::controller(InfrastructureRecordNoteController::class)->group(function () 
 
 // tax - record - used - asset
 Route::controller(InfrastructureRecordNoteUsedController::class)->group(function () {
+    Route::get( 'deadline/{record}/note/{note}/used', 'index' );
+    Route::post( 'deadline/{record}/note/{note}/used', 'store' );
+    Route::get( 'deadline/{record}/note/{note}/used/{used}', 'show' );
+    Route::put( 'deadline/{record}/note/{note}/used/{used}', 'update' );
+    Route::delete( 'deadline/{record}/note/{note}/used/{used}', 'destroy' );
+
     Route::group(['as' => 'tax::'], function(){
         Route::get( 'tax/{record}/note/{note}/used', 'index' );
         Route::post( 'tax/{record}/note/{note}/used', 'store' );
