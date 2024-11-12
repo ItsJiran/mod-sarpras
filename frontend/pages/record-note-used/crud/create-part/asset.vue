@@ -34,6 +34,7 @@
 	</v-row>
 
 	<!-- PILIH ASSETS -->
+
 	<v-row v-if="data.refAsset != undefined && data.refAsset.assets != undefined && data.refAsset.assets.length > 0" dense>
 		<v-col cols="6">
 			<v-combobox
