@@ -4,6 +4,10 @@
 		page-key="record"
 	></page-crud>
 
+	<!-- +=================================================+ -->
+	<!-- +------------------MAINTENANCE--------------------+ -->
+	<!-- +=================================================+ -->
+
 	<page-crud v-if=" checkRoute('infrastructure-tax') "
 		page-name="infrastructure-tax"
 		page-key="record"
@@ -52,6 +56,63 @@
 	<page-crud v-if=" checkRoute('infrastructure-unit-document-tax') "	
 		page-name="infrastructure-unit-document-tax"
 		page-key="tax"
+		
+		parent-name="infrastructure-unit-document"
+		parent-key="document"
+	></page-crud>
+
+	<!-- +=================================================+ -->
+	<!-- +---------------------TAX-------------------------+ -->
+	<!-- +=================================================+ -->
+
+	<page-crud v-if=" checkRoute('infrastructure-maintenance') "
+		page-name="infrastructure-maintenance"
+		page-key="record"
+	></page-crud>
+
+	<page-crud v-if=" checkRoute('infrastructure-asset-maintenance') "	
+		page-name="infrastructure-asset-maintenance"
+		page-key="record"
+
+		parent-name="infrastructure-asset"
+		parent-key="asset"
+	></page-crud>
+
+	<page-crud v-if=" checkRoute('infrastructure-asset-document-maintenance') "	
+		page-name="infrastructure-asset-document-maintenance"
+		page-key="record"
+
+		parent-name="infrastructure-asset"
+		parent-key="asset"
+	></page-crud>
+
+	<page-crud v-if=" checkRoute('infrastructure-document-maintenance') "	
+		page-name="infrastructure-document-maintenance"
+		page-key="record"
+
+		parent-name="infrastructure-document"
+		parent-key="document"
+	></page-crud>
+
+	<page-crud v-if=" checkRoute('infrastructure-unit-asset-maintenance') "	
+		page-name="infrastructure-unit-asset-maintenance"
+		page-key="record"
+
+		parent-name="infrastructure-unit-asset"
+		parent-key="asset"
+	></page-crud>
+
+	<page-crud v-if=" checkRoute('infrastructure-unit-asset-document-maintenance') "	
+		page-name="infrastructure-unit-asset-document-maintenance"
+		page-key="record"
+
+		parent-name="infrastructure-unit-asset-document"
+		parent-key="asset"
+	></page-crud>
+
+	<page-crud v-if=" checkRoute('infrastructure-unit-document-maintenance') "	
+		page-name="infrastructure-unit-document-maintenance"
+		page-key="record"
 		
 		parent-name="infrastructure-unit-document"
 		parent-key="document"
