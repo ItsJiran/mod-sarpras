@@ -1,6 +1,6 @@
 <template>
 	<form-show
-		with-helpdesk
+		with-helpdesk hide-edit hide-delete
 	>
 		<template v-slot:default="{ record }">
 			<v-card-text>
