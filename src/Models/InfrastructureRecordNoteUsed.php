@@ -25,6 +25,7 @@ use Module\Infrastructure\Models\InfrastructureUnit;
 use Module\Infrastructure\Models\InfrastructureAsset;
 use Module\Infrastructure\Models\InfrastructureDocument;
 
+use Module\Infrastructure\Http\Resources\RecordNoteUsedResource;
 
 class InfrastructureRecordNoteUsed extends Model
 {
@@ -195,6 +196,9 @@ class InfrastructureRecordNoteUsed extends Model
      public static function mapStoreRequestValid(Request $request, InfrastructureRecord $record, InfrastructureRecordNote $note) : JsonResponse | null
      {
         // buat validasi kalau misalnya asset sama atau kalau misalnya sudah ada disini..
+        
+        
+
         return null;
      }
 
@@ -216,8 +220,10 @@ class InfrastructureRecordNoteUsed extends Model
              ['infrastructure_record_note_useds.note_id','=',$note->id]             
          ];  
  
-         $query = DB::table('infrastructure_record_note_useds')
-         ->where($where_queries);
+        //  $query = DB::table('infrastructure_record_note_useds')
+        //  ->where($where_queries);
+
+         $query = InfrastructureRecordNoteUsed::where($where_queries);
  
          // Conditionally join based on the user_type column
          $query->leftJoin('infrastructure_assets', function($join) {
@@ -249,7 +255,7 @@ class InfrastructureRecordNoteUsed extends Model
              ")
          );
  
-         return $query->paginate(15);
+         return $query;
      }
 
     /**
@@ -283,6 +289,8 @@ class InfrastructureRecordNoteUsed extends Model
             $model->save();
 
             DB::connection($model->connection)->commit();
+
+            return new RecordNoteUsedResource($model);
          } catch (\Exception $e) {
             DB::connection($model->connection)->rollBack();
 
@@ -310,7 +318,7 @@ class InfrastructureRecordNoteUsed extends Model
 
             DB::connection($model->connection)->commit();
 
-            // return new RecordNoteUsedResource($model);
+            return new RecordNoteUsedResource($model);
         } catch (\Exception $e) {
             DB::connection($model->connection)->rollBack();
 

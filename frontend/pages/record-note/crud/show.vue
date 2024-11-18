@@ -1,6 +1,6 @@
 <template>
 	<form-show
-		with-helpdesk
+		with-helpdesk hide-edit
 	>
 		<template v-slot:default="{ 
 				combos: { statuses },

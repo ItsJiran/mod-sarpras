@@ -24,12 +24,12 @@ class InfrastructureRecordNoteUsedController extends Controller
         Gate::authorize('view', InfrastructureRecordNoteUsed::class);
         $request = $this->determineRouteType($request);
         return new RecordNoteUsedCollection(
-            InfrastructureRecordNoteUsed::index( $request, $record, $note ),
-            // InfrastructureRecordNoteUsed::applyMode($request->mode)
-            //     ->filter($request->filters)
-            //     ->search($request->findBy)
-            //     ->sortBy($request->sortBy)
-            //     ->paginate($request->itemsPerPage)
+            InfrastructureRecordNoteUsed::index( $request, $record, $note )
+            ->applyMode($request->mode)
+            ->filter($request->filters)
+            ->search($request->findBy)
+            ->sortBy($request->sortBy)
+            ->paginate($request->itemsPerPage)
         );
     }
 
@@ -44,6 +44,9 @@ class InfrastructureRecordNoteUsedController extends Controller
         $request->validate( 
             InfrastructureRecordNoteUsed::mapStoreRequest($request, $record, $note) 
         );
+
+        $isResquestValid = InfrastructureRecordNoteUsed::mapStoreRequestValid($request,$record,$note);
+        if ( !is_null($isResquestValid) ) return $isResquestValid;
 
         return InfrastructureRecordNoteUsed::storeRecord($request, $record, $note);
     }
@@ -70,6 +73,9 @@ class InfrastructureRecordNoteUsedController extends Controller
         $request->validate( 
             InfrastructureRecordNoteUsed::mapUpdateRequest($request, $record, $note) 
         );
+
+        // $isResquestValid = InfrastructureRecordNoteUsed::mapUpdateRequestValid($request,$record,$note);
+        // if ( !is_null($isResquestValid) ) return $isResquestValid;
 
         return InfrastructureRecordNoteUsed::updateRecord($request, $infrastructureRecordNoteUsed);
     }

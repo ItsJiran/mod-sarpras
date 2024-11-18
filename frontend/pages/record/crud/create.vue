@@ -34,16 +34,16 @@
 				</v-row>
 
 				<!-- ------------------------- -->
-				<!-- +--- TIPE PERAWATAN ----+ -->
+				<!-- +--- TIPE Record ----+ -->
 
-				<div class="text-overline mt-6">Tipe Perawatan</div>
+				<div class="text-overline mt-6">Tipe Record</div>
 				<v-divider :thickness="3" class="mt-3 mb-6" />
 
 				<v-row dense>
 					<v-col cols="12">
 						<v-combobox
 						:items="morph_record_keys" 
-						label="Tipe Perawatan"
+						label="Tipe Record"
 						v-model="record.recordable_type_key"
 						:return-object="false"
 						></v-combobox>
@@ -57,10 +57,10 @@
 				/>
 
 				<!-- ---------------------------------------- -->
-				<!-- +--- DEADLINE TIPE PERAWATAN MODEL ----+ -->
+				<!-- +--- DEADLINE TIPE Record MODEL ----+ -->
 
 
-				<div class="text-overline mt-6">Tujuan Perawatan</div>
+				<div class="text-overline mt-6">Tujuan Record</div>
 				<v-divider :thickness="3" class="mt-3 mb-6" />
 
 				<v-row dense>
@@ -68,7 +68,7 @@
 						<v-combobox
 						:items="morph_target_keys" 
 						:return-object="false"
-						label="Perawatan Untuk"
+						label="Record Untuk"
 						v-model="record.targetable_type_key"		
 						@update:model-value="changeTargetType(record,this)"	
 						></v-combobox>
