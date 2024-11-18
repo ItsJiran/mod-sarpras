@@ -25,10 +25,58 @@ Route::resource('unit', InfrastructureUnitController::class)->parameters([
 
 Route::get('ref-unit/combos',[InfrastructureUnitController::class, 'refCombos']);
 
+// +-----------------------------------
+// +-- from resource module asset
+Route::resource('asset',InfrastructureAssetController::class)->parameters([
+    'asset' => 'infrastructureAsset'
+]);
+
+Route::put('asset/{asset}/restore',[InfrastructureAssetController::class, 'restore']);
+Route::delete('asset/{asset}/force',[InfrastructureAssetController::class, 'forceDelete']);
+
+// +-- manually from unit/asset
+Route::get('ref-asset/{unit}/asset',[InfrastructureAssetController::class, 'refAsset']);
+Route::get('ref-asset/{unit}/{asset_type}/asset',[InfrastructureAssetController::class, 'refAssetType']);
+Route::get('ref-asset/type',[InfrastructureAssetController::class, 'refType']);
+
+Route::get('unit/{unit}/asset',[InfrastructureAssetController::class, 'indexFromUnit']);
+Route::get('unit/{unit}/asset/{asset}',[InfrastructureAssetController::class, 'showFromUnit']);
+Route::post('unit/{unit}/asset',[InfrastructureAssetController::class, 'storeFromUnit']);
+Route::put('unit/{unit}/asset/{asset}',[InfrastructureAssetController::class, 'updateFromUnit']);
+Route::delete('unit/{unit}/asset/{asset}',[InfrastructureAssetController::class, 'destroyFromUnit']);
+
+Route::put('unit/{unit}/asset/{asset}/restore',[InfrastructureAssetController::class, 'restoreFromUnit']);
+Route::delete('unit/{unit}/asset/{asset}/force',[InfrastructureAssetController::class, 'forceDeleteFromUnit']);
+
+// +-----------------------------------
+// +-- from resource module asset
+Route::resource('document',InfrastructureDocumentController::class)->parameters([
+    'document' => 'infrastructureDocument'
+]);
+Route::delete('document/{document}/force',[InfrastructureDocumentController::class, 'forceDelete']);
+
+Route::get('ref-document/combos/unit/{unit}',[InfrastructureDocumentController::class,'mapCombosOnlyUnit']);
+Route::get('ref-document/combos/unit/{unit}/asset/{asset}',[InfrastructureDocumentController::class,'mapCombosOnlyAsset']);
+
+Route::get('unit/{unit}/asset/{asset}/document/{document}',[InfrastructureDocumentController::class, 'showFromUnitAsset']);
+Route::get('unit/{unit}/asset/{asset}/document',[InfrastructureDocumentController::class, 'indexFromUnitAsset']);
+
+Route::get('asset/{asset}/document/{document}',[InfrastructureDocumentController::class, 'showFromAsset']);
+Route::get('asset/{asset}/document',[InfrastructureDocumentController::class, 'indexFromAsset']);
+
+Route::get('unit/{unit}/document/{document}',[InfrastructureDocumentController::class, 'showFromUnit']);
+Route::get('unit/{unit}/document',[InfrastructureDocumentController::class, 'indexFromUnit']);
+
+Route::post('asset/{asset}/document',[InfrastructureDocumentController::class, 'storeFromAsset']);
+Route::post('unit/{unit}/asset/{asset}/document',[InfrastructureDocumentController::class, 'storeFromUnit']);
+Route::post('unit/{unit}/document',[InfrastructureDocumentController::class, 'storeFromUnit']);
+
+Route::put('asset/{asset}/document/{document}',[InfrastructureDocumentController::class, 'updateFromAsset']);
+Route::put('unit/{unit}/asset/{asset}/document/{document}',[InfrastructureDocumentController::class, 'updateFromUnit']);
+
 
 // +-----------------------------------
 // +-- from resource module tax
-
 Route::controller(InfrastructureRecordController::class)->group(function () {
 
     Route::get('deadline','indexDeadline');
@@ -118,55 +166,6 @@ Route::controller(InfrastructureRecordController::class)->group(function () {
 
     });
 });
-
-// +-----------------------------------
-// +-- from resource module asset
-Route::resource('asset',InfrastructureAssetController::class)->parameters([
-    'asset' => 'infrastructureAsset'
-]);
-
-Route::put('asset/{asset}/restore',[InfrastructureAssetController::class, 'restore']);
-Route::delete('asset/{asset}/force',[InfrastructureAssetController::class, 'forceDelete']);
-
-// +-- manually from unit/asset
-Route::get('ref-asset/{unit}/asset',[InfrastructureAssetController::class, 'refAsset']);
-Route::get('ref-asset/{unit}/{asset_type}/asset',[InfrastructureAssetController::class, 'refAssetType']);
-Route::get('ref-asset/type',[InfrastructureAssetController::class, 'refType']);
-
-Route::get('unit/{unit}/asset',[InfrastructureAssetController::class, 'indexFromUnit']);
-Route::get('unit/{unit}/asset/{asset}',[InfrastructureAssetController::class, 'showFromUnit']);
-Route::post('unit/{unit}/asset',[InfrastructureAssetController::class, 'storeFromUnit']);
-Route::put('unit/{unit}/asset/{asset}',[InfrastructureAssetController::class, 'updateFromUnit']);
-Route::delete('unit/{unit}/asset/{asset}',[InfrastructureAssetController::class, 'destroyFromUnit']);
-
-Route::put('unit/{unit}/asset/{asset}/restore',[InfrastructureAssetController::class, 'restoreFromUnit']);
-Route::delete('unit/{unit}/asset/{asset}/force',[InfrastructureAssetController::class, 'forceDeleteFromUnit']);
-
-// +-----------------------------------
-// +-- from resource module asset
-Route::resource('document',InfrastructureDocumentController::class)->parameters([
-    'document' => 'infrastructureDocument'
-]);
-Route::delete('document/{document}/force',[InfrastructureDocumentController::class, 'forceDelete']);
-
-Route::get('ref-document/combos/unit/{unit}',[InfrastructureDocumentController::class,'mapCombosOnlyUnit']);
-Route::get('ref-document/combos/unit/{unit}/asset/{asset}',[InfrastructureDocumentController::class,'mapCombosOnlyAsset']);
-
-Route::get('unit/{unit}/asset/{asset}/document/{document}',[InfrastructureDocumentController::class, 'showFromUnitAsset']);
-Route::get('unit/{unit}/asset/{asset}/document',[InfrastructureDocumentController::class, 'indexFromUnitAsset']);
-
-Route::get('asset/{asset}/document/{document}',[InfrastructureDocumentController::class, 'showFromAsset']);
-Route::get('asset/{asset}/document',[InfrastructureDocumentController::class, 'indexFromAsset']);
-
-Route::get('unit/{unit}/document/{document}',[InfrastructureDocumentController::class, 'showFromUnit']);
-Route::get('unit/{unit}/document',[InfrastructureDocumentController::class, 'indexFromUnit']);
-
-Route::post('asset/{asset}/document',[InfrastructureDocumentController::class, 'storeFromAsset']);
-Route::post('unit/{unit}/asset/{asset}/document',[InfrastructureDocumentController::class, 'storeFromUnit']);
-Route::post('unit/{unit}/document',[InfrastructureDocumentController::class, 'storeFromUnit']);
-
-Route::put('asset/{asset}/document/{document}',[InfrastructureDocumentController::class, 'updateFromAsset']);
-Route::put('unit/{unit}/asset/{asset}/document/{document}',[InfrastructureDocumentController::class, 'updateFromUnit']);
 
 // +-----------------------------------------------
 // +-- from resource module maintenance record
