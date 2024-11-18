@@ -147,6 +147,7 @@ Route::delete('unit/{unit}/asset/{asset}/force',[InfrastructureAssetController::
 Route::resource('document',InfrastructureDocumentController::class)->parameters([
     'document' => 'infrastructureDocument'
 ]);
+Route::delete('document/{document}/force',[InfrastructureDocumentController::class, 'forceDelete']);
 
 Route::get('ref-document/combos/unit/{unit}',[InfrastructureDocumentController::class,'mapCombosOnlyUnit']);
 Route::get('ref-document/combos/unit/{unit}/asset/{asset}',[InfrastructureDocumentController::class,'mapCombosOnlyAsset']);

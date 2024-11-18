@@ -22,6 +22,8 @@ use Carbon\Carbon;
 use Module\Infrastructure\Models\InfrastructureRecord;
 use Module\Infrastructure\Models\InfrastructureUser;
 
+use Module\Infrastructure\Http\Resources\RecordNoteResource;
+
 class InfrastructureRecordNote extends Model
 {
     use Filterable;
@@ -498,7 +500,7 @@ class InfrastructureRecordNote extends Model
 
             DB::connection($model->connection)->commit();
 
-            // return new RecordNoteResource($model);
+            return new RecordNoteResource($model);
         } catch (\Exception $e) {
             DB::connection($model->connection)->rollBack();
 
@@ -561,7 +563,7 @@ class InfrastructureRecordNote extends Model
 
             DB::connection($model->connection)->commit();
 
-            // return new TaxRecordResource($model);
+            return new RecordNoteResource($model);
         } catch (\Exception $e) {
             DB::connection($model->connection)->rollBack();
 

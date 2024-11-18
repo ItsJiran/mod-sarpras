@@ -29,6 +29,8 @@ use Module\Infrastructure\Models\InfrastructureRecord;
 use Module\Infrastructure\Models\InfrastructureTaxDocument;
 use Module\Infrastructure\Models\InfrastructureTax;
 
+use Module\Infrastructure\Http\Resources\AssetResource;
+
 class InfrastructureAsset extends Model
 {
     use Filterable;
@@ -377,7 +379,7 @@ class InfrastructureAsset extends Model
 
             DB::connection($model->connection)->commit();
 
-            // return new AssetResource($model);
+            return new AssetResource($model);
         } catch (\Exception $e) {
             DB::connection($model->connection)->rollBack();
 
@@ -426,7 +428,7 @@ class InfrastructureAsset extends Model
 
             DB::connection($model->connection)->commit();
 
-            // return new AssetResource($model);
+            return new AssetResource($model);
         } catch (\Exception $e) {
             DB::connection($model->connection)->rollBack();
             return response()->json([
