@@ -63,54 +63,36 @@ class InfrastructureRecordNoteUsedController extends Controller
     }
 
     // + =======================================================
-    // + ----------------- UPDATE METHODS ----------------------
-    // + =======================================================
-
-    public function update(Request $request, InfrastructureRecordNoteUsed $infrastructureRecordNoteUsed)
-    {
-        Gate::authorize('update', $infrastructureRecordNoteUsed);
-
-        $request->validate( 
-            InfrastructureRecordNoteUsed::mapUpdateRequest($request, $record, $note) 
-        );
-
-        // $isResquestValid = InfrastructureRecordNoteUsed::mapUpdateRequestValid($request,$record,$note);
-        // if ( !is_null($isResquestValid) ) return $isResquestValid;
-
-        return InfrastructureRecordNoteUsed::updateRecord($request, $infrastructureRecordNoteUsed);
-    }
-
-    // + =======================================================
     // + ---------------- DESTROY METHODS ----------------------
     // + =======================================================
 
-    public function destroy(InfrastructureRecordNoteUsed $infrastructureRecordNoteUsed)
+    public function destroy(InfrastructureRecord $record, InfrastructureRecordNote $note, InfrastructureRecordNoteUsed $used)
     {
-        Gate::authorize('delete', $infrastructureRecordNoteUsed);
+        Gate::authorize('delete', $used);
 
-        return InfrastructureRecordNoteUsed::deleteRecord($infrastructureRecordNoteUsed);
+        return InfrastructureRecordNoteUsed::deleteRecord($used);
     }
 
     // + =======================================================
     // + ---------------- RESTORE METHODS ----------------------
     // + =======================================================
 
-    public function restore(InfrastructureRecordNoteUsed $infrastructureRecordNoteUsed)
+    public function restore(InfrastructureRecord $record, InfrastructureRecordNote $note,InfrastructureRecordNoteUsed $used)
     {
-        Gate::authorize('restore', $infrastructureRecordNoteUsed);
+        Gate::authorize('restore', $used);
 
-        return InfrastructureRecordNoteUsed::restoreRecord($infrastructureRecordNoteUsed);
+        return InfrastructureRecordNoteUsed::restoreRecord($used);
     }
 
     // + =======================================================
     // + ------------------ FORCE METHODS ----------------------
     // + =======================================================
 
-    public function forceDelete(InfrastructureRecordNoteUsed $infrastructureRecordNoteUsed)
+    public function forceDelete(InfrastructureRecord $record, InfrastructureRecordNote $note,InfrastructureRecordNoteUsed $used)
     {
-        Gate::authorize('destroy', $infrastructureRecordNoteUsed);
+        Gate::authorize('destroy', $used);
 
-        return InfrastructureRecordNoteUsed::destroyRecord($infrastructureRecordNoteUsed);
+        return InfrastructureRecordNoteUsed::destroyRecord($used);
     }
 
         // + ===================================

@@ -240,7 +240,7 @@ class InfrastructureRecordNoteUsed extends Model
         // buat validasi deteksi apakah yang diinput sudah ada dalam catatan ini
 
         $isExist = !is_null( InfrastructureRecordNote::where($isExistQueries)->first() );
-        if(!$isExist){
+        if($isExist){
             return response()->json([
                 'success' => false,
                 'message' => 'Tujuan asset / dokumen sudah ada..'
