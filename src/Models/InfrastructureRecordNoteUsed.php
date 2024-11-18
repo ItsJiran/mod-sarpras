@@ -161,6 +161,17 @@ class InfrastructureRecordNoteUsed extends Model
          ];
      }   
 
+     public static function mapTypes() : array
+     {
+         return [
+             'asset',
+             'document',
+         ];
+     }
+
+    // +------------------------------
+    // +------------ STORE REQUEST
+
      public static function mapStoreRequest(Request $request, InfrastructureRecord $record, InfrastructureRecordNote $note)
      {
          $array = [
@@ -185,26 +196,44 @@ class InfrastructureRecordNoteUsed extends Model
          return $array;
      }
 
-     public static function mapTypes() : array
-     {
-         return [
-             'asset',
-             'document',
-         ];
-     }
-
      public static function mapStoreRequestValid(Request $request, InfrastructureRecord $record, InfrastructureRecordNote $note) : JsonResponse | null
      {
-        // buat validasi kalau misalnya asset sama atau kalau misalnya sudah ada disini..
+        // buat validasi detect apakah asset adalah yang sama
         
-        
+        if ($request->type == 'asset') {
+            $recordIsAsset = $record->targetable_type == InfrastructureAsset::class;
+            $recordIsSame  = $record->targetable_id == $request['asset']['id'];
 
+            if ( $recordIsAsset && $recordIsSame ) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Tidak bisa memasukkan yang digunakan adalah target yang sama..'
+                ], 500);
+            }
+        }
+
+        if ($request->type == 'document') {
+            $recordIsDocument = $record->targetable_type == InfrastructureDocument::class;
+            $recordIsSame  = $record->targetable_id == $request['document']['id'];
+            
+            if ( $recordIsAsset && $recordIsSame ) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Tidak bisa memasukkan yang digunakan adalah target yang sama..'
+                ], 500);
+            }
+        }
+        
         return null;
      }
 
     public static function mapUpdateRequestValid(Request $request, InfrastructureRecord $record, InfrastructureRecordNote $note, $model) : JsonResponse | null
     {
-        // buat validasi kalau misalnya asset sama atau kalau misalnya sudah ada disini..
+        // buat validasi kalau misalnya asset 
+        // sama atau kalau misalnya sudah ada disini..
+
+
+
         return null;
     }
 
