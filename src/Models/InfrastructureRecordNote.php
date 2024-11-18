@@ -381,6 +381,28 @@ class InfrastructureRecordNote extends Model
         return null;
     }
 
+    // +------------------------------
+    // +------------ DELETE REQUEST
+
+    public static function mapDeleteRequestValid(Request $request, InfrastructureRecord $record, $model) : JsonResponse | null
+    {
+        if ( $record->isRecordLog() )
+            return self::mapDeleteRequestLog($request, $record, $model);
+
+        if ( $record->isRecordPeriodic() )
+            return self::mapDeleteRequestPeriodic($request, $record, $model); 
+    }
+
+    public static function mapDeleteRequestLog(Request $request, InfrastructureRecord $record, $model) : JsonResponse | null
+    {
+        return null;
+    }
+
+    public static function mapDeleteRequestPeriodic(Request $request, InfrastructureRecord $record, $model) : JsonResponse | null
+    {
+        return null;
+    }
+
     // +===============================================
     // +--------------- STATUS METHODS
     // +===============================================
@@ -606,18 +628,12 @@ class InfrastructureRecordNote extends Model
     // +--------------- DELETE METHODS
     // +===============================================
 
-
-    /**
-     * The model delete method
-     *
-     * @param [type] $model
-     * @return void
-     */
     public static function deleteRecord($model)
     {
         DB::connection($model->connection)->beginTransaction();
 
         try {
+
             $model->delete();
 
             DB::connection($model->connection)->commit();
@@ -633,12 +649,6 @@ class InfrastructureRecordNote extends Model
         }
     }
 
-    /**
-     * The model restore method
-     *
-     * @param [type] $model
-     * @return void
-     */
     public static function restoreRecord($model)
     {
         DB::connection($model->connection)->beginTransaction();
@@ -659,17 +669,21 @@ class InfrastructureRecordNote extends Model
         }
     }
 
-    /**
-     * The model destroy method
-     *
-     * @param [type] $model
-     * @return void
-     */
     public static function destroyRecord($model)
     {
         DB::connection($model->connection)->beginTransaction();
 
         try {
+
+            // delete all the used asset 
+            $note_uses = InfrastructureRecordNoteUsed::where([
+                ['note_id','=',$model->id],
+            ])->get();
+
+            foreach ($note_uses as $key => $value) {
+                $value->forceDelete();
+            }
+
             $model->forceDelete();
 
             DB::connection($model->connection)->commit();

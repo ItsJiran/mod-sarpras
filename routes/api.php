@@ -185,6 +185,8 @@ Route::controller(InfrastructureRecordNoteController::class)->group(function () 
     Route::get('deadline/{record}/note/{note}','show');
     Route::put('deadline/{record}/note/{note}','update');
     Route::delete('deadline/{record}/note/{note}','destroy');
+    Route::put( 'deadline/{record}/note/{note}', 'restore' );
+    Route::delete( 'deadline/{record}/note/{note}/force', 'forceDelete' );
 
     Route::group(['as' => 'tax::'], function(){
         Route::get('tax/{record}/note','index');
@@ -192,6 +194,8 @@ Route::controller(InfrastructureRecordNoteController::class)->group(function () 
         Route::get('tax/{record}/note/{note}','show');
         Route::put('tax/{record}/note/{note}','update');
         Route::delete('tax/{record}/note/{note}','destroy');
+        Route::put( 'tax/{record}/note/{note}', 'restore' );
+        Route::delete( 'tax/{record}/note/{note}/force', 'forceDelete' );
     });
 
     Route::group(['as' => 'maintenance::'], function(){
@@ -200,6 +204,8 @@ Route::controller(InfrastructureRecordNoteController::class)->group(function () 
         Route::get('maintenance/{record}/note/{note}','show');
         Route::put('maintenance/{record}/note/{note}','update');
         Route::delete('maintenance/{record}/note/{note}','destroy');
+        Route::put( 'maintenance/{record}/note/{note}', 'restore' );
+        Route::delete( 'maintenance/{record}/note/{note}/force', 'forceDelete' );
     });
 });
 

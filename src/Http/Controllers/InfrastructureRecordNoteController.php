@@ -77,7 +77,7 @@ class InfrastructureRecordNoteController extends Controller
     // + ================================================== +
     // + -------------- DESTROY METHODS -------------------- +
 
-    public function destroy(InfrastructureRecordNote $note)
+    public function destroy(InfrastructureRecord $record, InfrastructureRecordNote $note)
     {
         Gate::authorize('delete', $note);
 
@@ -87,7 +87,7 @@ class InfrastructureRecordNoteController extends Controller
     // + ================================================== +
     // + -------------- RETORE METHODS -------------------- +
 
-    public function restore(InfrastructureRecordNote $note)
+    public function restore(InfrastructureRecord $record, InfrastructureRecordNote $note)
     {
         Gate::authorize('restore', $note);
 
@@ -98,7 +98,7 @@ class InfrastructureRecordNoteController extends Controller
     // + -------------- FORCEDDEL METHODS -------------------- +
 
 
-    public function forceDelete(InfrastructureRecordNote $note)
+    public function forceDelete(InfrastructureRecord $record, InfrastructureRecordNote $note)
     {
         Gate::authorize('destroy', $note);
 
