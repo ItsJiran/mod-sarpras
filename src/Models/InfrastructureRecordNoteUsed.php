@@ -210,8 +210,8 @@ class InfrastructureRecordNoteUsed extends Model
             $recordIsAsset = $record->targetable_type == InfrastructureAsset::class;
             $recordIsSame  = $record->targetable_id == $request['asset']['id'];
 
-            $isExistQueries = array_merge($isExistQueries,[ 'targetable_type','=', InfrastructureAsset::class ]);
-            $isExistQueries = array_merge($isExistQueries,[ 'targetable_id','=', $request['asset']['id'] ]);
+            $isExistQueries = array_merge($isExistQueries,[ ['targetable_type','=', InfrastructureAsset::class] ]);
+            $isExistQueries = array_merge($isExistQueries,[ ['targetable_id','=', $request['asset']['id']] ]);
 
             if ( $recordIsAsset && $recordIsSame ) {
                 return response()->json([
@@ -225,8 +225,8 @@ class InfrastructureRecordNoteUsed extends Model
             $recordIsDocument = $record->targetable_type == InfrastructureDocument::class;
             $recordIsSame  = $record->targetable_id == $request['document']['id'];
             
-            $isExistQueries = array_merge($isExistQueries,[ 'targetable_type','=', InfrastructureDocument::class ]);
-            $isExistQueries = array_merge($isExistQueries,[ 'targetable_id','=', $request['document']['id'] ]);
+            $isExistQueries = array_merge($isExistQueries,[ ['targetable_type','=', InfrastructureDocument::class] ]);
+            $isExistQueries = array_merge($isExistQueries,[ ['targetable_id','=', $request['document']['id']] ]);
 
             if ( $recordIsAsset && $recordIsSame ) {
                 return response()->json([
@@ -239,7 +239,8 @@ class InfrastructureRecordNoteUsed extends Model
 
         // buat validasi deteksi apakah yang diinput sudah ada dalam catatan ini
 
-        $isExist = !is_null( InfrastructureRecordNote::where($isExistQueries)->first() );
+        $isExist = !is_null( InfrastructureRecordNoteUsed::where($isExistQueries)->first() );
+
         if($isExist){
             return response()->json([
                 'success' => false,
@@ -247,7 +248,6 @@ class InfrastructureRecordNoteUsed extends Model
             ], 500);
         }
 
-        
         return null;
      }
 
