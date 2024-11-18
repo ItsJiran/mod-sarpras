@@ -185,7 +185,7 @@ class InfrastructureRecord extends Model
      */
 
     public static function mapResourceShow(Request $request, $model = null) : array 
-    {
+    {        
         $properties = [
             'name' => $model->name,
             'description' => $model->description,                        
@@ -429,7 +429,10 @@ class InfrastructureRecord extends Model
             $join
             ->on('infrastructure_records.recordable_id', '=', 'infrastructure_record_periodics.id')
             ->where('infrastructure_records.recordable_type', '=', InfrastructureRecordPeriodic::class);
-        })->where($deadline_queries);
+        })->where($deadline_queries)->select(
+            'infrastructure_records.id',
+            'infrastructure_records.name'
+        );
 
         return $eloquent;
     }

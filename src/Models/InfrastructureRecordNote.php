@@ -450,12 +450,11 @@ class InfrastructureRecordNote extends Model
             if ( $record->isRecordPeriodic() ) {
                 $duedate = Carbon::parse($note->duedate);
 
+                $duedate->addDays($record->recordable->period_number_day);
+                $duedate->addMonths($record->recordable->period_number_month);
+                $duedate->addYear($record->recordable->period_number_year);
 
-                $dudate->addDays($record->recordable->period_number_day);
-                $dudate->addMonths($record->recordable->period_number_month);
-                $dudate->addYear($record->recordable->period_number_year);
-
-                $record->recordable->duedate = $dudate;
+                $record->recordable->duedate = $duedate;
                 $record->recordable->save();
                 $record->save();
             }

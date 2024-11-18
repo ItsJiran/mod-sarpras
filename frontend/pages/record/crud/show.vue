@@ -89,7 +89,7 @@
 			</v-card-text>
 		</template>
 
-		<template v-slot:info>
+		<template v-slot:info="{theme}">
 
 			<v-btn
 				class="mt-3"
@@ -97,7 +97,7 @@
 				block
 				variant="flat"
 				@click="redirectPage('note')"
-			>List Record</v-btn>
+			>List Catatan</v-btn>
 
 		</template>
 	</form-show>

@@ -32,6 +32,7 @@ Route::get('ref-unit/combos',[InfrastructureUnitController::class, 'refCombos'])
 Route::controller(InfrastructureRecordController::class)->group(function () {
 
     Route::get('deadline','indexDeadline');
+    Route::get('deadline/{deadline}', 'showDeadline');
 
     Route::group(['as' => 'maintenance::'], function(){
 
@@ -95,8 +96,8 @@ Route::controller(InfrastructureRecordController::class)->group(function () {
         Route::post('unit/{unit}/asset/{asset}/document/{document}/tax','storeFromUnitAssetDocument');
         
         Route::get('asset/{asset}/tax/{record}','showFromAsset');
-        Route::get('asset/{asset}/document/{document}/tax/{tax}','showFromAssetDocument');
-        Route::get('document/{document}/tax/{tax}','showFromDocument');
+        Route::get('asset/{asset}/document/{document}/tax/{record}','showFromAssetDocument');
+        Route::get('document/{document}/tax/{record}','showFromDocument');
         Route::get('unit/{unit}/asset/{asset}/tax/{record}','showFromUnitAsset');
         Route::get('unit/{unit}/document/{document}/tax/{record}','showFromUnitDocument');
         Route::get('unit/{unit}/asset/{asset}/document/{document}/tax/{record}','showFromUnitAssetDocument');

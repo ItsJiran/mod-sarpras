@@ -171,6 +171,11 @@ class InfrastructureRecordController extends Controller
     // + ===================================
     // + ----------- SHOW METHODS
     // + ===================================
+    public function showDeadline( Request $request, $deadline_id )  
+    {
+        return new RecordShowResource( InfrastructureRecord::where('id',$deadline_id)->first() );        
+    }
+
     public function show(Request $request, InfrastructureRecord $infrastructureRecord)
     {
         Gate::authorize('show', $infrastructureRecord);
