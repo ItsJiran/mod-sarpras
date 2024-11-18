@@ -18,11 +18,7 @@ use Module\Infrastructure\Models\InfrastructureTax;
 
 class InfrastructureUnit extends Model
 {
-    /**
-     * The roles variable
-     *
-     * @var array
-     */
+
     protected $roles = ['infrastructure-unit'];
 
     /**

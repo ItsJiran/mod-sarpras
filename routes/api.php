@@ -6,8 +6,6 @@ use Module\Infrastructure\Http\Controllers\InfrastructureAssetController;
 use Module\Infrastructure\Http\Controllers\InfrastructureRecordController;
 use Module\Infrastructure\Http\Controllers\InfrastructureRecordNoteController;
 use Module\Infrastructure\Http\Controllers\InfrastructureRecordNoteUsedController;
-
-
 use Module\Infrastructure\Http\Controllers\InfrastructureTaxController;
 use Module\Infrastructure\Http\Controllers\InfrastructureTaxRecordController;
 use Module\Infrastructure\Http\Controllers\InfrastructureTaxRecordUsedController;
@@ -126,6 +124,9 @@ Route::resource('asset',InfrastructureAssetController::class)->parameters([
     'asset' => 'infrastructureAsset'
 ]);
 
+Route::put('asset/{asset}/restore',[InfrastructureAssetController::class, 'restore']);
+Route::delete('asset/{asset}/force',[InfrastructureAssetController::class, 'forceDelete']);
+
 // +-- manually from unit/asset
 Route::get('ref-asset/{unit}/asset',[InfrastructureAssetController::class, 'refAsset']);
 Route::get('ref-asset/{unit}/{asset_type}/asset',[InfrastructureAssetController::class, 'refAssetType']);
@@ -137,6 +138,9 @@ Route::post('unit/{unit}/asset',[InfrastructureAssetController::class, 'storeFro
 Route::put('unit/{unit}/asset/{asset}',[InfrastructureAssetController::class, 'updateFromUnit']);
 Route::delete('unit/{unit}/asset/{asset}',[InfrastructureAssetController::class, 'destroyFromUnit']);
 
+Route::put('unit/{unit}/asset/{asset}/restore',[InfrastructureAssetController::class, 'restoreFromUnit']);
+Route::delete('unit/{unit}/asset/{asset}/force',[InfrastructureAssetController::class, 'forceDeleteFromUnit']);
+
 // +-----------------------------------
 // +-- from resource module asset
 Route::resource('document',InfrastructureDocumentController::class)->parameters([
@@ -146,7 +150,6 @@ Route::resource('document',InfrastructureDocumentController::class)->parameters(
 Route::get('ref-document/combos/unit/{unit}',[InfrastructureDocumentController::class,'mapCombosOnlyUnit']);
 Route::get('ref-document/combos/unit/{unit}/asset/{asset}',[InfrastructureDocumentController::class,'mapCombosOnlyAsset']);
 
-// +-- manually from asset/document
 Route::get('unit/{unit}/asset/{asset}/document/{document}',[InfrastructureDocumentController::class, 'showFromUnitAsset']);
 Route::get('unit/{unit}/asset/{asset}/document',[InfrastructureDocumentController::class, 'indexFromUnitAsset']);
 

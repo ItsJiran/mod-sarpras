@@ -18,11 +18,6 @@ class InfrastructureAssetController extends Controller
     // +-----------------------------------------------------
     // +---------------- INDEX METHODS ----------------------
 
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function index(Request $request)
     {
         Gate::authorize('view', InfrastructureAsset::class);
@@ -36,11 +31,6 @@ class InfrastructureAssetController extends Controller
         );
     }
 
-        /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function indexFromUnit(Request $request, InfrastructureUnit $unit)
     {
         Gate::authorize('view', InfrastructureAsset::class);
@@ -58,12 +48,6 @@ class InfrastructureAssetController extends Controller
     // +-----------------------------------------------------
     // +---------------- STORE METHODS ----------------------
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request $request
-     * @return \Illuminate\Http\Response
-     */
     public function store(Request $request)
     {
         Gate::authorize('create', InfrastructureAsset::class);
@@ -100,12 +84,6 @@ class InfrastructureAssetController extends Controller
     // +----------------------------------------------------
     // +---------------- SHOW METHODS ----------------------
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \Module\Infrastructure\Models\InfrastructureAsset $infrastructureAsset
-     * @return \Illuminate\Http\Response
-     */
     public function show(InfrastructureAsset $infrastructureAsset)
     {
         Gate::authorize('show', $infrastructureAsset);
@@ -113,12 +91,6 @@ class InfrastructureAssetController extends Controller
         return new AssetShowResource($infrastructureAsset);
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \Module\Infrastructure\Models\InfrastructureAsset $infrastructureAsset
-     * @return \Illuminate\Http\Response
-     */
     public function showFromUnit(InfrastructureUnit $unit, InfrastructureAsset $asset)
     {
         Gate::authorize('show', $asset);
@@ -129,13 +101,6 @@ class InfrastructureAssetController extends Controller
     // +----------------------------------------------------
     // +-------------- UPDATE METHODS ----------------------
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request $request
-     * @param  \Module\Infrastructure\Models\InfrastructureAsset $infrastructureAsset
-     * @return \Illuminate\Http\Response
-     */
     public function update(Request $request, InfrastructureAsset $infrastructureAsset)
     {
         Gate::authorize('update', $infrastructureAsset);
@@ -160,12 +125,6 @@ class InfrastructureAssetController extends Controller
         return InfrastructureAsset::updateRecord($request, $infrastructureAsset);
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \Module\Infrastructure\Models\InfrastructureAsset $infrastructureAsset
-     * @return \Illuminate\Http\Response
-     */
     public function updateFromUnit(Request $request, InfrastructureUnit $unit, InfrastructureAsset $asset)
     {
         Gate::authorize('update', $asset);
@@ -176,12 +135,6 @@ class InfrastructureAssetController extends Controller
     // +----------------------------------------------------
     // +------------- DESRTOY METHODS ----------------------
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \Module\Infrastructure\Models\InfrastructureAsset $infrastructureAsset
-     * @return \Illuminate\Http\Response
-     */
     public function destroy(InfrastructureAsset $infrastructureAsset)
     {
         Gate::authorize('delete', $infrastructureAsset);
@@ -189,12 +142,6 @@ class InfrastructureAssetController extends Controller
         return InfrastructureAsset::deleteRecord($infrastructureAsset);
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \Module\Infrastructure\Models\InfrastructureAsset $infrastructureAsset
-     * @return \Illuminate\Http\Response
-     */
     public function destroyFromUnit(InfrastructureUnit $unit, InfrastructureAsset $asset)
     {
         Gate::authorize('delete', $asset);
@@ -202,12 +149,9 @@ class InfrastructureAssetController extends Controller
         return $this->destroy($asset);
     }
 
-    /**
-     * Restore the specified resource from soft-delete.
-     *
-     * @param  \Module\Infrastructure\Models\InfrastructureAsset $infrastructureAsset
-     * @return \Illuminate\Http\Response
-     */
+    // +--------------------------------------------------------
+    // +------------ FORCE DELETE METHODS ----------------------
+
     public function restore(InfrastructureAsset $infrastructureAsset)
     {
         Gate::authorize('restore', $infrastructureAsset);
@@ -215,17 +159,24 @@ class InfrastructureAssetController extends Controller
         return InfrastructureAsset::restoreRecord($infrastructureAsset);
     }
 
-    /**
-     * Force Delete the specified resource from soft-delete.
-     *
-     * @param  \Module\Infrastructure\Models\InfrastructureAsset $infrastructureAsset
-     * @return \Illuminate\Http\Response
-     */
+    public function restoreFromUnit( InfrastructureUnit $unit, InfrastructureAsset $model)
+    {
+        return $this->restore($model);
+    }
+
+    // +--------------------------------------------------------
+    // +------------ FORCE DELETE METHODS ----------------------
+
     public function forceDelete(InfrastructureAsset $infrastructureAsset)
     {
         Gate::authorize('destroy', $infrastructureAsset);
 
         return InfrastructureAsset::destroyRecord($infrastructureAsset);
+    }
+
+    public function forceDeleteFromUnit( InfrastructureUnit $unit, InfrastructureAsset $model)
+    {
+        return $this->forceDelete($model);
     }
 
     // +----------------------------------------------------

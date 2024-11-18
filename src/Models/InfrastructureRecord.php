@@ -3,19 +3,19 @@
 namespace Module\Infrastructure\Models;
 
 use Illuminate\Http\Request;
-use Module\System\Traits\HasMeta;
 use Illuminate\Support\Facades\DB;
-use Module\System\Traits\Filterable;
-use Module\System\Traits\Searchable;
-use Module\System\Traits\HasPageSetup;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Validation\Rule;
-
-use Carbon\Carbon;
-
 use Illuminate\Database\Eloquent\Relations\MorphTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+
+use Module\System\Traits\HasMeta;
+use Module\System\Traits\Filterable;
+use Module\System\Traits\Searchable;
+use Module\System\Traits\HasPageSetup;
+
+use Carbon\Carbon;
 
 use Module\Infrastructure\Models\InfrastructureRecordNote;
 use Module\Infrastructure\Models\InfrastructureRecordPeriodic;

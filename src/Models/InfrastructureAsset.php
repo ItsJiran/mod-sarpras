@@ -376,6 +376,8 @@ class InfrastructureAsset extends Model
             $model->save();
 
             DB::connection($model->connection)->commit();
+
+            // return new AssetResource($model);
         } catch (\Exception $e) {
             DB::connection($model->connection)->rollBack();
 
@@ -423,6 +425,8 @@ class InfrastructureAsset extends Model
             $model->save();
 
             DB::connection($model->connection)->commit();
+
+            // return new AssetResource($model);
         } catch (\Exception $e) {
             DB::connection($model->connection)->rollBack();
             return response()->json([
