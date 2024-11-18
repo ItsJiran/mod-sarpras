@@ -198,12 +198,20 @@ class InfrastructureRecordNoteUsed extends Model
 
      public static function mapStoreRequestValid(Request $request, InfrastructureRecord $record, InfrastructureRecordNote $note) : JsonResponse | null
      {
+        // queri untuk menentukan apakah user sudah memasukkan target yang sama
+        $isExistQueries = [
+            ['note_id','=',$note->id],
+        ];
+
         // buat validasi detect apakah asset / dokumen adalah yang 
         // sama dengan yang ditujukan ke record
         
         if ($request->type == 'asset') {
             $recordIsAsset = $record->targetable_type == InfrastructureAsset::class;
             $recordIsSame  = $record->targetable_id == $request['asset']['id'];
+
+            $isExistQueries = array_merge($isExistQueries,[ 'targetable_type','=', InfrastructureAsset::class ]);
+            $isExistQueries = array_merge($isExistQueries,[ 'targetable_id','=', $request['asset']['id'] ]);
 
             if ( $recordIsAsset && $recordIsSame ) {
                 return response()->json([
@@ -217,16 +225,28 @@ class InfrastructureRecordNoteUsed extends Model
             $recordIsDocument = $record->targetable_type == InfrastructureDocument::class;
             $recordIsSame  = $record->targetable_id == $request['document']['id'];
             
+            $isExistQueries = array_merge($isExistQueries,[ 'targetable_type','=', InfrastructureDocument::class ]);
+            $isExistQueries = array_merge($isExistQueries,[ 'targetable_id','=', $request['document']['id'] ]);
+
             if ( $recordIsAsset && $recordIsSame ) {
                 return response()->json([
                     'success' => false,
-                    'message' => 'Tidak bisa memasukkan yang digunakan adalah target yang sama..'
+                    'message' => 'Tujuan asset / dokumen tidak bisa 
+                    sama dengan catatan tujuan..'
                 ], 500);
             }
         }
 
-                // buat validasi detect apakah asset / dokumen adalah yang 
-        // sama dengan yang ditujukan ke record
+        // buat validasi deteksi apakah yang diinput sudah ada dalam catatan ini
+
+        $isExist = !is_null( InfrastructureRecordNote::where($isExistQueries)->first() );
+        if(!$isExist){
+            return response()->json([
+                'success' => false,
+                'message' => 'Tujuan asset / dokumen sudah ada..'
+            ], 500);
+        }
+
         
         return null;
      }
