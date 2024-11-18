@@ -198,7 +198,8 @@ class InfrastructureRecordNoteUsed extends Model
 
      public static function mapStoreRequestValid(Request $request, InfrastructureRecord $record, InfrastructureRecordNote $note) : JsonResponse | null
      {
-        // buat validasi detect apakah asset adalah yang sama
+        // buat validasi detect apakah asset / dokumen adalah yang 
+        // sama dengan yang ditujukan ke record
         
         if ($request->type == 'asset') {
             $recordIsAsset = $record->targetable_type == InfrastructureAsset::class;
@@ -223,6 +224,9 @@ class InfrastructureRecordNoteUsed extends Model
                 ], 500);
             }
         }
+
+                // buat validasi detect apakah asset / dokumen adalah yang 
+        // sama dengan yang ditujukan ke record
         
         return null;
      }
