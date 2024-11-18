@@ -80,7 +80,7 @@
 	<!--     THIS IS HELP DESK     -->
 	<!-- ========================  -->
 
-		<template v-slot:helpdesk="{ theme }">
+		<template v-slot:info="{ theme }">
 
 			<div class="text-overline mt-4">Aksi</div>
 			<v-divider></v-divider>
@@ -93,7 +93,7 @@
 				@click="redirectPage('document')"
 				>List Documents</v-btn>
 
-			<v-btn
+			<!-- <v-btn
 				class="mt-3"
 				:color="theme"
 				block
@@ -107,7 +107,7 @@
 				block
 				variant="flat"
 				@click="redirectPage('tax')"
-				>List Tax</v-btn>
+				>List Tax</v-btn> -->
 
 		</template>
 	</form-show>

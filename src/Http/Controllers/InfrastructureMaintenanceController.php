@@ -20,11 +20,6 @@ class InfrastructureMaintenanceController extends Controller
     // +-------------------- INDEX METHODS
     // +================================================
 
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function index(Request $request)
     {
         Gate::authorize('view', InfrastructureMaintenance::class);
@@ -38,11 +33,6 @@ class InfrastructureMaintenanceController extends Controller
         );
     }
 
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
      public function indexFromUnit(Request $request, InfrastructureUnit $unit){        
         return new MaintenanceCollection(
             $unit->maintenances()
@@ -54,11 +44,6 @@ class InfrastructureMaintenanceController extends Controller
         );
     }
 
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function indexFromAsset(Request $request, InfrastructureAsset $asset){        
         return new MaintenanceCollection(
             $asset->maintenances()

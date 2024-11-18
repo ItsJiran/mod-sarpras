@@ -21,7 +21,7 @@ class InfrastructureUnitController extends Controller
         Gate::authorize('view', InfrastructureUnit::class);
 
         return new UnitCollection(
-            InfrastructureUnit::applyMode($request->mode)
+            InfrastructureUnit::with(['regency', 'province'])
                 ->filter($request->filters)
                 ->search($request->findBy)
                 ->sortBy($request->sortBy)

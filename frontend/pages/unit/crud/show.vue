@@ -16,7 +16,7 @@
 			</v-card-text>
 		</template>
 
-		<template v-slot:helpdesk="{ theme }">
+		<template v-slot:info="{ theme }">
 
 			<div class="text-overline mt-4">Aksi</div>
 			<v-divider></v-divider>

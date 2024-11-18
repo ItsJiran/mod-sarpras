@@ -104,7 +104,7 @@
 			</v-card-text>
 		</template>
 
-		<template v-slot:helpdesk="{ theme, record, store }">		
+		<template v-slot:info="{ theme, record, store }">		
 
 			<v-btn v-if="record != undefined && record.status == 'pending' && record.status_step != 3"
 			class="mt-3"

@@ -35,7 +35,7 @@
 			</v-card-text>
 		</template>
 
-		<template v-slot:helpdesk></template>
+		<template v-slot:info></template>
 	</form-show>
 </template>
 

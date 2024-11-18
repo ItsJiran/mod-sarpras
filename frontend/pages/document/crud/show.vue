@@ -113,7 +113,7 @@
 			</v-card-text>
 		</template>
 
-		<template v-slot:helpdesk="{ theme }">
+		<template v-slot:info="{ theme }">
 
 			<v-btn
 				class="mt-3"
