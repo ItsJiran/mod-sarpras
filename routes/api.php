@@ -44,7 +44,6 @@ Route::get('unit/{unit}/asset/{asset}',[InfrastructureAssetController::class, 's
 Route::post('unit/{unit}/asset',[InfrastructureAssetController::class, 'storeFromUnit']);
 Route::put('unit/{unit}/asset/{asset}',[InfrastructureAssetController::class, 'updateFromUnit']);
 Route::delete('unit/{unit}/asset/{asset}',[InfrastructureAssetController::class, 'destroyFromUnit']);
-
 Route::put('unit/{unit}/asset/{asset}/restore',[InfrastructureAssetController::class, 'restoreFromUnit']);
 Route::delete('unit/{unit}/asset/{asset}/force',[InfrastructureAssetController::class, 'forceDeleteFromUnit']);
 

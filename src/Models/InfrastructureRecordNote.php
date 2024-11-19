@@ -518,6 +518,8 @@ class InfrastructureRecordNote extends Model
                 self::storeAsPeriodic($request, $record, $model);        
             }
 
+            File::ensureDirectoryExists(storage_path('app/infrastructure'));
+
             $model->save();
 
             DB::connection($model->connection)->commit();
@@ -542,7 +544,7 @@ class InfrastructureRecordNote extends Model
         $model->paydate = $request->paydate;
         $model->payprice = $request->payprice;
         $model->description = $request->description;
-        $model->proof_img_path = 'temporary';
+        // $model->proof_img_path = 'temporary';
 
         // default
         $model->status = $request->status;
@@ -557,7 +559,7 @@ class InfrastructureRecordNote extends Model
         $model->paydate = $request->paydate;
         $model->payprice = $request->payprice;
         $model->description = $request->description;
-        $model->proof_img_path = 'temporary';
+        // $model->proof_img_path = 'temporary';
 
         // default
         $model->status = $request->status;
