@@ -1,5 +1,13 @@
 <template>
-	<form-create with-helpdesk>
+	<form-create with-helpdesk hide-save>
+		<template v-slot:toolbar="{ record, store }">
+			<v-btn @click="saveRecord(record,store)" icon>
+				<v-icon>
+					save
+				</v-icon>
+			</v-btn>
+		</template>
+
 		<template v-slot:default="{ 
 			combos: { statuses },
 			record,
@@ -90,6 +98,24 @@ export default {
 				const url = URL.createObjectURL(record.proof_img);			
 				data.blob_path = url;
 			}
+		},
+		saveRecord: function (record, store) {
+			let currentRoute = this.$router.currentRoute._value.href;
+			let currentName = this.$router.currentRoute._value.name;
+
+			currentRoute = currentRoute.replace('/create','');
+			currentRoute = currentRoute.substring(1);
+			currentRoute = currentRoute.replace('infrastructure/','infrastructure/api/');
+
+			this.$http(currentRoute, {
+				method: "POST",
+				params: record,
+				contentType: "multipart/form-data",
+			})
+			.then((response) => {
+				console.log(response);
+				return this.$router.back();
+			});
 		}
 	}
 };

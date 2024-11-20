@@ -34,6 +34,7 @@ Route::resource('asset',InfrastructureAssetController::class)->parameters([
 Route::put('asset/{asset}/restore',[InfrastructureAssetController::class, 'restore']);
 Route::delete('asset/{asset}/force',[InfrastructureAssetController::class, 'forceDelete']);
 
+// +-----------------------------------
 // +-- manually from unit/asset
 Route::get('ref-asset/{unit}/asset',[InfrastructureAssetController::class, 'refAsset']);
 Route::get('ref-asset/{unit}/{asset_type}/asset',[InfrastructureAssetController::class, 'refAssetType']);
@@ -76,6 +77,8 @@ Route::put('unit/{unit}/asset/{asset}/document/{document}',[InfrastructureDocume
 
 // +-----------------------------------
 // +-- from resource module tax
+Route::get('ref-image/{path}',[InfrastructureRecordNoteController::class,'getImage'])->where('path', '.*');;
+
 Route::controller(InfrastructureRecordController::class)->group(function () {
 
     Route::get('deadline','indexDeadline');

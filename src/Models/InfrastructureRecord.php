@@ -102,7 +102,7 @@ class InfrastructureRecord extends Model
 
     public function notes(): HasMany
     {
-        return $this->hasMany(InfrastructureRecordNote::class, 'record_id', 'id');
+        return $this->hasMany(InfrastructureRecordNote::class, 'record_id');
     }
 
     public function record_key()

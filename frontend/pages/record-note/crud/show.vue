@@ -1,7 +1,14 @@
 <template>
-	<form-show
-		with-helpdesk hide-edit
-	>
+
+	<form-show with-helpdesk hide-edit>
+		<template v-slot:toolbar="{ record, store }">
+			<v-btn icon v-if="record.status_step == '1' && record.is_creator">
+				<v-icon @click="redirectPage( 'edit' )">
+					edit
+				</v-icon>
+			</v-btn>
+		</template>
+
 		<template v-slot:default="{ 
 				combos: { statuses },
 				record,
@@ -168,7 +175,7 @@ export default {
 			const current_route = this.$router.currentRoute._value;
 			const current_route_name = current_route.name;
 			
-			let target_methods = ['show','create','delete','update'];
+			let target_methods = ['show','create','delete','edit'];
 			let current_route_name_clean = current_route_name;
 
 			for ( let method of target_methods )

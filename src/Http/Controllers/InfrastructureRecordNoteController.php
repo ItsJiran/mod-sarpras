@@ -17,6 +17,13 @@ use Module\Infrastructure\Models\InfrastructureUnit;
 class InfrastructureRecordNoteController extends Controller
 {
  
+    public function getImage(Request $request, $path) 
+    {
+        Gate::authorize('view', InfrastructureRecordNote::class);
+
+        dd($path);
+    }
+
     public function index(Request $request, InfrastructureRecord $record)
     {
         Gate::authorize('view', InfrastructureRecordNote::class);

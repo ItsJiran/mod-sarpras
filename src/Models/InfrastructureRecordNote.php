@@ -18,6 +18,10 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 use Illuminate\Http\JsonResponse;
 use Carbon\Carbon;
+use Config;
+
+use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Storage;
 
 use Module\Infrastructure\Models\InfrastructureRecord;
 use Module\Infrastructure\Models\InfrastructureUser;
@@ -122,7 +126,7 @@ class InfrastructureRecordNote extends Model
             'paydate' => $model->paydate,
             'payprice' => $model->payprice,
             'description' => $model->description,
-            'proof_img_path' => $model->proof_img_path,
+            'proof_img_path' => 'https://' . $request->host() . '/infrastructure/api/ref-image/' . $model->proof_img_path,
 
             'user' => $user,
             'status' => $model->status,
@@ -200,7 +204,7 @@ class InfrastructureRecordNote extends Model
                 Rule::in( self::mapStatus($request) ),
             ],
             'payprice' => 'required|numeric',
-            // 'proof_img' => 'mimes:jpeg,jpg,png,gif|required|max:10000'
+            'proof_img' => 'mimes:jpeg,jpg,png,gif|required|max:10000'
         ];
 
         return $array;
@@ -268,7 +272,7 @@ class InfrastructureRecordNote extends Model
             'description' => 'required',
             'paydate' => 'required',
             'payprice' => 'required|numeric',
-            // 'proof_img' => 'mimes:jpeg,jpg,png,gif|required|max:10000'
+            'proof_img' => 'mimes:jpeg,jpg,png,gif|max:10000'
         ];
 
         return $array;
@@ -511,14 +515,14 @@ class InfrastructureRecordNote extends Model
         DB::connection($model->connection)->beginTransaction();
 
         try {            
-            if ( $record->isRecordLog() ) {
-                self::storeAsLog($request, $record, $model);
-            }
-            if ( $record->isRecordPeriodic() ) {
-                self::storeAsPeriodic($request, $record, $model);        
-            }
 
-            File::ensureDirectoryExists(storage_path('app/infrastructure'));
+            File::ensureDirectoryExists(storage_path('app/infrastructure/deadline'));
+
+            if ( $record->isRecordLog() )
+                self::storeAsLog($request, $record, $model);
+
+            if ( $record->isRecordPeriodic() )
+                self::storeAsPeriodic($request, $record, $model);        
 
             $model->save();
 
@@ -544,7 +548,8 @@ class InfrastructureRecordNote extends Model
         $model->paydate = $request->paydate;
         $model->payprice = $request->payprice;
         $model->description = $request->description;
-        // $model->proof_img_path = 'temporary';
+
+        $model->proof_img_path = Storage::disk('infrastructure')->put('deadline', $request->proof_img);
 
         // default
         $model->status = $request->status;
@@ -559,7 +564,8 @@ class InfrastructureRecordNote extends Model
         $model->paydate = $request->paydate;
         $model->payprice = $request->payprice;
         $model->description = $request->description;
-        // $model->proof_img_path = 'temporary';
+
+        $model->proof_img_path = Storage::disk('infrastructure')->put('deadline', $request->proof_img);
 
         // default
         $model->status = $request->status;
@@ -575,13 +581,13 @@ class InfrastructureRecordNote extends Model
 
         try {
             
-            if ( $record->isRecordLog() ) {
-                self::updateAsLog($request, $record, $model);
-            }
+            File::ensureDirectoryExists(storage_path('app/infrastructure/deadline'));
 
-            if ( $record->isRecordPeriodic() ) {
+            if ( $record->isRecordLog() )
+                self::updateAsLog($request, $record, $model);
+
+            if ( $record->isRecordPeriodic() ) 
                 self::updateAsPeriodic($request, $record, $model);        
-            }
 
             $model->save();
 
@@ -606,9 +612,12 @@ class InfrastructureRecordNote extends Model
         $model->paydate = $request->paydate;
         $model->payprice = $request->payprice;
         $model->description = $request->description;
-        $model->proof_img_path = 'temporary';
 
-        // default
+        if( !is_null( $request->proof_img ) ) {
+            Storage::disk('infrastructure')->delete('deadline/'.$model->proof_img_path);
+            $model->proof_img_path = Storage::disk('infrastructure')->put('deadline', $request->proof_img);
+        }
+
         $model->status = $request->status;
     }
 
@@ -620,9 +629,12 @@ class InfrastructureRecordNote extends Model
         $model->paydate = $request->paydate;
         $model->payprice = $request->payprice;
         $model->description = $request->description;
-        $model->proof_img_path = 'temporary';
 
-        // default
+        if( !is_null( $request->proof_img ) ) {
+            Storage::disk('infrastructure')->delete('deadline/'.$model->proof_img_path);
+            $model->proof_img_path = Storage::disk('infrastructure')->put('deadline', $request->proof_img);
+        }
+
         $model->status = $request->status;
     }
 
@@ -635,7 +647,6 @@ class InfrastructureRecordNote extends Model
         DB::connection($model->connection)->beginTransaction();
 
         try {
-
             $model->delete();
 
             DB::connection($model->connection)->commit();
@@ -685,6 +696,8 @@ class InfrastructureRecordNote extends Model
             foreach ($note_uses as $key => $value) {
                 $value->forceDelete();
             }
+
+            Storage::disk('infrastructure')->delete('deadline/'.$model->proof_img_path);
 
             $model->forceDelete();
 
