@@ -518,11 +518,18 @@ class InfrastructureRecordNote extends Model
 
             File::ensureDirectoryExists(storage_path('app/infrastructure/deadline'));
 
-            if ( $record->isRecordLog() )
-                self::storeAsLog($request, $record, $model);
+            $model->record_id = $record->id;
+            $model->user_id = $request->user()->id;        
 
-            if ( $record->isRecordPeriodic() )
-                self::storeAsPeriodic($request, $record, $model);        
+            $model->name = $request->name;
+            $model->paydate = $request->paydate;
+            $model->payprice = $request->payprice;
+            $model->description = $request->description;
+
+            $model->proof_img_path = Storage::disk('infrastructure')->put('deadline', $request->proof_img);
+
+            // default
+            $model->status = $request->status;        
 
             $model->save();
 
@@ -537,38 +544,6 @@ class InfrastructureRecordNote extends Model
                 'message' => $e->getMessage()
             ], 500);
         }
-    }
-
-    public static function storeAsLog(Request $request, InfrastructureRecord $record, $model) 
-    {
-        $model->record_id = $record->id;
-        $model->user_id = $request->user()->id;
-
-        $model->name = $request->name;
-        $model->paydate = $request->paydate;
-        $model->payprice = $request->payprice;
-        $model->description = $request->description;
-
-        $model->proof_img_path = Storage::disk('infrastructure')->put('deadline', $request->proof_img);
-
-        // default
-        $model->status = $request->status;
-    }
-
-    public static function storeAsPeriodic(Request $request, InfrastructureRecord $record, $model) 
-    {
-        $model->record_id = $record->id;
-        $model->user_id = $request->user()->id;        
-
-        $model->name = $request->name;
-        $model->paydate = $request->paydate;
-        $model->payprice = $request->payprice;
-        $model->description = $request->description;
-
-        $model->proof_img_path = Storage::disk('infrastructure')->put('deadline', $request->proof_img);
-
-        // default
-        $model->status = $request->status;
     }
 
     // +===============================================
@@ -583,11 +558,19 @@ class InfrastructureRecordNote extends Model
             
             File::ensureDirectoryExists(storage_path('app/infrastructure/deadline'));
 
-            if ( $record->isRecordLog() )
-                self::updateAsLog($request, $record, $model);
+            $model->record_id = $record->id;
 
-            if ( $record->isRecordPeriodic() ) 
-                self::updateAsPeriodic($request, $record, $model);        
+            $model->name = $request->name;
+            $model->paydate = $request->paydate;
+            $model->payprice = $request->payprice;
+            $model->description = $request->description;
+
+            if( !is_null( $request->proof_img ) ) {
+                Storage::disk('infrastructure')->delete($model->proof_img_path);
+                $model->proof_img_path = Storage::disk('infrastructure')->put('deadline', $request->proof_img);
+            }
+
+            $model->status = $request->status;     
 
             $model->save();
 
@@ -602,40 +585,6 @@ class InfrastructureRecordNote extends Model
                 'message' => $e->getMessage()
             ], 500);
         }
-    }
-
-    public static function updateAsLog(Request $request, InfrastructureRecord $record, $model) 
-    {
-        $model->record_id = $record->id;
-
-        $model->name = $request->name;
-        $model->paydate = $request->paydate;
-        $model->payprice = $request->payprice;
-        $model->description = $request->description;
-
-        if( !is_null( $request->proof_img ) ) {
-            Storage::disk('infrastructure')->delete('deadline/'.$model->proof_img_path);
-            $model->proof_img_path = Storage::disk('infrastructure')->put('deadline', $request->proof_img);
-        }
-
-        $model->status = $request->status;
-    }
-
-    public static function updateAsPeriodic(Request $request, InfrastructureRecord $record, $model) 
-    {
-        $model->record_id = $record->id;
-
-        $model->name = $request->name;
-        $model->paydate = $request->paydate;
-        $model->payprice = $request->payprice;
-        $model->description = $request->description;
-
-        if( !is_null( $request->proof_img ) ) {
-            Storage::disk('infrastructure')->delete('deadline/'.$model->proof_img_path);
-            $model->proof_img_path = Storage::disk('infrastructure')->put('deadline', $request->proof_img);
-        }
-
-        $model->status = $request->status;
     }
 
     // +===============================================

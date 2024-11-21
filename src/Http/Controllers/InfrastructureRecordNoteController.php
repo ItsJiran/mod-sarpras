@@ -14,14 +14,29 @@ use Module\Infrastructure\Models\InfrastructureRecordNote;
 use Module\Infrastructure\Models\InfrastructureRecord;
 use Module\Infrastructure\Models\InfrastructureUnit;
 
+use Illuminate\Support\Facades\Response;
+use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Storage;
+
 class InfrastructureRecordNoteController extends Controller
 {
  
     public function getImage(Request $request, $path) 
     {
-        Gate::authorize('view', InfrastructureRecordNote::class);
 
-        dd($path);
+        $path_file = Storage::disk('infrastructure')->path($path);
+
+        if (!File::exists($path_file)) {
+            abort(404);
+        }
+    
+        $file = File::get($path_file);
+        $type = File::mimeType($path_file);
+    
+        $response = Response::make($file, 200);
+        $response->header("Content-Type", $type);
+    
+        return $response;
     }
 
     public function index(Request $request, InfrastructureRecord $record)
@@ -68,12 +83,9 @@ class InfrastructureRecordNoteController extends Controller
     {
         Gate::authorize('update', $note);
 
-        $request->validate(  
-            InfrastructureRecordNote::mapUpdateRequest($request, $record)
-        );
-
+        $request->validate( InfrastructureRecordNote::mapUpdateRequest($request, $record) );
         $isResponseValid = InfrastructureRecordNote::mapUpdateRequestValid($request, $record, $record);
-        
+
         if ( !is_null($isResponseValid) ) {
             return $isResponseValid;   
         }

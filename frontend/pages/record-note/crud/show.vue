@@ -182,6 +182,7 @@ export default {
 				current_route_name_clean = current_route_name_clean.replaceAll(method,'');
 			
 			let redirect_to = current_route_name_clean + name;
+			console.log(redirect_to);
 			return this.$router.push({ name : redirect_to });
 		},
 		convertToDraft : function (record,data) {
@@ -254,6 +255,13 @@ export default {
             });
 
 		},
+		getImage : function(record) {
+			this.$http(record.proof_img_path, {
+                method: "GET",
+            }).then((response) => {
+				console.log(response);
+            });
+		}
 	},
 };
 </script>

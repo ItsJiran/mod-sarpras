@@ -1,5 +1,13 @@
 <template>
-	<form-edit with-helpdesk>
+	<form-edit with-helpdesk hide-update>
+		<template v-slot:toolbar="{ record, store }">
+			<v-btn @click="saveRecord(record,store)" icon>
+				<v-icon>
+					save
+				</v-icon>
+			</v-btn>
+		</template>
+
 		<template v-slot:default="{ 
 			combos: { statuses },
 			record,
@@ -116,6 +124,39 @@ export default {
 			data.init = true;
 			console.log(current_route, this);
 		},
+		saveRecord: function (record, store) {
+			let currentRoute = this.$router.currentRoute._value.href;
+			let currentName = this.$router.currentRoute._value.name;
+
+			currentRoute = currentRoute.replace('/edit','/update');
+			currentRoute = currentRoute.substring(1);
+			currentRoute = currentRoute.replace('infrastructure/','infrastructure/api/');
+
+			console.log(record);
+
+			this.$http(currentRoute, {
+				method: "POST",
+				params: record,
+				contentType: "multipart/form-data",
+			})
+			.then((response) => {
+                let index = store.records.findIndex(
+                    (rc) => rc[store.key] === record[store.key]
+                );
+
+                if (index !== -1) {
+                    Object.keys(record).forEach((key) => {
+                        store.records[index][key] = record[key];
+                    });
+                }
+
+                store.openFormData();
+
+                store.snackbar.color = "green";
+                store.snackbar.text = `update data ${store.pageKey} berhasil`;
+                store.snackbar.state = true;
+			});
+		}
 	}
 };
 </script>
