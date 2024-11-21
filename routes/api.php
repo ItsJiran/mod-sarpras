@@ -104,26 +104,26 @@ Route::controller(InfrastructureRecordController::class)->group(function () {
         Route::post('unit/{unit}/document/{document}/maintenance', 'storeFromUnitDocument');
         Route::post('unit/{unit}/asset/{asset}/document/{document}/maintenance', 'storeFromUnitAssetDocument');
         
-        Route::get('asset/{asset}/maintenance/{maintenance}', 'showFromAsset');
-        Route::get('asset/{asset}/document/{document}/maintenance/{maintenance}', 'showFromAssetDocument');
-        Route::get('document/{document}/maintenance/{maintenance}', 'showFromDocument');
-        Route::get('unit/{unit}/asset/{asset}/maintenance/{maintenance}', 'showFromUnitAsset');
-        Route::get('unit/{unit}/document/{document}/maintenance/{maintenance}', 'showFromUnitDocument');
-        Route::get('unit/{unit}/asset/{asset}/document/{document}/maintenance/{maintenance}', 'showFromUnitAssetDocument');
+        Route::get('asset/{asset}/maintenance/{record}', 'showFromAsset');
+        Route::get('asset/{asset}/document/{document}/maintenance/{record}', 'showFromAssetDocument');
+        Route::get('document/{document}/maintenance/{record}', 'showFromDocument');
+        Route::get('unit/{unit}/asset/{asset}/maintenance/{record}', 'showFromUnitAsset');
+        Route::get('unit/{unit}/document/{document}/maintenance/{record}', 'showFromUnitDocument');
+        Route::get('unit/{unit}/asset/{asset}/document/{document}/maintenance/{record}', 'showFromUnitAssetDocument');
         
-        Route::put('asset/{asset}/maintenance/{maintenance}', 'updateFromAsset');
-        Route::put('asset/{asset}/document/{document}/maintenance/{maintenance}', 'updateFromAssetDocument');
-        Route::put('document/{document}/maintenance/{maintenance}', 'updateFromDocument');
-        Route::put('unit/{unit}/asset/{asset}/maintenance/{maintenance}', 'updateFromUnitAsset');
-        Route::put('unit/{unit}/document/{document}/maintenance/{maintenance}', 'updateFromUnitDocument');
-        Route::put('unit/{unit}/asset/{asset}/document/{document}/maintenance/{maintenance}', 'updateFromUnitAssetDocument');
+        Route::put('asset/{asset}/maintenance/{record}', 'updateFromAsset');
+        Route::put('asset/{asset}/document/{document}/maintenance/{record}', 'updateFromAssetDocument');
+        Route::put('document/{document}/maintenance/{record}', 'updateFromDocument');
+        Route::put('unit/{unit}/asset/{asset}/maintenance/{record}', 'updateFromUnitAsset');
+        Route::put('unit/{unit}/document/{document}/maintenance/{record}', 'updateFromUnitDocument');
+        Route::put('unit/{unit}/asset/{asset}/document/{document}/maintenance/{record}', 'updateFromUnitAssetDocument');
         
-        Route::delete('asset/{asset}/maintenance/{maintenance}', 'destroyFromAsset');
-        Route::delete('asset/{asset}/document/{document}/maintenance/{maintenance}', 'destroyFromAssetDocument');
-        Route::delete('document/{document}/maintenance/{maintenance}', 'destroyFromDocument');
-        Route::delete('unit/{unit}/asset/{asset}/maintenance/{maintenance}', 'destroyFromUnitAsset');
-        Route::delete('unit/{unit}/document/{document}/maintenance/{maintenance}', 'destroyFromUnitDocument');
-        Route::delete('unit/{unit}/asset/{asset}/document/{document}/maintenance/{maintenance}', 'destroyFromUnitAssetDocument');
+        Route::delete('asset/{asset}/maintenance/{record}', 'destroyFromAsset');
+        Route::delete('asset/{asset}/document/{document}/maintenance/{record}', 'destroyFromAssetDocument');
+        Route::delete('document/{document}/maintenance/{record}', 'destroyFromDocument');
+        Route::delete('unit/{unit}/asset/{asset}/maintenance/{record}', 'destroyFromUnitAsset');
+        Route::delete('unit/{unit}/document/{document}/maintenance/{record}', 'destroyFromUnitDocument');
+        Route::delete('unit/{unit}/asset/{asset}/document/{document}/maintenance/{record}', 'destroyFromUnitAssetDocument');
     });
 
     Route::group(['as' => 'tax::'], function(){

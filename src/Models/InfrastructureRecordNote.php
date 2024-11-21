@@ -571,7 +571,6 @@ class InfrastructureRecordNote extends Model
             }
 
             $model->status = $request->status;     
-
             $model->save();
 
             DB::connection($model->connection)->commit();

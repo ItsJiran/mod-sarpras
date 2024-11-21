@@ -119,52 +119,39 @@ class InfrastructureRecordController extends Controller
     {
         Gate::authorize('create', InfrastructureRecord::class);
         $request = $this->determineRouteType($request);
-        $request->validate( 
-            InfrastructureRecord::mapStoreRequestValidation($request)
-        );
+        $request->validate( InfrastructureRecord::mapStoreRequestValidation($request) );
         return InfrastructureRecord::storeRecord($request);
     }
     
     public function storeFromAsset(Request $request, InfrastructureAsset $asset)
     {
-        Gate::authorize('create', InfrastructureRecord::class);
-        $request = $this->determineRouteType($request);
+        $request = InfrastructureRecord::mergeRequestAsset($request, $asset);
         return $this->store($request);
     }
 
     public function storeFromDocument(Request $request, InfrastructureDocument $document)
     {
-        Gate::authorize('create', InfrastructureRecord::class);
-        $request = $this->determineRouteType($request);
         $request = InfrastructureRecord::mergeRequestDocument($request, $document);
         return InfrastructureRecord::storeRecord($request);
     }
 
     public function storeFromAssetDocument(Request $request, InfrastructureAsset $asset, InfrastructureDocument $document)
     {
-        Gate::authorize('create', InfrastructureRecord::class);
-        $request = $this->determineRouteType($request);
         return $this->storeFromDocument($request, $document);
     }
 
     public function storeFromUnitAsset(Request $request, InfrastructureUnit $unit, InfrastructureAsset $asset)
     {
-        Gate::authorize('create', InfrastructureRecord::class);
-        $request = $this->determineRouteType($request);
         return $this->storeFromAsset($request, $asset);
     }
 
     public function storeFromUnitAssetDocument(Request $request, InfrastructureUnit $unit, InfrastructureAsset $asset, InfrastructureDocument $document)
     {
-        Gate::authorize('create', InfrastructureRecord::class);
-        $request = $this->determineRouteType($request);
         return $this->storeFromDocument($request, $document);
     }
 
     public function storeFromUnitDocument(Request $request, InfrastructureUnit $unit, InfrastructureDocument $document)
     {
-        Gate::authorize('create', InfrastructureRecord::class);
-        $request = $this->determineRouteType($request);
         return $this->storeFromDocument($request, $document);
     }
 
@@ -176,111 +163,99 @@ class InfrastructureRecordController extends Controller
         return new RecordShowResource( InfrastructureRecord::where('id',$deadline_id)->first() );        
     }
 
-    public function show(Request $request, InfrastructureRecord $infrastructureRecord)
+    public function show(Request $request, InfrastructureRecord $record)
     {
-        Gate::authorize('show', $infrastructureRecord);
+        Gate::authorize('show', $record);
         $request = $this->determineRouteType($request);
-        return new RecordShowResource($infrastructureRecord);
+        return new RecordShowResource($record);
     }
 
-    public function showFromAsset(Request $request, InfrastructureAsset $asset, InfrastructureRecord $infrastructureRecord)
+    public function showFromAsset(Request $request, InfrastructureAsset $asset, InfrastructureRecord $record)
     {
-        Gate::authorize('show', $infrastructureRecord);
-        $request = $this->determineRouteType($request);
-        return new RecordShowResource($infrastructureRecord);
+        return $this->show($request, $record);
     }  
 
-    public function showFromUnitAsset(Request $request, InfrastructureUnit $unit, InfrastructureAsset $asset, InfrastructureRecord $infrastructureRecord)
+    public function showFromUnitAsset(Request $request, InfrastructureUnit $unit, InfrastructureAsset $asset, InfrastructureRecord $record)
     {
-        Gate::authorize('show', $infrastructureRecord);
-        $request = $this->determineRouteType($request);
-        return new RecordShowResource($infrastructureRecord);
+        return $this->show($request, $record);
     }
 
-    public function showFromUnitAssetDocument(Request $request, InfrastructureUnit $unit, InfrastructureAsset $asset, InfrastructureDocument $document, InfrastructureRecord $infrastructureRecord)
+    public function showFromUnitAssetDocument(Request $request, InfrastructureUnit $unit, InfrastructureAsset $asset, InfrastructureDocument $document, InfrastructureRecord $record)
     {
-        Gate::authorize('show', $infrastructureRecord);
-        $request = $this->determineRouteType($request);
-        return new RecordShowResource($infrastructureRecord);
+        return $this->show($request, $record);
     }
 
-    public function showFromAssetDocument(Request $request, InfrastructureAsset $asset, InfrastructureDocument $document, InfrastructureRecord $infrastructureRecord)
+    public function showFromAssetDocument(Request $request, InfrastructureAsset $asset, InfrastructureDocument $document, InfrastructureRecord $record)
     {
-        Gate::authorize('show', $infrastructureRecord);
-        $request = $this->determineRouteType($request);
-        return new RecordShowResource($infrastructureRecord);
+        return $this->show($request, $record);
     }
     
-    public function showFromDocument(Request $request, InfrastructureDocument $document, InfrastructureRecord $infrastructureRecord)
+    public function showFromDocument(Request $request, InfrastructureDocument $document, InfrastructureRecord $record)
     {
-        Gate::authorize('show', $infrastructureRecord);
-        $request = $this->determineRouteType($request);
-        return new RecordShowResource($infrastructureRecord);
+        return $this->show($request, $record);
     }
 
-    public function showFromUnitDocument(Request $request, InfrastructureUnit $unit, InfrastructureDocument $document, InfrastructureRecord $infrastructureRecord)
+    public function showFromUnitDocument(Request $request, InfrastructureUnit $unit, InfrastructureDocument $document, InfrastructureRecord $record)
     {
-        Gate::authorize('show', $infrastructureRecord);
-        $request = $this->determineRouteType($request);
-        return new RecordShowResource($infrastructureRecord);
+        return $this->show($request, $record);
     }
 
     // + ===================================
     // + ----------- UPDATE METHODS
     // + ===================================
-    public function update(Request $request, InfrastructureRecord $infrastructureRecord)
+    public function update(Request $request, InfrastructureRecord $record)
     {
-        Gate::authorize('update', $infrastructureRecord);
+        Gate::authorize('update', $record);
         $request = $this->determineRouteType($request);
-        $request->validate( InfrastructureRecord::mapUpdateRequestValidation($request, $infrastructureRecord) );
-        return InfrastructureRecord::updateRecord($request, $infrastructureRecord);
+        $request->validate( InfrastructureRecord::mapUpdateRequestValidation($request, $record) );
+        return InfrastructureRecord::updateRecord($request, $record);
     }
 
-    public function updateFromAsset(Request $request, InfrastructureAsset $asset, InfrastructureRecord $infrastructureRecord)    
+    public function updateFromAsset(Request $request, InfrastructureAsset $asset, InfrastructureRecord $record)    
     {   
-        Gate::authorize('update', $infrastructureRecord);
-        return $this->update($request, $infrastructureRecord);
+        Gate::authorize('update', $record);
+        return $this->update($request, $record);
     }
 
-    public function updateFromDocument(Request $request, InfrastructureDocument $document, InfrastructureRecord $infrastructureRecord)    
+    public function updateFromDocument(Request $request, InfrastructureDocument $document, InfrastructureRecord $record)    
     {   
-        Gate::authorize('update', $infrastructureRecord);
-        return $this->update($request, $infrastructureRecord);
+        Gate::authorize('update', $record);
+        return $this->update($request, $record);
     }
 
-    public function updateFromAssetDocument(Request $request, InfrastructureAsset $asset, InfrastructureDocument $document, InfrastructureRecord $infrastructureRecord)    
+    public function updateFromAssetDocument(Request $request, InfrastructureAsset $asset, InfrastructureDocument $document, InfrastructureRecord $record)    
     {   
-        Gate::authorize('update', $infrastructureRecord);
-        return $this->update($request, $infrastructureRecord);
+        Gate::authorize('update', $record);
+        return $this->update($request, $record);
     }
 
-    public function updateFromUnitAsset(Request $request, InfrastructureUnit $unit, InfrastructureAsset $asset, InfrastructureRecord $infrastructureRecord)    
+    public function updateFromUnitAsset(Request $request, InfrastructureUnit $unit, InfrastructureAsset $asset, InfrastructureRecord $record)    
     {   
-        Gate::authorize('update', $infrastructureRecord);
-        return $this->update($request, $infrastructureRecord);
+        Gate::authorize('update', $record);
+        return $this->update($request, $record);
     }
 
-    public function updateFromUnitAssetDocument(Request $request, InfrastructureUnit $unit, InfrastructureAsset $asset, InfrastructureDocument $document, InfrastructureRecord $infrastructureRecord)    
+    public function updateFromUnitAssetDocument(Request $request, InfrastructureUnit $unit, InfrastructureAsset $asset, InfrastructureDocument $document, InfrastructureRecord $record)    
     {   
-        Gate::authorize('update', $infrastructureRecord);
-        return $this->update($request, $infrastructureRecord);
+        Gate::authorize('update', $record);
+        return $this->update($request, $record);
     }
 
-    public function updateFromUnitDocument(Request $request, InfrastructureUnit $unit, InfrastructureDocument $document, InfrastructureRecord $infrastructureRecord)    
+    public function updateFromUnitDocument(Request $request, InfrastructureUnit $unit, InfrastructureDocument $document, InfrastructureRecord $record)    
     {   
-        Gate::authorize('update', $infrastructureRecord);
-        return $this->update($request, $infrastructureRecord);
+        Gate::authorize('update', $record);
+        return $this->update($request, $record);
     }
 
 
     // + ===================================
     // + ----------- DESTROY METHODS
     // + ===================================
-    public function destroy(InfrastructureRecord $infrastructureRecord)
+    public function destroy(InfrastructureRecord $record)
     {
-        Gate::authorize('delete', $infrastructureRecord);
+        Gate::authorize('delete', $record);
         $request = $this->determineRouteType($request);
-        return InfrastructureRecord::deleteRecord($infrastructureRecord);
+        return InfrastructureRecord::deleteRecord($record);
     }
 
     public function destroyFromAsset(Request $request, InfrastructureAsset $asset, InfrastructureRecord $record)    
@@ -320,23 +295,23 @@ class InfrastructureRecordController extends Controller
     }
 
     // + ===================================
-    // + ----------- DESTROY METHODS
+    // + ----------- RESTORE METHODS
     // + ===================================
-    public function restore(InfrastructureRecord $infrastructureRecord)
+    public function restore(InfrastructureRecord $record)
     {
-        Gate::authorize('restore', $infrastructureRecord);
+        Gate::authorize('restore', $record);
         $request = $this->determineRouteType($request);
-        return InfrastructureRecord::restoreRecord($infrastructureRecord);
+        return InfrastructureRecord::restoreRecord($record);
     }
 
     // + ===================================
     // + ----------- FORCE DESTROY METHODS
     // + ===================================
-    public function forceDelete(InfrastructureRecord $infrastructureRecord)
+    public function forceDelete(InfrastructureRecord $record)
     {
-        Gate::authorize('destroy', $infrastructureRecord);
+        Gate::authorize('destroy', $record);
         $request = $this->determineRouteType($request);
-        return InfrastructureRecord::destroyRecord($infrastructureRecord);
+        return InfrastructureRecord::destroyRecord($record);
     }
 
     // + ===================================

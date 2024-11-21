@@ -186,7 +186,7 @@ class InfrastructureRecord extends Model
      * ====================================================
      */
 
-    public static function mapResourceShow(Request $request, $model = null) : array 
+    public static function mapResourceShow(Request $request , $model = null) : array 
     {        
         $properties = [
             'name' => $model->name,
