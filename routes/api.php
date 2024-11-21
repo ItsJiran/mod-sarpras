@@ -85,10 +85,13 @@ Route::controller(InfrastructureRecordController::class)->group(function () {
     Route::get('deadline/{deadline}', 'showDeadline');
 
     Route::group(['as' => 'maintenance::'], function(){
-
-        Route::resource('maintenance',InfrastructureRecordController::class)->parameters([
-            'maintenance' => 'infrastructureRecord'
-        ]);
+        Route::get('maintenance','index');
+        Route::post('maintenance','store');
+        Route::get('maintenance/{record}','show');
+        Route::post('maintenance/{record}/update','update');
+        Route::delete('maintenance/{record}','destroy');
+        Route::put( 'maintenance/{record}/restore', 'restore' );
+        Route::delete( 'maintenance/{record}/force', 'forceDelete' );
 
         Route::get('asset/{asset}/maintenance','indexFromAsset');
         Route::get('asset/{asset}/document/{document}/maintenance','indexFromAssetDocument');
@@ -127,9 +130,13 @@ Route::controller(InfrastructureRecordController::class)->group(function () {
     });
 
     Route::group(['as' => 'tax::'], function(){
-        Route::resource('tax',InfrastructureRecordController::class)->parameters([
-            'tax' => 'infrastructureRecord'
-        ]);
+        Route::get('tax','index');
+        Route::post('tax','store');
+        Route::get('tax/{record}','show');
+        Route::post('tax/{record}/update','update');
+        Route::delete('tax/{record}','destroy');
+        Route::put( 'tax/{record}/restore', 'restore' );
+        Route::delete( 'tax/{record}/force', 'forceDelete' );
 
         Route::get('asset/{asset}/tax','indexFromAsset');
         Route::get('asset/{asset}/document/{document}/tax','indexFromAssetDocument');
@@ -197,6 +204,13 @@ Route::controller(InfrastructureRecordNoteController::class)->group(function () 
         Route::delete('tax/{record}/note/{note}','destroy');
         Route::put( 'tax/{record}/note/{note}/restore', 'restore' );
         Route::delete( 'tax/{record}/note/{note}/force', 'forceDelete' );
+
+        Route::get('asset/{asset}/tax/{record}/note','indexFromAsset');
+        Route::get('asset/{asset}/document/{document}/tax/{record}/note','indexFromAssetDocument');
+        Route::get('document/{document}/tax/{record}/note','indexFromDocument');
+        Route::get('unit/{unit}/asset/{asset}/tax/{record}/note','indexFromUnitAsset');
+        Route::get('unit/{unit}/document/{document}/tax/{record}/note','indexFromUnitDocument');
+        Route::get('unit/{unit}/asset/{asset}/document/{document}/tax/{record}/note','indexFromUnitAssetDocument');
     });
 
     Route::group(['as' => 'maintenance::'], function(){
@@ -207,6 +221,13 @@ Route::controller(InfrastructureRecordNoteController::class)->group(function () 
         Route::delete('maintenance/{record}/note/{note}','destroy');
         Route::put( 'maintenance/{record}/note/{note}/restore', 'restore' );
         Route::delete( 'maintenance/{record}/note/{note}/force', 'forceDelete' );
+
+        Route::get('asset/{asset}/tax/{record}/note','indexFromAsset');
+        Route::get('asset/{asset}/document/{document}/tax/{record}/note','indexFromAssetDocument');
+        Route::get('document/{document}/tax/{record}/note','indexFromDocument');
+        Route::get('unit/{unit}/asset/{asset}/tax/{record}/note','indexFromUnitAsset');
+        Route::get('unit/{unit}/document/{document}/tax/{record}/note','indexFromUnitDocument');
+        Route::get('unit/{unit}/asset/{asset}/document/{document}/tax/{record}/note','indexFromUnitAssetDocument');
     });
 });
 

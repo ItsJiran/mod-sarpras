@@ -53,6 +53,37 @@ class InfrastructureRecordNoteController extends Controller
         );
     }
 
+    public function indexFromUnit(Request $request, InfrastructureUnit $unit)
+    {        
+        // temporary
+    }
+
+    public function indexFromAsset(Request $request, InfrastructureAsset $asset, InfrastructureRecord $record)
+    {        
+        return $this->index($request, $record);
+    }
+
+    public function indexFromDocument(Request $request, InfrastructureDocument $document, InfrastructureRecord $record)
+    {                
+        return $this->index($request, $record);
+    }
+
+    public function indexFromUnitAsset(Request $request, InfrastructureUnit $unit, InfrastructureAsset $asset, InfrastructureRecord $record){
+        return $this->indexFromAsset($request, $asset);
+    }
+
+    public function indexFromAssetDocument(Request $request, InfrastructureAsset $asset, InfrastructureDocument $document, InfrastructureRecord $record){
+        return $this->indexFromDocument($request, $document);
+    }
+
+    public function indexFromUnitDocument(Request $request, InfrastructureUnit $unit, InfrastructureDocument $document, InfrastructureRecord $record){
+        return $this->indexFromDocument($request, $document);
+    }
+
+    public function indexFromUnitAssetDocument(Request $request, InfrastructureUnit $unit, InfrastructureAsset $asset, InfrastructureDocument $document, InfrastructureRecord $record){
+        return $this->indexFromDocument($request, $document);
+    }
+
     // + ================================================ +
     // + -------------- SHOW METHODS -------------------- +
 
