@@ -215,6 +215,12 @@ class InfrastructureRecord extends Model
                 'asset' => InfrastructureAsset::mapResourceShow($request, $model->targetable->asset),
                 'document' => InfrastructureDocument::mapResourceShow($request, $model->targetable),
             ]);
+
+            if ( !is_null($properties['asset']) ) {
+                $properties['jenis'] = 'Iya';
+            } else {
+                $properties['jenis'] = 'Tidak';
+            }
         } 
 
         return array_merge(
