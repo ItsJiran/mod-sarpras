@@ -182,7 +182,6 @@ export default {
 				current_route_name_clean = current_route_name_clean.replaceAll(method,'');
 			
 			let redirect_to = current_route_name_clean + name;
-			console.log(redirect_to);
 			return this.$router.push({ name : redirect_to });
 		},
 		convertToDraft : function (record,data) {

@@ -138,7 +138,7 @@ export default {
 
 			for ( let method of methods ) 
 				route_name = route_name.replaceAll('-' + method,'');
-			
+
 			return route_name == name;
 		}
 	}

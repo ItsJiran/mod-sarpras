@@ -345,8 +345,7 @@ class InfrastructureRecordNoteUsed extends Model
 
             DB::connection($model->connection)->commit();
 
-            $model->name = $returned_name;
-            return new RecordNoteUsedResource($model);
+            return new RecordNoteUsedResource($model->target);
          } catch (\Exception $e) {
             DB::connection($model->connection)->rollBack();
 
