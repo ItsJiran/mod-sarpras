@@ -73,9 +73,15 @@ class InfrastructureRecordController extends Controller
     {        
         Gate::authorize('view', InfrastructureRecord::class);
         $request = $this->determineRouteType($request);
+
+        if($request->type == 'tax')
+            $eloqueint = $asset->taxes();
+
+        if($request->type == 'maintenance')
+            $eloqueint = $asset->maintenances();
+
         return new RecordCollection(
-            $asset->taxes()
-            ->applyMode($request->mode)
+            $eloqueint->applyMode($request->mode)
             ->filter($request->filters)
             ->search($request->findBy)
             ->sortBy($request->sortBy)
@@ -86,9 +92,15 @@ class InfrastructureRecordController extends Controller
     public function indexFromDocument(Request $request, InfrastructureDocument $document){                
         Gate::authorize('view', InfrastructureRecord::class);
         $request = $this->determineRouteType($request);
+
+        if($request->type == 'tax')
+            $eloqueint = $document->taxes();
+
+        if($request->type == 'maintenance')
+            $eloqueint = $document->maintenances();
+
         return new RecordCollection(
-            $document->taxes()
-            ->applyMode($request->mode)
+            $eloqueint->applyMode($request->mode)
             ->filter($request->filters)
             ->search($request->findBy)
             ->sortBy($request->sortBy)

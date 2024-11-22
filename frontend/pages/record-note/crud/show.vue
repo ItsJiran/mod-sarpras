@@ -1,6 +1,6 @@
 <template>
 
-	<form-show with-helpdesk hide-edit>
+	<form-show with-helpdesk hide-edit hide-update>
 		<template v-slot:toolbar="{ record, store }">
 			<v-btn icon v-if="record.status_step == '1' && record.is_creator">
 				<v-icon @click="redirectPage( 'edit' )">
