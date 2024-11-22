@@ -144,7 +144,7 @@ class InfrastructureRecordController extends Controller
     public function storeFromDocument(Request $request, InfrastructureDocument $document)
     {
         $request = InfrastructureRecord::mergeRequestDocument($request, $document);
-        return InfrastructureRecord::storeRecord($request);
+        return $this->store($request);
     }
 
     public function storeFromAssetDocument(Request $request, InfrastructureAsset $asset, InfrastructureDocument $document)
