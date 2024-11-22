@@ -113,8 +113,11 @@ export default {
 				contentType: "multipart/form-data",
 			})
 			.then((response) => {
-				console.log(response);
-				return this.$router.back();
+                store.openFormData();
+
+                store.snackbar.color = "green";
+                store.snackbar.text = `tambah data ${store.pageKey} berhasil`;
+                store.snackbar.state = true;
 			});
 		}
 	}

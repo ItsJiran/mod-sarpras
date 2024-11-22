@@ -255,11 +255,13 @@ class InfrastructureRecordNote extends Model
             ['status','=','draft'],
         ];
 
-        $onGoingRecord = self::where($wherePending)
-        ->orWhere($whereDraft)
+        $wherePendingRecord = self::where($wherePending)
         ->first();
 
-        return !is_null($onGoingRecord);
+        $whereDraftRecord = self::where($whereDraft)
+        ->first();
+
+        return !is_null($wherePendingRecord) || !is_null($whereDraftRecord);
     }
 
     // +------------------------------
@@ -390,6 +392,13 @@ class InfrastructureRecordNote extends Model
 
     public static function mapDeleteRequestValid(Request $request, InfrastructureRecord $record, $model) : JsonResponse | null
     {
+        if ( ( $model->status != 'pending' || $model->status != 'draft' ) ) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Tidak bisa menghapus pembayaran yang sudah selesai'
+            ], 500);
+        }
+
         if ( $record->isRecordLog() )
             return self::mapDeleteRequestLog($request, $record, $model);
 
