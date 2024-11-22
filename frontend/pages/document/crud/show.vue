@@ -160,8 +160,6 @@ export default {
 			
 			let redirect_to = current_route_name_clean + name;
 
-			console.log(redirect_to);
-
 			return this.$router.push({ name : redirect_to });
 		}
 	},

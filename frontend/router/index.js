@@ -517,6 +517,90 @@ export default {
 		},
 
 		{
+			path: "unit/:unit/asset/:asset/document/:document/maintenance/:record/note",
+			component: () =>
+				import(
+					/* webpackChunkName: "infrastructure" */ "@modules/infrastructure/frontend/pages/record-note/index.vue"
+				),
+			children: [
+				{
+					path: "",
+					name: "infrastructure-unit-asset-document-maintenance-note",
+					component: () =>
+						import(
+							/* webpackChunkName: "infrastructure" */ "@modules/infrastructure/frontend/pages/record-note/crud/data.vue"
+						),
+				},
+				{
+					path: "create",
+					name: "infrastructure-unit-asset-document-maintenance-note-create",
+					component: () =>
+						import(
+							/* webpackChunkName: "infrastructure" */ "@modules/infrastructure/frontend/pages/record-note/crud/create.vue"
+						),
+				},
+				{
+					path: ":note/show",
+					name: "infrastructure-unit-asset-document-maintenance-note-show",
+					component: () =>
+						import(
+							/* webpackChunkName: "infrastructure" */ "@modules/infrastructure/frontend/pages/record-note/crud/show.vue"
+						),
+				},
+				{
+					path: ":note/edit",
+					name: "infrastructure-unit-asset-document-maintenance-note-edit",
+					component: () =>
+						import(
+							/* webpackChunkName: "infrastructure" */ "@modules/infrastructure/frontend/pages/record-note/crud/edit.vue"
+						),
+				},			
+			]
+		},
+
+		{
+			path: "unit/:unit/asset/:asset/document/:document/maintenance/:record/note/:note/used",
+			component: () =>
+				import(
+					/* webpackChunkName: "infrastructure" */ "@modules/infrastructure/frontend/pages/record-note-used/index.vue"
+				),
+			children: [
+				{
+					path: "",
+					name: "infrastructure-unit-asset-document-maintenance-note-used",
+					component: () =>
+						import(
+							/* webpackChunkName: "infrastructure" */ "@modules/infrastructure/frontend/pages/record-note-used/crud/data.vue"
+						),
+				},
+				{
+					path: "create",
+					name: "infrastructure-unit-asset-document-maintenance-note-used-create",
+					component: () =>
+						import(
+							/* webpackChunkName: "infrastructure" */ "@modules/infrastructure/frontend/pages/record-note-used/crud/create.vue"
+						),
+				},
+				{
+					path: ":used/show",
+					name: "infrastructure-unit-asset-document-maintenance-note-used-show",
+					component: () =>
+						import(
+							/* webpackChunkName: "infrastructure" */ "@modules/infrastructure/frontend/pages/record-note-used/crud/show.vue"
+						),
+				},
+				{
+					path: ":used/edit",
+					name: "infrastructure-unit-asset-document-maintenance-note-used-edit",
+					component: () =>
+						import(
+							/* webpackChunkName: "infrastructure" */ "@modules/infrastructure/frontend/pages/record-note-used/crud/edit.vue"
+						),
+				},			
+			]
+		},
+
+		{
 			path: "unit/:unit/asset/:asset/document/:document/tax",
 			component: () =>
 				import(
@@ -553,6 +637,90 @@ export default {
 					component: () =>
 						import(
 							/* webpackChunkName: "infrastructure" */ "@modules/infrastructure/frontend/pages/record/crud/edit.vue"
+						),
+				},			
+			]
+		},
+
+		{
+			path: "unit/:unit/asset/:asset/document/:document/tax/:record/note",
+			component: () =>
+				import(
+					/* webpackChunkName: "infrastructure" */ "@modules/infrastructure/frontend/pages/record-note/index.vue"
+				),
+			children: [
+				{
+					path: "",
+					name: "infrastructure-unit-asset-document-tax-note",
+					component: () =>
+						import(
+							/* webpackChunkName: "infrastructure" */ "@modules/infrastructure/frontend/pages/record-note/crud/data.vue"
+						),
+				},
+				{
+					path: "create",
+					name: "infrastructure-unit-asset-document-tax-note-create",
+					component: () =>
+						import(
+							/* webpackChunkName: "infrastructure" */ "@modules/infrastructure/frontend/pages/record-note/crud/create.vue"
+						),
+				},
+				{
+					path: ":note/show",
+					name: "infrastructure-unit-asset-document-tax-note-show",
+					component: () =>
+						import(
+							/* webpackChunkName: "infrastructure" */ "@modules/infrastructure/frontend/pages/record-note/crud/show.vue"
+						),
+				},
+				{
+					path: ":note/edit",
+					name: "infrastructure-unit-asset-document-tax-note-edit",
+					component: () =>
+						import(
+							/* webpackChunkName: "infrastructure" */ "@modules/infrastructure/frontend/pages/record-note/crud/edit.vue"
+						),
+				},			
+			]
+		},
+
+		{
+			path: "unit/:unit/asset/:asset/document/:document/maintenance/:record/note/:note/used",
+			component: () =>
+				import(
+					/* webpackChunkName: "infrastructure" */ "@modules/infrastructure/frontend/pages/record-note-used/index.vue"
+				),
+			children: [
+				{
+					path: "",
+					name: "infrastructure-unit-asset-document-maintenance-note-used",
+					component: () =>
+						import(
+							/* webpackChunkName: "infrastructure" */ "@modules/infrastructure/frontend/pages/record-note-used/crud/data.vue"
+						),
+				},
+				{
+					path: "create",
+					name: "infrastructure-unit-asset-document-maintenance-note-used-create",
+					component: () =>
+						import(
+							/* webpackChunkName: "infrastructure" */ "@modules/infrastructure/frontend/pages/record-note-used/crud/create.vue"
+						),
+				},
+				{
+					path: ":used/show",
+					name: "infrastructure-unit-asset-document-maintenance-note-used-show",
+					component: () =>
+						import(
+							/* webpackChunkName: "infrastructure" */ "@modules/infrastructure/frontend/pages/record-note-used/crud/show.vue"
+						),
+				},
+				{
+					path: ":used/edit",
+					name: "infrastructure-unit-asset-document-maintenance-note-used-edit",
+					component: () =>
+						import(
+							/* webpackChunkName: "infrastructure" */ "@modules/infrastructure/frontend/pages/record-note-used/crud/edit.vue"
 						),
 				},			
 			]

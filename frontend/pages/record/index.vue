@@ -87,8 +87,8 @@
 		page-name="infrastructure-asset-document-maintenance"
 		page-key="record"
 
-		parent-name="infrastructure-asset"
-		parent-key="asset"
+		parent-name="infrastructure-asset-document"
+		parent-key="document"
 	></page-crud>
 
 	<page-crud v-if=" checkRoute('infrastructure-document-maintenance') "	

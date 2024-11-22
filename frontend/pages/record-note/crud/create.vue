@@ -113,6 +113,8 @@ export default {
 				contentType: "multipart/form-data",
 			})
 			.then((response) => {
+                store.records.push(response);
+
                 store.openFormData();
 
                 store.snackbar.color = "green";
