@@ -165,6 +165,13 @@ Route::controller(InfrastructureRecordController::class)->group(function () {
         Route::put('unit/{unit}/asset/{asset}/tax/{record}','updateFromUnitAsset');
         Route::put('unit/{unit}/document/{document}/tax/{record}','updateFromUnitDocument');
         Route::put('unit/{unit}/asset/{asset}/document/{document}/tax/{record}','updateFromUnitAssetDocument');
+
+        Route::put('asset/{asset}/tax/{record}/restore','restoreFromAsset');
+        Route::put('asset/{asset}/document/{document}/tax/{record}/restore','restoreFromAssetDocument');
+        Route::put('document/{document}/tax/{record}/restore','restoreFromDocument');
+        Route::put('unit/{unit}/asset/{asset}/tax/{record}/restore','restoreFromUnitAsset');
+        Route::put('unit/{unit}/document/{document}/tax/{record}/restore','restoreFromUnitDocument');
+        Route::put('unit/{unit}/asset/{asset}/document/{document}/tax/{record}/restore','restoreFromUnitAssetDocument');
         
         Route::delete('asset/{asset}/tax/{record}','destroyFromAsset');
         Route::delete('asset/{asset}/document/{document}/tax/{record}','destroyFromAssetDocument');
@@ -173,6 +180,12 @@ Route::controller(InfrastructureRecordController::class)->group(function () {
         Route::delete('unit/{unit}/document/{document}/tax/{record}','destroyFromUnitDocument');
         Route::delete('unit/{unit}/asset/{asset}/document/{document}/tax/{record}','destroyFromUnitAssetDocument');
 
+        Route::delete('asset/{asset}/tax/{record}/force','forceDeleteFromAsset');
+        Route::delete('asset/{asset}/document/{document}/tax/{record}/force','forceDeleteFromAssetDocument');
+        Route::delete('document/{document}/tax/{record}/force','forceDeleteFromDocument');
+        Route::delete('unit/{unit}/asset/{asset}/tax/{record}/force','forceDeleteFromUnitAsset');
+        Route::delete('unit/{unit}/document/{document}/tax/{record}/force','forceDeleteFromUnitDocument');
+        Route::delete('unit/{unit}/asset/{asset}/document/{document}/tax/{record}/force','forceDeleteFromUnitAssetDocument');
     });
 });
 
@@ -205,12 +218,62 @@ Route::controller(InfrastructureRecordNoteController::class)->group(function () 
         Route::put( 'tax/{record}/note/{note}/restore', 'restore' );
         Route::delete( 'tax/{record}/note/{note}/force', 'forceDelete' );
 
+        /// GET INDEX
         Route::get('asset/{asset}/tax/{record}/note','indexFromAsset');
         Route::get('asset/{asset}/document/{document}/tax/{record}/note','indexFromAssetDocument');
         Route::get('document/{document}/tax/{record}/note','indexFromDocument');
         Route::get('unit/{unit}/asset/{asset}/tax/{record}/note','indexFromUnitAsset');
         Route::get('unit/{unit}/document/{document}/tax/{record}/note','indexFromUnitDocument');
         Route::get('unit/{unit}/asset/{asset}/document/{document}/tax/{record}/note','indexFromUnitAssetDocument');
+
+        // POST STORE
+        Route::post('asset/{asset}/tax/{record}/note','storeFromAsset');
+        Route::post('asset/{asset}/document/{document}/tax/{record}/note','storeFromAssetDocument');
+        Route::post('document/{document}/tax/{record}/note','storeFromDocument');
+        Route::post('unit/{unit}/asset/{asset}/tax/{record}/note','storeFromUnitAsset');
+        Route::post('unit/{unit}/document/{document}/tax/{record}/note','storeFromUnitDocument');
+        Route::post('unit/{unit}/asset/{asset}/document/{document}/tax/{record}/note','storeFromUnitAssetDocument');
+
+        // GET SHOW
+        Route::get('asset/{asset}/tax/{record}/note/{note}','showFromAsset');
+        Route::get('asset/{asset}/document/{document}/tax/{record}/note/{note}','showFromAssetDocument');
+        Route::get('document/{document}/tax/{record}/note/{note}','showFromDocument');
+        Route::get('unit/{unit}/asset/{asset}/tax/{record}/note/{note}','showFromUnitAsset');
+        Route::get('unit/{unit}/document/{document}/tax/{record}/note/{note}','showFromUnitDocument');
+        Route::get('unit/{unit}/asset/{asset}/document/{document}/tax/{record}/note/{note}','showFromUnitAssetDocument');
+
+        // POST UPDATE MULTIPLATFORM
+        Route::post('asset/{asset}/tax/{record}/note/{note}/update','updateFromAsset');
+        Route::post('asset/{asset}/document/{document}/tax/{record}/note/{note}/update','updateFromAssetDocument');
+        Route::post('document/{document}/tax/{record}/note/{note}/update','updateFromDocument');
+        Route::post('unit/{unit}/asset/{asset}/tax/{record}/note/{note}/update','updateFromUnitAsset');
+        Route::post('unit/{unit}/document/{document}/tax/{record}/note/{note}/update','updateFromUnitDocument');
+        Route::post('unit/{unit}/asset/{asset}/document/{document}/tax/{record}/note/{note}/update','updateFromUnitAssetDocument');
+
+        // DELETE
+        Route::delete('asset/{asset}/tax/{record}/note/{note}','destroyFromAsset');
+        Route::delete('asset/{asset}/document/{document}/tax/{record}/note/{note}','destroyFromAssetDocument');
+        Route::delete('document/{document}/tax/{record}/note/{note}','destroyFromDocument');
+        Route::delete('unit/{unit}/asset/{asset}/tax/{record}/note/{note}','destroyFromUnitAsset');
+        Route::delete('unit/{unit}/document/{document}/tax/{record}/note/{note}','destroyFromUnitDocument');
+        Route::delete('unit/{unit}/asset/{asset}/document/{document}/tax/{record}/note/{note}','destroyFromUnitAssetDocument');
+
+        // RESTORE
+        Route::put('asset/{asset}/tax/{record}/note/{note}/restore','restoreFromAsset');
+        Route::put('asset/{asset}/document/{document}/tax/{record}/note/{note}/restore','restoreFromAssetDocument');
+        Route::put('document/{document}/tax/{record}/note/{note}/restore','restoreFromDocument');
+        Route::put('unit/{unit}/asset/{asset}/tax/{record}/note/{note}/restore','restoreFromUnitAsset');
+        Route::put('unit/{unit}/document/{document}/tax/{record}/note/{note}/restore','restoreFromUnitDocument');
+        Route::put('unit/{unit}/asset/{asset}/document/{document}/tax/{record}/note/{note}/restore','restoreFromUnitAssetDocument');
+
+        // RESTORE
+        Route::delete('asset/{asset}/tax/{record}/note/{note}/force','forceDeleteFromAsset');
+        Route::delete('asset/{asset}/document/{document}/tax/{record}/note/{note}/force','forceDeleteFromAssetDocument');
+        Route::delete('document/{document}/tax/{record}/note/{note}/force','forceDeleteFromDocument');
+        Route::delete('unit/{unit}/asset/{asset}/tax/{record}/note/{note}/force','forceDeleteFromUnitAsset');
+        Route::delete('unit/{unit}/document/{document}/tax/{record}/note/{note}/force','forceDeleteFromUnitDocument');
+        Route::delete('unit/{unit}/asset/{asset}/document/{document}/tax/{record}/note/{note}/force','forceDeleteFromUnitAssetDocument');
+    
     });
 
     Route::group(['as' => 'maintenance::'], function(){
@@ -222,12 +285,61 @@ Route::controller(InfrastructureRecordNoteController::class)->group(function () 
         Route::put( 'maintenance/{record}/note/{note}/restore', 'restore' );
         Route::delete( 'maintenance/{record}/note/{note}/force', 'forceDelete' );
 
-        Route::get('asset/{asset}/tax/{record}/note','indexFromAsset');
-        Route::get('asset/{asset}/document/{document}/tax/{record}/note','indexFromAssetDocument');
-        Route::get('document/{document}/tax/{record}/note','indexFromDocument');
-        Route::get('unit/{unit}/asset/{asset}/tax/{record}/note','indexFromUnitAsset');
-        Route::get('unit/{unit}/document/{document}/tax/{record}/note','indexFromUnitDocument');
-        Route::get('unit/{unit}/asset/{asset}/document/{document}/tax/{record}/note','indexFromUnitAssetDocument');
+        /// GET INDEX
+        Route::get('asset/{asset}/maintenance/{record}/note','indexFromAsset');
+        Route::get('asset/{asset}/document/{document}/maintenance/{record}/note','indexFromAssetDocument');
+        Route::get('document/{document}/maintenance/{record}/note','indexFromDocument');
+        Route::get('unit/{unit}/asset/{asset}/maintenance/{record}/note','indexFromUnitAsset');
+        Route::get('unit/{unit}/document/{document}/maintenance/{record}/note','indexFromUnitDocument');
+        Route::get('unit/{unit}/asset/{asset}/document/{document}/maintenance/{record}/note','indexFromUnitAssetDocument');
+
+        // POST STORE
+        Route::post('asset/{asset}/maintenance/{record}/note','storeFromAsset');
+        Route::post('asset/{asset}/document/{document}/maintenance/{record}/note','storeFromAssetDocument');
+        Route::post('document/{document}/maintenance/{record}/note','storeFromDocument');
+        Route::post('unit/{unit}/asset/{asset}/maintenance/{record}/note','storeFromUnitAsset');
+        Route::post('unit/{unit}/document/{document}/maintenance/{record}/note','storeFromUnitDocument');
+        Route::post('unit/{unit}/asset/{asset}/document/{document}/maintenance/{record}/note','storeFromUnitAssetDocument');
+
+        // GET SHOW
+        Route::get('asset/{asset}/maintenance/{record}/note/{note}','showFromAsset');
+        Route::get('asset/{asset}/document/{document}/maintenance/{record}/note/{note}','showFromAssetDocument');
+        Route::get('document/{document}/maintenance/{record}/note/{note}','showFromDocument');
+        Route::get('unit/{unit}/asset/{asset}/maintenance/{record}/note/{note}','showFromUnitAsset');
+        Route::get('unit/{unit}/document/{document}/maintenance/{record}/note/{note}','showFromUnitDocument');
+        Route::get('unit/{unit}/asset/{asset}/document/{document}/maintenance/{record}/note/{note}','showFromUnitAssetDocument');
+
+        // POST UPDATE MULTIPLATFORM
+        Route::post('asset/{asset}/maintenance/{record}/note/{note}/update','updateFromAsset');
+        Route::post('asset/{asset}/document/{document}/maintenance/{record}/note/{note}/update','updateFromAssetDocument');
+        Route::post('document/{document}/maintenance/{record}/note/{note}/update','updateFromDocument');
+        Route::post('unit/{unit}/asset/{asset}/maintenance/{record}/note/{note}/update','updateFromUnitAsset');
+        Route::post('unit/{unit}/document/{document}/maintenance/{record}/note/{note}/update','updateFromUnitDocument');
+        Route::post('unit/{unit}/asset/{asset}/document/{document}/maintenance/{record}/note/{note}/update','updateFromUnitAssetDocument');
+
+        // DELETE
+        Route::delete('asset/{asset}/maintenance/{record}/note/{note}','destroyFromAsset');
+        Route::delete('asset/{asset}/document/{document}/maintenance/{record}/note/{note}','destroyFromAssetDocument');
+        Route::delete('document/{document}/maintenance/{record}/note/{note}','destroyFromDocument');
+        Route::delete('unit/{unit}/asset/{asset}/maintenance/{record}/note/{note}','destroyFromUnitAsset');
+        Route::delete('unit/{unit}/document/{document}/maintenance/{record}/note/{note}','destroyFromUnitDocument');
+        Route::delete('unit/{unit}/asset/{asset}/document/{document}/maintenance/{record}/note/{note}','destroyFromUnitAssetDocument');
+
+        // RESTORE
+        Route::put('asset/{asset}/maintenance/{record}/note/{note}/restore','restoreFromAsset');
+        Route::put('asset/{asset}/document/{document}/maintenance/{record}/note/{note}/restore','restoreFromAssetDocument');
+        Route::put('document/{document}/maintenance/{record}/note/{note}/restore','restoreFromDocument');
+        Route::put('unit/{unit}/asset/{asset}/maintenance/{record}/note/{note}/restore','restoreFromUnitAsset');
+        Route::put('unit/{unit}/document/{document}/maintenance/{record}/note/{note}/restore','restoreFromUnitDocument');
+        Route::put('unit/{unit}/asset/{asset}/document/{document}/maintenance/{record}/note/{note}/restore','restoreFromUnitAssetDocument');
+
+        // RESTORE
+        Route::delete('asset/{asset}/maintenance/{record}/note/{note}/force','forceDeleteFromAsset');
+        Route::delete('asset/{asset}/document/{document}/maintenance/{record}/note/{note}/force','forceDeleteFromAssetDocument');
+        Route::delete('document/{document}/maintenance/{record}/note/{note}/force','forceDeleteFromDocument');
+        Route::delete('unit/{unit}/asset/{asset}/maintenance/{record}/note/{note}/force','forceDeleteFromUnitAsset');
+        Route::delete('unit/{unit}/document/{document}/maintenance/{record}/note/{note}/force','forceDeleteFromUnitDocument');
+        Route::delete('unit/{unit}/asset/{asset}/document/{document}/maintenance/{record}/note/{note}/force','forceDeleteFromUnitAssetDocument');
     });
 });
 
@@ -252,6 +364,55 @@ Route::controller(InfrastructureRecordNoteUsedController::class)->group(function
         Route::delete( 'tax/{record}/note/{note}/used/{used}', 'destroy' );
         Route::put( 'tax/{record}/note/{note}/used/{used}/restore', 'restore' );
         Route::delete( 'tax/{record}/note/{note}/used/{used}/force', 'forceDelete' );
+
+        // GET INDEX
+        Route::get('asset/{asset}/tax/{record}/note/{note}/used','indexFromAsset');
+        Route::get('asset/{asset}/document/{document}/tax/{record}/note/{note}/used','indexFromAssetDocument');
+        Route::get('document/{document}/tax/{record}/note/{note}/used','indexFromDocument');
+        Route::get('unit/{unit}/asset/{asset}/tax/{record}/note/{note}/used','indexFromUnitAsset');
+        Route::get('unit/{unit}/document/{document}/tax/{record}/note/{note}/used','indexFromUnitDocument');
+        Route::get('unit/{unit}/asset/{asset}/document/{document}/tax/{record}/note/{note}/used','indexFromUnitAssetDocument');
+
+        // POST STORE
+        Route::post('asset/{asset}/tax/{record}/note/{note}/used','storeFromAsset');
+        Route::post('asset/{asset}/document/{document}/tax/{record}/note/{note}/used','storeFromAssetDocument');
+        Route::post('document/{document}/tax/{record}/note/{note}/used','storeFromDocument');
+        Route::post('unit/{unit}/asset/{asset}/tax/{record}/note/{note}/used','storeFromUnitAsset');
+        Route::post('unit/{unit}/document/{document}/tax/{record}/note/{note}/used','storeFromUnitDocument');
+        Route::post('unit/{unit}/asset/{asset}/document/{document}/tax/{record}/note/{note}/used','storeFromUnitAssetDocument');
+
+        // GET SHOW
+        Route::get('asset/{asset}/tax/{record}/note/{note}/used/{used}','showFromAsset');
+        Route::get('asset/{asset}/document/{document}/tax/{record}/note/{note}/used/{used}','showFromAssetDocument');
+        Route::get('document/{document}/tax/{record}/note/{note}/used/{used}','showFromDocument');
+        Route::get('unit/{unit}/asset/{asset}/tax/{record}/note/{note}/used/{used}','showFromUnitAsset');
+        Route::get('unit/{unit}/document/{document}/tax/{record}/note/{note}/used/{used}','showFromUnitDocument');
+        Route::get('unit/{unit}/asset/{asset}/document/{document}/tax/{record}/note/{note}/used/{used}','showFromUnitAssetDocument');
+
+        // DELETE UPDATE
+        Route::delete('asset/{asset}/tax/{record}/note/{note}/used/{used}','destroyFromAsset');
+        Route::delete('asset/{asset}/document/{document}/tax/{record}/note/{note}/used/{used}','destroyFromAssetDocument');
+        Route::delete('document/{document}/tax/{record}/note/{note}/used/{used}','destroyFromDocument');
+        Route::delete('unit/{unit}/asset/{asset}/tax/{record}/note/{note}/used/{used}','destroyFromUnitAsset');
+        Route::delete('unit/{unit}/document/{document}/tax/{record}/note/{note}/used/{used}','destroyFromUnitDocument');
+        Route::delete('unit/{unit}/asset/{asset}/document/{document}/tax/{record}/note/{note}/used/{used}','destroyFromUnitAssetDocument');
+
+        // PUT RESTORE
+        Route::put('asset/{asset}/tax/{record}/note/{note}/used/{used}/restore','restoreFromAsset');
+        Route::put('asset/{asset}/document/{document}/tax/{record}/note/{note}/used/{used}/restore','restoreFromAssetDocument');
+        Route::put('document/{document}/tax/{record}/note/{note}/used/{used}/restore','restoreFromDocument');
+        Route::put('unit/{unit}/asset/{asset}/tax/{record}/note/{note}/used/{used}/restore','restoreFromUnitAsset');
+        Route::put('unit/{unit}/document/{document}/tax/{record}/note/{note}/used/{used}/restore','restoreFromUnitDocument');
+        Route::put('unit/{unit}/asset/{asset}/document/{document}/tax/{record}/note/{note}/used/{used}/restore','restoreFromUnitAssetDocument');
+
+        // FORCE DELETE
+        Route::delete('asset/{asset}/tax/{record}/note/{note}/used/{used}/force','forceDeleteFromAsset');
+        Route::delete('asset/{asset}/document/{document}/tax/{record}/note/{note}/used/{used}/force','forceDeleteFromAssetDocument');
+        Route::delete('document/{document}/tax/{record}/note/{note}/used/{used}/force','forceDeleteFromDocument');
+        Route::delete('unit/{unit}/asset/{asset}/tax/{record}/note/{note}/used/{used}/force','forceDeleteFromUnitAsset');
+        Route::delete('unit/{unit}/document/{document}/tax/{record}/note/{note}/used/{used}/force','forceDeleteFromUnitDocument');
+        Route::delete('unit/{unit}/asset/{asset}/document/{document}/tax/{record}/note/{note}/used/{used}/force','forceDeleteFromUnitAssetDocument');
+
     });
     
     Route::group(['as' => 'maintenance::'], function(){
@@ -262,5 +423,53 @@ Route::controller(InfrastructureRecordNoteUsedController::class)->group(function
         Route::delete( 'maintenance/{record}/note/{note}/used/{used}', 'destroy' );
         Route::put( 'maintenance/{record}/note/{note}/used/{used}/restore', 'restore' );
         Route::delete( 'maintenance/{record}/note/{note}/used/{used}/force', 'forceDelete' );
+
+        // GET INDEX
+        Route::get('asset/{asset}/maintenance/{record}/note/{note}/used','indexFromAsset');
+        Route::get('asset/{asset}/document/{document}/maintenance/{record}/note/{note}/used','indexFromAssetDocument');
+        Route::get('document/{document}/maintenance/{record}/note/{note}/used','indexFromDocument');
+        Route::get('unit/{unit}/asset/{asset}/maintenance/{record}/note/{note}/used','indexFromUnitAsset');
+        Route::get('unit/{unit}/document/{document}/maintenance/{record}/note/{note}/used','indexFromUnitDocument');
+        Route::get('unit/{unit}/asset/{asset}/document/{document}/maintenance/{record}/note/{note}/used','indexFromUnitAssetDocument');
+
+        // POST STORE
+        Route::post('asset/{asset}/maintenance/{record}/note/{note}/used','storeFromAsset');
+        Route::post('asset/{asset}/document/{document}/maintenance/{record}/note/{note}/used','storeFromAssetDocument');
+        Route::post('document/{document}/maintenance/{record}/note/{note}/used','storeFromDocument');
+        Route::post('unit/{unit}/asset/{asset}/maintenance/{record}/note/{note}/used','storeFromUnitAsset');
+        Route::post('unit/{unit}/document/{document}/maintenance/{record}/note/{note}/used','storeFromUnitDocument');
+        Route::post('unit/{unit}/asset/{asset}/document/{document}/maintenance/{record}/note/{note}/used','storeFromUnitAssetDocument');
+
+        // GET SHOW
+        Route::get('asset/{asset}/maintenance/{record}/note/{note}/used/{used}','showFromAsset');
+        Route::get('asset/{asset}/document/{document}/maintenance/{record}/note/{note}/used/{used}','showFromAssetDocument');
+        Route::get('document/{document}/maintenance/{record}/note/{note}/used/{used}','showFromDocument');
+        Route::get('unit/{unit}/asset/{asset}/maintenance/{record}/note/{note}/used/{used}','showFromUnitAsset');
+        Route::get('unit/{unit}/document/{document}/maintenance/{record}/note/{note}/used/{used}','showFromUnitDocument');
+        Route::get('unit/{unit}/asset/{asset}/document/{document}/maintenance/{record}/note/{note}/used/{used}','showFromUnitAssetDocument');
+
+        // DELETE UPDATE
+        Route::delete('asset/{asset}/maintenance/{record}/note/{note}/used/{used}','destroyFromAsset');
+        Route::delete('asset/{asset}/document/{document}/maintenance/{record}/note/{note}/used/{used}','destroyFromAssetDocument');
+        Route::delete('document/{document}/maintenance/{record}/note/{note}/used/{used}','destroyFromDocument');
+        Route::delete('unit/{unit}/asset/{asset}/maintenance/{record}/note/{note}/used/{used}','destroyFromUnitAsset');
+        Route::delete('unit/{unit}/document/{document}/maintenance/{record}/note/{note}/used/{used}','destroyFromUnitDocument');
+        Route::delete('unit/{unit}/asset/{asset}/document/{document}/maintenance/{record}/note/{note}/used/{used}','destroyFromUnitAssetDocument');
+
+        // PUT RESTORE
+        Route::put('asset/{asset}/maintenance/{record}/note/{note}/used/{used}/restore','restoreFromAsset');
+        Route::put('asset/{asset}/document/{document}/maintenance/{record}/note/{note}/used/{used}/restore','restoreFromAssetDocument');
+        Route::put('document/{document}/maintenance/{record}/note/{note}/used/{used}/restore','restoreFromDocument');
+        Route::put('unit/{unit}/asset/{asset}/maintenance/{record}/note/{note}/used/{used}/restore','restoreFromUnitAsset');
+        Route::put('unit/{unit}/document/{document}/maintenance/{record}/note/{note}/used/{used}/restore','restoreFromUnitDocument');
+        Route::put('unit/{unit}/asset/{asset}/document/{document}/maintenance/{record}/note/{note}/used/{used}/restore','restoreFromUnitAssetDocument');
+
+        // FORCE DELETE
+        Route::delete('asset/{asset}/maintenance/{record}/note/{note}/used/{used}/force','forceDeleteFromAsset');
+        Route::delete('asset/{asset}/document/{document}/maintenance/{record}/note/{note}/used/{used}/force','forceDeleteFromAssetDocument');
+        Route::delete('document/{document}/maintenance/{record}/note/{note}/used/{used}/force','forceDeleteFromDocument');
+        Route::delete('unit/{unit}/asset/{asset}/maintenance/{record}/note/{note}/used/{used}/force','forceDeleteFromUnitAsset');
+        Route::delete('unit/{unit}/document/{document}/maintenance/{record}/note/{note}/used/{used}/force','forceDeleteFromUnitDocument');
+        Route::delete('unit/{unit}/asset/{asset}/document/{document}/maintenance/{record}/note/{note}/used/{used}/force','forceDeleteFromUnitAssetDocument');
     });
 });

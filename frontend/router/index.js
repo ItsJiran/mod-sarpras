@@ -265,6 +265,48 @@ export default {
 		},
 
 		{
+			path: "unit/:unit/asset/:asset/maintenance/:record/note",
+			component: () =>
+				import(
+					/* webpackChunkName: "infrastructure" */ "@modules/infrastructure/frontend/pages/record-note/index.vue"
+				),
+			children: [
+				{
+					path: "",
+					name: "infrastructure-unit-asset-maintenance-note",
+					component: () =>
+						import(
+							/* webpackChunkName: "infrastructure" */ "@modules/infrastructure/frontend/pages/record-note/crud/data.vue"
+						),
+				},
+				{
+					path: "create",
+					name: "infrastructure-unit-asset-maintenance-note-create",
+					component: () =>
+						import(
+							/* webpackChunkName: "infrastructure" */ "@modules/infrastructure/frontend/pages/record-note/crud/create.vue"
+						),
+				},
+				{
+					path: ":note/show",
+					name: "infrastructure-unit-asset-maintenance-note-show",
+					component: () =>
+						import(
+							/* webpackChunkName: "infrastructure" */ "@modules/infrastructure/frontend/pages/record-note/crud/show.vue"
+						),
+				},
+				{
+					path: ":note/edit",
+					name: "infrastructure-unit-asset-maintenance-note-edit",
+					component: () =>
+						import(
+							/* webpackChunkName: "infrastructure" */ "@modules/infrastructure/frontend/pages/record-note/crud/edit.vue"
+						),
+				},			
+			]
+		},
+
+		{
 			path: "unit/:unit/asset/:asset/tax",
 			component: () =>
 				import(

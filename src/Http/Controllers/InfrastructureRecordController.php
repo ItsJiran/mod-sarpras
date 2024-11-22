@@ -254,43 +254,36 @@ class InfrastructureRecordController extends Controller
     public function destroy(InfrastructureRecord $record)
     {
         Gate::authorize('delete', $record);
-        $request = $this->determineRouteType($request);
         return InfrastructureRecord::deleteRecord($record);
     }
 
     public function destroyFromAsset(Request $request, InfrastructureAsset $asset, InfrastructureRecord $record)    
     {   
-        Gate::authorize('delete', $record);
         return $this->destroy($record);
     }
 
     public function destroyFromAssetDocument(Request $request, InfrastructureAsset $asset, InfrastructureDocument $document, InfrastructureRecord $record)    
     {   
-        Gate::authorize('delete', $record);
         return $this->destroy($record);
     }
 
     public function destroyFromDocument(Request $request, InfrastructureDocument $document, InfrastructureRecord $record)    
     {   
-        Gate::authorize('delete', $record);
         return $this->destroy($record);
     }
 
     public function destroyFromUnitAsset(Request $request, InfrastructureUnit $unit, InfrastructureAsset $asset, InfrastructureRecord $record)    
     {   
-        Gate::authorize('delete', $record);
         return $this->destroy($record);
     }
 
     public function destroyFromUnitAssetDocument(Request $request, InfrastructureUnit $unit, InfrastructureAsset $asset, InfrastructureDocument $document, InfrastructureRecord $record)    
     {   
-        Gate::authorize('delete', $record);
         return $this->destroy($record);
     }
 
     public function destroyFromUnitDocument(Request $request, InfrastructureUnit $unit, InfrastructureDocument $document, InfrastructureRecord $record)    
     {   
-        Gate::authorize('delete', $record);
         return $this->destroy($record);
     }
 
@@ -300,8 +293,37 @@ class InfrastructureRecordController extends Controller
     public function restore(InfrastructureRecord $record)
     {
         Gate::authorize('restore', $record);
-        $request = $this->determineRouteType($request);
         return InfrastructureRecord::restoreRecord($record);
+    }
+
+    public function restoreFromAsset(Request $request, InfrastructureAsset $asset, InfrastructureRecord $record)    
+    {   
+        return $this->restore($record);
+    }
+
+    public function restoreFromAssetDocument(Request $request, InfrastructureAsset $asset, InfrastructureDocument $document, InfrastructureRecord $record)    
+    {   
+        return $this->restore($record);
+    }
+
+    public function restoreFromDocument(Request $request, InfrastructureDocument $document, InfrastructureRecord $record)    
+    {   
+        return $this->restore($record);
+    }
+
+    public function restoreFromUnitAsset(Request $request, InfrastructureUnit $unit, InfrastructureAsset $asset, InfrastructureRecord $record)    
+    {   
+        return $this->restore($record);
+    }
+
+    public function restoreFromUnitAssetDocument(Request $request, InfrastructureUnit $unit, InfrastructureAsset $asset, InfrastructureDocument $document, InfrastructureRecord $record)    
+    {   
+        return $this->restore($record);
+    }
+
+    public function restoreFromUnitDocument(Request $request, InfrastructureUnit $unit, InfrastructureDocument $document, InfrastructureRecord $record)    
+    {   
+        return $this->restore($record);
     }
 
     // + ===================================
@@ -310,8 +332,37 @@ class InfrastructureRecordController extends Controller
     public function forceDelete(InfrastructureRecord $record)
     {
         Gate::authorize('destroy', $record);
-        $request = $this->determineRouteType($request);
         return InfrastructureRecord::destroyRecord($record);
+    }
+
+    public function forceDeleteFromAsset(Request $request, InfrastructureAsset $asset, InfrastructureRecord $record)    
+    {   
+        return $this->forceDelete($record);
+    }
+
+    public function forceDeleteFromAssetDocument(Request $request, InfrastructureAsset $asset, InfrastructureDocument $document, InfrastructureRecord $record)    
+    {   
+        return $this->forceDelete($record);
+    }
+
+    public function forceDeleteFromDocument(Request $request, InfrastructureDocument $document, InfrastructureRecord $record)    
+    {   
+        return $this->forceDelete($record);
+    }
+
+    public function forceDeleteFromUnitAsset(Request $request, InfrastructureUnit $unit, InfrastructureAsset $asset, InfrastructureRecord $record)    
+    {   
+        return $this->forceDelete($record);
+    }
+
+    public function forceDeleteFromUnitAssetDocument(Request $request, InfrastructureUnit $unit, InfrastructureAsset $asset, InfrastructureDocument $document, InfrastructureRecord $record)    
+    {   
+        return $this->forceDelete($record);
+    }
+
+    public function forceDeleteFromUnitDocument(Request $request, InfrastructureUnit $unit, InfrastructureDocument $document, InfrastructureRecord $record)    
+    {   
+        return $this->forceDelete($record);
     }
 
     // + ===================================

@@ -17,6 +17,7 @@ use Module\System\Traits\HasPageSetup;
 
 use Carbon\Carbon;
 
+use Module\Infrastructure\Models\InfrastructureRecordNoteUsed;
 use Module\Infrastructure\Models\InfrastructureRecordNote;
 use Module\Infrastructure\Models\InfrastructureRecordPeriodic;
 
@@ -630,6 +631,16 @@ class InfrastructureRecord extends Model
         DB::connection($model->connection)->beginTransaction();
 
         try {
+
+            // hapus notes dan notes used nya
+                
+            $notes = InfrastructureRecordNote::where('record_id',$model->id)->get();
+
+            foreach ($notes as $key => $note) {
+                InfrastructureRecordNoteUsed::where('note_id',$note->id)->delete();
+                $note->delete();
+            }
+
             $model->forceDelete();
 
             DB::connection($model->connection)->commit();
