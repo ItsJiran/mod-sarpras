@@ -112,7 +112,6 @@ class InfrastructureRecordNoteUsedController extends Controller
     public function show(Request $request, InfrastructureRecord $record, InfrastructureRecordNote $note, InfrastructureRecordNoteUsed $used)
     {
         Gate::authorize('show', InfrastructureRecordNoteUsed::class);
-        
         return new RecordNoteUsedShowResource($used);
     }
 
@@ -253,7 +252,7 @@ class InfrastructureRecordNoteUsedController extends Controller
         return $this->forceDeleteFromDocument($request, $document, $record, $note, $used);
     }
 
-        // + ===================================
+    // + ===================================
     // + ----------- UTILITIES
     // + ===================================
     public function determineRouteType(Request $request) : Request
