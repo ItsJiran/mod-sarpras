@@ -330,11 +330,13 @@ class InfrastructureRecordNoteUsed extends Model
                 $model->dibekukan = $request->dibekukan;
 
             if ($request['type'] == 'asset') {                
+                $returned_name = $request['asset']['name'];
                 $model->targetable_id = $request['asset']['id'];
                 $model->targetable_type = InfrastructureAsset::class;
             }   
 
             if ($request['type'] == 'document') {
+                $returned_name = $request['document']['name'];
                 $model->targetable_id = $request['document']['id'];
                 $model->targetable_type = InfrastructureDocument::class;
             }
@@ -343,6 +345,7 @@ class InfrastructureRecordNoteUsed extends Model
 
             DB::connection($model->connection)->commit();
 
+            $model->name = $returned_name;
             return new RecordNoteUsedResource($model);
          } catch (\Exception $e) {
             DB::connection($model->connection)->rollBack();
