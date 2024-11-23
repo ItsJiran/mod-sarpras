@@ -392,8 +392,7 @@ class InfrastructureRecordNote extends Model
 
     public static function mapDeleteRequestValid(Request $request, InfrastructureRecord $record, $model) : JsonResponse | null
     {
-        dd($model->status);
-        if ( ( $model->status != 'pending' || $model->status != 'draft' ) ) {
+        if ( ( $model->status != 'pending' && $model->status != 'draft' ) ) {
             return response()->json([
                 'success' => false,
                 'message' => 'Tidak bisa menghapus pembayaran yang sudah selesai'
@@ -415,6 +414,19 @@ class InfrastructureRecordNote extends Model
     public static function mapDeleteRequestPeriodic(Request $request, InfrastructureRecord $record, $model) : JsonResponse | null
     {
         return null;
+    }
+
+    // +------------------------------
+    // +------------ RESTORE REQUEST
+
+    public static function mapRestoreRequestValid(Request $request, InfrastructureRecord $record, $model) : JsonResponse | null
+    {
+        if ( self::isOngoing($request, $record) && $record->isRecordPeriodic() ) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Gagal mengembalikan data karena ada pajak yang masih berjalan..'
+            ], 500);
+        }
     }
 
     // +===============================================
