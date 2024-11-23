@@ -1002,7 +1002,7 @@ export default {
 						),
 				},
 				{
-					path: ":note/show",
+					path: ":used/show",
 					name: "infrastructure-unit-document-tax-note-used-show",
 					component: () =>
 						import(
@@ -1010,7 +1010,7 @@ export default {
 						),
 				},		
 				{
-					path: ":note/edit",
+					path: ":used/edit",
 					name: "infrastructure-unit-document-tax-note-used-edit",
 					component: () =>
 						import(
