@@ -54,6 +54,8 @@ Route::resource('document',InfrastructureDocumentController::class)->parameters(
     'document' => 'infrastructureDocument'
 ]);
 Route::delete('document/{document}/force',[InfrastructureDocumentController::class, 'forceDelete']);
+Route::put('document/{document}/restore',[InfrastructureDocumentController::class, 'restore']);
+Route::delete('document/{document}',[InfrastructureDocumentController::class, 'destroy']);
 
 Route::get('ref-document/combos/unit/{unit}',[InfrastructureDocumentController::class,'mapCombosOnlyUnit']);
 Route::get('ref-document/combos/unit/{unit}/asset/{asset}',[InfrastructureDocumentController::class,'mapCombosOnlyAsset']);
@@ -68,12 +70,24 @@ Route::get('unit/{unit}/document/{document}',[InfrastructureDocumentController::
 Route::get('unit/{unit}/document',[InfrastructureDocumentController::class, 'indexFromUnit']);
 
 Route::post('asset/{asset}/document',[InfrastructureDocumentController::class, 'storeFromAsset']);
-Route::post('unit/{unit}/asset/{asset}/document',[InfrastructureDocumentController::class, 'storeFromUnit']);
+Route::post('unit/{unit}/asset/{asset}/document',[InfrastructureDocumentController::class, 'storeFromUnitAsset']);
 Route::post('unit/{unit}/document',[InfrastructureDocumentController::class, 'storeFromUnit']);
 
 Route::put('asset/{asset}/document/{document}',[InfrastructureDocumentController::class, 'updateFromAsset']);
-Route::put('unit/{unit}/asset/{asset}/document/{document}',[InfrastructureDocumentController::class, 'updateFromUnit']);
+Route::put('unit/{unit}/asset/{asset}/document/{document}',[InfrastructureDocumentController::class, 'updateFromUnitAsset']);
+Route::put('unit/{unit}/document/{document}',[InfrastructureDocumentController::class, 'updateFromUnit']);
 
+Route::put('asset/{asset}/document/{document}/restore',[InfrastructureDocumentController::class, 'restoreFromAsset']);
+Route::put('unit/{unit}/asset/{asset}/document/{document}/restore',[InfrastructureDocumentController::class, 'restoreFromUnitAsset']);
+Route::put('unit/{unit}/document/{document}/restore',[InfrastructureDocumentController::class, 'restoreFromUnit']);
+
+Route::delete('asset/{asset}/document/{document}',[InfrastructureDocumentController::class, 'destroyFromAsset']);
+Route::delete('unit/{unit}/asset/{asset}/document/{document}',[InfrastructureDocumentController::class, 'destroyFromUnitAsset']);
+Route::delete('unit/{unit}/document/{document}',[InfrastructureDocumentController::class, 'destroyFromUnit']);
+
+Route::delete('asset/{asset}/document/{document}/force',[InfrastructureDocumentController::class, 'forceDeleteFromAsset']);
+Route::delete('unit/{unit}/asset/{asset}/document/{document}/force',[InfrastructureDocumentController::class, 'forceDeleteFromUnitAsset']);
+Route::delete('unit/{unit}/document/{document}/force',[InfrastructureDocumentController::class, 'forceDeleteFromUnit']);
 
 // +-----------------------------------
 // +-- from resource module tax

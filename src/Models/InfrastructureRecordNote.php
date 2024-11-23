@@ -392,6 +392,7 @@ class InfrastructureRecordNote extends Model
 
     public static function mapDeleteRequestValid(Request $request, InfrastructureRecord $record, $model) : JsonResponse | null
     {
+        dd($model->status);
         if ( ( $model->status != 'pending' || $model->status != 'draft' ) ) {
             return response()->json([
                 'success' => false,

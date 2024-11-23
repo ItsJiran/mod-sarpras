@@ -169,7 +169,7 @@ class InfrastructureRecordNoteController extends Controller
         Gate::authorize('update', $note);
 
         $request->validate( InfrastructureRecordNote::mapUpdateRequest($request, $record) );
-        $isResponseValid = InfrastructureRecordNote::mapUpdateRequestValid($request, $record, $record);
+        $isResponseValid = InfrastructureRecordNote::mapUpdateRequestValid($request, $record, $note);
 
         if ( !is_null($isResponseValid) ) {
             return $isResponseValid;   
@@ -211,13 +211,14 @@ class InfrastructureRecordNoteController extends Controller
     {
         Gate::authorize('delete', $note);
 
-        $isResponseValid = InfrastructureRecordNote::mapDeleteRequestValid($request, $record, $record);
+        $isResponseValid = InfrastructureRecordNote::mapDeleteRequestValid($request, $record, $note);
 
         if ( !is_null($isResponseValid) ) {
             return $isResponseValid;   
         }
 
-        return InfrastructureRecordNote::deleteRecord($note);
+
+        return InfrastructureRecordNote::deleteRecord($request, $record, $note);
     }
 
     public function destroyFromAsset(Request $request, InfrastructureAsset $asset, InfrastructureRecord $record, InfrastructureRecordNote $note)

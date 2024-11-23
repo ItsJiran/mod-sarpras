@@ -80,12 +80,10 @@ class InfrastructureDocumentController extends Controller
         );
     }    
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request $request
-     * @return \Illuminate\Http\Response
-     */
+    // + ===========================================
+    // + ----------- STORE METHODS
+    // + ===========================================
+
     public function store(Request $request)
     {
         Gate::authorize('create', InfrastructureDocument::class);
@@ -128,12 +126,7 @@ class InfrastructureDocumentController extends Controller
         return InfrastructureDocument::storeRecord($request, $type_model_class);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request $request
-     * @return \Illuminate\Http\Response
-     */
+
     public function storeFromAsset(Request $request, InfrastructureAsset $asset)
     {
         $request->merge([ 'asset' => $asset ]);
@@ -144,75 +137,52 @@ class InfrastructureDocumentController extends Controller
         return $this->store($request);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request $request
-     * @return \Illuminate\Http\Response
-     */
-    public function storeFromUnit(Request $request, InfrastructureUnit $unit, InfrastructureAsset $asset)
+
+    public function storeFromUnitAsset(Request $request, InfrastructureUnit $unit, InfrastructureAsset $asset)
     {
         $request->merge([ 'unit' => $unit ]);
         return $this->storeFromAsset($request, $asset);
     }
 
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \Module\Infrastructure\Models\InfrastructureDocument $infrastructureDocument
-     * @return \Illuminate\Http\Response
-     */
+    public function storeFromUnit(Request $request, InfrastructureUnit $unit)
+    {
+        $request->merge([ 'unit' => $unit ]);
+        return $this->store($request);
+    }
+
+    // + ===========================================
+    // + ----------- SHOW METHODS
+    // + ===========================================
+
+
     public function show(InfrastructureDocument $infrastructureDocument)
     {
         Gate::authorize('show', $infrastructureDocument);
-
         return new DocumentShowResource($infrastructureDocument);
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \Module\Infrastructure\Models\InfrastructureDocument $infrastructureDocument
-     * @return \Illuminate\Http\Response
-     */
     public function showFromAsset(InfrastructureAsset $asset, InfrastructureDocument $document)
     {
-        Gate::authorize('show', $document);
         return $this->show($document);
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \Module\Infrastructure\Models\InfrastructureDocument $infrastructureDocument
-     * @return \Illuminate\Http\Response
-     */
+
     public function showFromUnit(InfrastructureUnit $unit = null, InfrastructureDocument $document)
     {
-        Gate::authorize('show', $document);
         return $this->show($document);
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \Module\Infrastructure\Models\InfrastructureDocument $infrastructureDocument
-     * @return \Illuminate\Http\Response
-     */
+
     public function showFromUnitAsset(InfrastructureUnit $unit = null, InfrastructureAsset $asset, InfrastructureDocument $document)
     {
-        Gate::authorize('show', $document);
         return $this->show($document);
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request $request
-     * @param  \Module\Infrastructure\Models\InfrastructureDocument $infrastructureDocument
-     * @return \Illuminate\Http\Response
-     */
+    // + ===========================================
+    // + ----------- UPDATE METHODS
+    // + ===========================================
+
     public function update(Request $request, InfrastructureDocument $infrastructureDocument)
     {
         Gate::authorize('update', $infrastructureDocument);
@@ -249,81 +219,106 @@ class InfrastructureDocumentController extends Controller
         return InfrastructureDocument::updateRecord($request, $infrastructureDocument);
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \Module\Infrastructure\Models\InfrastructureDocument $infrastructureDocument
-     * @return \Illuminate\Http\Response
-     */
     public function updateFromAsset(Request $request,  InfrastructureAsset $asset, InfrastructureDocument $document)
     {
-        Gate::authorize('update', $document);
         return $this->update($request, $document);
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \Module\Infrastructure\Models\InfrastructureDocument $infrastructureDocument
-     * @return \Illuminate\Http\Response
-     */
-    public function updateFromUnit(Request $request, InfrastructureUnit $unit = null, InfrastructureAsset $asset, InfrastructureDocument $document)
+    public function updateFromUnitAsset(Request $request, InfrastructureUnit $unit = null, InfrastructureAsset $asset, InfrastructureDocument $document)
     {
-        Gate::authorize('update', $document);
-        return $this->updateFromAsset($request, $asset,$document);
+        return $this->update($request, $document);
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \Module\Infrastructure\Models\InfrastructureDocument $infrastructureDocument
-     * @return \Illuminate\Http\Response
-     */
+    public function updateFromUnit(Request $request, InfrastructureUnit $unit = null, InfrastructureDocument $document)
+    {
+        return $this->update($request, $document);
+    }
+
+    // + ===========================================
+    // + ----------- DESTROY METHODS
+    // + ===========================================
+
     public function destroy(InfrastructureDocument $infrastructureDocument)
     {
         Gate::authorize('delete', $infrastructureDocument);
-
         return InfrastructureDocument::deleteRecord($infrastructureDocument);
     }
 
-    /**
-     * Restore the specified resource from soft-delete.
-     *
-     * @param  \Module\Infrastructure\Models\InfrastructureDocument $infrastructureDocument
-     * @return \Illuminate\Http\Response
-     */
+    public function destroyFromAsset(Request $request,  InfrastructureAsset $asset, InfrastructureDocument $document)
+    {
+        return $this->destroy($document);
+    }
+
+    public function destroyFromUnitAsset(Request $request, InfrastructureUnit $unit = null, InfrastructureAsset $asset, InfrastructureDocument $document)
+    {
+        return $this->destroy($document);
+    }
+
+    public function destroyFromUnit(Request $request, InfrastructureUnit $unit = null, InfrastructureDocument $document)
+    {
+        return $this->destroy($document);
+    }
+
+    // + ===========================================
+    // + ----------- RESTORE METHODS
+    // + ===========================================
+
     public function restore(InfrastructureDocument $infrastructureDocument)
     {
         Gate::authorize('restore', $infrastructureDocument);
-
         return InfrastructureDocument::restoreRecord($infrastructureDocument);
     }
 
-    /**
-     * Force Delete the specified resource from soft-delete.
-     *
-     * @param  \Module\Infrastructure\Models\InfrastructureDocument $infrastructureDocument
-     * @return \Illuminate\Http\Response
-     */
+    public function restoreFromAsset(Request $request,  InfrastructureAsset $asset, InfrastructureDocument $document)
+    {
+        return $this->restore($document);
+    }
+
+    public function restoreFromUnitAsset(Request $request, InfrastructureUnit $unit = null, InfrastructureAsset $asset, InfrastructureDocument $document)
+    {
+        return $this->restore($document);
+    }
+
+    public function restoreFromUnit(Request $request, InfrastructureUnit $unit = null, InfrastructureDocument $document)
+    {
+        return $this->restore($document);
+    }
+
+    // + ===========================================
+    // + ----------- FORCEDELEETE METHODS
+    // + ===========================================
+
+
     public function forceDelete(InfrastructureDocument $infrastructureDocument)
     {
         Gate::authorize('destroy', $infrastructureDocument);
         return InfrastructureDocument::destroyRecord($infrastructureDocument);
     }
 
-    /**
-     * @param  \Module\Infrastructure\Models\InfrastructureDocument $infrastructureDocument
-     * @return \Illuminate\Http\Response
-     */
+    public function forceDeleteFromAsset(Request $request,  InfrastructureAsset $asset, InfrastructureDocument $document)
+    {
+        return $this->forceDelete($document);
+    }
+
+    public function forceDeleteFromUnitAsset(Request $request, InfrastructureUnit $unit = null, InfrastructureAsset $asset, InfrastructureDocument $document)
+    {
+        return $this->forceDelete($document);
+    }
+
+    public function forceDeleteFromUnit(Request $request, InfrastructureUnit $unit = null, InfrastructureDocument $document)
+    {
+        return $this->forceDelete($document);
+    }
+
+    // + ===========================================
+    // + ----------- MAP COMBOS METHODS
+    // + ===========================================
+
     public function mapCombosOnlyUnit(Request $request, InfrastructureUnit $unit)
     {
         return response()->json(InfrastructureDocument::mapCombosOnlyUnit($request),200);
     }
 
-    /**
-     * @param  \Module\Infrastructure\Models\InfrastructureDocument $infrastructureDocument
-     * @return \Illuminate\Http\Response
-     */
     public function mapCombosOnlyAsset(Request $request, InfrastructureUnit $unit, InfrastructureAsset $asset)
     {
         return response()->json(InfrastructureDocument::mapCombosOnlyAsset($request),200);

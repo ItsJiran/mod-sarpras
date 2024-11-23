@@ -61,7 +61,8 @@
 
 				<div v-if=" checkRoute('infrastructure-tax-create') || 
 						    checkRoute('infrastructure-maintenance-create') || 
-							checkRoute('infrastructure-deadline-create')">
+							checkRoute('infrastructure-deadline-create') ||
+							checkRoute('infrastructure-record-create') ">
 
 					<div class="text-overline mt-6">Tujuan Record</div>
 					<v-divider :thickness="3" class="mt-3 mb-6" />
@@ -125,11 +126,6 @@ export default {
 		checkRoute : function (name = "") {
 			// route_name
 			let route_name = this.$router.currentRoute._value.name;
-			let methods = ['show','delete','update','edit','create'];
-
-			for ( let method of methods ) 
-				route_name = route_name.replaceAll('-' + method,'');
-			
 			return route_name == name;
 		},
 		changeTargetType : function (record,data) {
