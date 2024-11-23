@@ -1238,6 +1238,90 @@ export default {
 			]
 		},
 
+		{
+			path: "document/:document/maintenance/:record/note",
+			component: () =>
+				import(
+					/* webpackChunkName: "infrastructure" */ "@modules/infrastructure/frontend/pages/record-note/index.vue"
+				),
+			children: [
+				{
+					path: "",
+					name: "infrastructure-document-maintenance-note",
+					component: () =>
+						import(
+							/* webpackChunkName: "infrastructure" */ "@modules/infrastructure/frontend/pages/record-note/crud/data.vue"
+						),
+				},
+				{
+					path: "create",
+					name: "infrastructure-document-maintenance-note-create",
+					component: () =>
+						import(
+							/* webpackChunkName: "infrastructure" */ "@modules/infrastructure/frontend/pages/record-note/crud/create.vue"
+						),
+				},
+				{
+					path: ":note/show",
+					name: "infrastructure-document-maintenance-note-show",
+					component: () =>
+						import(
+							/* webpackChunkName: "infrastructure" */ "@modules/infrastructure/frontend/pages/record-note/crud/show.vue"
+						),
+				},
+				{
+					path: ":note/edit",
+					name: "infrastructure-document-maintenance-note-edit",
+					component: () =>
+						import(
+							/* webpackChunkName: "infrastructure" */ "@modules/infrastructure/frontend/pages/record-note/crud/edit.vue"
+						),
+				},			
+			]
+		},
+
+		{
+			path: "document/:document/maintenance/:record/note/:note/used",
+			component: () =>
+				import(
+					/* webpackChunkName: "infrastructure" */ "@modules/infrastructure/frontend/pages/record-note-used/index.vue"
+				),
+			children: [
+				{
+					path: "",
+					name: "infrastructure-document-maintenance-note-used",
+					component: () =>
+						import(
+							/* webpackChunkName: "infrastructure" */ "@modules/infrastructure/frontend/pages/record-note-used/crud/data.vue"
+						),
+				},
+				{
+					path: "create",
+					name: "infrastructure-document-maintenance-note-used-create",
+					component: () =>
+						import(
+							/* webpackChunkName: "infrastructure" */ "@modules/infrastructure/frontend/pages/record-note-used/crud/create.vue"
+						),
+				},
+				{
+					path: ":used/show",
+					name: "infrastructure-document-maintenance-note-used-show",
+					component: () =>
+						import(
+							/* webpackChunkName: "infrastructure" */ "@modules/infrastructure/frontend/pages/record-note-used/crud/show.vue"
+						),
+				},
+				{
+					path: ":used/edit",
+					name: "infrastructure-document-maintenance-note-used-edit",
+					component: () =>
+						import(
+							/* webpackChunkName: "infrastructure" */ "@modules/infrastructure/frontend/pages/record-note-used/crud/edit.vue"
+						),
+				},			
+			]
+		},
+
 		// + ==============================================================================================
 		// + ----------------------------------- DEADLINE PAGES JS ---------------------------------------------
 		// + ==============================================================================================
