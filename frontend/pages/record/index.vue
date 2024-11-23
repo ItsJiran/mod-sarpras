@@ -30,8 +30,8 @@
 		page-name="infrastructure-asset-document-tax"
 		page-key="record"
 
-		parent-name="infrastructure-asset"
-		parent-key="asset"
+		parent-name="infrastructure-asset-document"
+		parent-key="document"
 	></page-crud>
 
 	<page-crud v-if=" checkRoute('infrastructure-document-tax') "	
@@ -60,7 +60,7 @@
 
 	<page-crud v-if=" checkRoute('infrastructure-unit-document-tax') "	
 		page-name="infrastructure-unit-document-tax"
-		page-key="tax"
+		page-key="record"
 		
 		parent-name="infrastructure-unit-document"
 		parent-key="document"

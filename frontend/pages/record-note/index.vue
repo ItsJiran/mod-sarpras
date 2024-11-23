@@ -33,7 +33,7 @@
 		page-name="infrastructure-asset-document-tax-note"
 		page-key="note"
 
-		parent-name="infrastructure-asset-tax"
+		parent-name="infrastructure-asset-document-tax"
 		parent-key="record"
 	></page-crud>
 
@@ -93,7 +93,7 @@
 		page-name="infrastructure-asset-document-maintenance-note"
 		page-key="note"
 
-		parent-name="infrastructure-asset-maintenance"
+		parent-name="infrastructure-asset-document-maintenance"
 		parent-key="record"
 	></page-crud>
 

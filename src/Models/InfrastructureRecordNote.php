@@ -427,6 +427,8 @@ class InfrastructureRecordNote extends Model
                 'message' => 'Gagal mengembalikan data karena ada pajak yang masih berjalan..'
             ], 500);
         }
+
+        return null;
     }
 
     // +===============================================

@@ -936,6 +936,90 @@ export default {
 			]
 		},
 
+		{
+			path: "unit/:unit/document/:document/tax/:record/note",
+			component: () =>
+				import(
+					/* webpackChunkName: "infrastructure" */ "@modules/infrastructure/frontend/pages/record-note/index.vue"
+				),
+			children: [
+				{
+					path: "",
+					name: "infrastructure-unit-document-tax-note",
+					component: () =>
+						import(
+							/* webpackChunkName: "infrastructure" */ "@modules/infrastructure/frontend/pages/record-note/crud/data.vue"
+						),
+				},
+				{
+					path: "create",
+					name: "infrastructure-unit-document-tax-note-create",
+					component: () =>
+						import(
+							/* webpackChunkName: "infrastructure" */ "@modules/infrastructure/frontend/pages/record-note/crud/create.vue"
+						),
+				},
+				{
+					path: ":note/show",
+					name: "infrastructure-unit-document-tax-note-show",
+					component: () =>
+						import(
+							/* webpackChunkName: "infrastructure" */ "@modules/infrastructure/frontend/pages/record-note/crud/show.vue"
+						),
+				},		
+				{
+					path: ":note/edit",
+					name: "infrastructure-unit-document-tax-note-edit",
+					component: () =>
+						import(
+							/* webpackChunkName: "infrastructure" */ "@modules/infrastructure/frontend/pages/record-note/crud/edit.vue"
+						),
+				},
+			]
+		},
+
+		{
+			path: "unit/:unit/document/:document/tax/:record/note/:note/used",
+			component: () =>
+				import(
+					/* webpackChunkName: "infrastructure" */ "@modules/infrastructure/frontend/pages/record-note-used/index.vue"
+				),
+			children: [
+				{
+					path: "",
+					name: "infrastructure-unit-document-tax-note-used",
+					component: () =>
+						import(
+							/* webpackChunkName: "infrastructure" */ "@modules/infrastructure/frontend/pages/record-note-used/crud/data.vue"
+						),
+				},
+				{
+					path: "create",
+					name: "infrastructure-unit-document-tax-note-used-create",
+					component: () =>
+						import(
+							/* webpackChunkName: "infrastructure" */ "@modules/infrastructure/frontend/pages/record-note-used/crud/create.vue"
+						),
+				},
+				{
+					path: ":note/show",
+					name: "infrastructure-unit-document-tax-note-used-show",
+					component: () =>
+						import(
+							/* webpackChunkName: "infrastructure" */ "@modules/infrastructure/frontend/pages/record-note-used/crud/show.vue"
+						),
+				},		
+				{
+					path: ":note/edit",
+					name: "infrastructure-unit-document-tax-note-used-edit",
+					component: () =>
+						import(
+							/* webpackChunkName: "infrastructure" */ "@modules/infrastructure/frontend/pages/record-note-used/crud/edit.vue"
+						),
+				},
+			]
+		},
+
 		// + ==============================================================================================
 		// + -------------------------------- UNIT ASSET MAINTENANCE PAGES JS -----------------------------
 		// + ==============================================================================================
