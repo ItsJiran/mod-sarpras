@@ -123,6 +123,9 @@ class InfrastructureDocumentController extends Controller
         // get request validatoin from the type_model
         $request->validate( $type_model_class::mapStoreValidation() );
 
+        $isResquestValid = InfrastructureDocument::mapStoreRequestValid($request);
+        if ( !is_null($isResquestValid) ) return $isResquestValid;
+
         return InfrastructureDocument::storeRecord($request, $type_model_class);
     }
 
@@ -215,6 +218,8 @@ class InfrastructureDocumentController extends Controller
             ], 422);
         }
 
+        $isResquestValid = InfrastructureDocument::mapUpdateRequestValid($request, $infrastructureDocument);
+        if ( !is_null($isResquestValid) ) return $isResquestValid;
 
         return InfrastructureDocument::updateRecord($request, $infrastructureDocument);
     }
@@ -238,50 +243,58 @@ class InfrastructureDocumentController extends Controller
     // + ----------- DESTROY METHODS
     // + ===========================================
 
-    public function destroy(InfrastructureDocument $infrastructureDocument)
+    public function destroy(Request $request, InfrastructureDocument $infrastructureDocument)
     {
         Gate::authorize('delete', $infrastructureDocument);
+
+        $isResquestValid = InfrastructureDocument::mapDeleteRequestValid($request, $infrastructureDocument);
+        if ( !is_null($isResquestValid) ) return $isResquestValid;
+
         return InfrastructureDocument::deleteRecord($infrastructureDocument);
     }
 
     public function destroyFromAsset(Request $request,  InfrastructureAsset $asset, InfrastructureDocument $document)
     {
-        return $this->destroy($document);
+        return $this->destroy($request, $document);
     }
 
     public function destroyFromUnitAsset(Request $request, InfrastructureUnit $unit = null, InfrastructureAsset $asset, InfrastructureDocument $document)
     {
-        return $this->destroy($document);
+        return $this->destroy($request, $document);
     }
 
     public function destroyFromUnit(Request $request, InfrastructureUnit $unit = null, InfrastructureDocument $document)
     {
-        return $this->destroy($document);
+        return $this->destroy($request, $document);
     }
 
     // + ===========================================
     // + ----------- RESTORE METHODS
     // + ===========================================
 
-    public function restore(InfrastructureDocument $infrastructureDocument)
+    public function restore(Request $request, InfrastructureDocument $infrastructureDocument)
     {
         Gate::authorize('restore', $infrastructureDocument);
+
+        $isResquestValid = InfrastructureDocument::mapDeleteRequestValid($request, $infrastructureDocument);
+        if ( !is_null($isResquestValid) ) return $isResquestValid;
+
         return InfrastructureDocument::restoreRecord($infrastructureDocument);
     }
 
     public function restoreFromAsset(Request $request,  InfrastructureAsset $asset, InfrastructureDocument $document)
     {
-        return $this->restore($document);
+        return $this->restore($request,$document);
     }
 
     public function restoreFromUnitAsset(Request $request, InfrastructureUnit $unit = null, InfrastructureAsset $asset, InfrastructureDocument $document)
     {
-        return $this->restore($document);
+        return $this->restore($request,$document);
     }
 
     public function restoreFromUnit(Request $request, InfrastructureUnit $unit = null, InfrastructureDocument $document)
     {
-        return $this->restore($document);
+        return $this->restore($request,$document);
     }
 
     // + ===========================================
@@ -289,25 +302,29 @@ class InfrastructureDocumentController extends Controller
     // + ===========================================
 
 
-    public function forceDelete(InfrastructureDocument $infrastructureDocument)
+    public function forceDelete(Request $request, InfrastructureDocument $infrastructureDocument)
     {
         Gate::authorize('destroy', $infrastructureDocument);
+
+        $isResquestValid = InfrastructureDocument::mapForceDeleteRequestValid($request, $infrastructureDocument);
+        if ( !is_null($isResquestValid) ) return $isResquestValid;
+
         return InfrastructureDocument::destroyRecord($infrastructureDocument);
     }
 
     public function forceDeleteFromAsset(Request $request,  InfrastructureAsset $asset, InfrastructureDocument $document)
     {
-        return $this->forceDelete($document);
+        return $this->forceDelete($request, $document);
     }
 
     public function forceDeleteFromUnitAsset(Request $request, InfrastructureUnit $unit = null, InfrastructureAsset $asset, InfrastructureDocument $document)
     {
-        return $this->forceDelete($document);
+        return $this->forceDelete($request, $document);
     }
 
     public function forceDeleteFromUnit(Request $request, InfrastructureUnit $unit = null, InfrastructureDocument $document)
     {
-        return $this->forceDelete($document);
+        return $this->forceDelete($request, $document);
     }
 
     // + ===========================================

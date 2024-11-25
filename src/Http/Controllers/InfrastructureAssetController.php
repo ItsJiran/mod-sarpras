@@ -69,6 +69,10 @@ class InfrastructureAssetController extends Controller
         // get request validatoin from the type_model
         $request->validate( $type_model_class::mapStoreValidation() );
 
+        // hanlding is request vlaid
+        $isResquestValid = InfrastructureAsset::mapStoreRequestValid($request);
+        if ( !is_null($isResquestValid) ) return $isResquestValid;
+
         return InfrastructureAsset::storeRecord($request, $type_model_class);
     }
 
@@ -122,6 +126,10 @@ class InfrastructureAssetController extends Controller
         // get request validation from the type_model
         $request->validate( $type_model_class::mapUpdateValidation() );
 
+        // is request valid
+        $isResquestValid = InfrastructureAsset::mapUpdateRequestValid($request,$infrastructureAsset);
+        if ( !is_null($isResquestValid) ) return $isResquestValid;
+
         return InfrastructureAsset::updateRecord($request, $infrastructureAsset);
     }
 
@@ -135,48 +143,56 @@ class InfrastructureAssetController extends Controller
     // +----------------------------------------------------
     // +------------- DESRTOY METHODS ----------------------
 
-    public function destroy(InfrastructureAsset $infrastructureAsset)
+    public function destroy(Request $request, InfrastructureAsset $infrastructureAsset)
     {
         Gate::authorize('delete', $infrastructureAsset);
+
+        // is request valid
+        $isResquestValid = InfrastructureAsset::mapDeleteRequestValid($request,$infrastructureAsset);
+        if ( !is_null($isResquestValid) ) return $isResquestValid;
 
         return InfrastructureAsset::deleteRecord($infrastructureAsset);
     }
 
-    public function destroyFromUnit(InfrastructureUnit $unit, InfrastructureAsset $asset)
+    public function destroyFromUnit(Request $request, InfrastructureUnit $unit, InfrastructureAsset $asset)
     {
-        Gate::authorize('delete', $asset);
-
-        return $this->destroy($asset);
+        return $this->destroy($request, $asset);
     }
 
     // +--------------------------------------------------------
     // +------------ FORCE DELETE METHODS ----------------------
 
-    public function restore(InfrastructureAsset $infrastructureAsset)
+    public function restore(Request $request, InfrastructureAsset $infrastructureAsset)
     {
         Gate::authorize('restore', $infrastructureAsset);
+
+        $isResquestValid = InfrastructureAsset::mapRestoreRequestValid($request,$infrastructureAsset);
+        if ( !is_null($isResquestValid) ) return $isResquestValid;
 
         return InfrastructureAsset::restoreRecord($infrastructureAsset);
     }
 
-    public function restoreFromUnit( InfrastructureUnit $unit, InfrastructureAsset $model)
+    public function restoreFromUnit(Request $request, InfrastructureUnit $unit, InfrastructureAsset $model)
     {
-        return $this->restore($model);
+        return $this->restore($request, $model);
     }
 
     // +--------------------------------------------------------
     // +------------ FORCE DELETE METHODS ----------------------
 
-    public function forceDelete(InfrastructureAsset $infrastructureAsset)
+    public function forceDelete(Request $request, InfrastructureAsset $infrastructureAsset)
     {
         Gate::authorize('destroy', $infrastructureAsset);
+
+        $isResquestValid = InfrastructureAsset::mapForceDeleteRequestValid($request,$infrastructureAsset);
+        if ( !is_null($isResquestValid) ) return $isResquestValid;
 
         return InfrastructureAsset::destroyRecord($infrastructureAsset);
     }
 
-    public function forceDeleteFromUnit( InfrastructureUnit $unit, InfrastructureAsset $model)
+    public function forceDeleteFromUnit(Request $request, InfrastructureUnit $unit, InfrastructureAsset $model)
     {
-        return $this->forceDelete($model);
+        return $this->forceDelete($request,$model);
     }
 
     // +----------------------------------------------------

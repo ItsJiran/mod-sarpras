@@ -30,6 +30,7 @@ use Module\Infrastructure\Models\InfrastructureTaxDocument;
 use Module\Infrastructure\Models\InfrastructureTax;
 
 use Module\Infrastructure\Http\Resources\AssetResource;
+use Illuminate\Http\JsonResponse;
 
 class InfrastructureAsset extends Model
 {
@@ -331,6 +332,102 @@ class InfrastructureAsset extends Model
             'Electronic' => InfrastructureAssetElectronic::mapStatus(),
             'Land' => InfrastructureAssetLand::mapStatus(),
         ];
+    }
+
+    /**
+     * ============================================================
+     * +------------------ MAP REQUEST RESOURCE ------------------+
+     * ============================================================
+     */
+
+    public static function mapStoreRequestValid(Request $request) : JsonResponse | null
+    {
+        // apabila user bukan admin dan note status sudah bukan draft maka jangan tambah
+        $isUserAdmin = $request->user()->hasLicenseAs('infrastructure-administrator');
+        $isUserSuperAdmin = $request->user()->hasLicenseAs('infrastructure-superadmin');
+
+        // kalau user bukan operator
+        $isUserOperator = $request->user()->hasLicenseAs('infrastructure-operator');
+        if (!$isUserOperator && !$isUserAdmin && !$isUserSuperAdmin) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Tidak bisa mengubah karena anda bukan operator.'
+            ], 500);
+        }
+
+        return null;
+    }
+
+    public static function mapUpdateRequestValid(Request $request, InfrastructureAsset $asset) : JsonResponse | null
+    {
+        // apabila user bukan admin dan note status sudah bukan draft maka jangan tambah
+        $isUserAdmin = $request->user()->hasLicenseAs('infrastructure-administrator');
+        $isUserSuperAdmin = $request->user()->hasLicenseAs('infrastructure-superadmin');
+
+        // kalau user bukan operator
+        $isUserOperator = $request->user()->hasLicenseAs('infrastructure-operator');
+        if (!$isUserOperator && !$isUserAdmin && !$isUserSuperAdmin) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Tidak bisa mengubah karena anda bukan operator.'
+            ], 500);
+        }
+
+        return null;
+    }
+
+    public static function mapDeleteRequestValid(Request $request, InfrastructureAsset $asset) : JsonResponse | null
+    {
+        // apabila user bukan admin dan note status sudah bukan draft maka jangan tambah
+        $isUserAdmin = $request->user()->hasLicenseAs('infrastructure-administrator');
+        $isUserSuperAdmin = $request->user()->hasLicenseAs('infrastructure-superadmin');
+
+        // kalau user bukan operator
+        $isUserOperator = $request->user()->hasLicenseAs('infrastructure-operator');
+        if (!$isUserOperator && !$isUserAdmin && !$isUserSuperAdmin) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Tidak bisa mengubah karena anda bukan operator.'
+            ], 500);
+        }
+
+        return null;
+    }
+
+    public static function mapRestoreRequestValid(Request $request, InfrastructureAsset $asset): JsonResponse | null
+    {
+        // apabila user bukan admin dan note status sudah bukan draft maka jangan tambah
+        $isUserAdmin = $request->user()->hasLicenseAs('infrastructure-administrator');
+        $isUserSuperAdmin = $request->user()->hasLicenseAs('infrastructure-superadmin');
+
+        // kalau user bukan operator
+        $isUserOperator = $request->user()->hasLicenseAs('infrastructure-operator');
+        if (!$isUserOperator && !$isUserAdmin && !$isUserSuperAdmin) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Tidak bisa mengubah karena anda bukan operator.'
+            ], 500);
+        }
+
+        return null;
+    }
+
+    public static function mapForceDeleteRequestValid(Request $request, InfrastructureAsset $asset): JsonResponse | null
+    {
+        // apabila user bukan admin dan note status sudah bukan draft maka jangan tambah
+        $isUserAdmin = $request->user()->hasLicenseAs('infrastructure-administrator');
+        $isUserSuperAdmin = $request->user()->hasLicenseAs('infrastructure-superadmin');
+
+        // kalau user bukan operator
+        $isUserOperator = $request->user()->hasLicenseAs('infrastructure-operator');
+        if (!$isUserOperator && !$isUserAdmin && !$isUserSuperAdmin) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Tidak bisa mengubah karena anda bukan operator.'
+            ], 500);
+        }
+
+        return null;
     }
 
     /**
