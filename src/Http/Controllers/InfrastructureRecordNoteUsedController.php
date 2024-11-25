@@ -145,21 +145,24 @@ class InfrastructureRecordNoteUsedController extends Controller
     // + ---------------- DESTROY METHODS ----------------------
     // + =======================================================
 
-    public function destroy(InfrastructureRecord $record, InfrastructureRecordNote $note, InfrastructureRecordNoteUsed $used)
+    public function destroy(Request $request, InfrastructureRecord $record, InfrastructureRecordNote $note, InfrastructureRecordNoteUsed $used)
     {
         Gate::authorize('delete', $used);
+
+        $isResquestValid = InfrastructureRecordNoteUsed::mapDeleteRequestValid($request,$record,$note,$used);
+        if ( !is_null($isResquestValid) ) return $isResquestValid;
 
         return InfrastructureRecordNoteUsed::deleteRecord($used);
     }
 
     public function destroyFromAsset(Request $request, InfrastructureAsset $asset, InfrastructureRecord $record, InfrastructureRecordNote $note, InfrastructureRecordNoteUsed $used)
     {        
-        return $this->destroy( $record, $note, $used);
+        return $this->destroy( $request, $record, $note, $used);
     }
 
     public function destroyFromDocument(Request $request, InfrastructureDocument $document, InfrastructureRecord $record, InfrastructureRecordNote $note, InfrastructureRecordNoteUsed $used)
     {                
-        return $this->destroy( $record, $note, $used);
+        return $this->destroy( $request, $record, $note, $used);
     }
 
     public function destroyFromUnitAsset(Request $request, InfrastructureUnit $unit, InfrastructureAsset $asset, InfrastructureRecord $record, InfrastructureRecordNote $note, InfrastructureRecordNoteUsed $used){

@@ -228,7 +228,7 @@ class InfrastructureRecordNoteUsed extends Model
             $isExistQueries = array_merge($isExistQueries,[ ['targetable_type','=', InfrastructureDocument::class] ]);
             $isExistQueries = array_merge($isExistQueries,[ ['targetable_id','=', $request['document']['id']] ]);
 
-            if ( $recordIsAsset && $recordIsSame ) {
+            if ( $recordIsDocument && $recordIsSame ) {
                 return response()->json([
                     'success' => false,
                     'message' => 'Tujuan asset / dokumen tidak bisa 
@@ -237,8 +237,8 @@ class InfrastructureRecordNoteUsed extends Model
             }
         }
 
-        // buat validasi deteksi apakah yang diinput sudah ada dalam catatan ini
-
+        // buat validasi deteksi apakah yang 
+        // diinput sudah ada dalam catatan ini
         $isExist = !is_null( InfrastructureRecordNoteUsed::where($isExistQueries)->first() );
 
         if($isExist){
@@ -248,18 +248,62 @@ class InfrastructureRecordNoteUsed extends Model
             ], 500);
         }
 
+        // apabila user bukan admin dan note status sudah bukan draft maka jangan tambah
+        $isUserAdmin = $request->user()->hasLicenseAs('infrastructure-administrator');
+        $isUserSuperAdmin = $request->user()->hasLicenseAs('infrastructure-superadmin');
+
+        if ($note->status != 'draft' && !$isUserAdmin && !$isUserSuperAdmin){
+            return response()->json([
+                'success' => false,
+                'message' => 'Tujuan asset / dokumen sudah ada..'
+            ], 500);
+        }
+
+        // kalau bukan dari user yang membuat maka jangan tambah 
+        $isUserCreator = $note->user_id == $request->user()->id;
+        if (!$isUserCreator && !$isUserAdmin && !$isUserSuperAdmin){
+            return response()->json([
+                'success' => false,
+                'message' => 'Tidak bisa membuat karena anda bukan pembuat catatan..'
+            ], 500);
+        }
+
         return null;
      }
 
     public static function mapUpdateRequestValid(Request $request, InfrastructureRecord $record, InfrastructureRecordNote $note, $model) : JsonResponse | null
     {
-        // buat validasi kalau misalnya asset 
-        // sama atau kalau misalnya sudah ada disini..
+        return null;
+    }
 
 
+    public static function mapDeleteRequestValid(Request $request, InfrastructureRecord $record, InfrastructureRecordNote $note, $model) : JsonResponse | null
+    {
+        // apabila user bukan admin dan note status sudah bukan draft maka jangan tambah
+        $isUserAdmin = $request->user()->hasLicenseAs('infrastructure-administrator');
+        $isUserSuperAdmin = $request->user()->hasLicenseAs('infrastructure-superadmin');
+
+        if ($note->status != 'draft' && !$isUserAdmin && !$isUserSuperAdmin) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Tidak bisa menghapus dikarenakan sudah catatan tidak sedang draft dan anda bukan admin.'
+            ], 500);
+        }
+
+
+        // kalau bukan dari user yang membuat maka jangan tambah 
+        $isUserCreator = $note->user_id == $request->user()->id;
+        if (!$isUserCreator && !$isUserAdmin && !$isUserSuperAdmin) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Tidak bisa menghapus karena anda bukan pembuat catatan.'
+            ], 500);
+        }
 
         return null;
     }
+
+
 
     /**
      * =================================================

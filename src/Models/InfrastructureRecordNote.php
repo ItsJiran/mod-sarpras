@@ -120,6 +120,11 @@ class InfrastructureRecordNote extends Model
     public static function mapResourceShow(Request $request, $model = null): array
     {
         $user = InfrastructureUser::mapResourceShow($request,$model->user);
+
+        $isUserAdmin = $request->user()->hasLicenseAs('infrastructure-administrator');
+        $isUserSuperAdmin = $request->user()->hasLicenseAs('infrastructure-superadmin');
+        $isUserCreator = $request->user()->id == $user['id'];
+
         return [
             'id' => $model->id,
             'name' => $model->name, 
@@ -132,8 +137,8 @@ class InfrastructureRecordNote extends Model
             'status' => $model->status,
             'status_step' => self::mapStatusStep($request, $model),
             
-            'is_admin' => $request->user()->id == 1,
-            'is_creator' => $request->user()->id == $user['id'],
+            'is_admin' => $isUserAdmin || $isUserAdmin,
+            'is_creator' => $isUserCreator,
         ];
     }
 
