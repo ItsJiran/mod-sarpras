@@ -14,6 +14,8 @@ return new class extends Migration
         Schema::create('infrastructure_document_others', function (Blueprint $table) {
             $table->id();
             $table->timestamps();
+            $table->jsonb('meta')->nullable();
+            $table->softDeletes();
         });
     }
 
