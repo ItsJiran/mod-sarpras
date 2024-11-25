@@ -268,6 +268,15 @@ class InfrastructureRecordNoteUsed extends Model
             ], 500);
         }
 
+        // kalau user bukan operator
+        $isUserOperator = $request->user()->hasLicenseAs('infrastructure-operator');
+        if (!$isUserOperator && !$isUserAdmin && !$isUserSuperAdmin) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Tidak bisa membuat karena anda bukan operator.'
+            ], 500);
+        }
+
         return null;
      }
 
@@ -293,10 +302,20 @@ class InfrastructureRecordNoteUsed extends Model
 
         // kalau bukan dari user yang membuat maka jangan tambah 
         $isUserCreator = $note->user_id == $request->user()->id;
+
         if (!$isUserCreator && !$isUserAdmin && !$isUserSuperAdmin) {
             return response()->json([
                 'success' => false,
                 'message' => 'Tidak bisa menghapus karena anda bukan pembuat catatan.'
+            ], 500);
+        }
+
+        // kalau user bukan operator
+        $isUserOperator = $request->user()->hasLicenseAs('infrastructure-operator');
+        if (!$isUserOperator && !$isUserAdmin && !$isUserSuperAdmin) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Tidak bisa menghapus karena anda bukan operator.'
             ], 500);
         }
 

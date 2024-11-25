@@ -224,6 +224,28 @@ class InfrastructureRecordNote extends Model
             ], 500);
         }
 
+        // apabila user bukan admin dan note status sudah bukan draft maka jangan tambah
+        $isUserAdmin = $request->user()->hasLicenseAs('infrastructure-administrator');
+        $isUserSuperAdmin = $request->user()->hasLicenseAs('infrastructure-superadmin');
+
+        // kalau bukan dari user yang membuat maka jangan tambah 
+        $isUserCreator = $note->user_id == $request->user()->id;
+        if (!$isUserCreator && !$isUserAdmin && !$isUserSuperAdmin){
+            return response()->json([
+                'success' => false,
+                'message' => 'Tidak bisa membuat karena anda bukan pembuat catatan..'
+            ], 500);
+        }
+
+        // kalau user bukan operator
+        $isUserOperator = $request->user()->hasLicenseAs('infrastructure-operator');
+        if (!$isUserOperator && !$isUserAdmin && !$isUserSuperAdmin) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Tidak bisa membuat karena anda bukan operator.'
+            ], 500);
+        }
+
         if ( $record->isRecordLog() ) 
             return self::mapStoreRequestLog($request, $record);
 
@@ -295,6 +317,19 @@ class InfrastructureRecordNote extends Model
             ], 500);
         }
 
+        // apabila user bukan admin dan note status sudah bukan draft maka jangan tambah
+        $isUserAdmin = $request->user()->hasLicenseAs('infrastructure-administrator');
+        $isUserSuperAdmin = $request->user()->hasLicenseAs('infrastructure-superadmin');
+
+        // kalau bukan dari user yang membuat maka jangan tambah 
+        $isUserVerificator = $request->user()->hasLicenseAs('infrastructure-superadmin');
+        if (!$isUserVerificator && !$isUserAdmin && !$isUserSuperAdmin){
+            return response()->json([
+                'success' => false,
+                'message' => 'Tidak bisa update status karena anda bukan verificator..'
+            ], 500);
+        }
+
         return null;
     }
 
@@ -305,6 +340,19 @@ class InfrastructureRecordNote extends Model
             return response()->json([
                 'success' => false,
                 'message' => 'Data sudah selesai!'
+            ], 500);
+        }
+
+        // apabila user bukan admin dan note status sudah bukan draft maka jangan tambah
+        $isUserAdmin = $request->user()->hasLicenseAs('infrastructure-administrator');
+        $isUserSuperAdmin = $request->user()->hasLicenseAs('infrastructure-superadmin');
+
+        // kalau bukan dari user yang membuat maka jangan tambah 
+        $isUserVerificator = $request->user()->hasLicenseAs('infrastructure-superadmin');
+        if (!$isUserVerificator && !$isUserAdmin && !$isUserSuperAdmin){
+            return response()->json([
+                'success' => false,
+                'message' => 'Tidak bisa update status karena anda bukan verificator..'
             ], 500);
         }
 
@@ -321,6 +369,19 @@ class InfrastructureRecordNote extends Model
             ], 500);
         }
 
+        // apabila user bukan admin dan note status sudah bukan draft maka jangan tambah
+        $isUserAdmin = $request->user()->hasLicenseAs('infrastructure-administrator');
+        $isUserSuperAdmin = $request->user()->hasLicenseAs('infrastructure-superadmin');
+
+        // kalau bukan dari user yang membuat maka jangan tambah 
+        $isUserVerificator = $request->user()->hasLicenseAs('infrastructure-superadmin');
+        if (!$isUserVerificator && !$isUserAdmin && !$isUserSuperAdmin){
+            return response()->json([
+                'success' => false,
+                'message' => 'Tidak bisa update status karena anda bukan verificator..'
+            ], 500);
+        }
+
         return null;
     }
 
@@ -331,6 +392,19 @@ class InfrastructureRecordNote extends Model
             return response()->json([
                 'success' => false,
                 'message' => 'Anda tidak berwenang!'
+            ], 500);
+        }
+
+        // apabila user bukan admin dan note status sudah bukan draft maka jangan tambah
+        $isUserAdmin = $request->user()->hasLicenseAs('infrastructure-administrator');
+        $isUserSuperAdmin = $request->user()->hasLicenseAs('infrastructure-superadmin');
+
+        // kalau bukan dari user yang membuat maka jangan tambah 
+        $isUserVerificator = $request->user()->hasLicenseAs('infrastructure-superadmin');
+        if (!$isUserVerificator && !$isUserAdmin && !$isUserSuperAdmin){
+            return response()->json([
+                'success' => false,
+                'message' => 'Tidak bisa update status karena anda bukan verificator..'
             ], 500);
         }
 
@@ -347,6 +421,19 @@ class InfrastructureRecordNote extends Model
             ], 500);
         }
 
+        // apabila user bukan admin dan note status sudah bukan draft maka jangan tambah
+        $isUserAdmin = $request->user()->hasLicenseAs('infrastructure-administrator');
+        $isUserSuperAdmin = $request->user()->hasLicenseAs('infrastructure-superadmin');
+
+        // kalau bukan dari user yang membuat maka jangan tambah 
+        $isUserVerificator = $request->user()->hasLicenseAs('infrastructure-superadmin');
+        if (!$isUserVerificator && !$isUserAdmin && !$isUserSuperAdmin){
+            return response()->json([
+                'success' => false,
+                'message' => 'Tidak bisa update status karena anda bukan verificator..'
+            ], 500);
+        }
+
         return null;
     }
 
@@ -359,19 +446,32 @@ class InfrastructureRecordNote extends Model
             ], 500);
         }
 
-        // kalau misalnya bukan user yang membuat dan bukan admin        
-        if ( $model->user_id != $request->user()->id && $request->user()->id != 1 ) {
+        // apabila user bukan admin dan note status sudah bukan draft maka jangan tambah
+        $isUserAdmin = $request->user()->hasLicenseAs('infrastructure-administrator');
+        $isUserSuperAdmin = $request->user()->hasLicenseAs('infrastructure-superadmin');
+
+        if ($model->status != 'draft' && !$isUserAdmin && !$isUserSuperAdmin){
             return response()->json([
                 'success' => false,
-                'message' => 'Anda tidak berwenang!'
+                'message' => 'Tidak bisa mengubah karena catatan tidak sedang draft'
             ], 500);
         }
 
-        // kalau bukan draft dan bukan admin
-        if ( $model->status != 'draft' && $request->user()->id != 1 ) {
+        // kalau bukan dari user yang membuat maka jangan tambah 
+        $isUserCreator = $model->user_id == $request->user()->id;
+        if (!$isUserCreator && !$isUserAdmin && !$isUserSuperAdmin){
             return response()->json([
                 'success' => false,
-                'message' => 'Anda tidak berwenang!'
+                'message' => 'Tidak bisa mengubah karena anda bukan pembuat catatan..'
+            ], 500);
+        }
+
+        // kalau user bukan operator
+        $isUserOperator = $request->user()->hasLicenseAs('infrastructure-operator');
+        if (!$isUserOperator && !$isUserAdmin && !$isUserSuperAdmin) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Tidak bisa mengubah karena anda bukan operator.'
             ], 500);
         }
 
@@ -401,6 +501,35 @@ class InfrastructureRecordNote extends Model
             return response()->json([
                 'success' => false,
                 'message' => 'Tidak bisa menghapus pembayaran yang sudah selesai'
+            ], 500);
+        }
+
+        // apabila user bukan admin dan note status sudah bukan draft maka jangan tambah
+        $isUserAdmin = $request->user()->hasLicenseAs('infrastructure-administrator');
+        $isUserSuperAdmin = $request->user()->hasLicenseAs('infrastructure-superadmin');
+
+        if ($model->status != 'draft' && !$isUserAdmin && !$isUserSuperAdmin){
+            return response()->json([
+                'success' => false,
+                'message' => 'Tidak bisa mengubah karena catatan tidak sedang draft'
+            ], 500);
+        }
+
+        // kalau bukan dari user yang membuat maka jangan tambah 
+        $isUserCreator = $model->user_id == $request->user()->id;
+        if (!$isUserCreator && !$isUserAdmin && !$isUserSuperAdmin){
+            return response()->json([
+                'success' => false,
+                'message' => 'Tidak bisa mengubah karena anda bukan pembuat catatan..'
+            ], 500);
+        }
+
+        // kalau user bukan operator
+        $isUserOperator = $request->user()->hasLicenseAs('infrastructure-operator');
+        if (!$isUserOperator && !$isUserAdmin && !$isUserSuperAdmin) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Tidak bisa mengubah karena anda bukan operator.'
             ], 500);
         }
 
