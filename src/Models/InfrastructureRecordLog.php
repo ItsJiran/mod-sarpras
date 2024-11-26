@@ -65,36 +65,18 @@ class InfrastructureRecordLog extends Model
      * ====================================================
      */
 
-    /**
-     * The model map combos method
-     *
-     * @param [type] $model
-     * @return array
-     */
     public static function mapResourceShow(Request $request, $model = null) : array 
     {
        return [
        ];
     }
 
-    /**
-     * The model store method
-     *
-     * @param Request $request
-     * @return array
-     */
     public static function mapStoreRequestValidation(Request $request)
     {
         return [
         ];
     }
 
-    /**
-     * The model store method
-     *
-     * @param Request $request
-     * @return array
-     */
     public static function mapUpdateRequestValidation(Request $request) : array
     {
         return [

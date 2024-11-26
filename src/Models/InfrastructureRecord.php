@@ -597,12 +597,6 @@ class InfrastructureRecord extends Model
     // +--------- DELETE METHODS
     // +-------------------------------
 
-    /**
-     * The model delete method
-     *
-     * @param [type] $model
-     * @return void
-     */
     public static function deleteRecord($model)
     {
         DB::connection($model->connection)->beginTransaction();
@@ -623,12 +617,6 @@ class InfrastructureRecord extends Model
         }
     }
 
-    /**
-     * The model restore method
-     *
-     * @param [type] $model
-     * @return void
-     */
     public static function restoreRecord($model)
     {
         DB::connection($model->connection)->beginTransaction();
@@ -649,12 +637,6 @@ class InfrastructureRecord extends Model
         }
     }
 
-    /**
-     * The model destroy method
-     *
-     * @param [type] $model
-     * @return void
-     */
     public static function destroyRecord($model)
     {
         DB::connection($model->connection)->beginTransaction();
