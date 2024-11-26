@@ -182,85 +182,78 @@ class InfrastructureAsset extends Model
 
     /**
      * ====================================================
+     * +------------------- MAP COMBOS -------------------+
+     * ====================================================
+     */
+
+    public static function mapCombos(Request $request, $model = null): array
+    {
+        $mapCombosUnit = InfrastructureUnit::mapCombosConsume();
+
+        $mapCombosSelf = [
+            // type class
+            'type' => self::mapTypeClass(),
+            'type_key' => self::mapTypeKeyClass(),
+            'type_slug' => self::mapTypeSlug(),
+            'type_status_map' => self::mapTypeStatusClass(),      
+        ];
+
+        return array_merge($mapCombosUnit, $mapCombosSelf);
+    }
+
+    /**
+     * ====================================================
      * +------------------ MAP RESOURCE ------------------+
      * ====================================================
      */
 
-    public static function mapResourceShow(Request $request, $model = null): array
+    public static function mapResourceShow(Request $request, $model = null) : array
     {
-        // asset key type
-        $asset_type_keys = self::mapTypeClass(true);
+        $asset_properties = self::mapResourceForSelf($request,$model);
+        $asset_unit_properties = self::mapResourceForUnit($request,$model);
+        $assetable_properties = self::mapResourceForAssetable($request,$model);
+        return array_merge($asset_properties,$asset_unit_properties,$assetable_properties);
+    }
 
-        // moprh
-        $unit = InfrastructureUnit::where('slug',$model->slug_unit)->first();
-
-        $asset_property = [
+    public static function mapResourceForSelf(Request $request, $model = null) : array
+    {
+        return [
             'id' => $model->id,
             'name' => $model->name,
             'slug' => $model->slug,
             'slug_unit' => $model->slug_unit,
             'slug_type' => $model->slug_type,
-
-            'unit_id' => $unit->unit_id,   
-            'unit_name' => $unit->name,    
-
             'assetable_id' => $model->assetable_id,
             'assetable_type' => $model->assetable_type,
-            'assetable_type_key' => $asset_type_keys[$model->assetable_type],
-            'asset_type_key' => $asset_type_keys[$model->assetable_type],
         ];
-
-        // assetable morph
-        $asset_type_properties = $model->assetable_type::mapResourceShow($request, $model->assetable);
-
-        return array_merge($asset_property, $asset_type_properties);
     }
 
-
-    public static function mapCombos(Request $request, $model = null): array
+    public static function mapResourceForUnit(Request $request, $model = null) : array 
     {
-        // untuk sementara aja, udah ada units api buat combmos units nya.....
-        $human = InfrastructureUnit::get(['id','name','slug']);
-        
-        // notes : assign units into properties
-        $units = [];
-        $units_ids = [];
+        return [
+            'unit_id' => $model->unit->id,   
+            'unit_name' => $model->unit->name,   
+        ];
+    }
 
-        $units_name = [];
-        $units_slug = [];
-
-        // notes : mapping to the array so frontend can consume..
-        foreach ($human as $key => $value) {
-            array_push( $units_name, $value->name );
-            array_push( $units_slug, $value->slug );
-
-            $units[$value->slug] = $value;
-            $units_id[$value->id] = $value;
-        }
+    public static function mapResourceForAssetable(Request $request, $model = null) : array 
+    {
+        // asset key type
+        $asset_type_keys = self::mapTypeClass(true);
+        $asset_type_properties = $model->assetable_type::mapResourceShow($request, $model->assetable);
 
         return array_merge([
-            // type class
-            'type' => self::mapTypeClass(),
-            'type_key' => self::mapTypeKeyClass(),
-            
-            'type_slug' => self::mapTypeSlug(),
-            'type_status_map' => self::mapTypeStatusClass(),      
-
-            // units array merges
-            'units' => $units,
-            'units_ids' => $units_ids,
-
-            'units_name' => $units_name,
-            'units_slug' => $units_slug,
-        ]);
+            'assetable_type_key' => $asset_type_keys[$model->assetable_type],
+            'asset_type_key' => $asset_type_keys[$model->assetable_type],
+        ], $asset_type_properties);
     }
 
     /**
-     * The model map combos method
-     *
-     * @param [type] $model
-     * @return array
+     * ====================================================
+     * +-------------------- MAP MISC --------------------+
+     * ====================================================
      */
+
     public static function mapTypeClass($reverse = false) : array
     {
         if(!$reverse) {
@@ -280,12 +273,6 @@ class InfrastructureAsset extends Model
         }
     }
 
-    /**
-     * The model map combos method
-     *
-     * @param [type] $model
-     * @return array
-     */
     public static function mapTypeKeyClass() : array
     {
         return [
@@ -296,12 +283,6 @@ class InfrastructureAsset extends Model
         ];
     }
 
-    /**
-     * The model map combos method
-     *
-     * @param [type] $model
-     * @return array
-     */
     public static function mapTypeSlug() : array
     {
         return [
@@ -312,12 +293,6 @@ class InfrastructureAsset extends Model
         ];
     }
 
-    /**
-     * The model map combos method
-     *
-     * @param [type] $model
-     * @return array
-     */
     public static function mapTypeStatusClass() : array
     {
         return [
@@ -372,10 +347,8 @@ class InfrastructureAsset extends Model
 
         DB::connection($model->connection)->beginTransaction();
 
-        // NOTES : Ambil data unit berdasarkan slug dari si unit..
         $unit = InfrastructureUnit::where('slug',$request->slug_unit)->first();
 
-        // NOTES : Mapping setiap slug..
         $slug_unit = $request->slug_unit;
         $slug_type = self::mapTypeSlug()[$request->asset_type_key];
         $slug = self::generateSlug($slug_unit, $slug_type);      
