@@ -248,34 +248,11 @@ class InfrastructureRecordNoteUsed extends Model
             ], 500);
         }
 
-        // apabila user bukan admin dan note status sudah bukan draft maka jangan tambah
-        $isUserAdmin = $request->user()->hasLicenseAs('infrastructure-administrator');
-        $isUserSuperAdmin = $request->user()->hasLicenseAs('infrastructure-superadmin');
+        $isRequestModelStatusDraft = isRequestModelStatusDraft($request, $model);
+        if(!is_null($isRequestModelStatusDraft)) return $isRequestModelStatusDraft;
 
-        if ($note->status != 'draft' && !$isUserAdmin && !$isUserSuperAdmin){
-            return response()->json([
-                'success' => false,
-                'message' => 'Tujuan asset / dokumen sudah ada..'
-            ], 500);
-        }
-
-        // kalau bukan dari user yang membuat maka jangan tambah 
-        $isUserCreator = $note->user_id == $request->user()->id;
-        if (!$isUserCreator && !$isUserAdmin && !$isUserSuperAdmin){
-            return response()->json([
-                'success' => false,
-                'message' => 'Tidak bisa membuat karena anda bukan pembuat catatan..'
-            ], 500);
-        }
-
-        // kalau user bukan operator
-        $isUserOperator = $request->user()->hasLicenseAs('infrastructure-operator');
-        if (!$isUserOperator && !$isUserAdmin && !$isUserSuperAdmin) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Tidak bisa membuat karena anda bukan operator.'
-            ], 500);
-        }
+        $isRequestUserOperator = isRequestUserOperator($request);
+        if(!is_null($isRequestUserOperator)) return $isRequestUserOperator;
 
         return null;
      }
@@ -285,44 +262,16 @@ class InfrastructureRecordNoteUsed extends Model
         return null;
     }
 
-
     public static function mapDeleteRequestValid(Request $request, InfrastructureRecord $record, InfrastructureRecordNote $note, $model) : JsonResponse | null
     {
-        // apabila user bukan admin dan note status sudah bukan draft maka jangan tambah
-        $isUserAdmin = $request->user()->hasLicenseAs('infrastructure-administrator');
-        $isUserSuperAdmin = $request->user()->hasLicenseAs('infrastructure-superadmin');
+        $isRequestModelStatusDraft = isRequestModelStatusDraft($request, $model);
+        if(!is_null($isRequestModelStatusDraft)) return $isRequestModelStatusDraft;
 
-        if ($note->status != 'draft' && !$isUserAdmin && !$isUserSuperAdmin) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Tidak bisa menghapus dikarenakan sudah catatan tidak sedang draft dan anda bukan admin.'
-            ], 500);
-        }
-
-
-        // kalau bukan dari user yang membuat maka jangan tambah 
-        $isUserCreator = $note->user_id == $request->user()->id;
-
-        if (!$isUserCreator && !$isUserAdmin && !$isUserSuperAdmin) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Tidak bisa menghapus karena anda bukan pembuat catatan.'
-            ], 500);
-        }
-
-        // kalau user bukan operator
-        $isUserOperator = $request->user()->hasLicenseAs('infrastructure-operator');
-        if (!$isUserOperator && !$isUserAdmin && !$isUserSuperAdmin) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Tidak bisa menghapus karena anda bukan operator.'
-            ], 500);
-        }
+        $isRequestUserOperator = isRequestUserOperator($request);
+        if(!is_null($isRequestUserOperator)) return $isRequestUserOperator;
 
         return null;
     }
-
-
 
     /**
      * =================================================

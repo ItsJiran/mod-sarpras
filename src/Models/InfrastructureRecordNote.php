@@ -105,13 +105,8 @@ class InfrastructureRecordNote extends Model
 
     public function uses(): HasMany 
     {
-        return $this->hasMany(InfrastructureRecordUsed::class, 'asset_id');
+        return $this->hasMany(InfrastructureRecordNoteUsed::class, 'note_id');
     }
-
-    // +===============================================
-    // +--------------- RELATION METHODS
-    // +===============================================
-
 
     // +===============================================
     // +--------------- RESROUCE METHODS
@@ -227,7 +222,7 @@ class InfrastructureRecordNote extends Model
 
     public static function mapStoreRequestValid(Request $request, InfrastructureRecord $record) : JsonResponse | null
     {
-        $isRequestUserOwnerModel = $isRequestUserOwnerModel($request, $record);
+        $isRequestUserOwnerModel = isRequestUserOwnerModel($request, $record);
         if(!is_null($isRequestUserOwnerModel)) return $isRequestUserOwnerModel;
 
         $isRequestUserOperator = isRequestUserOperator($request);
@@ -329,7 +324,7 @@ class InfrastructureRecordNote extends Model
 
     public static function mapUpdateToDraft(Request $request, InfrastructureRecord $record, $model) : JsonResponse | null
     {
-        $isRequestModelStatusPending = isRequestModelStatusPending($request);
+        $isRequestModelStatusPending = isRequestModelStatusPending($request, $model);
         if(!is_null($isRequestModelStatusPending)) return $isRequestModelStatusPending;
 
         $isRequestUserVerificator = isRequestUserVerificator($request);
@@ -340,7 +335,7 @@ class InfrastructureRecordNote extends Model
 
     public static function mapUpdateToPending(Request $request, InfrastructureRecord $record, $model) : JsonResponse | null
     {
-        $isRequestModelStatusDraft = isRequestModelStatusDraft($request);
+        $isRequestModelStatusDraft = isRequestModelStatusDraft($request, $model);
         if(!is_null($isRequestModelStatusDraft)) return $isRequestModelStatusDraft;
 
         $isRequestUserVerificator = isRequestUserVerificator($request);
@@ -372,7 +367,7 @@ class InfrastructureRecordNote extends Model
 
     public static function mapUpdateRequestValid(Request $request, InfrastructureRecord $record, $model) : JsonResponse | null
     {
-        $isRequestModelStatusDraft = isRequestModelStatusDraft($request);
+        $isRequestModelStatusDraft = isRequestModelStatusDraft($request, $model);
         if(!is_null($isRequestModelStatusDraft)) return $isRequestModelStatusDraft;
 
         $isRequestUserOwnerModel = isRequestUserOwnerModel($request, $model);
@@ -411,7 +406,7 @@ class InfrastructureRecordNote extends Model
             ], 500);
         }
 
-        $isRequestModelStatusDraft = isRequestModelStatusDraft($request);
+        $isRequestModelStatusDraft = isRequestModelStatusDraft($request, $model);
         if(!is_null($isRequestModelStatusDraft)) return $isRequestModelStatusDraft;
 
         $isRequestUserOwnerModel = isRequestUserOwnerModel($request, $model);
