@@ -189,7 +189,20 @@ class InfrastructureRecord extends Model
 
     public static function mapResourceShow(Request $request , $model = null) : array 
     {        
-        $properties = [
+        $record_properties = self::mapResourceForSelf($request, $model);
+        $recordable_properties = self::mapResourceForRecordable($request, $model);
+        $targetable_properties = self::mapResourceForTargetable($request, $model);
+
+        return array_merge(
+            $record_properties,
+            $recordable_properties,
+            $targetable_properties
+        );
+    }
+
+    public static function mapResourceForSelf(Request $request, $model = null) : array 
+    {
+        return [
             'name' => $model->name,
             'description' => $model->description,                        
              
@@ -201,45 +214,55 @@ class InfrastructureRecord extends Model
             'targetable_type' => $model->targetable_type,
             'targetable_type_key' => self::mapMorphTargetClass(true)[$model->targetable_type],
         ];
+    }
 
-        if( $properties['targetable_type_key'] == 'Asset' ){
-            $properties = array_merge($properties,[
-                'unit' => InfrastructureUnit::mapResourceShow($request, $model->targetable->unit),
-                'asset' => InfrastructureAsset::mapResourceShow($request, $model->targetable),
-            ]);                   
-        } 
+    public static function mapResourceForRecordable(Request $request, $model = null) : array 
+    {
+        return $model->recordable_type::mapResourceShow($request, $model->recordable);
+    }
 
-        if( self::mapMorphTargetClass(true)[$model->targetable_type] == 'Document' ){
-            $properties = array_merge($properties,[
-                'unit' => InfrastructureUnit::mapResourceShow($request, $model->targetable->unit),
-                'asset' => InfrastructureAsset::mapResourceShow($request, $model->targetable->asset),
-                'document' => InfrastructureDocument::mapResourceShow($request, $model->targetable),
-            ]);
+    public static function mapResourceForTargetable(Request $request, $model = null) : array 
+    {
+        $targetable_key = self::mapMorphTargetClass(true)[$model->targetable_type];
 
-            if ( !is_null($properties['asset']) ) {
-                $properties['jenis'] = 'Iya';
-            } else {
-                $properties['jenis'] = 'Tidak';
-            }
-        } 
+        if($targetable_key == 'Asset')
+            return self::mapResourceForTargetableAsset($request, $model);
 
-        return array_merge(
-            $properties,
-            $model->recordable_type::mapResourceShow($request, $model->recordable),
-            // $model->targetable_type::mapResourceShow($request, $model->targetable),
-        );
+        if($targetable_key == 'Document')
+            return self::mapResourceForTargetableDocument($request, $model);
+    }
+
+    public static function mapResourceForTargetableAsset(Request $request, $model = null) : array 
+    {
+        return [
+            'unit' => InfrastructureUnit::mapResourceShow($request, $model->targetable->unit),
+            'asset' => InfrastructureAsset::mapResourceShow($request, $model->targetable),
+        ]; 
+    }
+    
+    public static function mapResourceForTargetableDocument(Request $request, $model = null) : array 
+    {
+        $properties = [
+            'unit' => InfrastructureUnit::mapResourceShow($request, $model->targetable->unit),
+            'asset' => InfrastructureAsset::mapResourceShow($request, $model->targetable->asset),
+            'document' => InfrastructureDocument::mapResourceShow($request, $model->targetable),
+        ];
+
+        if ( !is_null($properties['asset']) ) {
+            $properties['jenis'] = 'Iya';
+        } else {
+            $properties['jenis'] = 'Tidak';
+        }
+
+        return $properties;
     }
 
     // + ========================================================
     // + ----------------- MAP REQUEST VALIDATION
     // + ========================================================
 
-    // + ------------------------
-    // + -------- CONVERT
-    // + ------------------------
     public static function mapDefaultObject( Request $request )
     {
-        // convert to obj
         if( is_array($request->unit) )
             $request->unit = (object) $request->unit;
 
