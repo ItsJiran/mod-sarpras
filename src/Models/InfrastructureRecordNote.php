@@ -195,56 +195,43 @@ class InfrastructureRecordNote extends Model
         ];
     }
 
-    // +------------------------------
-    // +--------- STORE REQUEST
 
-    public static function mapStoreRequest(Request $request, InfrastructureRecord $record)
+    // +===============================================
+    // +--------------- ONGOING METHOD
+    // +===============================================
+
+    public static function isOngoing( Request $request, InfrastructureRecord $record ) : bool
     {
-        $array = [
-            'name' => 'required',
-            'description' => 'required',
-            'paydate' => 'required',            
-            'status' => [
-                'required',
-                Rule::in( self::mapStatus($request) ),
-            ],
-            'payprice' => 'required|numeric',
-            'proof_img' => 'mimes:jpeg,jpg,png,gif|required|max:10000'
+        $wherePending = [
+            ['record_id','=',$record->id],
+            ['status','=','pending'],
         ];
 
-        return $array;
+        $whereDraft = [
+            ['record_id','=',$record->id],
+            ['status','=','draft'],
+        ];
+
+        $wherePendingRecord = self::where($wherePending)
+        ->first();
+
+        $whereDraftRecord = self::where($whereDraft)
+        ->first();
+
+        return !is_null($wherePendingRecord) || !is_null($whereDraftRecord);
     }
+
+    // +===============================================
+    // +----------- MAP STORE REQUEST VALID
+    // +===============================================
 
     public static function mapStoreRequestValid(Request $request, InfrastructureRecord $record) : JsonResponse | null
     {
-        if ( is_null($request->user()) ) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Gagal menambahkan data karena user tidak ada..'
-            ], 500);
-        }
+        $isRequestUserOwnerModel = $isRequestUserOwnerModel($request, $record);
+        if(!is_null($isRequestUserOwnerModel)) return $isRequestUserOwnerModel;
 
-        // apabila user bukan admin dan note status sudah bukan draft maka jangan tambah
-        $isUserAdmin = $request->user()->hasLicenseAs('infrastructure-administrator');
-        $isUserSuperAdmin = $request->user()->hasLicenseAs('infrastructure-superadmin');
-
-        // kalau bukan dari user yang membuat maka jangan tambah 
-        $isUserCreator = $note->user_id == $request->user()->id;
-        if (!$isUserCreator && !$isUserAdmin && !$isUserSuperAdmin){
-            return response()->json([
-                'success' => false,
-                'message' => 'Tidak bisa membuat karena anda bukan pembuat catatan..'
-            ], 500);
-        }
-
-        // kalau user bukan operator
-        $isUserOperator = $request->user()->hasLicenseAs('infrastructure-operator');
-        if (!$isUserOperator && !$isUserAdmin && !$isUserSuperAdmin) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Tidak bisa membuat karena anda bukan operator.'
-            ], 500);
-        }
+        $isRequestUserOperator = isRequestUserOperator($request);
+        if(!is_null($isRequestUserOperator)) return $isRequestUserOperator;
 
         if ( $record->isRecordLog() ) 
             return self::mapStoreRequestLog($request, $record);
@@ -270,42 +257,30 @@ class InfrastructureRecordNote extends Model
         return null;
     }
 
-    public static function isOngoing( Request $request, InfrastructureRecord $record ) : bool
-    {
-        $wherePending = [
-            ['record_id','=',$record->id],
-            ['status','=','pending'],
-        ];
+    // +===============================================
+    // +--------------- MAP STORE REQUEST
+    // +===============================================
 
-        $whereDraft = [
-            ['record_id','=',$record->id],
-            ['status','=','draft'],
-        ];
-
-        $wherePendingRecord = self::where($wherePending)
-        ->first();
-
-        $whereDraftRecord = self::where($whereDraft)
-        ->first();
-
-        return !is_null($wherePendingRecord) || !is_null($whereDraftRecord);
-    }
-
-    // +------------------------------
-    // +------------ UPDATE REQUEST
-
-    public static function mapUpdateRequest(Request $request, InfrastructureRecord $record)
+    public static function mapStoreRequest(Request $request, InfrastructureRecord $record)
     {
         $array = [
             'name' => 'required',
             'description' => 'required',
-            'paydate' => 'required',
+            'paydate' => 'required',            
+            'status' => [
+                'required',
+                Rule::in( self::mapStatus($request) ),
+            ],
             'payprice' => 'required|numeric',
-            'proof_img' => 'mimes:jpeg,jpg,png,gif|max:10000'
+            'proof_img' => 'mimes:jpeg,jpg,png,gif|required|max:10000'
         ];
 
         return $array;
     }
+
+    // +===============================================
+    // +-------- MAP UPDATE REQUEST VERIFICATION
+    // +===============================================
 
     public static function mapUpdateToCancelled(Request $request, InfrastructureRecord $record, $model) : JsonResponse | null
     {
@@ -374,6 +349,27 @@ class InfrastructureRecordNote extends Model
         return null;
     }
 
+    // +===============================================
+    // +------------- MAP UPDATE REQUEST
+    // +===============================================
+
+    public static function mapUpdateRequest(Request $request, InfrastructureRecord $record)
+    {
+        $array = [
+            'name' => 'required',
+            'description' => 'required',
+            'paydate' => 'required',
+            'payprice' => 'required|numeric',
+            'proof_img' => 'mimes:jpeg,jpg,png,gif|max:10000'
+        ];
+
+        return $array;
+    }
+
+    // +===============================================
+    // +---------- MAP UPDATE REQUEST VALID
+    // +===============================================
+
     public static function mapUpdateRequestValid(Request $request, InfrastructureRecord $record, $model) : JsonResponse | null
     {
         $isRequestModelStatusDraft = isRequestModelStatusDraft($request);
@@ -402,8 +398,9 @@ class InfrastructureRecordNote extends Model
         return null;
     }
 
-    // +------------------------------
-    // +------------ DELETE REQUEST
+    // +===============================================
+    // +---------- MAP DELETE REQUEST VALID
+    // +===============================================
 
     public static function mapDeleteRequestValid(Request $request, InfrastructureRecord $record, $model) : JsonResponse | null
     {
@@ -440,8 +437,9 @@ class InfrastructureRecordNote extends Model
         return null;
     }
 
-    // +------------------------------
-    // +------------ RESTORE REQUEST
+    // +===============================================
+    // +---------- MAP RESTORE REQUEST VALID
+    // +===============================================
 
     public static function mapRestoreRequestValid(Request $request, InfrastructureRecord $record, $model) : JsonResponse | null
     {
@@ -459,7 +457,7 @@ class InfrastructureRecordNote extends Model
     }
 
     // +===============================================
-    // +--------------- STATUS METHODS
+    // +----------- CHANGE STATUS METHODS
     // +===============================================
 
     public static function changeStatuses(Request $request, InfrastructureRecord $record, InfrastructureRecordNote $note, $callback) {
@@ -482,6 +480,10 @@ class InfrastructureRecordNote extends Model
             ], 500);
         }
     }
+
+    // +===============================================
+    // +--------------- STATUS METHODS
+    // +===============================================
 
     public static function toPending(Request $request, InfrastructureRecord $record, InfrastructureRecordNote $note)
     {
@@ -557,7 +559,6 @@ class InfrastructureRecordNote extends Model
     // +===============================================
     // +--------------- RELATION METHODS
     // +===============================================
-
 
     public static function storeRecord(Request $request, InfrastructureRecord $record)
     {

@@ -3,7 +3,7 @@
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
-if (!functions_exists('isRequestModelStatusDraft')) {
+if (!function_exists('isRequestModelStatusDraft')) {
     function isRequestModelStatusDraft(Request $request, $model = null) : JsonResponse | null 
     {
         $isUserAdmin = $request->user()->hasLicenseAs('infrastructure-administrator');
@@ -20,7 +20,7 @@ if (!functions_exists('isRequestModelStatusDraft')) {
     }
 }
 
-if (!functions_exists('isRequestModelStatusPending')) {
+if (!function_exists('isRequestModelStatusPending')) {
     function isRequestModelStatusPending(Request $request, $model = null) : JsonResponse | null 
     {
         $isUserAdmin = $request->user()->hasLicenseAs('infrastructure-administrator');
