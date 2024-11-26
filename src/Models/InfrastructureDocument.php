@@ -247,13 +247,11 @@ class InfrastructureDocument extends Model
     }
 
     /**
-     * =====================================================
-     * +-------------------- MAP COMBOS -------------------+
-     * =====================================================
+     * =======================================================
+     * +-------------------- MAP RESOURCE -------------------+
+     * =======================================================
      */
     
-
-
     public static function mapResourceShow(Request $request, $model = null): array
     {
         // documents key type
@@ -299,6 +297,12 @@ class InfrastructureDocument extends Model
             $document_unit_properties
         );
     }
+
+    /**
+     * =========================================================
+     * +-------------------- MAP STATUS ETC -------------------+
+     * =========================================================
+     */
 
     public static function mapStatus(): array 
     {
