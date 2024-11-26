@@ -134,4 +134,31 @@ class InfrastructureUnit extends Model
         ];
     }
 
+    // combos yang dipakaia model lain 
+    public static function mapCombosConsume() : array 
+    {
+        $human = self::get(['id','name','slug']);
+
+        $units = [];
+        $units_ids = [];
+
+        $units_name = [];
+        $units_slug = [];
+
+        foreach ($human as $key => $value) {
+            array_push( $units_name, $value->name );
+            array_push( $units_slug, $value->slug );
+
+            $units[$value->slug] = $value;
+            $units_ids[strval($value->id)] = $value;
+        }
+
+        return [
+            'units' => $units,
+            'units_ids' => $units_ids,
+            'units_name' => $units_name,
+            'units_slug' => $units_slug,
+        ];
+    }
+
 }

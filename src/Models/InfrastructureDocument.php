@@ -158,39 +158,79 @@ class InfrastructureDocument extends Model
 
     /**
      * =====================================================
-     * +------------------ MAP RESOURCES ------------------+
+     * +--------------------- MAP SCOPE -------------------+
      * =====================================================
      */
-    
-    public static function mapCombosOnlyUnit(Request $request, $model = null) 
+
+    public function scopeUnit(InfrastructureUnit $unit)
     {
-        $documents = self::where([
-            ['unit_id','=',$request->unit->id],
-            ['asset_id','=',null],
-        ])->get();
+        $this->where([
+            'unit_id', '=', $unit->id
+        ]);
 
-        $documents_ids = [];
-        $documents_ids_combos = [];
-
-        foreach ($documents as $key => $value) {            
-            $documents_ids[ $value->id ] = $value;
-            array_push( $documents_ids_combos, $value->id );
-        }
-
-        return [
-            'documents' => $documents,
-            'documents_ids' => $documents_ids,
-            'documents_ids_combos' => $documents_ids_combos,
-        ];
+        return $this;
     }
 
-    public static function mapCombosOnlyAsset(Request $request, $model = null) 
+    public function scopeAsset(InfrastructureAsset $asset)
     {
-        $documents = self::where([
-            ['unit_id','=',$request->unit->id],
-            ['asset_id','=',$request->asset->id],
-        ])->get();
+        $this->where([
+            'asset_id', '=', $asset->id
+        ]);
 
+        return $this;
+    }
+
+    public function scopeAssetNull()
+    {
+        $this->where([
+            'asset_id', '=', null
+        ]);
+
+        return $this;
+    }
+
+    /**
+     * =====================================================
+     * +-------------------- MAP COMBOS -------------------+
+     * =====================================================
+     */
+
+    public static function mapCombos(Request $request, $model = null): array
+    {
+        $mapCombosUnit = InfrastructureUnit::mapCombosConsume();
+
+        $mapCombosSelf = [
+            'status' => self::mapStatus(),
+            'type' => self::mapTypeClass(),
+            'type_key' => self::mapTypeKeyClass(),
+        ];
+
+        return array_merge( $mapCombosUnit, $mapCombosSelf );
+    }
+
+    public static function mapCombosOnlyUnit(Request $request, InfrastructureUnit $unit) 
+    {
+        $documents = (new static())
+        ->scopeUnit($unit)
+        ->scopeAssetNull()
+        ->get();
+
+        return self::mapDocumentCombos($documents);
+
+    }
+
+    public static function mapCombosOnlyAsset(Request $request, InfrastructureUnit $unit, InfrastructureAsset $asset) 
+    {
+        $documents = (new static())
+        ->scopeUnit($unit)
+        ->scopeAsset($asset)
+        ->get();
+
+        return self::mapDocumentCombos($documents);
+    }
+
+    public static function mapDocumentCombos($documents) 
+    {
         $documents_ids = [];
         $documents_ids_combos = [];
 
@@ -206,41 +246,13 @@ class InfrastructureDocument extends Model
         ];
     }
 
-    public static function mapCombos(Request $request, $model = null): array
-    {
-        // temporary
-        $human = InfrastructureUnit::get(['id','name','slug']);
+    /**
+     * =====================================================
+     * +-------------------- MAP COMBOS -------------------+
+     * =====================================================
+     */
+    
 
-        // notes : assign units into properties
-        $units = [];
-        $units_ids = [];
-
-        $units_name = [];
-        $units_slug = [];
-
-        // notes : mapping to the array so frontend can consume..
-        foreach ($human as $key => $value) {
-            array_push( $units_name, $value->name );
-            array_push( $units_slug, $value->slug );
-
-            $units[$value->slug] = $value;
-            $units_ids[strval($value->id)] = $value;
-        }
-
-        return array_merge([
-            'status' => self::mapStatus(),
-            // type class
-            'type' => self::mapTypeClass(),
-            'type_key' => self::mapTypeKeyClass(),
-
-            // units array merges
-            'units' => $units,
-            'units_ids' => $units_ids,
-
-            'units_name' => $units_name,
-            'units_slug' => $units_slug,
-        ]);
-    }
 
     public static function mapResourceShow(Request $request, $model = null): array
     {
@@ -253,7 +265,7 @@ class InfrastructureDocument extends Model
             'asset_id' => $model->asset_id,
             'description' => $model->description,
             'status' => $model->status,
-            
+
             'documentable_id' => $model->documentable_id,
             'documentable_type' => $model->documentable_type,
             'documentable_type_key' => $documents_type_keys[$model->documentable_type],

@@ -193,8 +193,6 @@ export default {
 	},
 	methods : {		
 		initUnitAsset : function (record,units_ids, units,data) {			
-			// init untuk halaman "infrastructure-unit-document"
-			console.log(units_ids);
 			let unit = units_ids[this.$router.currentRoute._value.params.unit];
 			data.unit = unit;
 			record.unit = unit;

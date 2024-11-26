@@ -333,12 +333,12 @@ class InfrastructureDocumentController extends Controller
 
     public function mapCombosOnlyUnit(Request $request, InfrastructureUnit $unit)
     {
-        return response()->json(InfrastructureDocument::mapCombosOnlyUnit($request),200);
+        return response()->json(InfrastructureDocument::mapCombosOnlyUnit($request, $unit),200);
     }
 
     public function mapCombosOnlyAsset(Request $request, InfrastructureUnit $unit, InfrastructureAsset $asset)
     {
-        return response()->json(InfrastructureDocument::mapCombosOnlyAsset($request),200);
+        return response()->json(InfrastructureDocument::mapCombosOnlyAsset($request, $unit, $asset),200);
     }
 
 
