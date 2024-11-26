@@ -317,18 +317,8 @@ class InfrastructureRecordNote extends Model
             ], 500);
         }
 
-        // apabila user bukan admin dan note status sudah bukan draft maka jangan tambah
-        $isUserAdmin = $request->user()->hasLicenseAs('infrastructure-administrator');
-        $isUserSuperAdmin = $request->user()->hasLicenseAs('infrastructure-superadmin');
-
-        // kalau bukan dari user yang membuat maka jangan tambah 
-        $isUserVerificator = $request->user()->hasLicenseAs('infrastructure-superadmin');
-        if (!$isUserVerificator && !$isUserAdmin && !$isUserSuperAdmin){
-            return response()->json([
-                'success' => false,
-                'message' => 'Tidak bisa update status karena anda bukan verificator..'
-            ], 500);
-        }
+        $isRequestUserVerificator = isRequestUserVerificator($request);
+        if(!is_null($isRequestUserVerificator)) return $isRequestUserVerificator;
 
         return null;
     }
@@ -343,18 +333,8 @@ class InfrastructureRecordNote extends Model
             ], 500);
         }
 
-        // apabila user bukan admin dan note status sudah bukan draft maka jangan tambah
-        $isUserAdmin = $request->user()->hasLicenseAs('infrastructure-administrator');
-        $isUserSuperAdmin = $request->user()->hasLicenseAs('infrastructure-superadmin');
-
-        // kalau bukan dari user yang membuat maka jangan tambah 
-        $isUserVerificator = $request->user()->hasLicenseAs('infrastructure-superadmin');
-        if (!$isUserVerificator && !$isUserAdmin && !$isUserSuperAdmin){
-            return response()->json([
-                'success' => false,
-                'message' => 'Tidak bisa update status karena anda bukan verificator..'
-            ], 500);
-        }
+        $isRequestUserVerificator = isRequestUserVerificator($request);
+        if(!is_null($isRequestUserVerificator)) return $isRequestUserVerificator;
 
         return null;
     }
@@ -369,111 +349,41 @@ class InfrastructureRecordNote extends Model
             ], 500);
         }
 
-        // apabila user bukan admin dan note status sudah bukan draft maka jangan tambah
-        $isUserAdmin = $request->user()->hasLicenseAs('infrastructure-administrator');
-        $isUserSuperAdmin = $request->user()->hasLicenseAs('infrastructure-superadmin');
-
-        // kalau bukan dari user yang membuat maka jangan tambah 
-        $isUserVerificator = $request->user()->hasLicenseAs('infrastructure-superadmin');
-        if (!$isUserVerificator && !$isUserAdmin && !$isUserSuperAdmin){
-            return response()->json([
-                'success' => false,
-                'message' => 'Tidak bisa update status karena anda bukan verificator..'
-            ], 500);
-        }
-
-        return null;
+       return isRequestUserVerificator($request);
     }
 
     public static function mapUpdateToDraft(Request $request, InfrastructureRecord $record, $model) : JsonResponse | null
     {
-        // kalau bukan draft dan bukan admin
-        if ( $model->status != 'pending' && $request->user()->id != 1 ) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Anda tidak berwenang!'
-            ], 500);
-        }
+        $isRequestModelStatusPending = isRequestModelStatusPending($request);
+        if(!is_null($isRequestModelStatusPending)) return $isRequestModelStatusPending;
 
-        // apabila user bukan admin dan note status sudah bukan draft maka jangan tambah
-        $isUserAdmin = $request->user()->hasLicenseAs('infrastructure-administrator');
-        $isUserSuperAdmin = $request->user()->hasLicenseAs('infrastructure-superadmin');
-
-        // kalau bukan dari user yang membuat maka jangan tambah 
-        $isUserVerificator = $request->user()->hasLicenseAs('infrastructure-superadmin');
-        if (!$isUserVerificator && !$isUserAdmin && !$isUserSuperAdmin){
-            return response()->json([
-                'success' => false,
-                'message' => 'Tidak bisa update status karena anda bukan verificator..'
-            ], 500);
-        }
+        $isRequestUserVerificator = isRequestUserVerificator($request);
+        if(!is_null($isRequestUserVerificator)) return $isRequestUserVerificator;
 
         return null;
     }
 
     public static function mapUpdateToPending(Request $request, InfrastructureRecord $record, $model) : JsonResponse | null
     {
-        // kalau bukan draft dan bukan admin
-        if ( $model->status != 'draft' && $request->user()->id != 1 ) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Anda tidak berwenang!'
-            ], 500);
-        }
+        $isRequestModelStatusDraft = isRequestModelStatusDraft($request);
+        if(!is_null($isRequestModelStatusDraft)) return $isRequestModelStatusDraft;
 
-        // apabila user bukan admin dan note status sudah bukan draft maka jangan tambah
-        $isUserAdmin = $request->user()->hasLicenseAs('infrastructure-administrator');
-        $isUserSuperAdmin = $request->user()->hasLicenseAs('infrastructure-superadmin');
-
-        // kalau bukan dari user yang membuat maka jangan tambah 
-        $isUserVerificator = $request->user()->hasLicenseAs('infrastructure-superadmin');
-        if (!$isUserVerificator && !$isUserAdmin && !$isUserSuperAdmin){
-            return response()->json([
-                'success' => false,
-                'message' => 'Tidak bisa update status karena anda bukan verificator..'
-            ], 500);
-        }
+        $isRequestUserVerificator = isRequestUserVerificator($request);
+        if(!is_null($isRequestUserVerificator)) return $isRequestUserVerificator;
 
         return null;
     }
 
     public static function mapUpdateRequestValid(Request $request, InfrastructureRecord $record, $model) : JsonResponse | null
     {
-        if ( is_null($request->user()) ) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Gagal menambahkan data karena user tidak ada..'
-            ], 500);
-        }
+        $isRequestModelStatusDraft = isRequestModelStatusDraft($request);
+        if(!is_null($isRequestModelStatusDraft)) return $isRequestModelStatusDraft;
 
-        // apabila user bukan admin dan note status sudah bukan draft maka jangan tambah
-        $isUserAdmin = $request->user()->hasLicenseAs('infrastructure-administrator');
-        $isUserSuperAdmin = $request->user()->hasLicenseAs('infrastructure-superadmin');
+        $isRequestUserOwnerModel = isRequestUserOwnerModel($request, $model);
+        if(!is_null($isRequestUserOwnerModel)) return $isRequestUserOwnerModel;
 
-        if ($model->status != 'draft' && !$isUserAdmin && !$isUserSuperAdmin){
-            return response()->json([
-                'success' => false,
-                'message' => 'Tidak bisa mengubah karena catatan tidak sedang draft'
-            ], 500);
-        }
-
-        // kalau bukan dari user yang membuat maka jangan tambah 
-        $isUserCreator = $model->user_id == $request->user()->id;
-        if (!$isUserCreator && !$isUserAdmin && !$isUserSuperAdmin){
-            return response()->json([
-                'success' => false,
-                'message' => 'Tidak bisa mengubah karena anda bukan pembuat catatan..'
-            ], 500);
-        }
-
-        // kalau user bukan operator
-        $isUserOperator = $request->user()->hasLicenseAs('infrastructure-operator');
-        if (!$isUserOperator && !$isUserAdmin && !$isUserSuperAdmin) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Tidak bisa mengubah karena anda bukan operator.'
-            ], 500);
-        }
+        $isRequestUserOperator = isRequestUserOperator($request);
+        if(!is_null($isRequestUserOperator)) return $isRequestUserOperator;
 
         if ( $record->isRecordLog() )
             return self::mapUpdateRequestLog($request, $record, $model);
@@ -504,34 +414,14 @@ class InfrastructureRecordNote extends Model
             ], 500);
         }
 
-        // apabila user bukan admin dan note status sudah bukan draft maka jangan tambah
-        $isUserAdmin = $request->user()->hasLicenseAs('infrastructure-administrator');
-        $isUserSuperAdmin = $request->user()->hasLicenseAs('infrastructure-superadmin');
+        $isRequestModelStatusDraft = isRequestModelStatusDraft($request);
+        if(!is_null($isRequestModelStatusDraft)) return $isRequestModelStatusDraft;
 
-        if ($model->status != 'draft' && !$isUserAdmin && !$isUserSuperAdmin){
-            return response()->json([
-                'success' => false,
-                'message' => 'Tidak bisa mengubah karena catatan tidak sedang draft'
-            ], 500);
-        }
+        $isRequestUserOwnerModel = isRequestUserOwnerModel($request, $model);
+        if(!is_null($isRequestUserOwnerModel)) return $isRequestUserOwnerModel;
 
-        // kalau bukan dari user yang membuat maka jangan tambah 
-        $isUserCreator = $model->user_id == $request->user()->id;
-        if (!$isUserCreator && !$isUserAdmin && !$isUserSuperAdmin){
-            return response()->json([
-                'success' => false,
-                'message' => 'Tidak bisa mengubah karena anda bukan pembuat catatan..'
-            ], 500);
-        }
-
-        // kalau user bukan operator
-        $isUserOperator = $request->user()->hasLicenseAs('infrastructure-operator');
-        if (!$isUserOperator && !$isUserAdmin && !$isUserSuperAdmin) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Tidak bisa mengubah karena anda bukan operator.'
-            ], 500);
-        }
+        $isRequestUserOperator = isRequestUserOperator($request);
+        if(!is_null($isRequestUserOperator)) return $isRequestUserOperator;
 
         if ( $record->isRecordLog() )
             return self::mapDeleteRequestLog($request, $record, $model);
@@ -561,6 +451,9 @@ class InfrastructureRecordNote extends Model
                 'message' => 'Gagal mengembalikan data karena ada pajak yang masih berjalan..'
             ], 500);
         }
+
+        $isRequestUserOperator = isRequestUserOperator($request);
+        if(!is_null($isRequestUserOperator)) return $isRequestUserOperator;
 
         return null;
     }
