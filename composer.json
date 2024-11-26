@@ -15,6 +15,9 @@
         "citra-group/module-system": "@dev"
     },
     "autoload": {
+        "files": [
+            "src/Support/helpers.php"
+        ],
         "psr-4": {
             "Module\\Infrastructure\\": "src/",
             "ModuleInfrastructure\\Seeders\\": "database/seeders"

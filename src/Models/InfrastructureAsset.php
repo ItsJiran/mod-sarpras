@@ -186,7 +186,6 @@ class InfrastructureAsset extends Model
      * ====================================================
      */
 
-
     public static function mapResourceShow(Request $request, $model = null): array
     {
         // asset key type
@@ -217,12 +216,7 @@ class InfrastructureAsset extends Model
         return array_merge($asset_property, $asset_type_properties);
     }
 
-    /**
-     * The model map combos method
-     *
-     * @param [type] $model
-     * @return void
-     */
+
     public static function mapCombos(Request $request, $model = null): array
     {
         // untuk sementara aja, udah ada units api buat combmos units nya.....
@@ -342,92 +336,27 @@ class InfrastructureAsset extends Model
 
     public static function mapStoreRequestValid(Request $request) : JsonResponse | null
     {
-        // apabila user bukan admin dan note status sudah bukan draft maka jangan tambah
-        $isUserAdmin = $request->user()->hasLicenseAs('infrastructure-administrator');
-        $isUserSuperAdmin = $request->user()->hasLicenseAs('infrastructure-superadmin');
-
-        // kalau user bukan operator
-        $isUserOperator = $request->user()->hasLicenseAs('infrastructure-operator');
-        if (!$isUserOperator && !$isUserAdmin && !$isUserSuperAdmin) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Tidak bisa mengubah karena anda bukan operator.'
-            ], 500);
-        }
-
-        return null;
+        return isRequestUserOperator($request); 
     }
 
     public static function mapUpdateRequestValid(Request $request, InfrastructureAsset $asset) : JsonResponse | null
     {
-        // apabila user bukan admin dan note status sudah bukan draft maka jangan tambah
-        $isUserAdmin = $request->user()->hasLicenseAs('infrastructure-administrator');
-        $isUserSuperAdmin = $request->user()->hasLicenseAs('infrastructure-superadmin');
-
-        // kalau user bukan operator
-        $isUserOperator = $request->user()->hasLicenseAs('infrastructure-operator');
-        if (!$isUserOperator && !$isUserAdmin && !$isUserSuperAdmin) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Tidak bisa mengubah karena anda bukan operator.'
-            ], 500);
-        }
-
-        return null;
+        return isRequestUserOperator($request); 
     }
 
     public static function mapDeleteRequestValid(Request $request, InfrastructureAsset $asset) : JsonResponse | null
     {
-        // apabila user bukan admin dan note status sudah bukan draft maka jangan tambah
-        $isUserAdmin = $request->user()->hasLicenseAs('infrastructure-administrator');
-        $isUserSuperAdmin = $request->user()->hasLicenseAs('infrastructure-superadmin');
-
-        // kalau user bukan operator
-        $isUserOperator = $request->user()->hasLicenseAs('infrastructure-operator');
-        if (!$isUserOperator && !$isUserAdmin && !$isUserSuperAdmin) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Tidak bisa mengubah karena anda bukan operator.'
-            ], 500);
-        }
-
-        return null;
+        return isRequestUserOperator($request); 
     }
 
     public static function mapRestoreRequestValid(Request $request, InfrastructureAsset $asset): JsonResponse | null
     {
-        // apabila user bukan admin dan note status sudah bukan draft maka jangan tambah
-        $isUserAdmin = $request->user()->hasLicenseAs('infrastructure-administrator');
-        $isUserSuperAdmin = $request->user()->hasLicenseAs('infrastructure-superadmin');
-
-        // kalau user bukan operator
-        $isUserOperator = $request->user()->hasLicenseAs('infrastructure-operator');
-        if (!$isUserOperator && !$isUserAdmin && !$isUserSuperAdmin) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Tidak bisa mengubah karena anda bukan operator.'
-            ], 500);
-        }
-
-        return null;
+        return isRequestUserOperator($request); 
     }
 
     public static function mapForceDeleteRequestValid(Request $request, InfrastructureAsset $asset): JsonResponse | null
     {
-        // apabila user bukan admin dan note status sudah bukan draft maka jangan tambah
-        $isUserAdmin = $request->user()->hasLicenseAs('infrastructure-administrator');
-        $isUserSuperAdmin = $request->user()->hasLicenseAs('infrastructure-superadmin');
-
-        // kalau user bukan operator
-        $isUserOperator = $request->user()->hasLicenseAs('infrastructure-operator');
-        if (!$isUserOperator && !$isUserAdmin && !$isUserSuperAdmin) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Tidak bisa mengubah karena anda bukan operator.'
-            ], 500);
-        }
-
-        return null;
+        return isRequestUserOperator($request); 
     }
 
     /**
@@ -436,12 +365,6 @@ class InfrastructureAsset extends Model
      * ====================================================
      */
 
-    /**
-     * The model store method
-     *
-     * @param Request $request
-     * @return void
-     */
     public static function storeRecord(Request $request, $type_asset_class)
     {
         $model = new static();
@@ -487,13 +410,6 @@ class InfrastructureAsset extends Model
         }
     }
 
-    /**
-     * The model update method
-     *
-     * @param Request $request
-     * @param [type] $model
-     * @return void
-     */
     public static function updateRecord(Request $request, $model)
     {
         DB::connection($model->connection)->beginTransaction();
@@ -535,12 +451,6 @@ class InfrastructureAsset extends Model
         }
     }
 
-    /**
-     * The model delete method
-     *
-     * @param [type] $model
-     * @return void
-     */
     public static function deleteRecord($model)
     {
         DB::connection($model->connection)->beginTransaction();
@@ -561,12 +471,6 @@ class InfrastructureAsset extends Model
         }
     }
 
-    /**
-     * The model restore method
-     *
-     * @param [type] $model
-     * @return void
-     */
     public static function restoreRecord($model)
     {
         DB::connection($model->connection)->beginTransaction();
@@ -587,12 +491,6 @@ class InfrastructureAsset extends Model
         }
     }
 
-    /**
-     * The model destroy method
-     *
-     * @param [type] $model
-     * @return void
-     */
     public static function destroyRecord($model)
     {
         DB::connection($model->connection)->beginTransaction();

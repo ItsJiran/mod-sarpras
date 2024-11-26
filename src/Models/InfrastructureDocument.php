@@ -92,33 +92,21 @@ class InfrastructureDocument extends Model
      * ====================================================
      */
 
-    /**
-     * Get the model that the image belongs to.
-     */
     public function documentable(): MorphTo
     {
         return $this->morphTo(__FUNCTION__, 'documentable_type', 'documentable_id');
     }
 
-    /**
-     * Get the model that the image belongs to.
-     */
     public function unit(): BelongsTo
     {
         return $this->belongsTo(InfrastructureUnit::class, 'unit_id');
     }
 
-    /**
-     * Get the model that the image belongs to.
-     */
     public function asset(): BelongsTo
     {
         return $this->belongsTo(InfrastructureAsset::class, 'asset_id');
     }
 
-    /**
-     * Get the model that the image belongs to.
-     */
     public function taxes()
     {
         return InfrastructureRecord::where('targetable_id',$this->id)
@@ -128,9 +116,6 @@ class InfrastructureDocument extends Model
         ->select('infrastructure_records.*');
     }
 
-    /**
-     * Get the model that the image belongs to.
-     */
     public function maintenances()
     {
         return InfrastructureRecord::where('targetable_id',$this->id)
@@ -148,92 +133,27 @@ class InfrastructureDocument extends Model
 
     public static function mapStoreRequestValid(Request $request) : JsonResponse | null
     {
-        // apabila user bukan admin dan note status sudah bukan draft maka jangan tambah
-        $isUserAdmin = $request->user()->hasLicenseAs('infrastructure-administrator');
-        $isUserSuperAdmin = $request->user()->hasLicenseAs('infrastructure-superadmin');
-
-        // kalau user bukan operator
-        $isUserOperator = $request->user()->hasLicenseAs('infrastructure-operator');
-        if (!$isUserOperator && !$isUserAdmin && !$isUserSuperAdmin) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Tidak bisa mengubah karena anda bukan operator.'
-            ], 500);
-        }
-
-        return null;
+       return isRequestUserOperator($request); 
     }
 
     public static function mapUpdateRequestValid(Request $request, InfrastructureDocument $document) : JsonResponse | null
     {
-        // apabila user bukan admin dan note status sudah bukan draft maka jangan tambah
-        $isUserAdmin = $request->user()->hasLicenseAs('infrastructure-administrator');
-        $isUserSuperAdmin = $request->user()->hasLicenseAs('infrastructure-superadmin');
-
-        // kalau user bukan operator
-        $isUserOperator = $request->user()->hasLicenseAs('infrastructure-operator');
-        if (!$isUserOperator && !$isUserAdmin && !$isUserSuperAdmin) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Tidak bisa mengubah karena anda bukan operator.'
-            ], 500);
-        }
-
-        return null;
+       return isRequestUserOperator($request); 
     }
 
     public static function mapDeleteRequestValid(Request $request, InfrastructureDocument $document) : JsonResponse | null
     {
-        // apabila user bukan admin dan note status sudah bukan draft maka jangan tambah
-        $isUserAdmin = $request->user()->hasLicenseAs('infrastructure-administrator');
-        $isUserSuperAdmin = $request->user()->hasLicenseAs('infrastructure-superadmin');
-
-        // kalau user bukan operator
-        $isUserOperator = $request->user()->hasLicenseAs('infrastructure-operator');
-        if (!$isUserOperator && !$isUserAdmin && !$isUserSuperAdmin) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Tidak bisa mengubah karena anda bukan operator.'
-            ], 500);
-        }
-
-        return null;
+       return isRequestUserOperator($request); 
     }
 
     public static function mapRestoreRequestValid(Request $request, InfrastructureDocument $document): JsonResponse | null
     {
-        // apabila user bukan admin dan note status sudah bukan draft maka jangan tambah
-        $isUserAdmin = $request->user()->hasLicenseAs('infrastructure-administrator');
-        $isUserSuperAdmin = $request->user()->hasLicenseAs('infrastructure-superadmin');
-
-        // kalau user bukan operator
-        $isUserOperator = $request->user()->hasLicenseAs('infrastructure-operator');
-        if (!$isUserOperator && !$isUserAdmin && !$isUserSuperAdmin) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Tidak bisa mengubah karena anda bukan operator.'
-            ], 500);
-        }
-
-        return null;
+       return isRequestUserOperator($request); 
     }
 
     public static function mapForceDeleteRequestValid(Request $request, InfrastructureDocument $document): JsonResponse | null
     {
-        // apabila user bukan admin dan note status sudah bukan draft maka jangan tambah
-        $isUserAdmin = $request->user()->hasLicenseAs('infrastructure-administrator');
-        $isUserSuperAdmin = $request->user()->hasLicenseAs('infrastructure-superadmin');
-
-        // kalau user bukan operator
-        $isUserOperator = $request->user()->hasLicenseAs('infrastructure-operator');
-        if (!$isUserOperator && !$isUserAdmin && !$isUserSuperAdmin) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Tidak bisa mengubah karena anda bukan operator.'
-            ], 500);
-        }
-
-        return null;
+       return isRequestUserOperator($request); 
     }
 
     /**
@@ -242,13 +162,6 @@ class InfrastructureDocument extends Model
      * =====================================================
      */
     
-     /**
-     * The model map combos to be consume for frontend on another page
-     * but only connected to unit
-     *
-     * @param [type] $model
-     * @return void
-     */
     public static function mapCombosOnlyUnit(Request $request, $model = null) 
     {
         $documents = self::where([
@@ -271,13 +184,6 @@ class InfrastructureDocument extends Model
         ];
     }
 
-     /**
-     * The model map combos to be consume for frontend on another page
-     * but only connected to asset
-     *
-     * @param [type] $model
-     * @return void
-     */
     public static function mapCombosOnlyAsset(Request $request, $model = null) 
     {
         $documents = self::where([
@@ -300,12 +206,6 @@ class InfrastructureDocument extends Model
         ];
     }
 
-     /**
-     * The model map combos method
-     *
-     * @param [type] $model
-     * @return void
-     */
     public static function mapCombos(Request $request, $model = null): array
     {
         // temporary
@@ -342,12 +242,6 @@ class InfrastructureDocument extends Model
         ]);
     }
 
-    /**
-     * The model map combos method
-     *
-     * @param [type] $model
-     * @return void
-     */
     public static function mapResourceShow(Request $request, $model = null): array
     {
         // documents key type
@@ -394,11 +288,6 @@ class InfrastructureDocument extends Model
         );
     }
 
-     /**
-     * The model map combos method
-     *
-     * @return array
-     */
     public static function mapStatus(): array 
     {
         return [
@@ -410,12 +299,6 @@ class InfrastructureDocument extends Model
         ];
     }
 
-    /**
-     * The model map combos method
-     *
-     * @param [type] $model
-     * @return array
-     */
     public static function mapTypeClass($reverse = false) : array
     {
         if(!$reverse) {
@@ -429,12 +312,6 @@ class InfrastructureDocument extends Model
         }
     }
 
-    /**
-     * The model map combos method
-     *
-     * @param [type] $model
-     * @return array
-     */
     public static function mapTypeKeyClass() : array
     {
         return [
@@ -448,12 +325,6 @@ class InfrastructureDocument extends Model
      * ================================================
      */
 
-    /**
-     * The model store method
-     *
-     * @param Request $request
-     * @return void
-     */
     public static function storeRecord(Request $request, $type_model_class)
     {
         $model = new static();
@@ -493,13 +364,6 @@ class InfrastructureDocument extends Model
         }
     }
 
-    /**
-     * The model update method
-     *
-     * @param Request $request
-     * @param [type] $model
-     * @return void
-     */
     public static function updateRecord(Request $request, $model)
     {
         DB::connection($model->connection)->beginTransaction();
@@ -533,12 +397,6 @@ class InfrastructureDocument extends Model
         }
     }
 
-    /**
-     * The model delete method
-     *
-     * @param [type] $model
-     * @return void
-     */
     public static function deleteRecord($model)
     {
         DB::connection($model->connection)->beginTransaction();
@@ -559,12 +417,6 @@ class InfrastructureDocument extends Model
         }
     }
 
-    /**
-     * The model restore method
-     *
-     * @param [type] $model
-     * @return void
-     */
     public static function restoreRecord($model)
     {
         DB::connection($model->connection)->beginTransaction();
@@ -585,12 +437,6 @@ class InfrastructureDocument extends Model
         }
     }
 
-    /**
-     * The model destroy method
-     *
-     * @param [type] $model
-     * @return void
-     */
     public static function destroyRecord($model)
     {
         DB::connection($model->connection)->beginTransaction();
