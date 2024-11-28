@@ -430,7 +430,6 @@ class InfrastructureAsset extends Model
 
         try {
             $model->delete();
-            $model->assetable->delete();
 
             DB::connection($model->connection)->commit();
 
@@ -451,7 +450,6 @@ class InfrastructureAsset extends Model
 
         try {
             $model->restore();
-            $model->assetable->restore();
 
             DB::connection($model->connection)->commit();
 
