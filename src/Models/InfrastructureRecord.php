@@ -349,32 +349,32 @@ class InfrastructureRecord extends Model
 
     public static function mapStoreRequestValid(Request $request) : JsonResponse | null
     {
-        $ensureRequestUserOperator = ensureRequestUserOperator($request);
-        if(!is_null($ensureRequestUserOperator)) return $ensureRequestUserOperator;
+        $isRequestUserOperator = isRequestUserOperator($request);
+        if(!is_null($isRequestUserOperator)) return $isRequestUserOperator;
     }
 
     public static function mapUpdateRequestValid(Request $request) : JsonResponse | null
     {
-        $ensureRequestUserOperator = ensureRequestUserOperator($request);
-        if(!is_null($ensureRequestUserOperator)) return $ensureRequestUserOperator;
+        $isRequestUserOperator = isRequestUserOperator($request);
+        if(!is_null($isRequestUserOperator)) return $isRequestUserOperator;
     }
 
     public static function mapDestroyRequestValid(Request $request) : JsonResponse | null
     {
-        $ensureRequestUserOperator = ensureRequestUserOperator($request);
-        if(!is_null($ensureRequestUserOperator)) return $ensureRequestUserOperator;
+        $isRequestUserOperator = isRequestUserOperator($request);
+        if(!is_null($isRequestUserOperator)) return $isRequestUserOperator;
     }
 
     public static function mapRestoreRequestValid(Request $request) : JsonResponse | null
     {
-        $ensureRequestUserOperator = ensureRequestUserOperator($request);
-        if(!is_null($ensureRequestUserOperator)) return $ensureRequestUserOperator;
+        $isRequestUserOperator = isRequestUserOperator($request);
+        if(!is_null($isRequestUserOperator)) return $isRequestUserOperator;
     }
 
     public static function mapForceDeleteRequestValid(Request $request) : JsonResponse | null
     {
-        $ensureRequestUserOperator = ensureRequestUserOperator($request);
-        if(!is_null($ensureRequestUserOperator)) return $ensureRequestUserOperator;
+        $isRequestUserOperator = isRequestUserOperator($request);
+        if(!is_null($isRequestUserOperator)) return $isRequestUserOperator;
     }
 
     /**
@@ -681,12 +681,11 @@ class InfrastructureRecord extends Model
         try {
 
             // hapus notes dan notes used nya
-                
             $notes = InfrastructureRecordNote::where('record_id',$model->id)->get();
 
             foreach ($notes as $key => $note) {
-                InfrastructureRecordNoteUsed::where('note_id',$note->id)->delete();
-                $note->delete();
+                InfrastructureRecordNoteUsed::where('note_id',$note->id)->forceDelete();
+                $note->forceDelete();
             }
 
             $model->forceDelete();

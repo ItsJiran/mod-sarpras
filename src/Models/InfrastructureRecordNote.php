@@ -631,7 +631,6 @@ class InfrastructureRecordNote extends Model
         DB::connection($model->connection)->beginTransaction();
 
         try {
-
             // delete all the used asset 
             $note_uses = InfrastructureRecordNoteUsed::where([
                 ['note_id','=',$model->id],
