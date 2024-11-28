@@ -432,6 +432,7 @@ class InfrastructureDocument extends Model
 
         try {
             $model->delete();
+            $model->documentable->delete();
 
             DB::connection($model->connection)->commit();
 
@@ -452,6 +453,7 @@ class InfrastructureDocument extends Model
 
         try {
             $model->restore();
+            $model->documentable->restore();
 
             DB::connection($model->connection)->commit();
 
@@ -472,6 +474,7 @@ class InfrastructureDocument extends Model
 
         try {
             $model->forceDelete();
+            $model->documentable->forceDelete();
 
             DB::connection($model->connection)->commit();
 
