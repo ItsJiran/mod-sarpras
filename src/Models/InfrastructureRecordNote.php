@@ -217,42 +217,6 @@ class InfrastructureRecordNote extends Model
     }
 
     // +===============================================
-    // +----------- MAP STORE REQUEST VALID
-    // +===============================================
-
-    public static function mapStoreRequestValid(Request $request, InfrastructureRecord $record) : JsonResponse | null
-    {
-        $isRequestUserOwnerModel = isRequestUserOwnerModel($request, $record);
-        if(!is_null($isRequestUserOwnerModel)) return $isRequestUserOwnerModel;
-
-        $isRequestUserOperator = isRequestUserOperator($request);
-        if(!is_null($isRequestUserOperator)) return $isRequestUserOperator;
-
-        if ( $record->isRecordLog() ) 
-            return self::mapStoreRequestLog($request, $record);
-
-        if ( $record->isRecordPeriodic() ) 
-            return self::mapStoreRequestPeriodic($request, $record);               
-    }
-
-    public static function mapStoreRequestLog(Request $request, InfrastructureRecord $record) : JsonResponse | null
-    {
-        return null;
-    }
-
-    public static function mapStoreRequestPeriodic(Request $request, InfrastructureRecord $record) : JsonResponse | null
-    {
-        if ( self::isOngoing($request, $record) ) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Gagal menambahkan data karena ada pajak yang masih berjalan..'
-            ], 500);
-        }
-
-        return null;
-    }
-
-    // +===============================================
     // +--------------- MAP STORE REQUEST
     // +===============================================
 
@@ -274,12 +238,47 @@ class InfrastructureRecordNote extends Model
     }
 
     // +===============================================
+    // +----------- MAP STORE REQUEST VALID
+    // +===============================================
+
+    public static function mapStoreRequestValid(Request $request, InfrastructureRecord $record) : JsonResponse | null
+    {
+        if ( $record->isRecordLog() ) 
+            $custom = self::mapStoreRequestLog($request, $record);
+
+        if ( $record->isRecordPeriodic() ) 
+            $custom = self::mapStoreRequestPeriodic($request, $record);               
+
+        return ensureRequests([
+            ensureRequestUserOwnerModel($request, $record),
+            ensureRequestUserOperator($request),
+            $custom
+        ]);
+    }
+
+    public static function mapStoreRequestLog(Request $request, InfrastructureRecord $record) : JsonResponse | null
+    {
+        return null;
+    }
+
+    public static function mapStoreRequestPeriodic(Request $request, InfrastructureRecord $record) : JsonResponse | null
+    {
+        if ( self::isOngoing($request, $record) ) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Gagal menambahkan data karena ada pajak yang masih berjalan..'
+            ], 500);
+        }
+
+        return null;
+    }
+
+    // +===============================================
     // +-------- MAP UPDATE REQUEST VERIFICATION
     // +===============================================
 
     public static function mapUpdateToCancelled(Request $request, InfrastructureRecord $record, $model) : JsonResponse | null
     {
-        // kalau bukan draft dan bukan admin
         if ( $model->status_step == '3' ) {
             return response()->json([
                 'success' => false,
@@ -287,15 +286,11 @@ class InfrastructureRecordNote extends Model
             ], 500);
         }
 
-        $isRequestUserVerificator = isRequestUserVerificator($request);
-        if(!is_null($isRequestUserVerificator)) return $isRequestUserVerificator;
-
-        return null;
+       return ensureRequestUserVerificator($request);
     }
 
     public static function mapUpdateToVerified(Request $request, InfrastructureRecord $record, $model) : JsonResponse | null
     {
-        // kalau bukan draft dan bukan admin
         if ( $model->status_step == '3' ) {
             return response()->json([
                 'success' => false,
@@ -303,10 +298,7 @@ class InfrastructureRecordNote extends Model
             ], 500);
         }
 
-        $isRequestUserVerificator = isRequestUserVerificator($request);
-        if(!is_null($isRequestUserVerificator)) return $isRequestUserVerificator;
-
-        return null;
+       return ensureRequestUserVerificator($request);
     }
 
     public static function mapUpdateToUnVerified(Request $request, InfrastructureRecord $record, $model) : JsonResponse | null
@@ -319,29 +311,23 @@ class InfrastructureRecordNote extends Model
             ], 500);
         }
 
-       return isRequestUserVerificator($request);
+       return ensureRequestUserVerificator($request);
     }
 
     public static function mapUpdateToDraft(Request $request, InfrastructureRecord $record, $model) : JsonResponse | null
     {
-        $isRequestModelStatusPending = isRequestModelStatusPending($request, $model);
-        if(!is_null($isRequestModelStatusPending)) return $isRequestModelStatusPending;
-
-        $isRequestUserVerificator = isRequestUserVerificator($request);
-        if(!is_null($isRequestUserVerificator)) return $isRequestUserVerificator;
-
-        return null;
+        return ensureRequests([
+            ensureRequestModelStatusPending($request, $model),
+            ensureRequestUserVerificator($request),
+        ]);
     }
 
     public static function mapUpdateToPending(Request $request, InfrastructureRecord $record, $model) : JsonResponse | null
     {
-        $isRequestModelStatusDraft = isRequestModelStatusDraft($request, $model);
-        if(!is_null($isRequestModelStatusDraft)) return $isRequestModelStatusDraft;
-
-        $isRequestUserVerificator = isRequestUserVerificator($request);
-        if(!is_null($isRequestUserVerificator)) return $isRequestUserVerificator;
-
-        return null;
+        return ensureRequests([
+            ensureRequestModelStatusDraft($request, $model),
+            ensureRequestUserVerificator($request),
+        ]);
     }
 
     // +===============================================
@@ -367,31 +353,13 @@ class InfrastructureRecordNote extends Model
 
     public static function mapUpdateRequestValid(Request $request, InfrastructureRecord $record, $model) : JsonResponse | null
     {
-        $isRequestModelStatusDraft = isRequestModelStatusDraft($request, $model);
-        if(!is_null($isRequestModelStatusDraft)) return $isRequestModelStatusDraft;
-
-        $isRequestUserOwnerModel = isRequestUserOwnerModel($request, $model);
-        if(!is_null($isRequestUserOwnerModel)) return $isRequestUserOwnerModel;
-
-        $isRequestUserOperator = isRequestUserOperator($request);
-        if(!is_null($isRequestUserOperator)) return $isRequestUserOperator;
-
-        if ( $record->isRecordLog() )
-            return self::mapUpdateRequestLog($request, $record, $model);
-
-        if ( $record->isRecordPeriodic() )
-            return self::mapUpdateRequestPeriodic($request, $record, $model); 
+        return ensureRequests([
+            ensureRequestModelStatusDraft($request, $model),
+            ensureRequestUserOwnerModel($request, $model),
+            ensureRequestUserOperator($request),
+        ]);
     }
 
-    public static function mapUpdateRequestLog(Request $request, InfrastructureRecord $record, $model) : JsonResponse | null
-    {
-        return null;
-    }
-
-    public static function mapUpdateRequestPeriodic(Request $request, InfrastructureRecord $record, $model) : JsonResponse | null
-    {
-        return null;
-    }
 
     // +===============================================
     // +---------- MAP DELETE REQUEST VALID
@@ -406,30 +374,11 @@ class InfrastructureRecordNote extends Model
             ], 500);
         }
 
-        $isRequestModelStatusDraft = isRequestModelStatusDraft($request, $model);
-        if(!is_null($isRequestModelStatusDraft)) return $isRequestModelStatusDraft;
-
-        $isRequestUserOwnerModel = isRequestUserOwnerModel($request, $model);
-        if(!is_null($isRequestUserOwnerModel)) return $isRequestUserOwnerModel;
-
-        $isRequestUserOperator = isRequestUserOperator($request);
-        if(!is_null($isRequestUserOperator)) return $isRequestUserOperator;
-
-        if ( $record->isRecordLog() )
-            return self::mapDeleteRequestLog($request, $record, $model);
-
-        if ( $record->isRecordPeriodic() )
-            return self::mapDeleteRequestPeriodic($request, $record, $model); 
-    }
-
-    public static function mapDeleteRequestLog(Request $request, InfrastructureRecord $record, $model) : JsonResponse | null
-    {
-        return null;
-    }
-
-    public static function mapDeleteRequestPeriodic(Request $request, InfrastructureRecord $record, $model) : JsonResponse | null
-    {
-        return null;
+        return ensureRequests([
+            ensureRequestModelStatusDraft($request, $model),
+            ensureRequestUserOwnerModel($request, $model),
+            ensureRequestUserOperator($request),
+        ]);
     }
 
     // +===============================================
@@ -445,8 +394,8 @@ class InfrastructureRecordNote extends Model
             ], 500);
         }
 
-        $isRequestUserOperator = isRequestUserOperator($request);
-        if(!is_null($isRequestUserOperator)) return $isRequestUserOperator;
+        $ensureRequestUserOperator = ensureRequestUserOperator($request);
+        if(!is_null($ensureRequestUserOperator)) return $ensureRequestUserOperator;
 
         return null;
     }

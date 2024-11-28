@@ -70,8 +70,8 @@ class InfrastructureAssetController extends Controller
         $request->validate( $type_model_class::mapStoreValidation() );
 
         // hanlding is request vlaid
-        $isResquestValid = InfrastructureAsset::mapStoreRequestValid($request);
-        if ( !is_null($isResquestValid) ) return $isResquestValid;
+        $isRequestValid = InfrastructureAsset::mapStoreRequestValid($request);
+        if ( !is_null($isRequestValid) ) return $isRequestValid;
 
         return InfrastructureAsset::storeRecord($request, $type_model_class);
     }
@@ -127,16 +127,14 @@ class InfrastructureAssetController extends Controller
         $request->validate( $type_model_class::mapUpdateValidation() );
 
         // is request valid
-        $isResquestValid = InfrastructureAsset::mapUpdateRequestValid($request,$infrastructureAsset);
-        if ( !is_null($isResquestValid) ) return $isResquestValid;
+        $isRequestValid = InfrastructureAsset::mapUpdateRequestValid($request,$infrastructureAsset);
+        if ( !is_null($isRequestValid) ) return $isRequestValid;
 
         return InfrastructureAsset::updateRecord($request, $infrastructureAsset);
     }
 
     public function updateFromUnit(Request $request, InfrastructureUnit $unit, InfrastructureAsset $asset)
     {
-        Gate::authorize('update', $asset);
-
         return $this->update($request, $asset);
     }
 
@@ -148,8 +146,8 @@ class InfrastructureAssetController extends Controller
         Gate::authorize('delete', $infrastructureAsset);
 
         // is request valid
-        $isResquestValid = InfrastructureAsset::mapDeleteRequestValid($request,$infrastructureAsset);
-        if ( !is_null($isResquestValid) ) return $isResquestValid;
+        $isRequestValid = InfrastructureAsset::mapDeleteRequestValid($request,$infrastructureAsset);
+        if ( !is_null($isRequestValid) ) return $isRequestValid;
 
         return InfrastructureAsset::deleteRecord($infrastructureAsset);
     }
@@ -166,8 +164,8 @@ class InfrastructureAssetController extends Controller
     {
         Gate::authorize('restore', $infrastructureAsset);
 
-        $isResquestValid = InfrastructureAsset::mapRestoreRequestValid($request,$infrastructureAsset);
-        if ( !is_null($isResquestValid) ) return $isResquestValid;
+        $isRequestValid = InfrastructureAsset::mapRestoreRequestValid($request,$infrastructureAsset);
+        if ( !is_null($isRequestValid) ) return $isRequestValid;
 
         return InfrastructureAsset::restoreRecord($infrastructureAsset);
     }
@@ -184,8 +182,8 @@ class InfrastructureAssetController extends Controller
     {
         Gate::authorize('destroy', $infrastructureAsset);
 
-        $isResquestValid = InfrastructureAsset::mapForceDeleteRequestValid($request,$infrastructureAsset);
-        if ( !is_null($isResquestValid) ) return $isResquestValid;
+        $isRequestValid = InfrastructureAsset::mapForceDeleteRequestValid($request,$infrastructureAsset);
+        if ( !is_null($isRequestValid) ) return $isRequestValid;
 
         return InfrastructureAsset::destroyRecord($infrastructureAsset);
     }

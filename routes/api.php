@@ -95,7 +95,7 @@ Route::get('ref-image/{path}',[InfrastructureRecordNoteController::class,'getIma
 
 Route::controller(InfrastructureRecordController::class)->group(function () {
 
-    Route::get('deadline','indexDeadline');
+    Route::get('deadline', 'indexDeadline');
     Route::get('deadline/{deadline}', 'showDeadline');
 
     Route::group(['as' => 'maintenance::'], function(){

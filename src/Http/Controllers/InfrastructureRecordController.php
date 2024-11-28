@@ -130,8 +130,15 @@ class InfrastructureRecordController extends Controller
     public function store(Request $request)
     {
         Gate::authorize('create', InfrastructureRecord::class);
+
+        // Check apakah requesrt requirement ada
         $request = $this->determineRouteType($request);
-        $request->validate( InfrastructureRecord::mapStoreRequestValidation($request) );
+        $request->validate( InfrastructureRecord::mapStoreRequest($request) );
+
+        // Check apakah request valid
+        $isRequestValid = InfrastructureRecord::mapStoreRequestValid($request);
+        if( !is_null($isRequestValid) ) return $isRequestValid;
+
         return InfrastructureRecord::storeRecord($request);
     }
     
@@ -218,8 +225,15 @@ class InfrastructureRecordController extends Controller
     public function update(Request $request, InfrastructureRecord $record)
     {
         Gate::authorize('update', $record);
+
+        // Check apakah requesrt requirement ada
         $request = $this->determineRouteType($request);
-        $request->validate( InfrastructureRecord::mapUpdateRequestValidation($request, $record) );
+        $request->validate( InfrastructureRecord::mapUpdateRequest($request, $record) );
+
+        // Check apakah request valid
+        $isRequestValid = InfrastructureRecord::mapUpdateRequestValid($request);
+        if( !is_null($isRequestValid) ) return $isRequestValid;
+
         return InfrastructureRecord::updateRecord($request, $record);
     }
 
@@ -266,6 +280,11 @@ class InfrastructureRecordController extends Controller
     public function destroy(InfrastructureRecord $record)
     {
         Gate::authorize('delete', $record);
+
+        // Check apakah request valid
+        $isRequestValid = InfrastructureRecord::mapDestroyRequestValid($request);
+        if( !is_null($isRequestValid) ) return $isRequestValid;
+
         return InfrastructureRecord::deleteRecord($record);
     }
 
@@ -305,6 +324,10 @@ class InfrastructureRecordController extends Controller
     public function restore(InfrastructureRecord $record)
     {
         Gate::authorize('restore', $record);
+
+        $isRequestValid = InfrastructureRecord::mapRestoreRequestValid($request);
+        if( !is_null($isRequestValid) ) return $isRequestValid;
+
         return InfrastructureRecord::restoreRecord($record);
     }
 
@@ -344,6 +367,10 @@ class InfrastructureRecordController extends Controller
     public function forceDelete(InfrastructureRecord $record)
     {
         Gate::authorize('destroy', $record);
+
+        $isRequestValid = InfrastructureRecord::mapForceDeleteRequestValid($request);
+        if( !is_null($isRequestValid) ) return $isRequestValid;
+
         return InfrastructureRecord::destroyRecord($record);
     }
 

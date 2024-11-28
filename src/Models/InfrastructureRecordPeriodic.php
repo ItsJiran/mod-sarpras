@@ -62,7 +62,7 @@ class InfrastructureRecordPeriodic extends Model
      * ====================================================
      */
 
-    public static function mapStoreRequestValidation(Request $request)
+    public static function mapStoreRequest(Request $request)
     {
         return [
             'duedate' => 'required|date',
@@ -72,7 +72,7 @@ class InfrastructureRecordPeriodic extends Model
         ];
     }
 
-    public static function mapUpdateRequestValidation(Request $request) : array
+    public static function mapUpdateRequest(Request $request) : array
     {
         return [
             'duedate' => 'required|date',

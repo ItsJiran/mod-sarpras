@@ -133,27 +133,27 @@ class InfrastructureDocument extends Model
 
     public static function mapStoreRequestValid(Request $request) : JsonResponse | null
     {
-       return isRequestUserOperator($request); 
+       return ensureRequestUserOperator($request); 
     }
 
     public static function mapUpdateRequestValid(Request $request, InfrastructureDocument $document) : JsonResponse | null
     {
-       return isRequestUserOperator($request); 
+       return ensureRequestUserOperator($request); 
     }
 
     public static function mapDeleteRequestValid(Request $request, InfrastructureDocument $document) : JsonResponse | null
     {
-       return isRequestUserOperator($request); 
+       return ensureRequestUserOperator($request); 
     }
 
     public static function mapRestoreRequestValid(Request $request, InfrastructureDocument $document): JsonResponse | null
     {
-       return isRequestUserOperator($request); 
+       return ensureRequestUserOperator($request); 
     }
 
     public static function mapForceDeleteRequestValid(Request $request, InfrastructureDocument $document): JsonResponse | null
     {
-       return isRequestUserOperator($request); 
+       return ensureRequestUserOperator($request); 
     }
 
     /**

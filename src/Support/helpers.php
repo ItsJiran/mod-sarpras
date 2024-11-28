@@ -3,8 +3,38 @@
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
-if (!function_exists('isRequestModelStatusDraft')) {
-    function isRequestModelStatusDraft(Request $request, $model = null) : JsonResponse | null 
+use Module\Infrastructure\Models\InfrastructureDocument;
+use Module\Infrastructure\Models\InfrastructureAsset;
+use Module\Infrastructure\Models\InfrastructureUnit;
+use Module\Infrastructure\Models\InfrastructureRecord;
+use Module\Infrastructure\Models\InfrastructureRecordNote;
+use Module\Infrastructure\Models\InfrastructureRecordNoteUsed;
+
+if (!function_exists('ensureRequests')) {
+    function ensureRequests(Array $list_array) : JsonResponse | null
+    {
+        foreach ($list_array as $key => $value) {
+            if( !is_null($value) ) return $value;
+        }
+
+        return null;
+    }
+}
+
+if (!function_exists('ensureRequestRelationValid')) {
+    function ensureRequestRelationValid(Request $request, Array $list_class) : JsonResponse | null 
+    {
+
+        // ASSET ENSURE
+        if ( is_null( $list_class['asset'] )  ) {
+
+        }
+
+    }
+}
+
+if (!function_exists('ensureRequestModelStatusDraft')) {
+    function ensureRequestModelStatusDraft(Request $request, $model = null) : JsonResponse | null 
     {
         $isUserAdmin = $request->user()->hasLicenseAs('infrastructure-administrator');
         $isUserSuperAdmin = $request->user()->hasLicenseAs('infrastructure-superadmin');
@@ -20,8 +50,8 @@ if (!function_exists('isRequestModelStatusDraft')) {
     }
 }
 
-if (!function_exists('isRequestModelStatusPending')) {
-    function isRequestModelStatusPending(Request $request, $model = null) : JsonResponse | null 
+if (!function_exists('ensureRequestModelStatusPending')) {
+    function ensureRequestModelStatusPending(Request $request, $model = null) : JsonResponse | null 
     {
         $isUserAdmin = $request->user()->hasLicenseAs('infrastructure-administrator');
         $isUserSuperAdmin = $request->user()->hasLicenseAs('infrastructure-superadmin');
@@ -37,15 +67,15 @@ if (!function_exists('isRequestModelStatusPending')) {
     }
 }
 
-if (!function_exists('isRequestUserOperator')) {
-    function isRequestUserOperator(Request $request) : JsonResponse | null
+if (!function_exists('ensureRequestUserOperator')) {
+    function ensureRequestUserOperator(Request $request) : JsonResponse | null
     {
         // apabila user bukan admin dan note status sudah bukan draft maka jangan tambah
         $isUserAdmin = $request->user()->hasLicenseAs('infrastructure-administrator');
         $isUserSuperAdmin = $request->user()->hasLicenseAs('infrastructure-superadmin');
+        $isUserOperator = $request->user()->hasLicenseAs('infrastructure-operator');
 
         // kalau user bukan operator
-        $isUserOperator = $request->user()->hasLicenseAs('infrastructure-operator');
         if (!$isUserOperator && !$isUserAdmin && !$isUserSuperAdmin) {
             return response()->json([
                 'success' => false,
@@ -57,15 +87,15 @@ if (!function_exists('isRequestUserOperator')) {
     }
 }
 
-if (!function_exists('isRequestUserOwnerModel')) {
-    function isRequestUserOwnerModel(Request $request, $model) : JsonResponse | null
+if (!function_exists('ensureRequestUserOwnerModel')) {
+    function ensureRequestUserOwnerModel(Request $request, $model) : JsonResponse | null
     {
         // apabila user bukan admin dan note status sudah bukan draft maka jangan tambah
         $isUserAdmin = $request->user()->hasLicenseAs('infrastructure-administrator');
         $isUserSuperAdmin = $request->user()->hasLicenseAs('infrastructure-superadmin');
+        $isUserOwner = $model->user_id == $request->user()->id;
 
         // kalau user bukan operator
-        $isUserOwner = $model->user_id == $request->user()->id;
         if (!$isUserOwner && !$isUserAdmin && !$isUserSuperAdmin) {
             return response()->json([
                 'success' => false,
@@ -77,15 +107,15 @@ if (!function_exists('isRequestUserOwnerModel')) {
     }
 }
 
-if (!function_exists('isRequestUserVerificator')) {
-    function isRequestUserVerificator(Request $request) : JsonResponse | null
+if (!function_exists('ensureRequestUserVerificator')) {
+    function ensureRequestUserVerificator(Request $request) : JsonResponse | null
     {
         // apabila user bukan admin dan note status sudah bukan draft maka jangan tambah
         $isUserAdmin = $request->user()->hasLicenseAs('infrastructure-administrator');
         $isUserSuperAdmin = $request->user()->hasLicenseAs('infrastructure-superadmin');
+        $isUserVerificator = $request->user()->hasLicenseAs('infrastructure-superadmin');
 
         // kalau user bukan verificator
-        $isUserVerificator = $request->user()->hasLicenseAs('infrastructure-superadmin');
         if (!$isUserVerificator && !$isUserAdmin && !$isUserSuperAdmin){
             return response()->json([
                 'success' => false,

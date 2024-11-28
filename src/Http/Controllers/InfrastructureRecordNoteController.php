@@ -41,6 +41,9 @@ class InfrastructureRecordNoteController extends Controller
         return $response;
     }
 
+    // + ================================================= +
+    // + -------------- INDEX METHODS -------------------- +
+
     public function index(Request $request, InfrastructureRecord $record)
     {
         Gate::authorize('view', InfrastructureRecordNote::class);
@@ -95,8 +98,8 @@ class InfrastructureRecordNoteController extends Controller
 
         $request->validate( InfrastructureRecordNote::mapStoreRequest($request, $record) );
         $isResponseValid = InfrastructureRecordNote::mapStoreRequestValid($request, $record);
-        
         if ( !is_null($isResponseValid) ) return $isResponseValid;
+
         return InfrastructureRecordNote::storeRecord($request, $record);
     }
 
@@ -170,10 +173,7 @@ class InfrastructureRecordNoteController extends Controller
 
         $request->validate( InfrastructureRecordNote::mapUpdateRequest($request, $record) );
         $isResponseValid = InfrastructureRecordNote::mapUpdateRequestValid($request, $record, $note);
-
-        if ( !is_null($isResponseValid) ) {
-            return $isResponseValid;   
-        }
+        if ( !is_null($isResponseValid) ) return $isResponseValid;   
 
         return InfrastructureRecordNote::updateRecord($request, $record, $note);
     }
@@ -212,10 +212,7 @@ class InfrastructureRecordNoteController extends Controller
         Gate::authorize('delete', $note);
 
         $isResponseValid = InfrastructureRecordNote::mapDeleteRequestValid($request, $record, $note);
-
-        if ( !is_null($isResponseValid) ) {
-            return $isResponseValid;   
-        }
+        if ( !is_null($isResponseValid) ) return $isResponseValid;   
 
         return InfrastructureRecordNote::deleteRecord($note);
     }

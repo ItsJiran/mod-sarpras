@@ -248,13 +248,10 @@ class InfrastructureRecordNoteUsed extends Model
             ], 500);
         }
 
-        $isRequestModelStatusDraft = isRequestModelStatusDraft($request, $model);
-        if(!is_null($isRequestModelStatusDraft)) return $isRequestModelStatusDraft;
-
-        $isRequestUserOperator = isRequestUserOperator($request);
-        if(!is_null($isRequestUserOperator)) return $isRequestUserOperator;
-
-        return null;
+        return ensureRequests([
+            ensureRequestModelStatusDraft($request, $model),
+            ensureRequestUserOperator($request)
+        ]);
      }
 
     public static function mapUpdateRequestValid(Request $request, InfrastructureRecord $record, InfrastructureRecordNote $note, $model) : JsonResponse | null
@@ -264,14 +261,23 @@ class InfrastructureRecordNoteUsed extends Model
 
     public static function mapDeleteRequestValid(Request $request, InfrastructureRecord $record, InfrastructureRecordNote $note, $model) : JsonResponse | null
     {
-        $isRequestModelStatusDraft = isRequestModelStatusDraft($request, $model);
-        if(!is_null($isRequestModelStatusDraft)) return $isRequestModelStatusDraft;
-
-        $isRequestUserOperator = isRequestUserOperator($request);
-        if(!is_null($isRequestUserOperator)) return $isRequestUserOperator;
-
-        return null;
+        return ensureRequests([
+            ensureRequestModelStatusDraft($request, $model),
+            ensureRequestUserOperator($request)
+        ]);
     }
+
+    /**
+     * =====================================================
+     * +---------------- ENSURENCE METHODS ----------------+
+     * =====================================================
+     */
+
+    public function ensureModelExists() : JsonResponse | null  
+    {
+
+    }
+
 
     /**
      * =================================================

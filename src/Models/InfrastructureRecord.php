@@ -15,6 +15,7 @@ use Module\System\Traits\Filterable;
 use Module\System\Traits\Searchable;
 use Module\System\Traits\HasPageSetup;
 
+use Illuminate\Http\JsonResponse;
 use Carbon\Carbon;
 
 use Module\Infrastructure\Models\InfrastructureRecordNoteUsed;
@@ -309,7 +310,7 @@ class InfrastructureRecord extends Model
     // + -------- STORE
     // + ======================
 
-    public static function mapStoreRequestValidation(Request $request):array
+    public static function mapStoreRequest(Request $request):array
     {
         // convert 
         $request            = self::mapDefaultObject($request);
@@ -319,13 +320,13 @@ class InfrastructureRecord extends Model
         // mendapatkan request validasi dari morph nya..        
         $validation = array_merge( 
             $default_validation, 
-            $morph_class['recordable']::mapStoreRequestValidation($request),       
+            $morph_class['recordable']::mapStoreRequest($request),       
         );
 
         return $validation;
     }
 
-    public static function mapUpdateRequestValidation(Request $request, $model = null):array
+    public static function mapUpdateRequest(Request $request, $model = null):array
     {
         // convert 
         $request            = self::mapDefaultObject($request);
@@ -334,10 +335,46 @@ class InfrastructureRecord extends Model
 
         $validation = array_merge( 
             $default_validation, 
-            $morph_class['recordable']::mapUpdateRequestValidation($request),
+            $morph_class['recordable']::mapUpdateRequest($request),
         );
 
         return $validation;
+    }
+
+    /**
+     * ====================================================
+     * +------------- MAP REQUEST VALID ------------------+
+     * ====================================================
+     */
+
+    public static function mapStoreRequestValid(Request $request) : JsonResponse | null
+    {
+        $ensureRequestUserOperator = ensureRequestUserOperator($request);
+        if(!is_null($ensureRequestUserOperator)) return $ensureRequestUserOperator;
+    }
+
+    public static function mapUpdateRequestValid(Request $request) : JsonResponse | null
+    {
+        $ensureRequestUserOperator = ensureRequestUserOperator($request);
+        if(!is_null($ensureRequestUserOperator)) return $ensureRequestUserOperator;
+    }
+
+    public static function mapDestroyRequestValid(Request $request) : JsonResponse | null
+    {
+        $ensureRequestUserOperator = ensureRequestUserOperator($request);
+        if(!is_null($ensureRequestUserOperator)) return $ensureRequestUserOperator;
+    }
+
+    public static function mapRestoreRequestValid(Request $request) : JsonResponse | null
+    {
+        $ensureRequestUserOperator = ensureRequestUserOperator($request);
+        if(!is_null($ensureRequestUserOperator)) return $ensureRequestUserOperator;
+    }
+
+    public static function mapForceDeleteRequestValid(Request $request) : JsonResponse | null
+    {
+        $ensureRequestUserOperator = ensureRequestUserOperator($request);
+        if(!is_null($ensureRequestUserOperator)) return $ensureRequestUserOperator;
     }
 
     /**

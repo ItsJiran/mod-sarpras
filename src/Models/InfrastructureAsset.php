@@ -311,27 +311,27 @@ class InfrastructureAsset extends Model
 
     public static function mapStoreRequestValid(Request $request) : JsonResponse | null
     {
-        return isRequestUserOperator($request); 
+        return ensureRequestUserOperator($request); 
     }
 
     public static function mapUpdateRequestValid(Request $request, InfrastructureAsset $asset) : JsonResponse | null
     {
-        return isRequestUserOperator($request); 
+        return ensureRequestUserOperator($request); 
     }
 
     public static function mapDeleteRequestValid(Request $request, InfrastructureAsset $asset) : JsonResponse | null
     {
-        return isRequestUserOperator($request); 
+        return ensureRequestUserOperator($request); 
     }
 
     public static function mapRestoreRequestValid(Request $request, InfrastructureAsset $asset): JsonResponse | null
     {
-        return isRequestUserOperator($request); 
+        return ensureRequestUserOperator($request); 
     }
 
     public static function mapForceDeleteRequestValid(Request $request, InfrastructureAsset $asset): JsonResponse | null
     {
-        return isRequestUserOperator($request); 
+        return ensureRequestUserOperator($request); 
     }
 
     /**
