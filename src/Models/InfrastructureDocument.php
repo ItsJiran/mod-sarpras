@@ -15,9 +15,13 @@ use Illuminate\Database\Eloquent\Relations\MorphTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
+use Module\Infrastructure\Models\InfrastructureDocumentLandCertificate;
+use Module\Infrastructure\Models\InfrastructureDocumentBpkb;
+use Module\Infrastructure\Models\InfrastructureDocumentStnk;
+use Module\Infrastructure\Models\InfrastructureDocumentOther;
+
 // relateds documents models type
 use Module\Infrastructure\Models\InfrastructureMaintenanceDocument;
-use Module\Infrastructure\Models\InfrastructureDocumentLandCertificate;
 use Module\Infrastructure\Models\InfrastructureUnit;
 use Module\Infrastructure\Models\InfrastructureAsset;
 
@@ -320,10 +324,16 @@ class InfrastructureDocument extends Model
         if(!$reverse) {
             return [
                 'LandCertificate' => InfrastructureDocumentLandCertificate::class,
+                'Bpkb' => InfrastructureDocumentBpkb::class,
+                'Stnk' => InfrastructureDocumentStnk::class,
+                'Other' => InfrastructureDocumentOther::class,
             ];
         } else {
             return [
                 InfrastructureDocumentLandCertificate::class => 'LandCertificate',
+                InfrastructureDocumentBpkb::class => 'Bpkb',
+                InfrastructureDocumentStnk::class => 'Stnk',
+                InfrastructureDocumentOther::class => 'Other',
             ];
         }
     }
@@ -332,6 +342,9 @@ class InfrastructureDocument extends Model
     {
         return [
             'LandCertificate',              
+            'Bpkb',              
+            'Stnk',              
+            'Other',              
         ];
     }
 

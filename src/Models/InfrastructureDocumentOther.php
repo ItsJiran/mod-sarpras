@@ -31,14 +31,14 @@ class InfrastructureDocumentOther extends Model
      *
      * @var string
      */
-    protected $table = 'infrastructure_documentothers';
+    protected $table = 'infrastructure_document_others';
 
     /**
      * The roles variable
      *
      * @var array
      */
-    protected $roles = ['infrastructure-documentother'];
+    protected $roles = ['infrastructure-document-other'];
 
     /**
      * The attributes that should be cast to native types.
@@ -56,6 +56,18 @@ class InfrastructureDocumentOther extends Model
      */
     protected $defaultOrder = 'name';
 
+    public static function mapResourceShow(Request $request, $model = null)
+    {
+        return [
+        ];
+    }
+
+    public static function mapStoreValidation()
+    {
+        return [
+        ];
+    }
+
     /**
      * The model store method
      *
@@ -65,24 +77,8 @@ class InfrastructureDocumentOther extends Model
     public static function storeRecord(Request $request)
     {
         $model = new static();
-
-        DB::connection($model->connection)->beginTransaction();
-
-        try {
-            // ...
-            $model->save();
-
-            DB::connection($model->connection)->commit();
-
-            // return new DocumentOtherResource($model);
-        } catch (\Exception $e) {
-            DB::connection($model->connection)->rollBack();
-
-            return response()->json([
-                'success' => false,
-                'message' => $e->getMessage()
-            ], 500);
-        }
+        $model->save();
+        return $model;
     }
 
     /**
@@ -94,23 +90,7 @@ class InfrastructureDocumentOther extends Model
      */
     public static function updateRecord(Request $request, $model)
     {
-        DB::connection($model->connection)->beginTransaction();
-
-        try {
-            // ...
-            $model->save();
-
-            DB::connection($model->connection)->commit();
-
-            // return new DocumentOtherResource($model);
-        } catch (\Exception $e) {
-            DB::connection($model->connection)->rollBack();
-
-            return response()->json([
-                'success' => false,
-                'message' => $e->getMessage()
-            ], 500);
-        }
+        $model->save();
     }
 
     /**
@@ -121,22 +101,7 @@ class InfrastructureDocumentOther extends Model
      */
     public static function deleteRecord($model)
     {
-        DB::connection($model->connection)->beginTransaction();
-
-        try {
-            $model->delete();
-
-            DB::connection($model->connection)->commit();
-
-            return response()->json(['success' => true]);
-        } catch (\Exception $e) {
-            DB::connection($model->connection)->rollBack();
-
-            return response()->json([
-                'success' => false,
-                'message' => $e->getMessage()
-            ], 500);
-        }
+        $model->delete();
     }
 
     /**
@@ -147,22 +112,7 @@ class InfrastructureDocumentOther extends Model
      */
     public static function restoreRecord($model)
     {
-        DB::connection($model->connection)->beginTransaction();
-
-        try {
-            $model->restore();
-
-            DB::connection($model->connection)->commit();
-
-            return response()->json(['success' => true]);
-        } catch (\Exception $e) {
-            DB::connection($model->connection)->rollBack();
-
-            return response()->json([
-                'success' => false,
-                'message' => $e->getMessage()
-            ], 500);
-        }
+        $model->restore();
     }
 
     /**
@@ -173,21 +123,6 @@ class InfrastructureDocumentOther extends Model
      */
     public static function destroyRecord($model)
     {
-        DB::connection($model->connection)->beginTransaction();
-
-        try {
-            $model->forceDelete();
-
-            DB::connection($model->connection)->commit();
-
-            return response()->json(['success' => true]);
-        } catch (\Exception $e) {
-            DB::connection($model->connection)->rollBack();
-
-            return response()->json([
-                'success' => false,
-                'message' => $e->getMessage()
-            ], 500);
-        }
+        $model->forceDelete();
     }
 }
