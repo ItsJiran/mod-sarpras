@@ -273,7 +273,7 @@ class InfrastructureRecordNoteUsed extends Model
      * =====================================================
      */
 
-    public function ensureModelExists() : JsonResponse | null  
+    public function ensureModelExists(InfrastructureRecordNote $note) : JsonResponse | null  
     {
 
     }

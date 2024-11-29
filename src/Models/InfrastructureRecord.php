@@ -486,14 +486,14 @@ class InfrastructureRecord extends Model
 
     public static function indexDeadline(Request $request) 
     {          
+        // ambil 3 bulan dari sekarang
         $deadline = Carbon::today()->addMonth(3);
-
         $deadline_queries = [
             ['infrastructure_records.recordable_type','=',InfrastructureRecordPeriodic::class],
             ['infrastructure_record_periodics.duedate','<=',$deadline],
-        
         ];
 
+        // eloquent
         $eloquent = self::leftJoin('infrastructure_record_periodics', function($join) {
             $join
             ->on('infrastructure_records.recordable_id', '=', 'infrastructure_record_periodics.id')
@@ -654,6 +654,10 @@ class InfrastructureRecord extends Model
         }
     }
 
+    // +-------------------------------
+    // +--------- RESTORE METHODS
+    // +-------------------------------
+
     public static function restoreRecord($model)
     {
         DB::connection($model->connection)->beginTransaction();
@@ -674,12 +678,15 @@ class InfrastructureRecord extends Model
         }
     }
 
+    // +-------------------------------
+    // +--------- DESTROY METHODS
+    // +-------------------------------
+
     public static function destroyRecord($model)
     {
         DB::connection($model->connection)->beginTransaction();
 
         try {
-
             // hapus notes dan notes used nya
             $notes = InfrastructureRecordNote::where('record_id',$model->id)->get();
 
