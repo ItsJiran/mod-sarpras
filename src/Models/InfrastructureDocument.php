@@ -195,6 +195,33 @@ class InfrastructureDocument extends Model
 
     /**
      * =====================================================
+     * +---------------------- MAP BASE -------------------+
+     * =====================================================
+     */
+
+    public static function mapResource(Request $request, $model)
+    {
+        return [
+            'id' => $model->id,
+            'name' => $model->name,
+            'unit' => InfrastructureUnit::where('id',$model->unit_id)->first()->name,
+            'type' => InfrastructureDocument::mapTypeClass( true )[ $model->documentable_type ],
+            'updated_at' => $model->updated_at,
+        ];
+    }
+
+    public static function mapHeaders(Request $request): array 
+    {
+        return [
+            ['title' => 'Nama', 'value' => 'name', 'sortable' => true],
+            ['title' => 'Unit', 'value' => 'unit', 'sortable' => true],
+            ['title' => 'Tipe', 'value' => 'type', 'sortable' => true],
+            ['title' => 'Diperbarui', 'value' => 'updated_at', 'class' => 'field-datetime'],
+        ];
+    }
+
+    /**
+     * =====================================================
      * +-------------------- MAP COMBOS -------------------+
      * =====================================================
      */

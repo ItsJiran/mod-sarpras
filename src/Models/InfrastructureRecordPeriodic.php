@@ -57,6 +57,13 @@ class InfrastructureRecordPeriodic extends Model
     protected $defaultOrder = 'name';
 
     /**
+     * The attributes that should be cast to native types.
+     *
+     * @var array<string, string>
+     */
+    protected $dates = ['duedate'];
+
+    /**
      * ====================================================
      * +------------------- MAP REQUEST ------------------+
      * ====================================================

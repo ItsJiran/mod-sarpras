@@ -93,6 +93,12 @@ class InfrastructureAsset extends Model
     ];
 
     /**
+     * ====================================================
+     * +---------------- RELATION METHODS ----------------+
+     * ====================================================
+     */
+
+    /**
      * countOfSlugType function
      *
      * @return int
@@ -124,6 +130,35 @@ class InfrastructureAsset extends Model
     {
         $count = (new self())->countOfSlug($slug_unit, $type_slug);
         return $slug_unit . '-' . 'SP'. '-' . $type_slug . str_pad($count + 1, 3, '0', STR_PAD_LEFT);
+    }
+
+    /**
+     * ====================================================
+     * +----------------- HEADERS METHODS ----------------+
+     * ====================================================
+     */
+
+    public static function mapResource(Request $request, $model)
+    {
+        return [
+            'id' => $model->id,
+            'name' => $model->name,
+            'slug' => $model->slug,
+            'unit' => InfrastructureUnit::where('id',$model->unit_id)->first()->name,
+            'type' => InfrastructureAsset::mapTypeClass( true )[ $model->assetable_type ],
+            'updated_at' => $model->updated_at,
+        ];
+    }
+
+    public static function mapHeaders(Request $request): array 
+    {
+        return [
+            ['title' => 'Nama', 'value' => 'name', 'sortable' => true],
+            ['title' => 'Kode', 'value' => 'slug', 'sortable' => true],
+            ['title' => 'Unit', 'value' => 'unit', 'sortable' => true],
+            ['title' => 'Tipe', 'value' => 'type', 'sortable' => true],
+            ['title' => 'Diperbarui', 'value' => 'updated_at', 'class' => 'field-datetime'],
+        ];
     }
 
     /**

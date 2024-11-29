@@ -306,6 +306,70 @@ class InfrastructureRecord extends Model
         ];
     }
 
+    /**
+     * =====================================================
+     * +---------------------- MAP BASE -------------------+
+     * =====================================================
+     */
+
+    public static function mapResource(Request $request, $model)
+    {
+        $target = $model->targetable_type::where('id',$model->targetable_id)->first();
+        $record_deadline_status = self::mapDeadlineStatus($model);
+        $record_deadline_tgl = $model->recordable_type::where('id',$model->recordable_id)->first()->duedate;
+        
+        return [
+            'id' => $model->id,
+            'name' => $model->name,
+            'name_unit' => $target->unit->name,
+            'name_target' => $target->name,
+            'type_target' => self::mapMorphTargetClass(true)[$model->targetable_type],
+            'record_deadline_status' => $record_deadline_status,
+            'record_deadline_tgl' => $record_deadline_tgl,
+        ];
+    }
+
+    public static function mapHeaders(Request $request): array 
+    {
+        return [
+            ['title' => 'Nama', 'value' => 'name', 'sortable' => true],
+            ['title' => 'Nama Tujuan', 'value' => 'name_target', 'sortable' => true],
+            ['title' => 'Tipe Tujuan', 'value' => 'type_target', 'sortable' => true],
+            ['title' => 'Unit Tujuan', 'value' => 'name_unit', 'sortable' => true],
+            ['title' => 'Status Deadline', 'value' => 'record_deadline_status', 'sortable' => true],
+            ['title' => 'Tanggal Deadline', 'value' => 'record_deadline_tgl', 'sortable' => true],
+        ];
+    }
+
+    public static function mapDeadlineStatus($model) : string 
+    {
+        if ( self::mapMorphRecordClass(true)[$model->recordable_type] == 'Periodic' ) {
+            $close = Carbon::today()->addMonth(3);
+            $now = Carbon::now();
+        
+            $record_periodic = $model->recordable_type::where('id',$model->recordable_id)->first();
+            $record_deadline = Carbon::parse($record_periodic->duedate);
+
+            $exceedDeadline = $record_deadline->lt($now);
+            if ( $exceedDeadline ) 
+                return 'Melewati';
+
+            $currentDeadline = $record_deadline->isSameDay( $now );
+            if ( $currentDeadline )
+                return 'Sekarang';
+
+            $closeDeadline = $record_deadline->lte($close);
+            if ( $closeDeadline )
+                return 'Mendekati';
+
+            $farDeadline = $record_deadline->gt($close);
+            if ( $farDeadline )
+                return 'Masih Lama';
+        }
+
+        return 'Tidak Ada Deadline';
+    }
+
     // + ======================
     // + -------- STORE
     // + ======================
@@ -499,8 +563,7 @@ class InfrastructureRecord extends Model
             ->on('infrastructure_records.recordable_id', '=', 'infrastructure_record_periodics.id')
             ->where('infrastructure_records.recordable_type', '=', InfrastructureRecordPeriodic::class);
         })->where($deadline_queries)->select(
-            'infrastructure_records.id',
-            'infrastructure_records.name'
+            'infrastructure_records.*'
         );
 
         return $eloquent;
