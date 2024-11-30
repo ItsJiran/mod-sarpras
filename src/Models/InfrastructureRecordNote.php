@@ -24,6 +24,7 @@ use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage;
 
 use Module\Infrastructure\Models\InfrastructureRecord;
+use Module\Infrastructure\Models\InfrastructureRecordNoteUsed;
 use Module\Infrastructure\Models\InfrastructureUser;
 
 use Module\Infrastructure\Http\Resources\RecordNoteResource;
@@ -635,7 +636,7 @@ class InfrastructureRecordNote extends Model
 
         try {
 
-            $notes = InfastructureRecordNoteUsed::where('note_id',$model->id)->get();
+            $notes = InfrastructureRecordNoteUsed::where('note_id',$model->id)->get();
 
             foreach ($notes as $key => $note) {
                 $note->delete();
@@ -661,7 +662,7 @@ class InfrastructureRecordNote extends Model
         DB::connection($model->connection)->beginTransaction();
 
         try {
-            $notes = InfastructureRecordNoteUsed::where('note_id',$model->id)->get();
+            $notes = InfrastructureRecordNoteUsed::where('note_id',$model->id)->get();
 
             foreach ($notes as $key => $note) {
                 $note->restore();
