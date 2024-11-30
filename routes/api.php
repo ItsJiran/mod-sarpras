@@ -102,7 +102,7 @@ Route::controller(InfrastructureRecordController::class)->group(function () {
         Route::get('maintenance','index');
         Route::post('maintenance','store');
         Route::get('maintenance/{record}','show');
-        Route::post('maintenance/{record}/update','update');
+        Route::put('maintenance/{record}','update');
         Route::delete('maintenance/{record}','destroy');
         Route::put( 'maintenance/{record}/restore', 'restore' );
         Route::delete( 'maintenance/{record}/force', 'forceDelete' );
@@ -147,7 +147,7 @@ Route::controller(InfrastructureRecordController::class)->group(function () {
         Route::get('tax','index');
         Route::post('tax','store');
         Route::get('tax/{record}','show');
-        Route::post('tax/{record}/update','update');
+        Route::put('tax/{record}','update');
         Route::delete('tax/{record}','destroy');
         Route::put( 'tax/{record}/restore', 'restore' );
         Route::delete( 'tax/{record}/force', 'forceDelete' );
