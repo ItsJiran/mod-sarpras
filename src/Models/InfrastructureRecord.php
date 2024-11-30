@@ -413,32 +413,27 @@ class InfrastructureRecord extends Model
 
     public static function mapStoreRequestValid(Request $request) : JsonResponse | null
     {
-        $isRequestUserOperator = isRequestUserOperator($request);
-        if(!is_null($isRequestUserOperator)) return $isRequestUserOperator;
+        return ensureRequestUserOperator($request);
     }
 
     public static function mapUpdateRequestValid(Request $request) : JsonResponse | null
     {
-        $isRequestUserOperator = isRequestUserOperator($request);
-        if(!is_null($isRequestUserOperator)) return $isRequestUserOperator;
+        return ensureRequestUserOperator($request);
     }
 
     public static function mapDestroyRequestValid(Request $request) : JsonResponse | null
     {
-        $isRequestUserOperator = isRequestUserOperator($request);
-        if(!is_null($isRequestUserOperator)) return $isRequestUserOperator;
+        return ensureRequestUserOperator($request);
     }
 
     public static function mapRestoreRequestValid(Request $request) : JsonResponse | null
     {
-        $isRequestUserOperator = isRequestUserOperator($request);
-        if(!is_null($isRequestUserOperator)) return $isRequestUserOperator;
+        return ensureRequestUserOperator($request);
     }
 
     public static function mapForceDeleteRequestValid(Request $request) : JsonResponse | null
     {
-        $isRequestUserOperator = isRequestUserOperator($request);
-        if(!is_null($isRequestUserOperator)) return $isRequestUserOperator;
+        return ensureRequestUserOperator($request);
     }
 
     /**

@@ -25,7 +25,7 @@ class InfrastructureRecordNoteUsedPolicy
      */
     public function view(SystemUser $user): bool
     {
-        return $user->hasPermission('view-infrastructure-recordnoteused');
+        return $user->hasPermission('view-infrastructure-record-note-used');
     }
 
     /**
@@ -33,7 +33,7 @@ class InfrastructureRecordNoteUsedPolicy
      */
     public function show(SystemUser $user, InfrastructureRecordNoteUsed $infrastructureRecordNoteUsed): bool
     {
-        return $user->hasPermission('show-infrastructure-recordnoteused');
+        return $user->hasPermission('show-infrastructure-record-note-used');
     }
 
     /**
@@ -41,7 +41,7 @@ class InfrastructureRecordNoteUsedPolicy
      */
     public function create(SystemUser $user): bool
     {
-        return $user->hasPermission('create-infrastructure-recordnoteused');
+        return $user->hasPermission('create-infrastructure-record-note-used');
     }
 
     /**
@@ -49,7 +49,7 @@ class InfrastructureRecordNoteUsedPolicy
      */
     public function update(SystemUser $user, InfrastructureRecordNoteUsed $infrastructureRecordNoteUsed): bool
     {
-        return $user->hasPermission('update-infrastructure-recordnoteused');
+        return $user->hasPermission('update-infrastructure-record-note-used');
     }
 
     /**
@@ -57,7 +57,7 @@ class InfrastructureRecordNoteUsedPolicy
      */
     public function delete(SystemUser $user, InfrastructureRecordNoteUsed $infrastructureRecordNoteUsed): bool
     {
-        return $user->hasPermission('delete-infrastructure-recordnoteused');
+        return $user->hasPermission('delete-infrastructure-record-note-used');
     }
 
     /**
@@ -65,7 +65,7 @@ class InfrastructureRecordNoteUsedPolicy
      */
     public function restore(SystemUser $user, InfrastructureRecordNoteUsed $infrastructureRecordNoteUsed): bool
     {
-        return $user->hasPermission('restore-infrastructure-recordnoteused');
+        return $user->hasPermission('restore-infrastructure-record-note-used');
     }
 
     /**
@@ -73,6 +73,6 @@ class InfrastructureRecordNoteUsedPolicy
      */
     public function destroy(SystemUser $user, InfrastructureRecordNoteUsed $infrastructureRecordNoteUsed): bool
     {
-        return $user->hasPermission('destroy-infrastructure-recordnoteused');
+        return $user->hasPermission('destroy-infrastructure-record-note-used');
     }
 }

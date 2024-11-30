@@ -25,7 +25,7 @@ class InfrastructureRecordNotePolicy
      */
     public function view(SystemUser $user): bool
     {
-        return $user->hasPermission('view-infrastructure-recordnote');
+        return $user->hasPermission('view-infrastructure-record-note');
     }
 
     /**
@@ -33,7 +33,7 @@ class InfrastructureRecordNotePolicy
      */
     public function show(SystemUser $user, InfrastructureRecordNote $infrastructureRecordNote): bool
     {
-        return $user->hasPermission('show-infrastructure-recordnote');
+        return $user->hasPermission('show-infrastructure-record-note');
     }
 
     /**
@@ -41,7 +41,7 @@ class InfrastructureRecordNotePolicy
      */
     public function create(SystemUser $user): bool
     {
-        return $user->hasPermission('create-infrastructure-recordnote');
+        return $user->hasPermission('create-infrastructure-record-note');
     }
 
     /**
@@ -49,7 +49,7 @@ class InfrastructureRecordNotePolicy
      */
     public function update(SystemUser $user, InfrastructureRecordNote $infrastructureRecordNote): bool
     {
-        return $user->hasPermission('update-infrastructure-recordnote');
+        return $user->hasPermission('update-infrastructure-record-note');
     }
 
     /**
@@ -57,7 +57,7 @@ class InfrastructureRecordNotePolicy
      */
     public function delete(SystemUser $user, InfrastructureRecordNote $infrastructureRecordNote): bool
     {
-        return $user->hasPermission('delete-infrastructure-recordnote');
+        return $user->hasPermission('delete-infrastructure-record-note');
     }
 
     /**
@@ -65,7 +65,7 @@ class InfrastructureRecordNotePolicy
      */
     public function restore(SystemUser $user, InfrastructureRecordNote $infrastructureRecordNote): bool
     {
-        return $user->hasPermission('restore-infrastructure-recordnote');
+        return $user->hasPermission('restore-infrastructure-record-note');
     }
 
     /**
@@ -73,6 +73,6 @@ class InfrastructureRecordNotePolicy
      */
     public function destroy(SystemUser $user, InfrastructureRecordNote $infrastructureRecordNote): bool
     {
-        return $user->hasPermission('destroy-infrastructure-recordnote');
+        return $user->hasPermission('destroy-infrastructure-record-note');
     }
 }
