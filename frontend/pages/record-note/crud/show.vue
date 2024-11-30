@@ -121,7 +121,7 @@
 			@click="convertToDraft(record,this)"
 			>Ubah Ke Draft</v-btn>			
 
-			<v-btn v-if="record != undefined && record.is_admin && record.status_step != 3 && record.status_step == 2"
+			<v-btn v-if="record != undefined && ( record.is_admin || record.is_verificator ) && record.status_step != 3 && record.status_step == 2"
 			class="mt-3"
 			:color="theme"
 			block
@@ -129,7 +129,7 @@
 			@click="convertToVerified(record,this)"
 			>Ubah Ke Verified</v-btn>
 
-			<v-btn v-if="record != undefined && record.is_admin && record.status_step != 3 && record.status_step == 2"
+			<v-btn v-if="record != undefined && ( record.is_admin || record.is_verificator ) && record.status_step != 3 && record.status_step == 2"
 			class="mt-3"
 			:color="theme"
 			block

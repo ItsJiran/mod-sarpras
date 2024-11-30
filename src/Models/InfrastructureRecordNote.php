@@ -118,6 +118,7 @@ class InfrastructureRecordNote extends Model
 
         $isUserAdmin = $request->user()->hasLicenseAs('infrastructure-administrator');
         $isUserSuperAdmin = $request->user()->hasLicenseAs('infrastructure-superadmin');
+        $isUserVerificator = $request->user()->hasLicenseAs('infrastructure-verificator');
         $isUserCreator = $request->user()->id == $user['id'];
 
         return [
@@ -133,6 +134,7 @@ class InfrastructureRecordNote extends Model
             'status_step' => self::mapStatusStep($request, $model),
             
             'is_admin' => $isUserAdmin || $isUserSuperAdmin,
+            'is_verificator' => $isUserVerificator,
             'is_creator' => $isUserCreator,
         ];
     }

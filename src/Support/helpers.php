@@ -113,7 +113,7 @@ if (!function_exists('ensureRequestUserVerificator')) {
         // apabila user bukan admin dan note status sudah bukan draft maka jangan tambah
         $isUserAdmin = $request->user()->hasLicenseAs('infrastructure-administrator');
         $isUserSuperAdmin = $request->user()->hasLicenseAs('infrastructure-superadmin');
-        $isUserVerificator = $request->user()->hasLicenseAs('infrastructure-superadmin');
+        $isUserVerificator = $request->user()->hasLicenseAs('infrastructure-verificator');
 
         // kalau user bukan verificator
         if (!$isUserVerificator && !$isUserAdmin && !$isUserSuperAdmin){
