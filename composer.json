@@ -20,7 +20,8 @@
         ],
         "psr-4": {
             "Module\\Infrastructure\\": "src/",
-            "ModuleInfrastructure\\Seeders\\": "database/seeders"
+            "ModuleInfrastructure\\Seeders\\": "database/seeders",
+            "ModuleSystem\\Tests\\": "src/Tests"
         }
     }
 }
