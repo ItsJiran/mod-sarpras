@@ -448,7 +448,7 @@ class InfrastructureRecordNoteUsed extends Model
         DB::connection($model->connection)->beginTransaction();
 
         try {
-            $model->delete();
+            $model->forceDelete();
 
             DB::connection($model->connection)->commit();
 

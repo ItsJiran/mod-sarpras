@@ -632,6 +632,13 @@ class InfrastructureRecordNote extends Model
         DB::connection($model->connection)->beginTransaction();
 
         try {
+
+            $notes = InfastructureRecordNoteUsed::where('note_id',$model->id)->get();
+
+            foreach ($notes as $key => $note) {
+                $note->delete();
+            }
+
             $model->delete();
 
             DB::connection($model->connection)->commit();
@@ -652,6 +659,12 @@ class InfrastructureRecordNote extends Model
         DB::connection($model->connection)->beginTransaction();
 
         try {
+            $notes = InfastructureRecordNoteUsed::where('note_id',$model->id)->get();
+
+            foreach ($notes as $key => $note) {
+                $note->restore();
+            }
+
             $model->restore();
 
             DB::connection($model->connection)->commit();
