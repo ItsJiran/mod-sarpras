@@ -277,7 +277,7 @@ class InfrastructureRecordController extends Controller
     // + ===================================
     // + ----------- DESTROY METHODS
     // + ===================================
-    public function destroy(InfrastructureRecord $record)
+    public function destroy(Request $request, InfrastructureRecord $record)
     {
         Gate::authorize('delete', $record);
 
@@ -290,38 +290,38 @@ class InfrastructureRecordController extends Controller
 
     public function destroyFromAsset(Request $request, InfrastructureAsset $asset, InfrastructureRecord $record)    
     {   
-        return $this->destroy($record);
+        return $this->destroy($request, $record);
     }
 
     public function destroyFromAssetDocument(Request $request, InfrastructureAsset $asset, InfrastructureDocument $document, InfrastructureRecord $record)    
     {   
-        return $this->destroy($record);
+        return $this->destroy($request, $record);
     }
 
     public function destroyFromDocument(Request $request, InfrastructureDocument $document, InfrastructureRecord $record)    
     {   
-        return $this->destroy($record);
+        return $this->destroy($request, $record);
     }
 
     public function destroyFromUnitAsset(Request $request, InfrastructureUnit $unit, InfrastructureAsset $asset, InfrastructureRecord $record)    
     {   
-        return $this->destroy($record);
+        return $this->destroy($request, $record);
     }
 
     public function destroyFromUnitAssetDocument(Request $request, InfrastructureUnit $unit, InfrastructureAsset $asset, InfrastructureDocument $document, InfrastructureRecord $record)    
     {   
-        return $this->destroy($record);
+        return $this->destroy($request, $record);
     }
 
     public function destroyFromUnitDocument(Request $request, InfrastructureUnit $unit, InfrastructureDocument $document, InfrastructureRecord $record)    
     {   
-        return $this->destroy($record);
+        return $this->destroy($request, $record);
     }
 
     // + ===================================
     // + ----------- RESTORE METHODS
     // + ===================================
-    public function restore(InfrastructureRecord $record)
+    public function restore(Request $request, InfrastructureRecord $record)
     {
         Gate::authorize('restore', $record);
 
@@ -333,38 +333,39 @@ class InfrastructureRecordController extends Controller
 
     public function restoreFromAsset(Request $request, InfrastructureAsset $asset, InfrastructureRecord $record)    
     {   
-        return $this->restore($record);
+        return $this->restore($request, $record);
     }
 
     public function restoreFromAssetDocument(Request $request, InfrastructureAsset $asset, InfrastructureDocument $document, InfrastructureRecord $record)    
     {   
-        return $this->restore($record);
+        return $this->restore($request, $record);
+
     }
 
     public function restoreFromDocument(Request $request, InfrastructureDocument $document, InfrastructureRecord $record)    
     {   
-        return $this->restore($record);
+        return $this->restore($request, $record);
     }
 
     public function restoreFromUnitAsset(Request $request, InfrastructureUnit $unit, InfrastructureAsset $asset, InfrastructureRecord $record)    
     {   
-        return $this->restore($record);
+        return $this->restore($request, $record);
     }
 
     public function restoreFromUnitAssetDocument(Request $request, InfrastructureUnit $unit, InfrastructureAsset $asset, InfrastructureDocument $document, InfrastructureRecord $record)    
     {   
-        return $this->restore($record);
+        return $this->restore($request, $record);
     }
 
     public function restoreFromUnitDocument(Request $request, InfrastructureUnit $unit, InfrastructureDocument $document, InfrastructureRecord $record)    
     {   
-        return $this->restore($record);
+        return $this->restore($request, $record);
     }
 
     // + ===================================
     // + ----------- FORCE DESTROY METHODS
     // + ===================================
-    public function forceDelete(InfrastructureRecord $record)
+    public function forceDelete(Request $request, InfrastructureRecord $record)
     {
         Gate::authorize('destroy', $record);
 
@@ -376,32 +377,32 @@ class InfrastructureRecordController extends Controller
 
     public function forceDeleteFromAsset(Request $request, InfrastructureAsset $asset, InfrastructureRecord $record)    
     {   
-        return $this->forceDelete($record);
+        return $this->forceDelete($request, $record);
     }
 
     public function forceDeleteFromAssetDocument(Request $request, InfrastructureAsset $asset, InfrastructureDocument $document, InfrastructureRecord $record)    
     {   
-        return $this->forceDelete($record);
+        return $this->forceDelete($request, $record);
     }
 
     public function forceDeleteFromDocument(Request $request, InfrastructureDocument $document, InfrastructureRecord $record)    
     {   
-        return $this->forceDelete($record);
+        return $this->forceDelete($request, $record);
     }
 
     public function forceDeleteFromUnitAsset(Request $request, InfrastructureUnit $unit, InfrastructureAsset $asset, InfrastructureRecord $record)    
     {   
-        return $this->forceDelete($record);
+        return $this->forceDelete($request, $record);
     }
 
     public function forceDeleteFromUnitAssetDocument(Request $request, InfrastructureUnit $unit, InfrastructureAsset $asset, InfrastructureDocument $document, InfrastructureRecord $record)    
     {   
-        return $this->forceDelete($record);
+        return $this->forceDelete($request, $record);
     }
 
     public function forceDeleteFromUnitDocument(Request $request, InfrastructureUnit $unit, InfrastructureDocument $document, InfrastructureRecord $record)    
     {   
-        return $this->forceDelete($record);
+        return $this->forceDelete($request, $record);
     }
 
     // + ===================================
