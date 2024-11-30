@@ -73,8 +73,8 @@ class InfrastructureRecordNoteUsedController extends Controller
             InfrastructureRecordNoteUsed::mapStoreRequest($request, $record, $note) 
         );
 
-        $isResquestValid = InfrastructureRecordNoteUsed::mapStoreRequestValid($request,$record,$note);
-        if ( !is_null($isResquestValid) ) return $isResquestValid;
+        $isRequestValid = InfrastructureRecordNoteUsed::mapStoreRequestValid($request,$record,$note);
+        if ( !is_null($isRequestValid) ) return $isRequestValid;
 
         return InfrastructureRecordNoteUsed::storeRecord($request, $record, $note);
     }
@@ -111,7 +111,7 @@ class InfrastructureRecordNoteUsedController extends Controller
 
     public function show(Request $request, InfrastructureRecord $record, InfrastructureRecordNote $note, InfrastructureRecordNoteUsed $used)
     {
-        Gate::authorize('show', InfrastructureRecordNoteUsed::class);
+        Gate::authorize('show', $used);
         return new RecordNoteUsedShowResource($used);
     }
 
@@ -149,8 +149,8 @@ class InfrastructureRecordNoteUsedController extends Controller
     {
         Gate::authorize('delete', $used);
 
-        $isResquestValid = InfrastructureRecordNoteUsed::mapDeleteRequestValid($request,$record,$note,$used);
-        if ( !is_null($isResquestValid) ) return $isResquestValid;
+        $isRequestValid = InfrastructureRecordNoteUsed::mapDeleteRequestValid($request,$record,$note,$used);
+        if ( !is_null($isRequestValid) ) return $isRequestValid;
 
         return InfrastructureRecordNoteUsed::deleteRecord($used);
     }

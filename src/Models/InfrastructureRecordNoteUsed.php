@@ -169,6 +169,36 @@ class InfrastructureRecordNoteUsed extends Model
          ];
      }
 
+    /**
+     * =====================================================
+     * +---------------------- MAP BASE -------------------+
+     * =====================================================
+     */
+
+    public static function mapResource(Request $request, $model) 
+    {
+        $target =  $model->targetable_type::where('id',$model->targetable_id)->first(); 
+
+        if($model->dibekukan) $dibekukan = 'Iya';
+        else                  $dibekukan = "Tidak";
+
+        return [
+            'id' => $model->id,
+            'name' => $target->name,
+            'name_unit' => $target->unit->name,
+            'dibekukan' => $model->dibekukan,
+        ];
+    }
+
+    public static function mapHeaders(Request $request): array 
+    {
+        return [
+            ['title' => 'Nama', 'value' => 'name', 'sortable' => true],
+            ['title' => 'Nama Unit', 'value' => 'name_unit', 'sortable' => true],
+            ['title' => 'Status Dibekukan', 'value' => 'dibekukan', 'sortable' => true],
+        ];
+    }
+
     // +------------------------------
     // +------------ STORE REQUEST
 
@@ -249,7 +279,8 @@ class InfrastructureRecordNoteUsed extends Model
         }
 
         return ensureRequests([
-            ensureRequestModelStatusDraft($request, $model),
+            ensureRequestUserOwnerModel($request, $note),
+            ensureRequestModelStatusDraft($request, $note),
             ensureRequestUserOperator($request)
         ]);
      }
@@ -262,7 +293,8 @@ class InfrastructureRecordNoteUsed extends Model
     public static function mapDeleteRequestValid(Request $request, InfrastructureRecord $record, InfrastructureRecordNote $note, $model) : JsonResponse | null
     {
         return ensureRequests([
-            ensureRequestModelStatusDraft($request, $model),
+            ensureRequestUserOwnerModel($request, $note),
+            ensureRequestModelStatusDraft($request, $note),
             ensureRequestUserOperator($request)
         ]);
     }

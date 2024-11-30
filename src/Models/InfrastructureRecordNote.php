@@ -132,7 +132,7 @@ class InfrastructureRecordNote extends Model
             'status' => $model->status,
             'status_step' => self::mapStatusStep($request, $model),
             
-            'is_admin' => $isUserAdmin || $isUserAdmin,
+            'is_admin' => $isUserAdmin || $isUserSuperAdmin,
             'is_creator' => $isUserCreator,
         ];
     }
@@ -250,7 +250,6 @@ class InfrastructureRecordNote extends Model
             $custom = self::mapStoreRequestPeriodic($request, $record);               
 
         return ensureRequests([
-            ensureRequestUserOwnerModel($request, $record),
             ensureRequestUserOperator($request),
             $custom
         ]);
@@ -286,7 +285,11 @@ class InfrastructureRecordNote extends Model
             ], 500);
         }
 
-       return ensureRequestUserVerificator($request);
+        return ensureRequests([
+            ( ensureRequestModelStatusPending($request, $model) || ensureRequestModelStatusDraft($request, $model) ),
+            ensureRequestUserOwnerModel($request, $model),
+            ensureRequestUserOperator($request),
+        ]);
     }
 
     public static function mapUpdateToVerified(Request $request, InfrastructureRecord $record, $model) : JsonResponse | null
@@ -298,7 +301,10 @@ class InfrastructureRecordNote extends Model
             ], 500);
         }
 
-       return ensureRequestUserVerificator($request);
+        return ensureRequests([
+            ensureRequestModelStatusPending($request, $model),
+            ensureRequestUserVerificator($request),
+        ]);
     }
 
     public static function mapUpdateToUnVerified(Request $request, InfrastructureRecord $record, $model) : JsonResponse | null
@@ -311,22 +317,28 @@ class InfrastructureRecordNote extends Model
             ], 500);
         }
 
-       return ensureRequestUserVerificator($request);
-    }
 
-    public static function mapUpdateToDraft(Request $request, InfrastructureRecord $record, $model) : JsonResponse | null
-    {
         return ensureRequests([
             ensureRequestModelStatusPending($request, $model),
             ensureRequestUserVerificator($request),
         ]);
     }
 
+    public static function mapUpdateToDraft(Request $request, InfrastructureRecord $record, $model) : JsonResponse | null
+    {
+        return ensureRequests([
+            ensureRequestUserOwnerModel($request, $model),
+            ensureRequestModelStatusPending($request, $model),
+            ensureRequestUserOperator($request),
+        ]);
+    }
+
     public static function mapUpdateToPending(Request $request, InfrastructureRecord $record, $model) : JsonResponse | null
     {
         return ensureRequests([
+            ensureRequestUserOwnerModel($request, $model),
             ensureRequestModelStatusDraft($request, $model),
-            ensureRequestUserVerificator($request),
+            ensureRequestUserOperator($request),
         ]);
     }
 
@@ -345,6 +357,35 @@ class InfrastructureRecordNote extends Model
         ];
 
         return $array;
+    }
+
+    /**
+     * =====================================================
+     * +---------------------- MAP BASE -------------------+
+     * =====================================================
+     */
+
+    public static function mapResource(Request $request, $model) 
+    {
+        return [
+            'id' => $model->id,
+            'name' => $model->name,
+            'status' => $model->status,
+            'creator' => InfrastructureUser::where('id',$model->user_id)->first()->name,
+            'payment_date' => $model->paydate,
+            'payment_amount' => number_format( ($model->payprice), 3 ),
+        ];
+    }
+
+    public static function mapHeaders(Request $request): array 
+    {
+        return [
+            ['title' => 'Nama', 'value' => 'name', 'sortable' => true],
+            ['title' => 'Status', 'value' => 'status', 'sortable' => true],
+            ['title' => 'Pembuat', 'value' => 'creator', 'sortable' => true],
+            ['title' => 'Tanggal Pembayaran', 'value' => 'payment_date', 'sortable' => true],
+            ['title' => 'Jumlah Pembayaran', 'value' => 'payment_amount', 'sortable' => true],
+        ];
     }
 
     // +===============================================

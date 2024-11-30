@@ -113,7 +113,7 @@
 
 		<template v-slot:info="{ theme, record, store }">		
 
-			<v-btn v-if="record != undefined && record.status == 'pending' && record.status_step != 3"
+			<v-btn v-if="record != undefined && record.is_creator && record.status == 'pending' && record.status_step != 3"
 			class="mt-3"
 			:color="theme"
 			block
@@ -121,7 +121,7 @@
 			@click="convertToDraft(record,this)"
 			>Ubah Ke Draft</v-btn>			
 
-			<v-btn v-if="record != undefined && record.status_step != 3 && record.status_step == 2"
+			<v-btn v-if="record != undefined && record.is_admin && record.status_step != 3 && record.status_step == 2"
 			class="mt-3"
 			:color="theme"
 			block
@@ -129,7 +129,7 @@
 			@click="convertToVerified(record,this)"
 			>Ubah Ke Verified</v-btn>
 
-			<v-btn v-if="record != undefined && record.status_step != 3 && record.status_step == 2"
+			<v-btn v-if="record != undefined && record.is_admin && record.status_step != 3 && record.status_step == 2"
 			class="mt-3"
 			:color="theme"
 			block
@@ -137,7 +137,7 @@
 			@click="convertToUnVerified(record,this)"
 			>Ubah Ke UnVerified</v-btn>
 
-			<v-btn v-if="record != undefined && record.status == 'draft' && record.status_step != 3"
+			<v-btn v-if="record != undefined && record.is_creator && record.status == 'draft' && record.status_step != 3"
 			class="mt-3"
 			:color="theme"
 			block
@@ -145,7 +145,7 @@
 			@click="convertToPending(record,this)"
 			>Ubah Ke Pending</v-btn>
 
-			<v-btn v-if="record != undefined && record.status_step != 3"
+			<v-btn v-if="record != undefined && record.is_creator && record.status_step != 3"
 			class="mt-3"
 			:color="theme"
 			block

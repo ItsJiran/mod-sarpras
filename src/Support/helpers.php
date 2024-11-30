@@ -42,7 +42,7 @@ if (!function_exists('ensureRequestModelStatusDraft')) {
         if ( $model->status != 'draft' && !$isUserAdmin && !$isUserSuperAdmin ) {
             return response()->json([
                 'success' => false,
-                'message' => 'Anda tidak berwenang!'
+                'message' => 'Model tidak sedang dalam draft mode!'
             ], 500);
         }
 
